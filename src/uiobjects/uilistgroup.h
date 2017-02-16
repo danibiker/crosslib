@@ -1,0 +1,70 @@
+#ifndef UILISTGROUP_H
+#define UILISTGROUP_H
+
+#include "uilistcommon.h"
+#include "beans/listgroupcol.h"
+#include <algorithm>
+
+class UIListGroup : public UIListCommon
+{
+    public:
+        /** Default constructor */
+        UIListGroup();
+        /** Default destructor */
+        virtual ~UIListGroup();
+
+        unsigned int getSize();
+        unsigned int getSizeCol(){return numCols;}
+
+        vector <ListGroupCol *> getRow(unsigned int row);
+        ListGroupCol * getCol(unsigned int row, unsigned int col);
+        ListGroupCol * getHeaderCol(int col);
+
+
+        void action(tEvento *);
+        void draw();
+        void checkPos(tEvento evento);
+        unsigned int getElemVisibles();
+
+        void addElemLista(vector <ListGroupCol *> newRow);
+        void setHeaderLista(vector <ListGroupCol *> newRow);
+        void calcularScrPos();
+        void adjustToHeader(bool var) {colsAdjustedToHeader = var;}
+
+        void setHeaderWith(int col, int value);
+        int getHeaderWith(unsigned int col);
+        void clearHeaderWith(){headersWith.clear();}
+        bool isColsAdjustedToHeader(){return colsAdjustedToHeader;}
+        void addHeaderWith(int value){headersWith.push_back(value);}
+        int sizeHeader(){return headersWith.size();}
+        bool isColAnchorPressed(){return colAnchorPressed;}
+        int getPosColAnchorPressed(){return posColAnchorPressed;}
+        string getValue(int row);
+        int getDestino(int row);
+        void resizeLista(unsigned int tam);
+        void clearLista();
+        void sort(int col);
+        bool searchTextInList(int key);
+        int getColSelected(){return colSelected;}
+
+    protected:
+        vector <vector <ListGroupCol *> > listaAgrupada;
+        vector <vector <ListGroupCol *> > listaHeaders;
+        vector<int> headersWith;
+        bool colsAdjustedToHeader;
+        unsigned int numCols;
+        bool colAnchorPressed;
+        int posColAnchorPressed;
+        int initMouseClick;
+        int initColWith;
+        int cursorInAnchor(tEvento *evento);
+        int colSelected;
+
+       int partition(vector <vector <ListGroupCol *> >& A, int p,int q, int col);
+       void quickSort(vector <vector <ListGroupCol *> >& A, int p,int q, int col);
+
+    private:
+        void detectarAnchorClick(tEvento *evento);
+};
+
+#endif // UILISTGROUP_H

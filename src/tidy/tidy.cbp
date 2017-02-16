@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="tidy" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/tidy" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Raspberry">
+				<Option output="bin/raspberry/tidy" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/raspberry/" />
+				<Option type="2" />
+				<Option compiler="raspberry_gcc_compiler" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="src/access.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/access.h" />
+		<Unit filename="src/alloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/attrask.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/attrdict.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/attrdict.h" />
+		<Unit filename="src/attrget.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/attrs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/attrs.h" />
+		<Unit filename="src/buffio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/charsets.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/charsets.h" />
+		<Unit filename="src/clean.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/clean.h" />
+		<Unit filename="src/config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/config.h" />
+		<Unit filename="src/entities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/entities.h" />
+		<Unit filename="src/fileio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fileio.h" />
+		<Unit filename="src/forward.h" />
+		<Unit filename="src/iconvtc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/iconvtc.h" />
+		<Unit filename="src/istack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/lexer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/lexer.h" />
+		<Unit filename="src/localize.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mappedio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mappedio.h" />
+		<Unit filename="src/message.h" />
+		<Unit filename="src/parser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/parser.h" />
+		<Unit filename="src/pprint.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pprint.h" />
+		<Unit filename="src/streamio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/streamio.h" />
+		<Unit filename="src/tagask.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/tags.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/tags.h" />
+		<Unit filename="src/tidy-int.h" />
+		<Unit filename="src/tidylib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/tmbstr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/tmbstr.h" />
+		<Unit filename="src/utf8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/utf8.h" />
+		<Unit filename="src/version.h" />
+		<Unit filename="src/win32tc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/win32tc.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
