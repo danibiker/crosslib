@@ -24,7 +24,7 @@ IOauth2::~IOauth2(){
 /**
 *
 */
-DWORD IOauth2::authenticate(){
+uint32_t IOauth2::authenticate(){
     return 0;
 }
 

@@ -16,7 +16,7 @@ Darklyrics::~Darklyrics(){
 /**
 *
 */
-DWORD Darklyrics::trackLyrics(TrackInfo *trackinfo){
+uint32_t Darklyrics::trackLyrics(TrackInfo *trackinfo){
     HttpUtil util;
     if (util.download(trackinfo->url) && trackinfo->url.find("#") != string::npos){
         HtmlParser parser;
@@ -43,8 +43,8 @@ DWORD Darklyrics::trackLyrics(TrackInfo *trackinfo){
 /**
 *
 */
-DWORD Darklyrics::trackSearch(string track, string artist, vector <TrackInfo *> *info){
-    DWORD retorno = ERRORCONNECT;
+uint32_t Darklyrics::trackSearch(string track, string artist, vector <TrackInfo *> *info){
+    uint32_t retorno = ERRORCONNECT;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
     if (info != NULL){
         info->clear();

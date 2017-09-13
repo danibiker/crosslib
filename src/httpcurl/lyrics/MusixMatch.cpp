@@ -11,9 +11,9 @@ MusixMatch::~MusixMatch(){
 /**
 *
 */
-DWORD MusixMatch::trackLyrics(TrackInfo *trackinfo){
+uint32_t MusixMatch::trackLyrics(TrackInfo *trackinfo){
 
-    DWORD retorno = SINERROR;
+    uint32_t retorno = SINERROR;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
     string url = "http://api.musixmatch.com/ws/1.1/track.lyrics.get?";
     url.append("apikey=");
@@ -54,8 +54,8 @@ DWORD MusixMatch::trackLyrics(TrackInfo *trackinfo){
 /**
 *
 */
-DWORD MusixMatch::trackSearch(string track, string artist, vector <TrackInfo *> *info){
-    DWORD retorno = SINERROR;
+uint32_t MusixMatch::trackSearch(string track, string artist, vector <TrackInfo *> *info){
+    uint32_t retorno = SINERROR;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
     string url = "http://api.musixmatch.com/ws/1.1/track.search?";
     url.append("apikey=");

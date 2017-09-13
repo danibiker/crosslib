@@ -21,6 +21,8 @@
         #define WINVER 0x0502
     #endif
     #include <windows.h>
+#else 
+    #include <unistd.h>
 #endif
 
 
@@ -405,13 +407,14 @@ static const int mapHeight = 256;
         static const int MAXTHUMBX = 7; //Si THUMBW == 0 ponemos por defecto este numero de imagenes en una fila
         static const int MAXTHUMBY = 5; //Si THUMBH == 0 ponemos por defecto este numero de imagenes en una colummna
         static const int SEPTHUMB = 2;  //Separacion del cuadro de seleccion de cada thumb
+        static const string CMD_LAUNCH_BROWSER = "explorer";
     #elif UNIX
         static const int SCREEN_BITS = 16;
         static char FILE_SEPARATOR = FILE_SEPARATOR_UNIX; //Separador de directorios para unix
         static const char FILE_PARENT[] = {"/.."}; //Separador de directorios para unix
         static const char RUTA_TRAZA[] = {"/mnt/usb/traza.txt"}; //Directorio de las trazas
-        static const char RUTA_TRAZA_PROC[] = {"/mnt/usb/trazaProc.txt"}; //Directorio de las trazas
-        static const char RUTA_TRAZA_HIJO[] = {"/mnt/usb/trazaHijo.txt"}; //Directorio de las trazas
+        static const char RUTA_TRAZA_PROC[] = {"./trazaProc.txt"}; //Directorio de las trazas
+        static const char RUTA_TRAZA_HIJO[] = {"./trazaHijo.txt"}; //Directorio de las trazas
         static const char RUTA_RETROARCH_CFG[] = {"/home/pi/.emulationstation/es_systems.cfg"};
         static const char VBCRLF[] = {"\r\n"}; //Retorno de carro para las trazas o ficheros en UNIX \r\n
         static const int CURSORVISIBLE = 1;
@@ -420,6 +423,7 @@ static const int mapHeight = 256;
         static const int MAXTHUMBX = 3; //Si THUMBW == 0 ponemos por defecto este numero de imagenes en una fila
         static const int MAXTHUMBY = 3; //Si THUMBH == 0 ponemos por defecto este numero de imagenes en una colummna
         static const int SEPTHUMB = 2;  //Separacion del cuadro de seleccion de cada thumb
+        static const string CMD_LAUNCH_BROWSER = "x-www-browser";
     #endif
 
 
@@ -459,7 +463,7 @@ class Constant{
         static int COMBOLISTHEIGHT;
         static int IMGBOXARTWIDTH; //Ancho de la imagen de la rom
         static int IMGBOXARTHEIGHT; //Alto de la imagen de la rom
-        static byte c1;  // Last character buffer
+        static uint8_t c1;  // Last character buffer
         
 
     public:
@@ -541,7 +545,7 @@ class Constant{
         static void loadFromFile(string file, std::vector<std::string> *myVector);
         static double diferenciaTiempos(time_t x, time_t y);
         static void setTime(string date, time_t *x);
-        static byte utf8ascii(byte ascii);
+        static uint8_t utf8ascii(uint8_t ascii);
         static void utf8ascii(char* s);
         static string toAnsiString(string dato);
         static string toUTF8(string s);

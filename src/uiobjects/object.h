@@ -110,7 +110,7 @@ class Object{
         bool centered;              //Espeficica si el elemento ha de mostrarse centrado
         int sizeLabel;              //Tamanyo del label de cada elemento
         int icon;                   //Si el objeto puede tener iconos, se define aqui
-        bool enabled;               //Especifica si el componente está habilitado
+        bool enabled;               //Especifica si el componente esta habilitado
         bool visible;               //Especifica si el componente es visible
         bool anchorBottom;          //Componenente anclado en el fondo
         int marginBottom;           //Margen inferior del componente

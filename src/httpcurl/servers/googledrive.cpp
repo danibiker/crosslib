@@ -6,7 +6,7 @@ GoogleDrive::GoogleDrive(){
 GoogleDrive::~GoogleDrive(){
 }
 
-DWORD GoogleDrive::authenticate(){
+uint32_t GoogleDrive::authenticate(){
     string strAccessToken;
     string strRefreshToken;
     filecipher cifrador;
@@ -16,7 +16,7 @@ DWORD GoogleDrive::authenticate(){
     string refreshTokenCipher;
     Dirutil dir;
     string display_name, email;
-    DWORD retorno = SINERROR;
+    uint32_t retorno = SINERROR;
     string errorText;
 
     try{
@@ -85,8 +85,8 @@ DWORD GoogleDrive::authenticate(){
 /**
 *
 */
-DWORD GoogleDrive::checkOauthErrors(string data, Json::Value *root){
-    DWORD retorno = SINERROR;
+uint32_t GoogleDrive::checkOauthErrors(string data, Json::Value *root){
+    uint32_t retorno = SINERROR;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
     Json::Reader reader;
     if (!data.empty()){
@@ -166,7 +166,7 @@ void GoogleDrive::launchAuthorize(string clientid){
                     + "&scope=" + Constant::url_encode("https://www.googleapis.com/auth/drive.file")
                     ;
 
-    string cmd = "explorer \"" + tmpUrl + "\"";
+    string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
     system(cmd.c_str());
 }
 
@@ -260,7 +260,7 @@ string GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, st
     //Control error de token caducado de OAUTH2
     if (util.getHttp_code() != 200){
         Json::Value root;   // will contains the root value after parsing.
-        DWORD oauthOut = checkOauthErrors(util.getData(), &root);
+        uint32_t oauthOut = checkOauthErrors(util.getData(), &root);
         if (oauthOut == ERRORREFRESHTOKEN){
             this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
             //Utilizando recursividad
@@ -320,7 +320,7 @@ long GoogleDrive::resumableChunckedUpload(string filesystemPath, string url, siz
 
     //Control error de token caducado de OAUTH2
     Json::Value root;   // will contains the root value after parsing.
-    DWORD oauthOut = checkOauthErrors(util.getData(), &root);
+    uint32_t oauthOut = checkOauthErrors(util.getData(), &root);
     if (oauthOut == ERRORREFRESHTOKEN){
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
         //Utilizando recursividad
@@ -364,7 +364,7 @@ string GoogleDrive::mkdir(string dirname, string parentid, string accessToken){
     Json::Reader reader;
 
     //Control error de token caducado de OAUTH2
-    DWORD oauthOut = checkOauthErrors(util.getData(), &root);
+    uint32_t oauthOut = checkOauthErrors(util.getData(), &root);
     if (oauthOut == ERRORREFRESHTOKEN){
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
         //Utilizando recursividad
@@ -439,7 +439,7 @@ bool GoogleDrive::listFiles(string fileid, string accessToken, CloudFiles *files
         Traza::print(resp, W_DEBUG);
         //Obtenemos el id del directorio de musica
         //bool parsingSuccessful = reader.parse( resp, root );
-        DWORD oauthOut = checkOauthErrors(resp, &root);
+        uint32_t oauthOut = checkOauthErrors(resp, &root);
         if (oauthOut == ERRORREFRESHTOKEN){
             this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
             //Utilizando recursividad
@@ -482,7 +482,7 @@ string GoogleDrive::fileExist(string filename, string parentid, string accessTok
     //Obtenemos el id del directorio de musica
     //bool parsingSuccessful = reader.parse( resp, root );
 
-    DWORD oauthOut = checkOauthErrors(resp, &root);
+    uint32_t oauthOut = checkOauthErrors(resp, &root);
     if (oauthOut == ERRORREFRESHTOKEN){
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
         //Utilizando recursividad

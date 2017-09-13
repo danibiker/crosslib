@@ -18,7 +18,7 @@ class GoogleDrive : public IOauth2
         virtual ~GoogleDrive();
 
         /**Metodos comunes de la interfaz entre google y dropbox*/
-        DWORD authenticate();
+        uint32_t authenticate();
         void launchAuthorize(string clientid);
         string launchAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
         bool deleteFiles(string fileid, string accessToken);
@@ -34,7 +34,7 @@ class GoogleDrive : public IOauth2
     protected:
         long resumableChunckedUpload(string filesystemPath, string url, size_t pos, size_t tam, string accessToken);
         string getJSONList(string fileid, string accessToken, string nextPageToken);
-        DWORD checkOauthErrors(string data, Json::Value *root);
+        uint32_t checkOauthErrors(string data, Json::Value *root);
 
 
 

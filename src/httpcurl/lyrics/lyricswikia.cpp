@@ -16,7 +16,7 @@ LyricsWikia::~LyricsWikia(){
 /**
 *
 */
-DWORD LyricsWikia::trackLyrics(TrackInfo *trackinfo){
+uint32_t LyricsWikia::trackLyrics(TrackInfo *trackinfo){
     HttpUtil util;
     trackinfo->lyrics_body = "";
     trackinfo->urlInfo = "";
@@ -53,8 +53,8 @@ DWORD LyricsWikia::trackLyrics(TrackInfo *trackinfo){
 /**
 *
 */
-DWORD LyricsWikia::trackSearch(string track, string artist, vector <TrackInfo *> *info){
-    DWORD retorno = SINERROR;
+uint32_t LyricsWikia::trackSearch(string track, string artist, vector <TrackInfo *> *info){
+    uint32_t retorno = SINERROR;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
     if (info != NULL){
         info->clear();

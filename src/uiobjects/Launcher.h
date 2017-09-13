@@ -22,11 +22,8 @@
 #include <cctype>
 #include <locale>
 
-/*Redirección usando dup2 */
+/*Redireccion usando dup2 */
 #include <fcntl.h>
-
-
-
 
 using namespace std;
 

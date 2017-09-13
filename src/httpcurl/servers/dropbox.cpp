@@ -17,7 +17,7 @@ Dropbox::~Dropbox(){
 }
 
 
-DWORD Dropbox::authenticate(){
+uint32_t Dropbox::authenticate(){
     string strAccessToken;
     filecipher cifrador;
     string accessTokenCipherB64;
@@ -25,7 +25,7 @@ DWORD Dropbox::authenticate(){
     Dirutil dir;
     bool error=false;
     string display_name, email;
-    DWORD retorno = SINERROR;
+    uint32_t retorno = SINERROR;
     string errorText;
 
     try{
@@ -129,7 +129,7 @@ string Dropbox::storeAccessToken(string clientid, string secret, string codeOrRe
 */
 void Dropbox::launchAuthorize(string clientid){
     string tmpUrl = DROPBOXURLAUTH + "?response_type=code&client_id=" + clientid;
-    string cmd = "explorer \"" + tmpUrl + "\"";
+    string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
     system(cmd.c_str());
 }
 

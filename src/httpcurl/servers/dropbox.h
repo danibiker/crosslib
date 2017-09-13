@@ -35,7 +35,7 @@ class Dropbox : public IOauth2
 
 
         /**Metodos comunes de la interfaz entre google y dropbox*/
-        DWORD authenticate();
+        uint32_t authenticate();
         void launchAuthorize(string clientid);
         string launchAccessToken(string clientid, string secret, string code, bool refresh);
         bool deleteFiles(string fileid, string accessToken);

@@ -77,7 +77,7 @@ class CloudFiles{
             isDir = false;
         }
 
-        clear(){
+        void clear(){
             strHash = "";
             bytes = 0;
             path = "";

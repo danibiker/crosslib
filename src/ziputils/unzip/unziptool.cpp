@@ -131,7 +131,7 @@ unzippedFileInfo UnzipTool::extraerFichero(unzFile myZip, const char *ruta){
         retorno.rutaEscritura = filenameOut;
         retorno.errorCode = 0;
     } catch (Excepcion &e){
-        Traza::print("Error UnzipTool::extraerFichero" + string(e.getMessage()), ERROR);
+        Traza::print("Error UnzipTool::extraerFichero" + string(e.getMessage()), W_ERROR);
     }
 
     delete fichero;

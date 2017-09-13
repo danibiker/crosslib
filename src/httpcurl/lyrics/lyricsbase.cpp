@@ -10,10 +10,10 @@ LyricsBase::~LyricsBase()
     //dtor
 }
 
-DWORD LyricsBase::trackSearch(string track, string artist, vector <TrackInfo *> *info){
+uint32_t LyricsBase::trackSearch(string track, string artist, vector <TrackInfo *> *info){
     return NOTFOUND;
 }
 
-DWORD LyricsBase::trackLyrics(TrackInfo *trackinfo){
+uint32_t LyricsBase::trackLyrics(TrackInfo *trackinfo){
     return NOTFOUND;
 }

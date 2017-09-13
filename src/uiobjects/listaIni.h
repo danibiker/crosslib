@@ -28,12 +28,12 @@ class ListaIni : public listaSimple<TIPO>{
 template<class TIPO> void ListaIni<TIPO>::loadFromFile(string ruta){
 
     string str;
-	ifstream infile;
-	Fileio *fio = new Fileio();
+    ifstream infile;
+    Fileio *fio = new Fileio();
     int nlines = fio->contarLineas(ruta.c_str());
     this->inicializar(nlines);
-	infile.open (ruta.c_str());
-	vector<string> x;
+    infile.open (ruta.c_str());
+    vector<string> x;
 
     if (infile.is_open()){
         while(!infile.eof()) {// To get you all the lines.
@@ -157,8 +157,8 @@ template<class TIPO> int ListaIni<TIPO>::BuscarBin(nodoSimple<TIPO> *datos, int 
                 der=centro-1;
         }
     }
-    // El algoritmo de búsqueda binaria encuentra el número, pero no
-    // asegura que sea el primero si hay repeticiones de números. Por eso
+    // El algoritmo de bï¿½squeda binaria encuentra el nï¿½mero, pero no
+    // asegura que sea el primero si hay repeticiones de nï¿½meros. Por eso
     // retrocedemos hasta el primer elemento
 //     if (encontrado && centro > 0)
 //     while(centro > 0 && palabra.compare(datos[centro-1].getValor().key) == 0)

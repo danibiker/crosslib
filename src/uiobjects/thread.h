@@ -22,7 +22,7 @@ template<class T>
 class Thread
 {
     // new type Method: pointer to a object's method (this call)
-    typedef DWORD (T::* Method)(void);
+    typedef uint32_t (T::* Method)(void);
 // -----------------------------------------------------------------------------
 protected:
     #ifdef WIN
@@ -33,15 +33,15 @@ protected:
         void *threadReturn;
     #endif
 private:
-    DWORD   threadID;     // thread id - 0 until started
+    uint32_t   threadID;     // thread id - 0 until started
     T*      object;       // the object which owns the method
     Method  method;       // the method of the object
 
-    static volatile DWORD status; //Para controlar el estado en UNIX
+    static volatile uint32_t status; //Para controlar el estado en UNIX
     #ifdef WIN
         HANDLE  hInterrupt;   // mutex to signal an interrupt via ReleaseSemaphore()
         HANDLE  hSingleStart; // only one thread allowed to call start() mutex
-        DWORD exitCode;
+        uint32_t exitCode;
     #else
         GMutex *hSingleStart;
     #endif
@@ -49,7 +49,7 @@ private:
 private:
     // This function gets executed by a concurrent thread.
     #ifdef WIN
-    static DWORD run(LPVOID thread_obj)
+    static uint32_t run(LPVOID thread_obj)
     #else
     static void *run(void * thread_obj)
     #endif
@@ -57,7 +57,7 @@ private:
 //        std::cout << "Thread::running"<< std::endl;
         Thread<T>* thread = (Thread<T>*)thread_obj;
 //        std::cout << "Thread::running. Launching method"<< std::endl;
-        DWORD retorno = (thread->object->*thread->method) ();
+        uint32_t retorno = (thread->object->*thread->method) ();
         //No podemos decir que el thread ha terminado porque este es un metodo estatico
         //que no puede acceder a las variables no estaticas
 //        thread->setStatus(THREAD_FINISHED);
@@ -79,7 +79,7 @@ private:
 public:
     /* Creates a new Thread object. object: the one which method should be
     executed. method: pointer to the object's method. */
-    explicit Thread(T* object, DWORD ( T::* method)(void))
+    explicit Thread(T* object, uint32_t ( T::* method)(void))
     {
 
         this->object        = object;
@@ -191,7 +191,7 @@ public:
             pthread_attr_destroy(&attr);
             std::cout << "join: completed thread";
             std::cout << "  exiting with threadReturn :" << threadReturn << std::endl;
-            return (int)threadReturn;
+            return *((int*)(&threadReturn));
         #endif
     }
 // -----------------------------------------------------------------------------
@@ -224,7 +224,7 @@ public:
 // -----------------------------------------------------------------------------
     /* True if an interrupt request was set, otherwise false. Waits for millisec
     milliseconds for the interrupt to take place. */
-    inline bool isInterrupted(DWORD millisec)
+    inline bool isInterrupted(uint32_t millisec)
     {
         #ifdef WIN
         if (WaitForSingleObject(hInterrupt, millisec) == WAIT_TIMEOUT)
@@ -272,7 +272,7 @@ public:
         return hThread;
     }
 // -----------------------------------------------------------------------------
-    inline DWORD getThreadID()
+    inline uint32_t getThreadID()
     {
         #ifdef WIN
             return threadID;
@@ -284,7 +284,7 @@ public:
         #endif
     }
 
-    inline DWORD getExitCode()
+    inline uint32_t getExitCode()
     {
         #ifdef WIN
             return exitCode;
@@ -293,7 +293,7 @@ public:
         #endif
     }
 
-    inline void setStatus(DWORD var)
+    inline void setStatus(uint32_t var)
     {
         #ifndef WIN
             this->status = var;
@@ -303,7 +303,7 @@ public:
 // -----------------------------------------------------------------------------
 };
 
-template <class T> volatile DWORD  Thread<T>::status;
+template <class T> volatile uint32_t  Thread<T>::status;
 // #############################################################################
 
 #endif // __THREAD_H__

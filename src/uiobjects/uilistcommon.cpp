@@ -1,4 +1,4 @@
-#include "UIListCommon.h"
+#include "uilistcommon.h"
 
 UIListCommon::UIListCommon(){
 }
@@ -162,7 +162,7 @@ void UIListCommon::checkPos(tEvento evento){
 
 /**
 * Funcion para buscar un elemento en la lista conforme vamos tecleando
-* el texto mientras la lista está con el foco. De esta forma se puede
+* el texto mientras la lista estï¿½ con el foco. De esta forma se puede
 * buscar el elemento que sea.
 */
 bool UIListCommon::searchTextInList(int key){

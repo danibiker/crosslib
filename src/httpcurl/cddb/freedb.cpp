@@ -12,7 +12,7 @@ Freedb::~Freedb()
     //dtor
 }
 
-DWORD Freedb::searchCd(){
+uint32_t Freedb::searchCd(){
     if (this->query != NULL && this->cdTrackList != NULL)
         searchCd();
     return 0;

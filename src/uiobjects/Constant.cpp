@@ -1,5 +1,9 @@
 #include "Constant.h"
 
+#ifdef UNIX
+    #include <X11/Xlib.h>
+#endif
+
 string Constant::appDir;
 int Constant::WINDOW_WIDTH = 640;
 int Constant::WINDOW_HEIGHT = 480;
@@ -16,7 +20,7 @@ bool Constant::UPDATE_MISSING = true;
 int Constant::COMBOLISTHEIGHT = (Constant::INPUTH + INPUTCONTENT) * 5;
 int Constant::IMGBOXARTWIDTH = 250; //Ancho de la imagen de la rom
 int Constant::IMGBOXARTHEIGHT = 250; //Alto de la imagen de la rom
-byte Constant::c1;  // Last character buffer
+uint8_t Constant::c1;  // Last character buffer
 
 
 static const char* DIAS[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
@@ -669,6 +673,8 @@ inline bool Constant::is_base64(unsigned char c) {
   return (isalnum(c) || (c == '+') || (c == '/'));
 }
 
+
+
 /**
 *
 */
@@ -698,7 +704,48 @@ std::string Constant::GetClipboardText(){
 
   // Release the clipboard
   CloseClipboard();
-  #endif
+#endif
+
+#ifdef UNIX
+  char *result;
+  unsigned long ressize, restail;
+  const char bufname[] = "CLIPBOARD";
+  const char fmtname[] = "UTF8_STRING"; //"STRING"
+  int resbits;
+  Display *display = XOpenDisplay(NULL);
+  unsigned long color = BlackPixel(display, DefaultScreen(display));
+  Window window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0,0, 1,1, 0, color, color);
+  
+  Atom bufid = XInternAtom(display, bufname, False),
+       fmtid = XInternAtom(display, fmtname, False),
+       propid = XInternAtom(display, "XSEL_DATA", False),
+       incrid = XInternAtom(display, "INCR", False);
+  XEvent event;
+
+  XConvertSelection(display, bufid, fmtid, propid, window, CurrentTime);
+  do {
+    XNextEvent(display, &event);
+  } while (event.type != SelectionNotify || event.xselection.selection != bufid);
+
+  if (event.xselection.property)
+  {
+    XGetWindowProperty(display, window, propid, 0, LONG_MAX/4, False, AnyPropertyType,
+      &fmtid, &resbits, &ressize, &restail, (unsigned char**)&result);
+
+    if (fmtid == incrid)
+      printf("Buffer is too large and INCR reading is not implemented yet.\n");
+    else
+      printf("%.*s", (int)ressize, result);
+    text.assign(result);
+    XFree(result);
+  }
+  else // request failed, e.g. owner can't convert to the target format
+    printf("Request failed.\n");
+  
+  XDestroyWindow(display, window);
+  XCloseDisplay(display);
+
+#endif  
   return text;
 }
 
@@ -805,14 +852,14 @@ string Constant::udecodeUTF8(string &SRC) {
 
 // Convert a single Character from UTF8 to Extended ASCII
 // Return "0" if a byte has to be ignored
-byte Constant::utf8ascii(byte ascii) {
+uint8_t Constant::utf8ascii(uint8_t ascii) {
     if ( ascii<128 )   // Standard ASCII-set 0..0x7F handling
     {   c1=0;
         return( ascii );
     }
 
     // get previous input
-    byte last = c1;   // get last char
+    uint8_t last = c1;   // get last char
     c1=ascii;         // remember actual character
 
     switch (last)     // conversion depnding on first UTF8-character
@@ -920,7 +967,7 @@ int Constant::contarPalabrasIguales(string str1, string str2){
 */
 
 int Constant::getHostname(string hostname, t_hostname *structHostname){
-
+#ifdef win
     DWORD dwError;
     char **pAlias;
     int i = 0;
@@ -993,6 +1040,37 @@ int Constant::getHostname(string hostname, t_hostname *structHostname){
     }
     WSACleanup();
     return 0;
+#endif
+
+#ifdef UNIX
+    char Name[150];
+//    int i=0;
+
+//    #ifdef WIN32
+//        TCHAR infoBuf[150];
+//        DWORD bufCharCount = 150;
+//        memset(Name, 0, 150);
+//        if( GetComputerName( infoBuf, &bufCharCount ) )
+//        {
+//            for(i=0; i<150; i++)
+//            {
+//                Name[i] = infoBuf[i];
+//            }
+//        }
+//        else
+//        {
+//            strcpy(Name, "Unknown_Host_Name");
+//        }
+//    #else
+        memset(Name, 0, 150);
+        gethostname(Name, 150);
+//    #endif
+    structHostname->hostname.assign(Name);
+    structHostname->altHostname.push_back(Name);
+    
+        return 0;
+#endif    
+    
 }
 
 std::string Constant::TrimLeft(const std::string& s)

@@ -42,7 +42,7 @@ class Data{
             x = Constant::split(str, "=");
                 if (x.size() > 1){
                     this->key = x[0];
-                    this->value = x[1];
+                    this->value = Constant::replaceAll(x[1], "\r","");
                 } else if (str.find("=") != string::npos ){
                     this->key = x[0];
                     this->value = "";
@@ -132,7 +132,7 @@ class nodoSimple {
     void setValor(TIPO v){ valor = v;}
     //int comparar(TIPO);
     //Los metodos de comparar es mejor que los implemente uno a uno por temas de rendimiento.
-    //Sino estaría obligado a parsear los propios strings sin hacer falta
+    //Sino estarï¿½a obligado a parsear los propios strings sin hacer falta
     int comparar(int);
     int comparar(string);
     int comparar(DataList);
@@ -267,7 +267,7 @@ template<class TIPO> void listaSimple<TIPO>::delElements(nodoSimple<TIPO> *elems
 }
 
 /**
-* Elimina un elemento de la posición de la lista pasada por parametro
+* Elimina un elemento de la posiciï¿½n de la lista pasada por parametro
 * TODO: Si hay demasiados elementos en reserva, estaria bien liberar memoria
 */
 template<class TIPO> void listaSimple<TIPO>::del(unsigned int pos){
@@ -362,7 +362,7 @@ template<class TIPO> void listaSimple<TIPO>::reservar(unsigned int length){
 */
 template<class TIPO> void listaSimple<TIPO>::add(TIPO datoEntrada)
 {
-    //Comprobamos si es necesario reservar más memoria
+    //Comprobamos si es necesario reservar mï¿½s memoria
     try{
         reservar();
     }catch(Excepcion &e){
@@ -555,8 +555,8 @@ template<class TIPO> int listaSimple<TIPO>::BuscarBin(nodoSimple<int> *datos, in
                 der=centro-1;
         }
     }
-    // El algoritmo de búsqueda binaria encuentra el número, pero no
-    // asegura que sea el primero si hay repeticiones de números. Por eso
+    // El algoritmo de bï¿½squeda binaria encuentra el nï¿½mero, pero no
+    // asegura que sea el primero si hay repeticiones de nï¿½meros. Por eso
     // retrocedemos hasta el primer elemento
      if (encontrado && centro > 0)
      while(centro > 0 && palabra.compare(Constant::TipoToStr(datos[centro-1].getValor())) == 0)
@@ -592,8 +592,8 @@ template<class TIPO> int listaSimple<TIPO>::BuscarBin(nodoSimple<string> *datos,
                 der=centro-1;
         }
     }
-    // El algoritmo de búsqueda binaria encuentra el número, pero no
-    // asegura que sea el primero si hay repeticiones de números. Por eso
+    // El algoritmo de bï¿½squeda binaria encuentra el nï¿½mero, pero no
+    // asegura que sea el primero si hay repeticiones de nï¿½meros. Por eso
     // retrocedemos hasta el primer elemento
      if (encontrado && centro > 0)
      while(centro > 0 && palabra.compare(datos[centro-1].getValor()) == 0)
@@ -628,8 +628,8 @@ template<class TIPO> int listaSimple<TIPO>::BuscarBin(nodoSimple<DataList> *dato
                 der=centro-1;
         }
     }
-    // El algoritmo de búsqueda binaria encuentra el número, pero no
-    // asegura que sea el primero si hay repeticiones de números. Por eso
+    // El algoritmo de bï¿½squeda binaria encuentra el nï¿½mero, pero no
+    // asegura que sea el primero si hay repeticiones de nï¿½meros. Por eso
     // retrocedemos hasta el primer elemento
      if (encontrado && centro > 0)
      while(centro > 0 && palabra.compare(((DataList)datos[centro-1].getValor()).getKey()) == 0)

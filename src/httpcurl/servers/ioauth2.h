@@ -22,7 +22,7 @@ class IOauth2
         IOauth2(IOauth2 *var);
 
         /**Metodos que deben ser implementados en cada servicio*/
-        virtual DWORD authenticate();
+        virtual uint32_t authenticate();
         virtual void launchAuthorize(string clientid);
         virtual string launchAccessToken(string clientid, string secret, string code, bool refresh);
         virtual bool deleteFiles(string fileid, string accessToken);
@@ -46,8 +46,8 @@ class IOauth2
         void setRefreshToken(string refreshToken) { this->refreshToken = refreshToken; }
         string getRefreshToken() { return this->refreshToken; }
 
-        DWORD getOauthStatus(){return oauthStatus;}
-        void setOauthStatus(DWORD var){oauthStatus = var;}
+        uint32_t getOauthStatus(){return oauthStatus;}
+        void setOauthStatus(uint32_t var){oauthStatus = var;}
 
     protected:
         HttpUtil util;
@@ -58,7 +58,7 @@ class IOauth2
         string tokenType;
         string expiresIn;
         string secret;
-        DWORD oauthStatus;
+        uint32_t oauthStatus;
 
     private:
 };

@@ -23,8 +23,8 @@ struct FreedbQuery{
     string hostname;
     string clientname;
     string version;
-    vector <DWORD> offsets;
-    DWORD totalSeconds;
+    vector <uint32_t> offsets;
+    uint32_t totalSeconds;
 };
 
 static const int FREEDBPROTO = 6;
@@ -38,7 +38,7 @@ class Freedb
         int searchCd(FreedbQuery *query, vector<CdTrackInfo *> *cdTrackList);
         int getCdInfo(FreedbQuery *query, CdTrackInfo *cdTrack);
 
-        DWORD searchCd();
+        uint32_t searchCd();
         vector<CdTrackInfo *> * getCdTrackList(){return this->cdTrackList;}
         void setCdTrackList(vector<CdTrackInfo *> *cdTrackList){this->cdTrackList = cdTrackList;}
         void setQuery (FreedbQuery *query){this->query = query;}

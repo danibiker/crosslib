@@ -12,6 +12,10 @@
 
 #ifdef WIN
     #include <windows.h>
+#else 
+    #define MAX_PATH 255
+    #define DRIVE_FIXED 0 
+    #define DRIVE_CDROM 1
 #endif // WIN
 
 #ifndef lint

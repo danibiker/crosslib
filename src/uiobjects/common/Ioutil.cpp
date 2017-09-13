@@ -6,7 +6,8 @@
 #ifdef WIN
     const int SCREEN_MODE = SDL_SWSURFACE|SDL_RESIZABLE; // SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN|SDL_SWSURFACE|SDL_RESIZABLE
 #elif UNIX
-    const int SCREEN_MODE = SDL_SWSURFACE|SDL_FULLSCREEN; // SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN|SDL_SWSURFACE|SDL_RESIZABLE
+    //const int SCREEN_MODE = SDL_SWSURFACE|SDL_FULLSCREEN; // SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN|SDL_SWSURFACE|SDL_RESIZABLE
+    const int SCREEN_MODE = SDL_SWSURFACE|SDL_RESIZABLE; // SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN|SDL_SWSURFACE|SDL_RESIZABLE
     //const int SCREEN_MODE = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;
 #endif // UNIX
 const int SURFACE_MODE = SDL_SWSURFACE;
@@ -187,7 +188,7 @@ void Ioutil::initSDL(bool calcFS){
         //Finalmente establecemos el modo del video
         screen = SDL_SetVideoMode(this->w, this->h, bpp, this->fullsflags);
         if(!screen){
-            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicación" << endl;
+            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicaciï¿½n" << endl;
             exit(0);
         }
 	}
@@ -500,8 +501,8 @@ tEvento Ioutil::WaitForKey(){
 
     clearEvento(&evento);
     SDL_Event event;
-    //while( SDL_PollEvent( &event ) ){
-    if( SDL_PollEvent( &event ) ){
+    while( SDL_PollEvent( &event ) ){
+    //if( SDL_PollEvent( &event ) ){
     //if (SDL_WaitEvent (&event)){
         switch( event.type ){
             case SDL_VIDEORESIZE:
@@ -3013,7 +3014,7 @@ void Ioutil::pintarCirculo (int n_cx, int n_cy, int r, t_color color)
 //            centro_y = j - y;
 //            //Funcion del circulo -> x^2 + y^2 = r^2
 //            raiz = centro_x*centro_x + centro_y*centro_y;
-//            //el -2 es un factor de corrección necesario para círculos pequenyos, sino queda muy pixelado
+//            //el -2 es un factor de correcciï¿½n necesario para cï¿½rculos pequenyos, sino queda muy pixelado
 //            if (raiz < radio2-4){
 //                putpixelSafe(screen,i,j,r_color);
 //            }
@@ -3164,7 +3165,7 @@ void Ioutil::pintarSemiCirculo (int x, int y, int r, t_color color, int angle)
             centro_y = j - y;
             //Funcion del circulo -> x^2 + y^2 = r^2
             raiz = centro_x*centro_x + centro_y*centro_y;
-            //el -2 es un factor de corrección necesario para círculos pequenyos, sino queda muy pixelado
+            //el -2 es un factor de correcciï¿½n necesario para cï¿½rculos pequenyos, sino queda muy pixelado
             if (raiz < radio2-4){
                 putpixelSafe(screen,i,j,r_color);
             }
@@ -3426,7 +3427,7 @@ string Ioutil::configButtonsJOY(tEvento *evento){
 
     long delay = 0;
     unsigned long before = 0;
-    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "Página anterior", "Página siguiente", "Select", "Buscar elemento"};
+    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "Pï¿½gina anterior", "Pï¿½gina siguiente", "Select", "Buscar elemento"};
     int JoyButtonsVal[] = {JOY_BUTTON_UP, JOY_BUTTON_DOWN, JOY_BUTTON_LEFT, JOY_BUTTON_RIGHT, JOY_BUTTON_A, JOY_BUTTON_B, JOY_BUTTON_L, JOY_BUTTON_R, JOY_BUTTON_SELECT, JOY_BUTTON_R3};
     //Posiciones de los botones calculadas en porcentaje respecto al alto y ancho de la imagen
     t_posicion_precise imgButtonsRelScreen[] = {{0.3512,0.682,0,0},{0.3512,0.84,0,0},{0.295,0.76,0,0},{0.4075,0.76,0,0},

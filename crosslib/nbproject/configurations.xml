@@ -411,7 +411,7 @@
   <confs>
     <conf name="Debug" type="3">
       <toolsSet>
-        <compilerSet>default</compilerSet>
+        <compilerSet>GNU|GNU</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -1394,6 +1394,936 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="../src/gumbo-parser-master/src/attribute.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/attribute.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/char_ref.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/char_ref.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/error.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/error.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/gumbo.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/insertion_mode.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/parser.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/parser.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/string_buffer.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/string_buffer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/string_piece.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/string_piece.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/tag.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/token_type.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/tokenizer.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/tokenizer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/tokenizer_states.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/utf8.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/utf8.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/util.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/util.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/vector.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="../src/gumbo-parser-master/src/vector.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/cddb/freedb.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/cddb/freedb.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/htmlparser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/htmlparser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgdownloader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgdownloader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgencoder.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgencoder.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/assertions.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/autolink.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/config.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/features.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/forwards.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/json.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/reader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/value.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/version.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/include/json/writer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_reader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_tool.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_value.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_writer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/MusixMatch.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/MusixMatch.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/darklyrics.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/darklyrics.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricsbase.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricsbase.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricswikia.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricswikia.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/allmyvideos.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/allmyvideos.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/dropbox.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/dropbox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/googledrive.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/googledrive.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/ioauth2.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/ioauth2.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/streamcloud.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/streamcloud.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/vk.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinystr.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinystr.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxml.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxmlerror.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxmlparser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/ConstantHttp.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/ConstantHttp.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/libjpeg/cderror.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/cdjpeg.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/cdjpeg.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/example.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcapimin.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcapistd.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jccoefct.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jccolor.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcdctmgr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jchuff.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jchuff.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcinit.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcmainct.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcmarker.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcmaster.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcomapi.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jconfig.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcparam.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcphuff.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcprepct.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jcsample.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jctrans.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdapimin.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdapistd.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdatadst.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdatasrc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdcoefct.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdcolor.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdct.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jddctmgr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdhuff.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdhuff.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdinput.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdmainct.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdmarker.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdmaster.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdmerge.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdphuff.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdpostct.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdsample.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jdtrans.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jerror.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jerror.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jfdctflt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jfdctfst.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jfdctint.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jidctflt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jidctfst.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jidctint.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jidctred.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jinclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jmemansi.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jmemmgr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jmemsys.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jmorecfg.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jpegint.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jpeglib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jquant1.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jquant2.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jutils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/jversion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/rdbmp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/rdcolmap.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/rdgif.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/rdppm.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/rdrle.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/rdswitch.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/rdtarga.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/transupp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/transupp.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/wrbmp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/wrgif.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/wrppm.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/wrrle.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/libjpeg/wrtarga.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/rijndael/filecipher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/rijndael/rijndael.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/rijndael/rijndael.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/rijndael/sha256.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/rijndael/sha256.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/sqllite/sqlite3.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/sqllite/sqlite3.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/access.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/access.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/alloc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/attrask.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/attrdict.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/attrdict.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/attrget.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/attrs.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/attrs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/buffio.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/charsets.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/charsets.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/clean.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/clean.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/config.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/config.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/entities.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/entities.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/fileio.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/fileio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/forward.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/iconvtc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/iconvtc.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/istack.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/lexer.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/lexer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/localize.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/mappedio.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/mappedio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/message.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/parser.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/parser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/pprint.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/pprint.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/streamio.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/streamio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/tagask.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/tags.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/tags.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/tidy-int.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/tidylib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/tmbstr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/tmbstr.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/utf8.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/utf8.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/version.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/win32tc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/tidy/src/win32tc.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Colorutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Colorutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Constant.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Constant.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Dirutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Dirutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Excepcion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Excepcion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Fileio.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Fileio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/ImagenGestor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Launcher.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Launcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/ListaSimple.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Menuobject.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/SHA1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Traza.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Traza.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listgroupcol.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listgroupcol.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/cursor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/cursor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/filelaunch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/filelaunch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/fileprops.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/font/Arimo_Regular.ttf.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/gmutex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/joymapper.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/joymapper.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/listaIni.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/object.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/object.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/registry.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/registry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/tinyxml/tinystr.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/tinyxml/tinystr.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/tinyxml/tinyxml.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/tinyxml/tinyxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/tinyxml/tinyxmlerror.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/tinyxml/tinyxmlparser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiart.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiart.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uibutton.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uibutton.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uicheck.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uicheck.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uicombobox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uicombobox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiinput.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiinput.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilabel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilabel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilist.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilist.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilistcommon.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilistcommon.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilistgroup.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilistgroup.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipanel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipanel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipanelborder.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipanelborder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipicture.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipopupmenu.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipopupmenu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiprogressbar.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiprogressbar.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uislider.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uislider.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uispectrum.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uispectrum.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uitextelementsarea.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uitextelementsarea.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/unzip/GZipHelper.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/unzip/unziptool.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/unzip/unziptool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/unzip/crypt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/unzip/ioapi.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/unzip/ioapi.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/unzip/unzip.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/unzip/unzip.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/unzip/unziptool.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/ziputils/unzip/unziptool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/adler32.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/compress.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/configure" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/crc32.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/crc32.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/deflate.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/deflate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/gzio.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/infback.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/inffast.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/inffast.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/inffixed.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/inflate.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/inflate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/inftrees.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/inftrees.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/trees.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/trees.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/uncompr.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/zconf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/zconf.in.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/zlib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/zutil.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="../src/ziputils/zlib/zutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Linux_Debug" type="3">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>../src/ziputils/unzip</pElem>
+            <pElem>../src/ziputils/zlib</pElem>
+            <pElem>../src/uiobjects</pElem>
+            <pElem>../src/sqllite</pElem>
+            <pElem>../src/rijndael</pElem>
+            <pElem>../src/httpcurl</pElem>
+            <pElem>../src/libjpeg</pElem>
+            <pElem>../src/httpcurl/jsoncpp-0.10.5/include</pElem>
+            <pElem>../src/tidy/include</pElem>
+            <pElem>../src/gumbo-parser-master/src</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
+            <Elem>SKIP_PEER_VERIFICATION</Elem>
+            <Elem>UNIX</Elem>
+            <Elem>USE_FDOPEN</Elem>
+          </preprocessorList>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>../src/ziputils/unzip</pElem>
+            <pElem>../src/ziputils/zlib</pElem>
+            <pElem>../src/uiobjects</pElem>
+            <pElem>../src/sqllite</pElem>
+            <pElem>../src/rijndael</pElem>
+            <pElem>../src/httpcurl</pElem>
+            <pElem>../src/libjpeg</pElem>
+            <pElem>../src/httpcurl/jsoncpp-0.10.5/include</pElem>
+            <pElem>../src/tidy/include</pElem>
+            <pElem>../src/gumbo-parser-master/src</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
+            <Elem>SKIP_PEER_VERIFICATION</Elem>
+            <Elem>UNIX</Elem>
+            <Elem>USE_FDOPEN</Elem>
+          </preprocessorList>
+        </ccTool>
         <archiverTool>
         </archiverTool>
       </compileType>

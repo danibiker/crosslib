@@ -247,7 +247,7 @@ unsigned int Dirutil::countDir(const char *strdir){
 /**
 * Lista los ficheros y directorios a partir de un directorio determinado
 * Devuelve en la posicion 0 de la variable nFiles el numero de directorios
-* y en la posicion 1 el número de ficheros
+* y en la posicion 1 el nï¿½mero de ficheros
 */
 void Dirutil::countDir(const char *strdir, unsigned int *nFiles){
     DIR *dir;
@@ -573,7 +573,7 @@ bool Dirutil::borrarArchivo(string ruta){
 
 
 /**
-* Comprueba si existe el directorio o fichero pasado por parámetro
+* Comprueba si existe el directorio o fichero pasado por parï¿½metro
 */
 bool Dirutil::existe(string ruta){
     if(isDir(ruta)){
@@ -712,7 +712,8 @@ std::ifstream::pos_type Dirutil::filesize(const char* filename)
 *
 */
 void Dirutil::getDrives(vector<t_drive *> *myvector){
-    DWORD mydrives = 100;// buffer length
+    #ifdef WIN
+    uint32_t mydrives = 100;// buffer length
     char lpBuffer[100];// buffer for drive string storage
     string driveStr;
     GetLogicalDriveStrings( mydrives, lpBuffer);
@@ -732,7 +733,7 @@ void Dirutil::getDrives(vector<t_drive *> *myvector){
             myDrive->driveType = GetDriveType(driveStr.c_str());
 
             char Label[MAX_PATH];
-            DWORD dwDontNeedThis;
+            uint32_t dwDontNeedThis;
             if ( !GetVolumeInformation ( myDrive->drive.c_str(),
                                          Label,
                                          sizeof ( Label ),
@@ -780,6 +781,16 @@ void Dirutil::getDrives(vector<t_drive *> *myvector){
             driveStr += lpBuffer[i];
         }
     }
+#else
+     t_drive *myDrive = new t_drive();
+     myDrive->driveTypeString = "HDD";
+     myDrive->ico = drive;
+     myDrive->label = "Root";
+     myDrive->drive = "/";
+     myDrive->driveType = DRIVE_FIXED;
+     
+     myvector->push_back(myDrive);
+#endif
 }
 /**
 *

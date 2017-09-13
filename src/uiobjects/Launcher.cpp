@@ -90,32 +90,52 @@ bool Launcher::lanzarProgramaUNIXFork(FileLaunch *emulInfo){
         } else {
             buffer = rom;
         }
-        string comando;
 
-        if (ejecutable.find("%ROM%") != string::npos){
-            log( "Antes de reemplazar: " + buffer);
-            buffer = Constant::replaceMetaCaracters(buffer);
-            log( "Despues de reemplazar: " + buffer);
-            //Este comando es generado cuando se importan los emuladores desde retroarch
-            comando = Constant::replaceAll(ejecutable, "%ROM%", buffer );
-        } else {
-            //Comando que se ejecuta al anyadir emuladores manualmente
-            comando = "clear; " + ejecutable + " " + param + " " + "\"" + buffer +"\"" ;
+        Dirutil dir;
+        dir.changeDirAbsolute(emulInfo->rutaexe.c_str());
+        Executable execCmd = rutaEspecial(ejecutable, param, buffer);
+        bool errorLaunch = false;
+        
+        string comando = execCmd.comandoFinal;
+        Traza::print( "Vamos a lanzar el comando: " + comando, W_INFO);
+        
+        int ret = 0;
+        if (Constant::getExecMethod() == launch_spawn || Constant::getExecMethod() == launch_create_process){
+            switch(fork()){
+                case -1 : // Error
+                        errorLaunch = true;
+                        break;
+                case 0 :
+                        // Call one of the exec -- personally I prefer execlp
+                        if (execCmd.filenameinparms){
+                            const char* argv[] = { execCmd.ejecutable.c_str(), execCmd.param.c_str(), NULL };
+                            ret = execl(argv[0], argv[0], argv[1], NULL);
+                        } else {
+                            const char* argv[] = { execCmd.ejecutable.c_str(), execCmd.param.c_str(), execCmd.filerompath.c_str(), 0 };
+                            ret = execl(argv[0], argv[0], argv[1], NULL);
+                        }
+                        break;
+                default :
+                        // Do what you want
+                        break;  
+            }
+        } else if (Constant::getExecMethod() == launch_system ){
+            if (system(comando.c_str()) != 0){
+                errorLaunch = true;
+                Traza::print( "Error al lanzar el comando", W_ERROR);
+            }
         }
-
-
-        log( "Vamos a lanzar el comando: " + comando);
-        int retorno = system(comando.c_str());
-        if(retorno != 0){
-            log( "Error al lanzar el comando");
+        
+        if(errorLaunch){
             return false;
         } else {
             if (emulInfo->descomprimir && isZipped){
-                log( "Borrando el fichero: " + buffer);
+                Traza::print( "Borrando el fichero: " + buffer, W_DEBUG);
                 deleteUnzipedRom(buffer);
             }
             return true;
         }
+        
     #elif WIN
         Traza::print( "*************Launcher::lanzarProgramaUNIX - En Windows*************", W_DEBUG);
         string buffer = "";
@@ -547,8 +567,8 @@ std::string Launcher::getErrMsg(int errnum){
 //        if (ejecutable.compare("") != 0){
 //            int child_status;
 //
-//            /* Se crea el proceso hijo. En algún sitio dentro del fork(), nuestro
-//             * programa se duplica en dos procesos. Cada proceso obtendrá una salida
+//            /* Se crea el proceso hijo. En algï¿½n sitio dentro del fork(), nuestro
+//             * programa se duplica en dos procesos. Cada proceso obtendrï¿½ una salida
 //             * distinta. */
 //            pid_t pID = vfork(); //vfork - create a child process and block parent
 //
@@ -573,7 +593,7 @@ std::string Launcher::getErrMsg(int errnum){
 //                exit(1);
 //                 // Throw exception
 //            }
-//            /* fork() devuelve un número positivo al padre. Este número es el id del
+//            /* fork() devuelve un nï¿½mero positivo al padre. Este nï¿½mero es el id del
 //             * hijo. */
 //            else {   // parent
 //
