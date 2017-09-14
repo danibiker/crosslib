@@ -738,8 +738,8 @@ void Dirutil::getDrives(vector<t_drive *> *myvector){
                                          Label,
                                          sizeof ( Label ),
                                          NULL,
-                                         &dwDontNeedThis,
-                                         &dwDontNeedThis,
+                                         NULL,
+                                         NULL,
                                          NULL,
                                          0 ))
             {
