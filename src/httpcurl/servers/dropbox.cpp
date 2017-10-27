@@ -273,7 +273,7 @@ string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string
                 cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
                 Json::Value postArg;
                 Json::Value parmCursor;
-                parmCursor["offset"] = offsetForDropbox;
+                parmCursor["offset"] = (Json::UInt64)offsetForDropbox;
                 parmCursor["session_id"]= upId.empty() ? "" : upId;
                 postArg["close"] = false;
                 postArg["cursor"] = parmCursor;
@@ -315,7 +315,7 @@ bool Dropbox::commitChunkedUpload(string dropboxPath, string accessToken, string
     Json::Value postArg;
     Json::Value parmCursor;
     Json::Value partCommit;
-    parmCursor["offset"] = offset;
+    parmCursor["offset"] = (Json::UInt64)offset;
     parmCursor["session_id"]= upId.empty() ? "" : upId;
     partCommit["path"] = dropboxPath;
     partCommit["mode"] = "add";
