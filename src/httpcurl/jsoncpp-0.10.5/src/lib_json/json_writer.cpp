@@ -292,6 +292,12 @@ FastWriter::FastWriter()
 
 void FastWriter::enableYAMLCompatibility() { yamlCompatiblityEnabled_ = true; }
 
+std::string FastWriter::writeWithNoEndLine(const Value& root) {
+  document_ = "";
+  writeValue(root);
+  return document_;
+}
+
 std::string FastWriter::write(const Value& root) {
   document_ = "";
   writeValue(root);

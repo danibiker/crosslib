@@ -78,6 +78,13 @@ bool HttpUtil::get(string url, map <string, string> *headers){
 
 /**
 *
+*/
+bool HttpUtil::post(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers){
+    return sendHttp(url, data, tam, offset, headers, HTTP_POST2);
+}
+
+/**
+*
 *   Este post se utiliza principalmente para enviar datos de un array que contiene principalmente
 *   datos binarios de un fichero (ya sea .exe, .gif...) al cual es necesario pasarle el tamanyo
 *   del array y que se interprete correctamente en el post
@@ -131,7 +138,8 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     FILE * hd_src = NULL;
     struct stat file_info;
     aborted = false;
-
+    
+    
     //Traza::print("HttpUtil::sendHttp " + string(httpType == 0 ? "POST" : httpType == 1 ? "GET" : "PUT") + ", " +  url, W_INFO);
 
     if(chunk.memory)
@@ -186,19 +194,40 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
         #endif
 
-        /*Especificamos la url a la que conectarse*/
+        #ifdef SSL_VER_3
+            /**
+             * This is needed for dropbox api V2
+             */
+            curl_easy_setopt(curl, CURLOPT_SSLVERSION, 3L); // Force SSLv3 to fix Unknown SSL Protocol error
+        #endif
+        
+            /*Especificamos la url a la que conectarse*/
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         /*Sigue las redirecciones de los sitios*/
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         /* some servers don't like requests that are made without a user-agent
          field, so we provide one */
         curl_easy_setopt(curl, CURLOPT_USERAGENT, USERAGENT.c_str());
-
+        
+        char *buffer = NULL;
+        size_t retcode = 0;
+        
         switch (httpType){
             case HTTP_POST:
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
                 /* Now specify the POST data */
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
+                curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
+                break;
+            case HTTP_POST2:
+                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+                curl_easy_setopt(curl, CURLOPT_POST, 1);
+                hd_src = fopen(data, "rb");
+                fseek ( hd_src, offset, SEEK_SET);
+                buffer = new char[tam];
+                retcode = fread(buffer, 1, tam, hd_src);
+                /* Now specify the POST data */
+                curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buffer);
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
                 break;
             case HTTP_PUT:
@@ -314,6 +343,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         /* always cleanup */
         curl_easy_cleanup(curl);
         if (hd_src != NULL) fclose(hd_src); /* close the local file */
+        if (buffer != NULL) delete [] buffer;
     }
     curl_global_cleanup();
     return downState;

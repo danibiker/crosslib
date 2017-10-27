@@ -23,14 +23,16 @@ static const char* DIAS[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
 static const char* MESES[] = {"Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec" };
 static const char* METACHARS[] = {" ", "*", "?", "[", "]", "'","\"" ,"$", ";", "&", "(", ")", "|", "^", "<", ">"};
 
-static const string DROPBOXURLAUTH = "https://www.dropbox.com/1/oauth2/authorize";
-static const string DROPBOXURLTOKEN = "https://api.dropboxapi.com/1/oauth2/token";
+static const string DROPBOXACCOUNTINFO = "https://api.dropboxapi.com/2/users/get_current_account";
+static const string DROPBOXURLAUTH = "https://www.dropbox.com/oauth2/authorize";
+static const string DROPBOXURLTOKEN = "https://api.dropboxapi.com/oauth2/token";
 static const string DROPBOXURLPUT = "https://content.dropboxapi.com/1/files_put/auto/";
-static const string DROPBOXURLPUTCHUNKED = "https://content.dropboxapi.com/1/chunked_upload";
-static const string DROPBOXURLCOMMITCHUNKED = "https://content.dropboxapi.com/1/commit_chunked_upload/auto/";
-static const string DROPBOXURLDELETE = "https://api.dropboxapi.com/1/fileops/delete";
-static const string DROPBOXURLGET = "https://content.dropboxapi.com/1/files/auto/";
-static const string DROPBOXURLMETA = "https://api.dropboxapi.com/1/metadata/auto";
+static const string DROPBOXURLPUTSTART = "https://content.dropboxapi.com/2/files/upload_session/start";
+static const string DROPBOXURLPUTCHUNKED = "https://content.dropboxapi.com/2/files/upload_session/append_v2";
+static const string DROPBOXURLCOMMITCHUNKED = "https://content.dropboxapi.com/2/files/upload_session/finish";
+static const string DROPBOXURLDELETE = "https://api.dropboxapi.com/2/files/delete";
+static const string DROPBOXURLGET = "https://content.dropboxapi.com/2/files/download";
+static const string DROPBOXURLMETA = "https://api.dropboxapi.com/2/files/get_metadata";
 
 
 //https://accounts.google.com/o/oauth2/auth
@@ -46,7 +48,7 @@ static const string GOOGLEURLDELETE = "https://www.googleapis.com/drive/v3/files
 
 static const size_t CHUNCKSIZE = 5000 * 1024; //5000KB
 
-typedef enum {HTTP_POST, HTTP_GET, HTTP_PUT, HTTP_DELETE} petHttp;
+typedef enum {HTTP_POST, HTTP_GET, HTTP_PUT, HTTP_DELETE, HTTP_POST2} petHttp;
 
 class TrackInfo{
     public:

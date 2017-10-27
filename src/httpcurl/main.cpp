@@ -1,5 +1,6 @@
-#include "streamcloud.h"
-#include "allmyvideos.h"
+
+#include "servers/streamcloud.h"
+#include "servers/allmyvideos.h"
 #include <iostream>
 //#include "thegamesdb.h"
 #include "util/ConstantHttp.h"
@@ -109,9 +110,9 @@ int main(int argc, char *argv[]){
     Constant::setPROXYIP("10.129.8.100");
     Constant::setPROXYPORT("8080");
     Constant::setPROXYUSER("dmarcobo");
-    Constant::setPROXYPASS("bC6E4X0V3c");
+    Constant::setPROXYPASS("Sept2017");
 
-//    toUTF8("Calc - copiña");
+//    toUTF8("Calc - copiï¿½a");
 
 
     //Streamcloud streamcloud;
@@ -131,12 +132,12 @@ int main(int argc, char *argv[]){
     //cout << allmyvideos.download("http://allmyvideos.net/8cf8gd6ez70t") << endl;
     //cout << vk("http://vk.com/video_ext.php?oid=195176000&id=164918704&hash=d64de7555258983a&hd=2") << endl;
     //dump_to_stdout( "querys.xml" );
-/**  Pruebas de descarga de información de juegos*/
+/**  Pruebas de descarga de informaciï¿½n de juegos*/
 
-    HttpUtil util;
-    util.download("http://thegamesdb.net/api/GetGame.php?platform=Sega%20Master%20System&name=star%20wars");
-    cout << util.getDataLength() << endl;
-    cout << util.getData() << endl;
+//    HttpUtil util;
+//    util.download("http://thegamesdb.net/api/GetGame.php?platform=Sega%20Master%20System&name=star%20wars");
+//    cout << util.getDataLength() << endl;
+//    cout << util.getData() << endl;
 
 
 //    RequestQuery queryGame;
@@ -189,15 +190,15 @@ int main(int argc, char *argv[]){
 //        map<string, string> cabeceras;
 
     /**Pruebas para carga en dropbox*/
-//        string cliendid="";
-//        string secret="";
+        string cliendid="cgydn2vmpbaubpn";
+        string secret="3us3tyi7fdzaa0q";
 //        const int salClave[32] = {0xba,0xa3,0x7,0x99,0x1b,0x56,0x66,0xb6,0x2a,0x36,0xe4,0x89,0xd2,0x36,0x55,0x55,0x54,0x46,0x9a,0x95,0x15,0x6c,0xad,0xf7,0,0xc4,0xf5,0x63,0x4a,0xb0,0xfb,0xf0};
 //        const int salIv[16] = {0xc3,0x49,0xf0,0xa0,0x72,0x22,0xc,0x63,0xf1,0xd3,0xe8,0x87,0x90,0x85,0,0xa5};
 //        unsigned char k[32];
 //        unsigned char iv[16];
-//        Dirutil dir;
-//        Constant::setAppDir(dir.getDirActual());
-//        Dropbox dropbox;
+        //Dirutil dir;
+        Constant::setAppDir(dir.getDirActual());
+        Dropbox dropbox;
 //        filecipher cifrador;
 
 //        cout << "introduce password para cifrar el fichero enviado" << endl;
@@ -214,48 +215,51 @@ int main(int argc, char *argv[]){
 //        }
 //
 //
-////        cout << "Comprobando autorizacion..." << endl;
+        cout << "Comprobando autorizacion..." << endl;
 //
 //
-        Traza *traza = new Traza();
-//        DWORD ret = dropbox.authenticate();
-//        string accessToken = dropbox.getAccessToken();
-//
-//        if (accessToken.empty()){
-//            dropbox.launchAuthorize(cliendid);
-//            string code;
-//            cout << "Introduzca el codigo obtenido de la web de dropbox" << endl;
-//            cin >> code;
-//            cout << "Negociando access token..." << endl;
-//            if (!code.empty()){
-//                accessToken = dropbox.storeAccessToken(cliendid, secret, code);
-//            }
-//        }
-//        Traza::print("accessToken: " + accessToken,W_DEBUG);
+        string rutaTraza = dir.getDirActual() + Constant::getFileSep() + "Traza.txt";
+        Traza *traza = new Traza(rutaTraza.c_str());
+        
+        traza->print("Inicio", W_DEBUG);
+        
+        DWORD ret = dropbox.authenticate();
+        string accessToken = dropbox.getAccessToken();
 
-//        /**Pruebas para subir y bajar fichero cifrado*/
-//        cout << "Cifrando fichero..." << endl;
+        if (accessToken.empty()){
+            dropbox.launchAuthorize(cliendid);
+            string code;
+            cout << "Introduzca el codigo obtenido de la web de dropbox" << endl;
+            cin >> code;
+            cout << "Negociando access token..." << endl;
+            if (!code.empty()){
+                accessToken = dropbox.storeAccessToken(cliendid, secret, code, true);
+            }
+        }
+        Traza::print("accessToken: " + accessToken,W_DEBUG);
+
+        /**Pruebas para subir y bajar fichero cifrado*/
+        //cout << "Cifrando fichero..." << endl;
 //        cifrador.cifrar("C:\\calc.exe", "C:\\calc.exe.cif");
 //        cout << "Subiendo fichero..." << endl;
-//        string upid = dropbox.chunckedUpload("C:\\calc.exe.cif", accessToken);
-//        cout << "Confirmando subida..." << endl;
-//        dropbox.commitChunkedUpload("calc.exe", accessToken, upid);
+//        dropbox.chunckedUpload("C:\\calc.exe", "/calc.exe", accessToken);
+        //dropbox.chunckedUpload("C:\\temptempfile.txt", "/temptempfile.txt", accessToken);
 //        cout << "Fin de la subida. Descargando..." << endl;
-//        dropbox.getFile("C:\\ejemplo.exe.cif", "calc.exe", accessToken);
+        //dropbox.getFile("C:\\ejemplo.exe.cif", "calc.exe", accessToken);
 //        cout << "Descifrando fichero..." << endl;
 //        cifrador.descifrar("C:\\ejemplo.exe.cif", "C:\\ejemplo.exe");
-//        dropbox.getFile("C:\\loneeee.ogg", "/Music/The Black Keys - El Camino/01-Lonely Boy.ogg", accessToken);
+ //       dropbox.getFile("C:\\calc3.exe", "/calc.exe", accessToken);
 //
 //
-        //dropbox.deleteFiles("/Music/Johnny Cash Greatest CD2", accessToken);
+//        dropbox.deleteFiles("/calc.exe", accessToken);
 
         /**Pruebas para listar un directorio o fichero*/
-//        CloudFiles files;
-//        dropbox.listFiles("/Music", accessToken, &files);
-//
-//        for (int i=0; i < files.fileList.size(); i++){
-//            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
-//        }
+        CloudFiles files;
+        dropbox.listFiles("/Music", accessToken, &files);
+
+        for (int i=0; i < files.fileList.size(); i++){
+            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
+        }
 //
 //        files.fileList.clear();
 //        dropbox.listFiles("/Music", accessToken, &files);
@@ -293,7 +297,7 @@ int main(int argc, char *argv[]){
 //            }
 //        }
 
-//        string dato = "Music/¡Te lo dije!/07-Un Día Más.ogg";
+//        string dato = "Music/ï¿½Te lo dije!/07-Un Dï¿½a Mï¿½s.ogg";
 //        cout << "dato   : " << dato << endl;
 //        string coded = Constant::uencodeUTF8(dato);
 //        cout << "coded  : " <<coded << endl;
@@ -364,7 +368,7 @@ int main(int argc, char *argv[]){
 //        cout << gDrive->getRefreshToken() << endl;
 
 //        gDrive->launchAuthorize(gDrive->getClientid());
-//        cout << "Introduce el código que has obtenido del explorador" << endl;
+//        cout << "Introduce el cï¿½digo que has obtenido del explorador" << endl;
 //        string input;
 //        cin >> input;
 //        //Obteniendo el access token
@@ -388,7 +392,7 @@ int main(int argc, char *argv[]){
 
         /**Pruebas refresco de token*/
         //string idDir = gDrive->mkdir("ONMUSIK4", "", gDrive->getAccessToken());
-//        gDrive->chunckedUpload("C:\\calc - copiña.exe", "0BylhO6pH87NvYnZmeUo0R0xaNTA", gDrive->getAccessToken());
+//        gDrive->chunckedUpload("C:\\calc - copiï¿½a.exe", "0BylhO6pH87NvYnZmeUo0R0xaNTA", gDrive->getAccessToken());
 //        string fileid = gDrive->fileExist("Music", "", gDrive->getAccessToken());
 
 //        Traza::print("Fileid: " + fileid, W_DEBUG);

@@ -48,9 +48,9 @@ class Dropbox : public IOauth2
 
     private:
         /**Metodos propios para dropbox*/
-        string chunckedUpload(string filesystemPath, string accessToken);
-        bool commitChunkedUpload(string dropboxPath, string accessToken, string upId);
+        bool commitChunkedUpload(string dropboxPath, string accessToken, string upId, size_t offset);
         string getJSONListDropbox(string filesystemPath, string accessToken);
+        string getJSONListContinueDropbox(string cursor, string accessToken);
         int putFile(string filesystemPath, string dropboxPath, string accessToken);
 };
 

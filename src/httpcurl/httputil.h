@@ -34,6 +34,7 @@ class HttpUtil
         bool post(string, string, map <string, string> *);
         bool get (string, map <string, string> *);
         bool put(string, const char*, size_t, size_t, map <string, string> *);
+        bool post(string, const char *,size_t, size_t, map <string, string> *);
         bool del(string url, map <string, string> *headers);
 
         void setProxyIP(string var){proxyIP = var;}

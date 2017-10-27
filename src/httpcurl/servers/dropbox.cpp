@@ -40,7 +40,6 @@ uint32_t Dropbox::authenticate(){
             accessTokenCipher = elem.getValue();
             strAccessToken = cifrador.decodeEasy(accessTokenCipher, passwordAT);
             //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
-            string url = "https://api.dropboxapi.com/1/account/info";
             string AuthOauth2 = "Bearer " + strAccessToken;
             map<string, string> cabeceras;
 
@@ -49,10 +48,13 @@ uint32_t Dropbox::authenticate(){
             cabeceras.insert( make_pair("Accept", "*/*"));
             cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
             cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-            cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
-            util.get(url, &cabeceras);
+            cabeceras.insert( make_pair("Content-Type", "application/json"));
+            //DROPBOXAPIV2
+            Json::Value postMsg; //Necesario para enviar algun dato a null en el post en formato json
+            util.post(DROPBOXACCOUNTINFO, postMsg.toStyledString(), &cabeceras);
+            //DROPBOXAPIV2
             Json::Value root;   // will contains the root value after parsing.
-            Json::Reader reader;
+            Json::Reader reader; 
             bool parsingSuccessful = reader.parse( util.getData(), root );
             Traza::print("util.getHttp_code()", util.getHttp_code(), W_DEBUG);
             Traza::print("util.getData(): " + string(util.getData()), W_DEBUG);
@@ -84,6 +86,7 @@ uint32_t Dropbox::authenticate(){
             } else if (retorno == SINERROR) {
                 //Si no hemos conseguido identificar el error, especificamos error de conexion
                 retorno = ERRORCONNECT;
+                Traza::print("Dropbox::authenticate: Error: " + errorText, W_ERROR);
             }
         } else {
             Traza::print("Usuario " + display_name + " con correo " + email + " autenticado con exito.", W_DEBUG);
@@ -220,16 +223,6 @@ int Dropbox::putFile(string filesystemPath, string dropboxPath, string accessTok
 *
 */
 string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
-    string upId = chunckedUpload(filesystemPath, accessToken);
-    commitChunkedUpload(cloudIdPath, accessToken, upId);
-    return upId;
-}
-
-
-/**
-* Sube un fichero sin limitacion de tamanyo
-*/
-string Dropbox::chunckedUpload(string filesystemPath, string accessToken){
     map<string, string> cabeceras;
     string postData;
 
@@ -239,6 +232,8 @@ string Dropbox::chunckedUpload(string filesystemPath, string accessToken){
     size_t tam;
     string upId = "";
     size_t offsetForDropbox = 0;
+    Json::Value root;   // will contains the root value after parsing.
+    Json::Reader reader;
 
     int iteraciones = 0;
     size_t chunkFileSize = 0;
@@ -251,81 +246,102 @@ string Dropbox::chunckedUpload(string filesystemPath, string accessToken){
             iteraciones = tam / CHUNCKSIZE;
         }
         file.close();
+        
+        cabeceras.clear();
+        cabeceras.insert( make_pair("Authorization", AuthOauth2));
+        //DROPBOXAPIV2
+        cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
+        util.post(DROPBOXURLPUTSTART, "", &cabeceras);
 
+        bool parsingSuccessful = reader.parse( util.getData(), root );
+        if ( !parsingSuccessful ){
+             // report to the user the failure and their locations in the document.
+            Traza::print("Dropbox::chunckedUpload: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+        } else {
+            Traza::print(util.getData(), W_DEBUG);
+            upId = root.get("session_id","").asString();
+        }
+        //DROPBOXAPIV2
+        
         for (int posIt = 0; posIt <= iteraciones; posIt++){
             chunkFileSize = (posIt < iteraciones) ? CHUNCKSIZE : tam % CHUNCKSIZE;
             if (chunkFileSize > 0){
-
+                offsetForDropbox = CHUNCKSIZE * posIt;
                 Traza::print("Subiendo: " , (offsetForDropbox / (float) tam) *100, W_DEBUG);
                 cabeceras.clear();
                 cabeceras.insert( make_pair("Authorization", AuthOauth2));
-                cabeceras.insert( make_pair("Accept", "*/*"));
-                cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
-                cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-                cabeceras.insert( make_pair("Content-Type", "text/plain"));
-                cabeceras.insert( make_pair("Expect", ""));
-                //cabeceras.insert( make_pair("Content-length", Constant::TipoToStr(chunkFileSize)));
-
-                //cabeceras.insert( make_pair("Transfer-Encoding","chunked"));
-
-                url = DROPBOXURLPUTCHUNKED + "?offset="
-                        + Constant::TipoToStr(offsetForDropbox)
-                        + ((!upId.empty()) ? ("&upload_id=" + upId) : "");
-
-                util.put(url, filesystemPath.c_str(), chunkFileSize, offsetForDropbox, &cabeceras);
-                Json::Value root;   // will contains the root value after parsing.
-                Json::Reader reader;
-                bool parsingSuccessful = reader.parse( util.getData(), root );
-                if ( !parsingSuccessful ){
-                     // report to the user the failure and their locations in the document.
-                    Traza::print("Dropbox::chunckedUpload: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
-                } else {
-                    // Get the value of the member of root named 'hash', return '' if there is no
-                    // such member.
-                    upId = root.get("upload_id","").asString();
-                    offsetForDropbox = Constant::strToTipo<size_t>(root.get("offset","").asString());
-                }
+                cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
+                Json::Value postArg;
+                Json::Value parmCursor;
+                parmCursor["offset"] = offsetForDropbox;
+                parmCursor["session_id"]= upId.empty() ? "" : upId;
+                postArg["close"] = false;
+                postArg["cursor"] = parmCursor;
+                
+                Json::FastWriter fastWriter;
+                std::string output = fastWriter.writeWithNoEndLine(postArg);
+                
+                Traza::print(output, W_DEBUG);
+                cabeceras.insert( make_pair("Dropbox-API-Arg", output));
+                util.post(DROPBOXURLPUTCHUNKED, filesystemPath.c_str(), chunkFileSize, offsetForDropbox, &cabeceras);
+                Traza::print("retorno subida: ", util.getHttp_code(), W_DEBUG);
+                
+                std::string res = util.getData();
+                Traza::print(res, W_DEBUG);
             }
         }
-
-        if (tam > 0){
-            Traza::print( "Subiendo: ",
-                    (offsetForDropbox / (float) tam) *100 , W_DEBUG);
-        }
+        
+        if (!upId.empty()) commitChunkedUpload(cloudIdPath, accessToken, upId, offsetForDropbox + chunkFileSize);
+        
     } else {
         Traza::print("Upload aborted. Access token empty", W_ERROR);
     }
-
     return upId;
 }
 
 /**
 *
 */
-bool Dropbox::commitChunkedUpload(string dropboxPath, string accessToken, string upId){
-    string url = DROPBOXURLCOMMITCHUNKED + Constant::uencodeUTF8(dropboxPath);
+bool Dropbox::commitChunkedUpload(string dropboxPath, string accessToken, string upId, size_t offset){
     string AuthOauth2 = "Bearer " + accessToken;
     map<string, string> cabeceras;
-    string postData;
-
-
-    if (!upId.empty()){
-        cabeceras.clear();
-        cabeceras.insert( make_pair("Authorization", AuthOauth2));
-        cabeceras.insert( make_pair("Accept", "*/*"));
-        cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
-        cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-        cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
-        cabeceras.insert( make_pair("Expect", ""));
-        postData="overwrite=true&upload_id=" + upId;
-        Traza::print( "Confirmando con la url: " + url + "?" + postData, W_DEBUG);
-        bool res = util.post(url, postData.c_str(),postData.length(), &cabeceras);
-        Traza::print("Resultado de la confirmacion: " + string(util.getData()), W_DEBUG);
-        return res;
+    Json::Value root;   // will contains the root value after parsing.
+    Json::Reader reader;
+    
+    cabeceras.clear();
+    cabeceras.insert( make_pair("Authorization", AuthOauth2));
+    cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
+    
+    Json::Value postArg;
+    Json::Value parmCursor;
+    Json::Value partCommit;
+    parmCursor["offset"] = offset;
+    parmCursor["session_id"]= upId.empty() ? "" : upId;
+    partCommit["path"] = dropboxPath;
+    partCommit["mode"] = "add";
+    partCommit["autorename"] = false;
+    partCommit["mute"] = false;    
+    postArg["cursor"] = parmCursor;
+    postArg["commit"] = partCommit;
+    
+    Json::FastWriter fastWriter;
+    std::string output = fastWriter.writeWithNoEndLine(postArg);
+    Traza::print(output, W_DEBUG);
+    cabeceras.insert( make_pair("Dropbox-API-Arg", output));
+    
+    //Envio del commit
+    util.post(DROPBOXURLCOMMITCHUNKED, "", &cabeceras);
+    
+    std::string res = util.getData();
+    Traza::print(res, W_DEBUG);
+    bool parsingSuccessful = reader.parse( res, root );
+    if ( !parsingSuccessful ){
+         // report to the user the failure and their locations in the document.
+        Traza::print("Dropbox::commitChunkedUpload: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
     } else {
-        Traza::print("Commit aborted. Access token empty", W_ERROR);
-        return false;
+        upId = root.get("session_id","").asString();
     }
+    return false;
 }
 
 /**
@@ -335,21 +351,18 @@ bool Dropbox::deleteFiles(string fileid, string accessToken){
     string url = DROPBOXURLDELETE;
     string AuthOauth2 = "Bearer " + accessToken;
     map<string, string> cabeceras;
-    string postData;
     bool result = false;
 
     if (!fileid.empty()){
         cabeceras.clear();
         cabeceras.insert( make_pair("Authorization", AuthOauth2));
-        cabeceras.insert( make_pair("Accept", "*/*"));
-        cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
-        cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-        cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
-        cabeceras.insert( make_pair("Expect", ""));
-        postData="root=auto&path=" + fileid;
-
+        cabeceras.insert( make_pair("Content-Type", "application/json"));
+        Json::Value postArg;
+        postArg["path"] = fileid;
+        Json::FastWriter fastWriter;
+        std::string output = fastWriter.writeWithNoEndLine(postArg);
         Traza::print("Ruta a eliminar: " + fileid, W_DEBUG);
-        util.post(url, postData.c_str(),postData.length(), &cabeceras);
+        util.post(url, output, &cabeceras);
 
         Json::Value root;   // will contains the root value after parsing.
         Json::Reader reader;
@@ -379,22 +392,25 @@ bool Dropbox::deleteFiles(string fileid, string accessToken){
 * Se baja un fichero
 */
 int Dropbox::getFile(string filesystemPath, string cloudIdPath, string accessToken){
-    map<string, string> cabeceras;
-    string postData;
-    string url = DROPBOXURLGET + Constant::uencodeUTF8(cloudIdPath);
     string AuthOauth2 = "Bearer " + accessToken;
-    size_t tam;
-
+    map<string, string> cabeceras;
+    Json::Value postArg;
+    Json::FastWriter fastWriter;
     cabeceras.clear();
+    
     cabeceras.insert( make_pair("Authorization", AuthOauth2));
-    cabeceras.insert( make_pair("Accept", "*/*"));
-    cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
-    cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
-    //util.get(url, &cabeceras);
-    //util.writeToFile(filesystemPath.c_str());
-    util.download(url, filesystemPath, &cabeceras);
-
+    postArg["path"] = cloudIdPath;
+    std::string output = fastWriter.writeWithNoEndLine(postArg);
+    cabeceras.insert( make_pair("Dropbox-API-Arg", output));
+    
+    Traza::print(string("Descargando ") + cloudIdPath + " en " + filesystemPath, W_DEBUG);
+    util.post(DROPBOXURLGET, "", &cabeceras);
+    if (util.getHttp_code() == 200)
+        util.writeToFile(filesystemPath);
+    else
+        Traza::print(string("Error descargando ") + cloudIdPath + " en " + filesystemPath, W_ERROR);
+    
     return 0;
 }
 
@@ -403,24 +419,50 @@ int Dropbox::getFile(string filesystemPath, string cloudIdPath, string accessTok
 */
 string Dropbox::getJSONListDropbox(string filesystemPath, string accessToken){
     map<string, string> cabeceras;
-    string postData;
     string responseMetadata;
-    string url = "";
     string AuthOauth2 = "Bearer " + accessToken;
 
     if (!accessToken.empty()){
-            cabeceras.clear();
-            cabeceras.insert( make_pair("Authorization", AuthOauth2));
-            cabeceras.insert( make_pair("Accept", "*/*"));
-            cabeceras.insert( make_pair("Accept-Encoding", "gzip,deflate"));
-            cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-            cabeceras.insert( make_pair("Content-Type", "text/plain"));
-            cabeceras.insert( make_pair("Expect", ""));
-            url = DROPBOXURLMETA + Constant::uencodeUTF8(filesystemPath);
-            Traza::print("Llamando a la url: " + url, W_DEBUG);
-            util.get(url, &cabeceras);
-            Traza::print("Bytes obtenidos", util.getDataLength(), W_DEBUG);
-            return util.getData();
+        cabeceras.clear();
+        cabeceras.insert( make_pair("Authorization", AuthOauth2));
+        cabeceras.insert( make_pair("Content-Type", "application/json"));
+        Json::Value postArg;
+        postArg["path"] = filesystemPath;
+        postArg["recursive"] = false;
+        postArg["include_media_info"] = false;
+        postArg["include_deleted"] = false;
+        postArg["include_has_explicit_shared_members"] = false;
+        postArg["include_mounted_folders"] = false;
+        Json::FastWriter fastWriter;
+        std::string output = fastWriter.writeWithNoEndLine(postArg);
+
+        util.post("https://api.dropboxapi.com/2/files/list_folder", output, &cabeceras);
+        responseMetadata = util.getData();  
+        Traza::print(responseMetadata, W_DEBUG);
+    }
+    return responseMetadata;
+}
+
+/**
+* Obtiene el resto de elementos
+*/
+string Dropbox::getJSONListContinueDropbox(string cursor, string accessToken){
+    map<string, string> cabeceras;
+    string responseMetadata;
+    string AuthOauth2 = "Bearer " + accessToken;
+
+    if (!accessToken.empty()){
+        cabeceras.clear();
+        cabeceras.insert( make_pair("Authorization", AuthOauth2));
+        cabeceras.insert( make_pair("Content-Type", "application/json"));
+        Json::Value postArg;
+        postArg["cursor"] = cursor;
+        Json::FastWriter fastWriter;
+        std::string output = fastWriter.writeWithNoEndLine(postArg);
+
+        util.post("https://api.dropboxapi.com/2/files/list_folder/continue", output, &cabeceras);
+        responseMetadata = util.getData();  
+        Traza::print(responseMetadata, W_DEBUG);
     }
     return responseMetadata;
 }
@@ -429,48 +471,62 @@ string Dropbox::getJSONListDropbox(string filesystemPath, string accessToken){
 *
 */
 bool Dropbox::listFiles(string filesystemPath, string accessToken, CloudFiles *files){
+    
+    bool hasMore = false;
+    string cursor = ""; //Campo para obtener mas registros si es necesario
+    int controlBucle = 0;
+    
     string responseMetadata = getJSONListDropbox(filesystemPath, accessToken);
+    
+    do{
+        Json::Value root;   // will contains the root value after parsing.
+        Json::Reader reader;
+        bool parsingSuccessful = reader.parse( responseMetadata, root );
 
-    Json::Value root;   // will contains the root value after parsing.
-    Json::Reader reader;
-    bool parsingSuccessful = reader.parse( responseMetadata, root );
+        if ( !parsingSuccessful ){
+             // report to the user the failure and their locations in the document.
+            Traza::print("Dropbox::listFiles. Failed to parse configuration: " + reader.getFormattedErrorMessages(), W_ERROR);
+        } else {
+            // Get the value of the member of root named 'hash', return '' if there is no
+            // such member.
+    //        files->strHash = root.get("hash","").asString();
+    //        files->bytes = root.get("bytes",0).asDouble();
+    //        files->path = root.get("path","").asString();
+    //        files->revision = root.get("rev","0").asString();
+    //        files->root = root.get("root","").asString();
+    //        files->isDir = root.get("is_dir", true).asBool();
+    //
+    //        string out = "listFiles: " + files->strHash + ", " + Constant::TipoToStr(files->bytes)
+    //                     + ", " + files->path + ", " + files->revision + ", "
+    //                     + files->root + ", " + string(files->isDir ? "S":"N");
+    //
+    //        Traza::print(out, W_DEBUG);
 
-    if ( !parsingSuccessful ){
-         // report to the user the failure and their locations in the document.
-        Traza::print("Dropbox::listFiles. Failed to parse configuration: " + reader.getFormattedErrorMessages(), W_ERROR);
-    } else {
-        // Get the value of the member of root named 'hash', return '' if there is no
-        // such member.
-        files->strHash = root.get("hash","").asString();
-        files->bytes = root.get("bytes",0).asDouble();
-        files->path = root.get("path","").asString();
-        files->revision = root.get("rev","0").asString();
-        files->root = root.get("root","").asString();
-        files->isDir = root.get("is_dir", true).asBool();
+            hasMore = root.get("has_more", true).asBool();
+            cursor = root.get("cursor","").asString();
+            const Json::Value contents = root["entries"];
 
-        string out = "listFiles: " + files->strHash + ", " + Constant::TipoToStr(files->bytes)
-                     + ", " + files->path + ", " + files->revision + ", "
-                     + files->root + ", " + string(files->isDir ? "S":"N");
+            for ( int index = 0; index < contents.size(); index++ ){  // Iterates over the sequence elements.
+                CloudFiles *childFile = new CloudFiles();
+    //            childFile->revision = contents[index].get("rev","0").asString();
+                childFile->strHash = contents[index].get("id","").asString();
+    //            childFile->bytes = contents[index].get("bytes",0).asDouble();
+                childFile->path = contents[index].get("path_lower","").asString();
+    //            childFile->root = contents[index].get("root","").asString();
+                childFile->isDir = contents[index].get(".tag","").asString() == "folder" ? true : false;
+                files->fileList.push_back(childFile);
 
-        Traza::print(out, W_DEBUG);
-
-        const Json::Value contents = root["contents"];
-
-        for ( int index = 0; index < contents.size(); index++ ){  // Iterates over the sequence elements.
-            CloudFiles *childFile = new CloudFiles();
-            childFile->revision = contents[index].get("rev","0").asString();
-            childFile->strHash = contents[index].get("hash","").asString();
-            childFile->bytes = contents[index].get("bytes",0).asDouble();
-            childFile->path = contents[index].get("path","").asString();
-            childFile->root = contents[index].get("root","").asString();
-            childFile->isDir = contents[index].get("is_dir",false).asBool();
-            files->fileList.push_back(childFile);
-
-            Traza::print(childFile->strHash + ", " + Constant::TipoToStr(childFile->bytes)
-             + ", " + childFile->path + ", " + childFile->revision + ", "
-             + childFile->root + ", " + string(childFile->isDir ? "S":"N"), W_DEBUG);
-        }
-    }
-
+                Traza::print(childFile->strHash + ", " + Constant::TipoToStr(childFile->bytes)
+                 + ", " + childFile->path + ", " + childFile->revision + ", "
+                 + childFile->root + ", " + string(childFile->isDir ? "S":"N"), W_DEBUG);
+            }
+            controlBucle++;
+        } 
+        
+        if (hasMore) 
+            responseMetadata = getJSONListDropbox(filesystemPath, accessToken);
+        
+    } while (hasMore && controlBucle < 10);
+    
     return true;
 }
