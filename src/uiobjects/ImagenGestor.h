@@ -123,7 +123,7 @@ class ImagenGestor : public Fileio{
         void cifrarXOR(char *, unsigned int);
         double zoomValue;
         bool resize; //Especifica si se debe redimensionar la imagen o dejarla a su tamanyo real
-        bool bestfit; //Especifica si se debe redimensionar la imagen para encajar al máximo en la pantalla
+        bool bestfit; //Especifica si se debe redimensionar la imagen para encajar al mï¿½ximo en la pantalla
         bool smooth;
         bool centrado;
         int bordeTop;

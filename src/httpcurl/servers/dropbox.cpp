@@ -405,10 +405,8 @@ int Dropbox::getFile(string filesystemPath, string cloudIdPath, string accessTok
     cabeceras.insert( make_pair("Dropbox-API-Arg", output));
     
     Traza::print(string("Descargando ") + cloudIdPath + " en " + filesystemPath, W_DEBUG);
-    util.post(DROPBOXURLGET, "", &cabeceras);
-    if (util.getHttp_code() == 200)
-        util.writeToFile(filesystemPath);
-    else
+    util.postDownload(DROPBOXURLGET, filesystemPath, &cabeceras);
+    if (util.getHttp_code() != 200)
         Traza::print(string("Error descargando ") + cloudIdPath + " en " + filesystemPath, W_ERROR);
     
     return 0;
@@ -425,7 +423,7 @@ string Dropbox::getJSONListDropbox(string filesystemPath, string accessToken){
     if (!accessToken.empty()){
         cabeceras.clear();
         cabeceras.insert( make_pair("Authorization", AuthOauth2));
-        cabeceras.insert( make_pair("Content-Type", "application/json"));
+        cabeceras.insert( make_pair("Content-Type", "application/json; charset=utf-8"));
         Json::Value postArg;
         postArg["path"] = filesystemPath;
         postArg["recursive"] = false;
@@ -436,7 +434,7 @@ string Dropbox::getJSONListDropbox(string filesystemPath, string accessToken){
         Json::FastWriter fastWriter;
         std::string output = fastWriter.writeWithNoEndLine(postArg);
 
-        util.post("https://api.dropboxapi.com/2/files/list_folder", output, &cabeceras);
+        util.post(DROPBOXURLLIST, output, &cabeceras);
         responseMetadata = util.getData();  
         Traza::print(responseMetadata, W_DEBUG);
     }
@@ -460,7 +458,7 @@ string Dropbox::getJSONListContinueDropbox(string cursor, string accessToken){
         Json::FastWriter fastWriter;
         std::string output = fastWriter.writeWithNoEndLine(postArg);
 
-        util.post("https://api.dropboxapi.com/2/files/list_folder/continue", output, &cabeceras);
+        util.post(DROPBOXURLLISTNEXT, output, &cabeceras);
         responseMetadata = util.getData();  
         Traza::print(responseMetadata, W_DEBUG);
     }
@@ -502,7 +500,7 @@ bool Dropbox::listFiles(string filesystemPath, string accessToken, CloudFiles *f
     //
     //        Traza::print(out, W_DEBUG);
 
-            hasMore = root.get("has_more", true).asBool();
+            hasMore = root.get("has_more", false).asBool();
             cursor = root.get("cursor","").asString();
             const Json::Value contents = root["entries"];
 

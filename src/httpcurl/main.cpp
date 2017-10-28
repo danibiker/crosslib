@@ -18,6 +18,7 @@ using namespace std;
 
 const string filtroOGG = ".ogg";
 
+
 void uploadMusicToGoogle(string ruta, string parentid, string accessToken){
     Dirutil dir;
 
@@ -107,10 +108,10 @@ string toUTF8(string s){
 int main(int argc, char *argv[]){
     Dirutil dir;
     Constant::setAppDir(dir.getDirActual());
-    Constant::setPROXYIP("10.129.8.100");
-    Constant::setPROXYPORT("8080");
-    Constant::setPROXYUSER("dmarcobo");
-    Constant::setPROXYPASS("Sept2017");
+//    Constant::setPROXYIP("");
+//    Constant::setPROXYPORT("");
+//    Constant::setPROXYUSER("");
+//    Constant::setPROXYPASS("");
 
 //    toUTF8("Calc - copi�a");
 
@@ -254,12 +255,21 @@ int main(int argc, char *argv[]){
 //        dropbox.deleteFiles("/calc.exe", accessToken);
 
         /**Pruebas para listar un directorio o fichero*/
-        CloudFiles files;
-        dropbox.listFiles("/Music", accessToken, &files);
-
-        for (int i=0; i < files.fileList.size(); i++){
-            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
-        }
+//        CloudFiles files;
+//        dropbox.listFiles("/music", accessToken, &files);
+//        dropbox.listFiles("/music/m-clan - sopa frÝa", accessToken, &files);
+//        dropbox.listFiles("/music/m-clan - sopa fr\355a", accessToken, &files);
+        //0x61f7130 "/music/m-clan - sopa fr\355a"
+//        for (int i=0; i < files.fileList.size(); i++){
+//            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
+//        }
+//        
+//        Traza::print("Buscando en " + ((CloudFiles *)files.fileList.at(7))->path, W_DEBUG);
+//        string id = ((CloudFiles *)files.fileList.at(7))->strHash;
+        
+//        dropbox.listFiles(id, accessToken, &files);
+        dropbox.getFile("D:\\sopa.ogg", "id:tGvWVBY69kAAAAAAAAABaw", accessToken);
+        
 //
 //        files.fileList.clear();
 //        dropbox.listFiles("/Music", accessToken, &files);

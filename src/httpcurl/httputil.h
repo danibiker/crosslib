@@ -11,9 +11,9 @@
 #include <fstream>
 #include <map>
 #include "filecipher.h"
-#include <curl/curl.h>
 #include "Traza.h"
 #include "unzip/GZipHelper.h"
+#include <curl/curl.h>
 
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3
 
@@ -30,11 +30,13 @@ class HttpUtil
         bool download(string, string);
         bool download(string, string, map <string, string> *headers);
         bool writeToFile(string);
+        bool post(string, const char *,size_t, size_t, map <string, string> *);
         bool post(string, const char *,size_t, map <string, string> *);
         bool post(string, string, map <string, string> *);
+        bool postDownload(string url, string data, map <string, string> *headers);
         bool get (string, map <string, string> *);
         bool put(string, const char*, size_t, size_t, map <string, string> *);
-        bool post(string, const char *,size_t, size_t, map <string, string> *);
+        
         bool del(string url, map <string, string> *headers);
 
         void setProxyIP(string var){proxyIP = var;}

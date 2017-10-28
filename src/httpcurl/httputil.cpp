@@ -77,7 +77,8 @@ bool HttpUtil::get(string url, map <string, string> *headers){
 }
 
 /**
-*
+* Este post se utiliza principalmente para subir ficheros en lugar de hacerlo por un PUT.
+* Es requerido por el api de dropbox
 */
 bool HttpUtil::post(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers){
     return sendHttp(url, data, tam, offset, headers, HTTP_POST2);
@@ -100,6 +101,14 @@ bool HttpUtil::post(string url, const char* data, size_t tam, map <string, strin
 bool HttpUtil::post(string url, string data, map <string, string> *headers){
     return sendHttp(url, data.c_str(), data.length(), 0, headers, HTTP_POST);
 }
+
+/**
+ * To download by post
+*/
+bool HttpUtil::postDownload(string url, string data, map <string, string> *headers){
+    return sendHttp(url, data.c_str(), data.length(), 0, headers, HTTP_POST3);
+}
+
 
 /**
 * Realiza una peticion http put con las cabeceras especificadas para subir un fichero
@@ -219,8 +228,8 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
                 break;
-            case HTTP_POST2:
-                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+            case HTTP_POST2: //To upload files. Needed by dropbox
+//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
                 hd_src = fopen(data, "rb");
                 fseek ( hd_src, offset, SEEK_SET);
@@ -256,9 +265,19 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                 curl_easy_setopt(curl, CURLOPT_HEADER, false);
 //                curl_easy_setopt(curl, CURLOPT_RETURNTRANSFER, true);
                 break;
-            case HTTP_GET:
             default:
-                curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+                if (httpType == HTTP_POST3){
+                    //To download files by post and without need to wait to finish
+                    //Needed by dropbox
+//                    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+                    curl_easy_setopt(curl, CURLOPT_POST, 1L);
+                    /* Now specify the POST data */
+                    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, ""); //no need to pass postData
+                    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, 0);
+                } else if (httpType == HTTP_GET){
+                    curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+                }
+                
                 if (data != NULL){
                     string resultado = data;
                     if (strcmp(data, "") != 0){

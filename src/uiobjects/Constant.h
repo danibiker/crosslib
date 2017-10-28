@@ -1,6 +1,16 @@
 #ifndef CONSTANT_H_INCLUDED
 #define CONSTANT_H_INCLUDED
 
+#ifdef WIN
+    #ifndef WINVER
+        #define WINVER 0x0502
+    #endif
+    #include <winsock2.h>
+    #include <windows.h>
+#else 
+    #include <unistd.h>
+#endif
+
 #include <fstream>
 #include <sstream>
 #include <string.h>
@@ -16,14 +26,6 @@
 #include <cstddef>
 #include <stdint.h>
 
-#ifdef WIN
-    #ifndef WINVER
-        #define WINVER 0x0502
-    #endif
-    #include <windows.h>
-#else 
-    #include <unistd.h>
-#endif
 
 
 using namespace std;
@@ -266,7 +268,7 @@ static const int mapHeight = 256;
     static const bool TRAZA_ENABLED = true;
     static const unsigned int INILIST = 30; //Numero de elementos que se crearan inicialmente para las listas
     static const char FONT_TYPE[] = {"Arimo-Regular.ttf"}; //Fuente de los textos
-    static const char ARRAYLETRAS[] = {" abcdefghijklmn�opqrstuvwxyz0123456789-+*/,;.:-_[]{}'?�!�|@#$%&()"};
+    static const char ARRAYLETRAS[] = {" abcdefghijklmnï¿½opqrstuvwxyz0123456789-+*/,;.:-_[]{}'?ï¿½!ï¿½|@#$%&()"};
     static const char FILEBBDD[] = {"romgestor.sqlite"};
     static const bool SHOWFPS = false;   //Muestra los frames actuales
     static const bool LIMITFPS = true; //Especifica si se realiza una limitacion maxima de frames

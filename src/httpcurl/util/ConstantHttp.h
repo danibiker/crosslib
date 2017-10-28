@@ -32,7 +32,8 @@ static const string DROPBOXURLPUTCHUNKED = "https://content.dropboxapi.com/2/fil
 static const string DROPBOXURLCOMMITCHUNKED = "https://content.dropboxapi.com/2/files/upload_session/finish";
 static const string DROPBOXURLDELETE = "https://api.dropboxapi.com/2/files/delete";
 static const string DROPBOXURLGET = "https://content.dropboxapi.com/2/files/download";
-static const string DROPBOXURLMETA = "https://api.dropboxapi.com/2/files/get_metadata";
+static const string DROPBOXURLLIST = "https://api.dropboxapi.com/2/files/list_folder";
+static const string DROPBOXURLLISTNEXT = "https://api.dropboxapi.com/2/files/list_folder/continue";
 
 
 //https://accounts.google.com/o/oauth2/auth
@@ -48,7 +49,7 @@ static const string GOOGLEURLDELETE = "https://www.googleapis.com/drive/v3/files
 
 static const size_t CHUNCKSIZE = 5000 * 1024; //5000KB
 
-typedef enum {HTTP_POST, HTTP_GET, HTTP_PUT, HTTP_DELETE, HTTP_POST2} petHttp;
+typedef enum {HTTP_POST, HTTP_GET, HTTP_PUT, HTTP_DELETE, HTTP_POST2, HTTP_POST3} petHttp;
 
 class TrackInfo{
     public:

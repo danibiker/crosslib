@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=crosslib
 
 # Active Configuration
-DEFAULTCONF=Debug
+DEFAULTCONF=Linux_Debug
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Debug Release Linux_Debug 
+ALLCONFS=Linux_Debug Debug2 
 
 
 # build
