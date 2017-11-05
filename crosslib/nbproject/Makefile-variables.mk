@@ -22,6 +22,14 @@ CND_ARTIFACT_PATH_Debug2=dist/Debug2/MinGW2_64-Windows/libcrosslib.a
 CND_PACKAGE_DIR_Debug2=dist/Debug2/MinGW2_64-Windows/package
 CND_PACKAGE_NAME_Debug2=crosslib.tar
 CND_PACKAGE_PATH_Debug2=dist/Debug2/MinGW2_64-Windows/package/crosslib.tar
+# Release configuration
+CND_PLATFORM_Release=MinGW2_64-Windows
+CND_ARTIFACT_DIR_Release=dist/Release/MinGW2_64-Windows
+CND_ARTIFACT_NAME_Release=libcrosslib.a
+CND_ARTIFACT_PATH_Release=dist/Release/MinGW2_64-Windows/libcrosslib.a
+CND_PACKAGE_DIR_Release=dist/Release/MinGW2_64-Windows/package
+CND_PACKAGE_NAME_Release=crosslib.tar
+CND_PACKAGE_PATH_Release=dist/Release/MinGW2_64-Windows/package/crosslib.tar
 #
 # include compiler specific variables
 #

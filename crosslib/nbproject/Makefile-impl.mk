@@ -31,7 +31,7 @@ DEFAULTCONF=Linux_Debug
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Linux_Debug Debug2 
+ALLCONFS=Linux_Debug Debug2 Release 
 
 
 # build

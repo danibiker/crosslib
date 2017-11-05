@@ -5,3 +5,4 @@
 #
 # Linux_Debug configuration
 # Debug2 configuration
+# Release configuration

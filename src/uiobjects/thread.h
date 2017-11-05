@@ -37,7 +37,7 @@ private:
         Thread<T>* thread = (Thread<T>*)thread_obj;
         uint32_t retorno = (thread->object->*thread->method) ();
         status = THREAD_FINISHED;
-        cout << "exiting thread now" << endl;
+//        cout << "exiting thread now" << endl;
         pthread_exit((void *)retorno);
         return (void *)retorno;
     }
@@ -59,7 +59,7 @@ public:
     }
 // -----------------------------------------------------------------------------
     ~Thread(void){
-        std::cout << "Thread::Destructor"<<std::endl;
+        //std::cout << "Thread::Destructor"<<std::endl;
         pthread_attr_destroy(&attr);
         delete hSingleStart;
     }
@@ -76,14 +76,14 @@ public:
             //El cuarto parametro le pasa argumentos a la funcion que llamamos
             rc = pthread_create(&hThread, &attr, Thread<T>::run, this);
             if (rc != 0){
-                std::cout << "Error:unable to create thread," << rc << std::endl;
+//                std::cout << "Error:unable to create thread," << rc << std::endl;
                 return false;
             }
             status = THREAD_STILL_ACTIVE;
             hSingleStart->Unlock();
             return true;
         } else {
-            std::cout << "Error:Thread already running" << std::endl;
+//            std::cout << "Error:Thread already running" << std::endl;
             return false;
         }
     }
@@ -94,13 +94,13 @@ public:
         rc = pthread_join(hThread, &threadReturn);
 
         if (rc != 0){
-            std::cout << "Error:unable to join," << rc << std::endl;
+//            std::cout << "Error:unable to join," << rc << std::endl;
             return -1;
         }
         status = THREAD_FINISHED;
         pthread_attr_destroy(&attr);
-        std::cout << "join: completed thread";
-        std::cout << "  exiting with threadReturn :" << threadReturn << std::endl;
+//        std::cout << "join: completed thread";
+//        std::cout << "  exiting with threadReturn :" << threadReturn << std::endl;
         return *((int*)(&threadReturn));
     }
     
@@ -150,7 +150,7 @@ public:
 
     inline void setStatus(uint32_t var){
         this->status = var;
-        std::cout << "status asignning: " << status << std::endl;
+//        std::cout << "status asignning: " << status << std::endl;
     }
 // -----------------------------------------------------------------------------
 };
