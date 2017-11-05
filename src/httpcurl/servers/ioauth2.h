@@ -30,6 +30,8 @@ class IOauth2
         virtual string chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
         virtual bool listFiles(string fileid, string accessToken, CloudFiles *files);
         virtual int getFile(string filesystemPath, string cloudIdPath, string accessToken);
+        virtual string fileExist(string filename, string parentid, string accessToken);
+        
 
         /**Metodos comunes que todos heredan*/
         void abortDownload();

@@ -112,8 +112,7 @@ void IcoGestor::cargarIconos(){
     cargarIcono("drive_disk.png");
     cargarIcono("drive_network.png");
     cargarIcono("map_go.png");
-
-
+    cargarIcono("onedrive.png");
 }
 
 /**
@@ -122,6 +121,7 @@ void IcoGestor::cargarIconos(){
 void IcoGestor::cargarIcono(string filename){
     if (arrayIcons.numIcons < totalIcons){
         arrayIcons.Icon[arrayIcons.numIcons] = IMG_Load(string(getRuta() + filename).c_str());
+//        Traza::print(string(getRuta() + filename), W_DEBUG);
         if (zoomText > 1){
             int w = arrayIcons.Icon[arrayIcons.numIcons]->w * zoomText;
             int h = arrayIcons.Icon[arrayIcons.numIcons]->h * zoomText;
@@ -134,6 +134,7 @@ void IcoGestor::cargarIcono(string filename){
                                                         bitmap->format->Rmask, bitmap->format->Gmask, bitmap->format->Bmask, bitmap->format->Amask);
             SDL_BlitSurface(bitmap, NULL, arrayIcons.Icon[arrayIcons.numIcons], NULL);
             SDL_FreeSurface(bitmap);
+            
         }
         arrayIcons.numIcons++;
     }

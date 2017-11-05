@@ -14,7 +14,7 @@ Fileio::~Fileio(){
     clearFile();
 }
 
- bool Fileio::loadFromMem(const char *buf, size_t tam){
+ bool Fileio::loadFromMem(const unsigned char *buf, size_t tam){
     memblock = new char [tam];//Reservamos memoria
     memcpy ( memblock, buf, tam );
     size = tam;

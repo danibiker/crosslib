@@ -406,8 +406,11 @@ int Dropbox::getFile(string filesystemPath, string cloudIdPath, string accessTok
     
     Traza::print(string("Descargando ") + cloudIdPath + " en " + filesystemPath, W_DEBUG);
     util.postDownload(DROPBOXURLGET, filesystemPath, &cabeceras);
-    if (util.getHttp_code() != 200)
+    if (util.getHttp_code() != 200){
         Traza::print(string("Error descargando ") + cloudIdPath + " en " + filesystemPath, W_ERROR);
+        return -1;
+    }
+        
     
     return 0;
 }
@@ -513,10 +516,6 @@ bool Dropbox::listFiles(string filesystemPath, string accessToken, CloudFiles *f
     //            childFile->root = contents[index].get("root","").asString();
                 childFile->isDir = contents[index].get(".tag","").asString() == "folder" ? true : false;
                 files->fileList.push_back(childFile);
-
-                Traza::print(childFile->strHash + ", " + Constant::TipoToStr(childFile->bytes)
-                 + ", " + childFile->path + ", " + childFile->revision + ", "
-                 + childFile->root + ", " + string(childFile->isDir ? "S":"N"), W_DEBUG);
             }
             controlBucle++;
         } 

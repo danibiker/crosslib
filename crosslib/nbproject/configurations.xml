@@ -58,11 +58,16 @@
         </logicalFolder>
         <logicalFolder name="src" displayName="src" projectFiles="true">
           <logicalFolder name="lib_json" displayName="lib_json" projectFiles="true">
+            <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/CMakeLists.txt</itemPath>
             <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_reader.cpp</itemPath>
             <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_tool.h</itemPath>
             <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_value.cpp</itemPath>
+            <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_valueiterator.inl</itemPath>
             <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_writer.cpp</itemPath>
+            <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/sconscript</itemPath>
+            <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/lib_json/version.h.in</itemPath>
           </logicalFolder>
+          <itemPath>../src/httpcurl/jsoncpp-0.10.5/src/CMakeLists.txt</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="lyrics" displayName="lyrics" projectFiles="true">
@@ -84,18 +89,120 @@
         <itemPath>../src/httpcurl/servers/googledrive.h</itemPath>
         <itemPath>../src/httpcurl/servers/ioauth2.cpp</itemPath>
         <itemPath>../src/httpcurl/servers/ioauth2.h</itemPath>
+        <itemPath>../src/httpcurl/servers/onedrive.cpp</itemPath>
+        <itemPath>../src/httpcurl/servers/onedrive.h</itemPath>
         <itemPath>../src/httpcurl/servers/streamcloud.cpp</itemPath>
         <itemPath>../src/httpcurl/servers/streamcloud.h</itemPath>
         <itemPath>../src/httpcurl/servers/vk.cpp</itemPath>
         <itemPath>../src/httpcurl/servers/vk.h</itemPath>
       </logicalFolder>
       <logicalFolder name="tinyxml" displayName="tinyxml" projectFiles="true">
+        <logicalFolder name="docs" displayName="docs" projectFiles="true">
+          <itemPath>../src/httpcurl/tinyxml/docs/annotated.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlAttribute-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlAttribute.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlAttribute.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlBase-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlBase.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlBase.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlComment-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlComment.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlComment.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlDeclaration-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlDeclaration.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlDeclaration.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlDocument-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlDocument.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlDocument.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlElement-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlElement.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlElement.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlHandle-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlHandle.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlNode-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlNode.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlNode.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlPrinter-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlPrinter.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlPrinter.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlText-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlText.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlText.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlUnknown-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlUnknown.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlUnknown.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlVisitor-members.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlVisitor.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classTiXmlVisitor.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/classes.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/deprecated.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/doxygen.css</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/doxygen.png</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/files.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x63.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x64.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x65.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x66.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x67.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x69.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x6c.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x6e.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x6f.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x70.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x71.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x72.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x73.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x74.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x75.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_0x76.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_enum.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x63.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x64.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x65.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x66.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x67.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x69.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x6c.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x6e.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x70.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x71.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x72.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x73.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x74.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x75.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_func_0x76.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_rela.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/functions_vars.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/hierarchy.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/index.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/pages.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/tab_b.gif</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/tab_l.gif</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/tab_r.gif</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/tabs.css</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/tinystr_8h_source.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/tinyxml_8h_source.html</itemPath>
+          <itemPath>../src/httpcurl/tinyxml/docs/tutorial0.html</itemPath>
+        </logicalFolder>
+        <itemPath>../src/httpcurl/tinyxml/Makefile</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/changes.txt</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/readme.txt</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/tinyXmlTest.vcxproj</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/tinyXmlTestSTL.vcxproj</itemPath>
         <itemPath>../src/httpcurl/tinyxml/tinystr.cpp</itemPath>
         <itemPath>../src/httpcurl/tinyxml/tinystr.h</itemPath>
         <itemPath>../src/httpcurl/tinyxml/tinyxml.cpp</itemPath>
         <itemPath>../src/httpcurl/tinyxml/tinyxml.h</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/tinyxml.sln</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/tinyxmlSTL.vcxproj</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/tinyxml_lib.vcxproj</itemPath>
         <itemPath>../src/httpcurl/tinyxml/tinyxmlerror.cpp</itemPath>
         <itemPath>../src/httpcurl/tinyxml/tinyxmlparser.cpp</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/utf8test.gif</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/utf8test.xml</itemPath>
+        <itemPath>../src/httpcurl/tinyxml/utf8testverify.xml</itemPath>
       </logicalFolder>
       <logicalFolder name="util" displayName="util" projectFiles="true">
         <itemPath>../src/httpcurl/util/ConstantHttp.cpp</itemPath>
@@ -666,6 +773,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/CMakeLists.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/CMakeLists.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_reader.cpp"
             ex="false"
             tool="1"
@@ -681,9 +798,24 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_valueiterator.inl"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_writer.cpp"
             ex="false"
             tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/sconscript"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/version.h.in"
+            ex="false"
+            tool="3"
             flavor2="0">
       </item>
       <item path="../src/httpcurl/lyrics/MusixMatch.cpp"
@@ -760,6 +892,13 @@
       </item>
       <item path="../src/httpcurl/servers/ioauth2.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/httpcurl/servers/onedrive.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/onedrive.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/httpcurl/servers/streamcloud.cpp"
             ex="false"
             tool="1"
@@ -773,6 +912,460 @@
       <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/vk.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/Makefile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/changes.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/annotated.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlAttribute-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlAttribute.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlAttribute.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlBase-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlBase.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlBase.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlComment-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlComment.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlComment.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDeclaration-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDeclaration.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDeclaration.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDocument-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDocument.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDocument.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlElement-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlElement.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlElement.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlHandle-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlHandle.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlNode-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlNode.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlNode.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlPrinter-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlPrinter.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlPrinter.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlText-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlText.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlText.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlUnknown-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlUnknown.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlUnknown.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlVisitor-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlVisitor.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlVisitor.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classes.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/deprecated.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/doxygen.css"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/doxygen.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/files.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x63.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x64.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x65.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x66.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x67.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x69.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x6c.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x6e.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x6f.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x70.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x71.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x72.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x73.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x74.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x75.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x76.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_enum.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x63.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x64.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x65.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x66.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x67.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x69.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x6c.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x6e.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x70.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x71.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x72.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x73.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x74.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x75.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x76.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_rela.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_vars.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/hierarchy.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/index.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/pages.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tab_b.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tab_l.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tab_r.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tabs.css"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tinystr_8h_source.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tinyxml_8h_source.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tutorial0.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/readme.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyXmlTest.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyXmlTestSTL.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/tinyxml/tinystr.cpp"
             ex="false"
@@ -788,6 +1381,21 @@
       </item>
       <item path="../src/httpcurl/tinyxml/tinyxml.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/httpcurl/tinyxml/tinyxml.sln"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxmlSTL.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxml_lib.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/tinyxml/tinyxmlerror.cpp"
             ex="false"
             tool="1"
@@ -796,6 +1404,21 @@
       <item path="../src/httpcurl/tinyxml/tinyxmlparser.cpp"
             ex="false"
             tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/utf8test.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/utf8test.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/utf8testverify.xml"
+            ex="false"
+            tool="3"
             flavor2="0">
       </item>
       <item path="../src/httpcurl/util/ConstantHttp.cpp"
@@ -1509,22 +2132,22 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/cddb/freedb.cpp" ex="false" tool="1" flavor2="9">
+      <item path="../src/httpcurl/cddb/freedb.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/cddb/freedb.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/httpcurl/htmlparser.cpp" ex="false" tool="1" flavor2="9">
+      <item path="../src/httpcurl/htmlparser.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/htmlparser.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/httpcurl/httputil.cpp" ex="false" tool="1" flavor2="9">
+      <item path="../src/httpcurl/httputil.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/image/uiimgdownloader.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/image/uiimgdownloader.h"
             ex="false"
@@ -1534,7 +2157,7 @@
       <item path="../src/httpcurl/image/uiimgencoder.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/image/uiimgencoder.h"
             ex="false"
@@ -1591,10 +2214,20 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/CMakeLists.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/CMakeLists.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_reader.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_tool.h"
             ex="false"
@@ -1604,17 +2237,32 @@
       <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_value.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_valueiterator.inl"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/json_writer.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/sconscript"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/jsoncpp-0.10.5/src/lib_json/version.h.in"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/lyrics/MusixMatch.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/lyrics/MusixMatch.h"
             ex="false"
@@ -1624,7 +2272,7 @@
       <item path="../src/httpcurl/lyrics/darklyrics.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/lyrics/darklyrics.h"
             ex="false"
@@ -1634,7 +2282,7 @@
       <item path="../src/httpcurl/lyrics/lyricsbase.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/lyrics/lyricsbase.h"
             ex="false"
@@ -1644,7 +2292,7 @@
       <item path="../src/httpcurl/lyrics/lyricswikia.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/lyrics/lyricswikia.h"
             ex="false"
@@ -1654,7 +2302,7 @@
       <item path="../src/httpcurl/servers/allmyvideos.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/allmyvideos.h"
             ex="false"
@@ -1664,14 +2312,14 @@
       <item path="../src/httpcurl/servers/dropbox.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/dropbox.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/googledrive.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/googledrive.h"
             ex="false"
@@ -1681,52 +2329,543 @@
       <item path="../src/httpcurl/servers/ioauth2.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/ioauth2.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/onedrive.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/onedrive.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/streamcloud.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/streamcloud.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="9">
+      <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/vk.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/Makefile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/changes.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/annotated.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlAttribute-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlAttribute.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlAttribute.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlBase-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlBase.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlBase.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlComment-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlComment.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlComment.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDeclaration-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDeclaration.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDeclaration.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDocument-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDocument.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlDocument.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlElement-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlElement.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlElement.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlHandle-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlHandle.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlNode-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlNode.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlNode.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlPrinter-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlPrinter.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlPrinter.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlText-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlText.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlText.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlUnknown-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlUnknown.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlUnknown.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlVisitor-members.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlVisitor.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classTiXmlVisitor.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/classes.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/deprecated.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/doxygen.css"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/doxygen.png"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/files.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x63.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x64.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x65.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x66.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x67.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x69.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x6c.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x6e.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x6f.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x70.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x71.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x72.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x73.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x74.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x75.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_0x76.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_enum.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x63.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x64.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x65.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x66.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x67.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x69.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x6c.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x6e.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x70.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x71.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x72.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x73.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x74.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x75.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_func_0x76.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_rela.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/functions_vars.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/hierarchy.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/index.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/pages.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tab_b.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tab_l.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tab_r.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tabs.css"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tinystr_8h_source.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tinyxml_8h_source.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/docs/tutorial0.html"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/readme.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyXmlTest.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyXmlTestSTL.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/tinyxml/tinystr.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/tinyxml/tinystr.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/tinyxml/tinyxml.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/tinyxml/tinyxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxml.sln"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxmlSTL.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/tinyxml_lib.vcxproj"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/tinyxml/tinyxmlerror.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/tinyxml/tinyxmlparser.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/utf8test.gif"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/utf8test.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/tinyxml/utf8testverify.xml"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/util/ConstantHttp.cpp"
             ex="false"
             tool="1"
-            flavor2="9">
+            flavor2="0">
       </item>
       <item path="../src/httpcurl/util/ConstantHttp.h"
             ex="false"

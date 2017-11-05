@@ -84,6 +84,10 @@ bool IOauth2::listFiles(string fileid, string accessToken, CloudFiles *files){
     return true;
 }
 
+string IOauth2::fileExist(string filename, string parentid, string accessToken){
+    return "";
+}
+
 /**
 *
 */

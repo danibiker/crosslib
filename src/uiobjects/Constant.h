@@ -193,6 +193,7 @@ static const int mapHeight = 256;
         drive_disk,
         drive_network,
         map_go,
+        onedrive_png,
         trackSeg,
         map_add,
         totalIcons

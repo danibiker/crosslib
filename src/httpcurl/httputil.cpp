@@ -221,6 +221,8 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         char *buffer = NULL;
         size_t retcode = 0;
         
+        //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+        
         switch (httpType){
             case HTTP_POST:
                 curl_easy_setopt(curl, CURLOPT_POST, 1);

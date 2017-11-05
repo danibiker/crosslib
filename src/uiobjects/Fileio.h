@@ -22,7 +22,7 @@ class Fileio{
         ~Fileio();
         bool loadFromFile(string);
         bool loadFromFile(const char *, ifstream::pos_type , ifstream::pos_type);
-        bool loadFromMem(const char *, size_t tam);
+        bool loadFromMem(const unsigned char *, size_t tam);
         void writeToFile(const char *, char * ,ifstream::pos_type, bool append);
         bool clearFile();
         char * getFile() {return memblock;}

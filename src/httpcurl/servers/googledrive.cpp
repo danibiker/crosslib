@@ -26,17 +26,22 @@ uint32_t GoogleDrive::authenticate(){
             ListaIni<Data> *config = new ListaIni<Data>();
             config->loadFromFile(rutaIni);
             config->sort();
-
+            
+            Data elem;
             int pos = config->find(GOOGLEACCESSTOKENSTR);
-            Data elem = config->get(pos);
-            accessTokenCipher = elem.getValue();
-            strAccessToken = cifrador.decodeEasy(accessTokenCipher, passwordAT);
-
+            if (pos >= 0){
+                elem = config->get(pos);
+                accessTokenCipher = elem.getValue();
+                strAccessToken = cifrador.decodeEasy(accessTokenCipher, passwordAT);
+            }
+            
             pos = config->find(GOOGLEREFRESHTOKENSTR);
-            elem = config->get(pos);
-            refreshTokenCipher = elem.getValue();
-            strRefreshToken = cifrador.decodeEasy(refreshTokenCipher, passwordAT);
-
+            if (pos >= 0){
+                elem = config->get(pos);
+                refreshTokenCipher = elem.getValue();
+                strRefreshToken = cifrador.decodeEasy(refreshTokenCipher, passwordAT);
+            }
+            
             string url = "https://www.googleapis.com/drive/v3/about?fields=user";
             string AuthOauth2 = "Bearer " + strAccessToken;
             map<string, string> cabeceras;
@@ -432,7 +437,8 @@ bool GoogleDrive::listFiles(string fileid, string accessToken, CloudFiles *files
     Json::Reader reader;
     string nextPageToken;
     string resp;
-
+    int controlBucle = 0;
+    
     do{
         resp = getJSONList(fileid, accessToken, nextPageToken);
         nextPageToken = "";
@@ -465,7 +471,8 @@ bool GoogleDrive::listFiles(string fileid, string accessToken, CloudFiles *files
             }
             nextPageToken = root.get("nextPageToken","").asString();
         }
-    } while (!nextPageToken.empty());
+        controlBucle++;
+    } while (!nextPageToken.empty() && controlBucle < 10);
     return true;
 }
 
@@ -529,6 +536,9 @@ int GoogleDrive::getFile(string filesystemPath, string cloudIdPath, string acces
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
         //Utilizando recursividad
         return getFile(filesystemPath, cloudIdPath, this->getAccessToken());
+    } else if (util.getHttp_code() != 200){
+        Traza::print(string("Error descargando ") + cloudIdPath + " en " + filesystemPath, W_ERROR);
+        return -1;
     }
     return 0;
 }

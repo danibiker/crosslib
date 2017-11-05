@@ -47,6 +47,17 @@ static const string GOOGLEURLLISTCHILDREN = "https://www.googleapis.com/drive/v2
 static const string GOOGLEURLDELETE = "https://www.googleapis.com/drive/v3/files/";
 
 
+//static const string ONEDRIVEURLAUTH = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+static const string ONEDRIVEURLAUTH = "https://login.live.com/oauth20_authorize.srf";
+static const string ONEDRIVEURLTOKEN = "https://login.live.com/oauth20_token.srf";
+static const string ONEDRIVEURLLIST = "https://graph.microsoft.com/v1.0/me/drive/root/children";
+static const string ONEDRIVEURLLISTCHILDREN = "https://graph.microsoft.com/v1.0/me/drive/items/";
+static const string ONEDRIVEURLLISTCHILDRENPATH = "https://graph.microsoft.com/v1.0/me/drive/root";
+static const string ONEDRIVEURLGET = "https://graph.microsoft.com/v1.0/me/drive/items/";
+static const string ONEDRIVEMKDIR = "https://graph.microsoft.com/v1.0/me/drive/";
+static const string ONEDRIVEURLPUT =   "https://graph.microsoft.com/v1.0/me/drive/";
+static const string ONEDRIVEURLDELETE = "https://graph.microsoft.com/v1.0/me/drive/items/";
+
 static const size_t CHUNCKSIZE = 5000 * 1024; //5000KB
 
 typedef enum {HTTP_POST, HTTP_GET, HTTP_PUT, HTTP_DELETE, HTTP_POST2, HTTP_POST3} petHttp;

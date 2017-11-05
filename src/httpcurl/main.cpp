@@ -12,6 +12,7 @@
 #include "lyrics/darklyrics.h"
 #include "lyrics/lyricsbase.h"
 #include "servers/googledrive.h"
+#include "servers/onedrive.h"
 #include "cddb/freedb.h"
 
 using namespace std;
@@ -191,14 +192,14 @@ int main(int argc, char *argv[]){
 //        map<string, string> cabeceras;
 
     /**Pruebas para carga en dropbox*/
-        string cliendid="cgydn2vmpbaubpn";
-        string secret="3us3tyi7fdzaa0q";
+        const string cliendid="";
+        const string secret="";
 //        const int salClave[32] = {0xba,0xa3,0x7,0x99,0x1b,0x56,0x66,0xb6,0x2a,0x36,0xe4,0x89,0xd2,0x36,0x55,0x55,0x54,0x46,0x9a,0x95,0x15,0x6c,0xad,0xf7,0,0xc4,0xf5,0x63,0x4a,0xb0,0xfb,0xf0};
 //        const int salIv[16] = {0xc3,0x49,0xf0,0xa0,0x72,0x22,0xc,0x63,0xf1,0xd3,0xe8,0x87,0x90,0x85,0,0xa5};
 //        unsigned char k[32];
 //        unsigned char iv[16];
         //Dirutil dir;
-        Constant::setAppDir(dir.getDirActual());
+//        Constant::setAppDir(dir.getDirActual());
         Dropbox dropbox;
 //        filecipher cifrador;
 
@@ -216,14 +217,14 @@ int main(int argc, char *argv[]){
 //        }
 //
 //
-        cout << "Comprobando autorizacion..." << endl;
+//        cout << "Comprobando autorizacion..." << endl;
 //
 //
         string rutaTraza = dir.getDirActual() + Constant::getFileSep() + "Traza.txt";
         Traza *traza = new Traza(rutaTraza.c_str());
-        
+//        
         traza->print("Inicio", W_DEBUG);
-        
+//        
         DWORD ret = dropbox.authenticate();
         string accessToken = dropbox.getAccessToken();
 
@@ -242,33 +243,33 @@ int main(int argc, char *argv[]){
         /**Pruebas para subir y bajar fichero cifrado*/
         //cout << "Cifrando fichero..." << endl;
 //        cifrador.cifrar("C:\\calc.exe", "C:\\calc.exe.cif");
-//        cout << "Subiendo fichero..." << endl;
-//        dropbox.chunckedUpload("C:\\calc.exe", "/calc.exe", accessToken);
+        cout << "Subiendo fichero..." << endl;
+        dropbox.chunckedUpload("C:\\calc.exe", "/calc.exe", accessToken);
         //dropbox.chunckedUpload("C:\\temptempfile.txt", "/temptempfile.txt", accessToken);
-//        cout << "Fin de la subida. Descargando..." << endl;
+        cout << "Fin de la subida. Descargando..." << endl;
         //dropbox.getFile("C:\\ejemplo.exe.cif", "calc.exe", accessToken);
 //        cout << "Descifrando fichero..." << endl;
 //        cifrador.descifrar("C:\\ejemplo.exe.cif", "C:\\ejemplo.exe");
  //       dropbox.getFile("C:\\calc3.exe", "/calc.exe", accessToken);
 //
 //
-//        dropbox.deleteFiles("/calc.exe", accessToken);
+        dropbox.deleteFiles("/calc.exe", accessToken);
 
         /**Pruebas para listar un directorio o fichero*/
-//        CloudFiles files;
-//        dropbox.listFiles("/music", accessToken, &files);
+        CloudFiles files;
+        dropbox.listFiles("/music", accessToken, &files);
 //        dropbox.listFiles("/music/m-clan - sopa frÝa", accessToken, &files);
 //        dropbox.listFiles("/music/m-clan - sopa fr\355a", accessToken, &files);
         //0x61f7130 "/music/m-clan - sopa fr\355a"
-//        for (int i=0; i < files.fileList.size(); i++){
-//            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
-//        }
+        for (int i=0; i < files.fileList.size(); i++){
+            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
+        }
 //        
 //        Traza::print("Buscando en " + ((CloudFiles *)files.fileList.at(7))->path, W_DEBUG);
 //        string id = ((CloudFiles *)files.fileList.at(7))->strHash;
         
 //        dropbox.listFiles(id, accessToken, &files);
-        dropbox.getFile("D:\\sopa.ogg", "id:tGvWVBY69kAAAAAAAAABaw", accessToken);
+//        dropbox.getFile("D:\\sopa.ogg", "id:tGvWVBY69kAAAAAAAAABaw", accessToken);
         
 //
 //        files.fileList.clear();
@@ -463,7 +464,55 @@ int main(int argc, char *argv[]){
 //            Traza::print(cdTrack.titleList.at(i), W_DEBUG);
 //        }
 
+    
+    /** Pruebas en onedrive*/
+    
+    //https://login.microsoftonline.com/common/oauth2/nativeclient
+//    Onedrive *oneDrive = new Onedrive();
+//    oneDrive->setClientid("");
+//    oneDrive->setSecret("");
+//    
+//    //        /**Para refrescar el token al iniciar el programa*/
+//    int error = oneDrive->authenticate();
+//    if (error == ERRORREFRESHTOKEN){
+//        oneDrive->storeAccessToken(oneDrive->getClientid(), oneDrive->getSecret(), oneDrive->getRefreshToken(), true);
+//    } else if (error == ERRORACCESSTOKEN){
+//        oneDrive->launchAuthorize(oneDrive->getClientid());
+//        string code;
+//        cout << "Introduzca el codigo de onedrive" << endl;
+//        cin >> code;
+//        oneDrive->storeAccessToken(oneDrive->getClientid(), oneDrive->getSecret(), code, false);
+//    }
+//    
+//    CloudFiles files;
+//    CloudFiles childFile;
+    //oneDrive->listFiles("C5A9D2AEF64488EF!260", oneDrive->getAccessToken(), &files);
+    /*oneDrive->listFiles("Documentos", oneDrive->getAccessToken(), &files);
+    Traza::print("Ficheros",files.fileList.size(),W_DEBUG );
+    for (int i=0; i < files.fileList.size(); i++){
+        childFile = *files.fileList.at(i);
+        Traza::print(childFile.strHash + ", " + Constant::TipoToStr(childFile.bytes)
+            + ", " + childFile.path + ", " + childFile.revision + ", "
+            + childFile.root + ", " + string(childFile.isDir ? "S":"N"), W_DEBUG);
+    }
+     */
+    //oneDrive->getFile("D:\\Documento1.docx", "C5A9D2AEF64488EF!836", oneDrive->getAccessToken());
+    
+    //string idDir = oneDrive->mkdir("ONMUSIK", "C5A9D2AEF64488EF!143", oneDrive->getAccessToken());
+//    oneDrive->listFiles("/ONMUSIK", oneDrive->getAccessToken(), &files);
+//    Traza::print("Ficheros",files.fileList.size(),W_DEBUG );
+//    for (int i=0; i < files.fileList.size(); i++){
+//        childFile = *files.fileList.at(i);
+//        Traza::print(childFile.strHash + ", " + Constant::TipoToStr(childFile.bytes)
+//            + ", " + childFile.path + ", " + childFile.revision + ", "
+//            + childFile.root + ", " + string(childFile.isDir ? "S":"N"), W_DEBUG);
+//    }
 
-        return 0;
+    //string idDir = oneDrive->mkdir("ONMUSIK", "/", oneDrive->getAccessToken());
+    //oneDrive->chunckedUpload("D:\\106-foo_fighters-the_last_song-RIAA.mp3", "/ONMUSIK/106-foo_fighters-the_last_song-RIAA.mp3", oneDrive->getAccessToken());
+//    oneDrive->deleteFiles("C5A9D2AEF64488EF!1195",oneDrive->getAccessToken());
+    
+//    delete oneDrive;      
+    return 0;
 }
 

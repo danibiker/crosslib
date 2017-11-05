@@ -62,6 +62,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/391a7aef/dropbox.o \
 	${OBJECTDIR}/_ext/391a7aef/googledrive.o \
 	${OBJECTDIR}/_ext/391a7aef/ioauth2.o \
+	${OBJECTDIR}/_ext/391a7aef/onedrive.o \
 	${OBJECTDIR}/_ext/391a7aef/streamcloud.o \
 	${OBJECTDIR}/_ext/391a7aef/vk.o \
 	${OBJECTDIR}/_ext/749d5e76/tinystr.o \
@@ -377,6 +378,11 @@ ${OBJECTDIR}/_ext/391a7aef/ioauth2.o: ../src/httpcurl/servers/ioauth2.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/ioauth2.o ../src/httpcurl/servers/ioauth2.cpp
+
+${OBJECTDIR}/_ext/391a7aef/onedrive.o: ../src/httpcurl/servers/onedrive.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/onedrive.o ../src/httpcurl/servers/onedrive.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/streamcloud.o: ../src/httpcurl/servers/streamcloud.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef

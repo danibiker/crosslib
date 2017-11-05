@@ -26,10 +26,11 @@ class GoogleDrive : public IOauth2
         string chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
         bool listFiles(string fileid, string accessToken, CloudFiles *files);
         int getFile(string filesystemPath, string cloudIdPath, string accessToken);
+        string fileExist(string filename, string parentid, string accessToken);
 
         /**Metodos propios para google*/
         string mkdir(string dirname, string parentid, string accessToken);
-        string fileExist(string filename, string parentid, string accessToken);
+        
 
     protected:
         long resumableChunckedUpload(string filesystemPath, string url, size_t pos, size_t tam, string accessToken);
