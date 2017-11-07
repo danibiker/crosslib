@@ -233,7 +233,6 @@ string Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, strin
 
     Json::FastWriter fastWriter;
     postData = fastWriter.writeWithNoEndLine(postArg);
-    cout << "postData: " << postData << endl;
 
     size_t tam = 0;
     unsigned long iteraciones = 0;

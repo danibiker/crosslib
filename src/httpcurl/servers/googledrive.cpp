@@ -239,8 +239,6 @@ string GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, st
            + string(cloudIdPath.empty() ? "" : ",\"parents\": [\"" + cloudIdPath + "\"]")
            + "}";
 
-    cout << "postData: " << postData << endl;
-
     size_t tam = 0;
     unsigned long iteraciones = 0;
     ifstream file (filesystemPath.c_str(), ios::in|ios::binary|ios::ate);

@@ -267,7 +267,7 @@ string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string
             chunkFileSize = (posIt < iteraciones) ? CHUNCKSIZE : tam % CHUNCKSIZE;
             if (chunkFileSize > 0){
                 offsetForDropbox = CHUNCKSIZE * posIt;
-                Traza::print("Subiendo: " , (offsetForDropbox / (float) tam) *100, W_DEBUG);
+                Traza::print("Subiendo" , (offsetForDropbox / (float) tam) *100, W_DEBUG);
                 cabeceras.clear();
                 cabeceras.insert( make_pair("Authorization", AuthOauth2));
                 cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
@@ -284,14 +284,12 @@ string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string
                 Traza::print(output, W_DEBUG);
                 cabeceras.insert( make_pair("Dropbox-API-Arg", output));
                 util.post(DROPBOXURLPUTCHUNKED, filesystemPath.c_str(), chunkFileSize, offsetForDropbox, &cabeceras);
-                Traza::print("retorno subida: ", util.getHttp_code(), W_DEBUG);
-                
-                std::string res = util.getData();
-                Traza::print(res, W_DEBUG);
+                Traza::print("retorno subida", util.getHttp_code(), W_DEBUG);
             }
         }
         
-        if (!upId.empty()) commitChunkedUpload(cloudIdPath, accessToken, upId, offsetForDropbox + chunkFileSize);
+        if (!upId.empty()) 
+            commitChunkedUpload(cloudIdPath, accessToken, upId, offsetForDropbox + chunkFileSize);
         
     } else {
         Traza::print("Upload aborted. Access token empty", W_ERROR);
@@ -328,20 +326,18 @@ bool Dropbox::commitChunkedUpload(string dropboxPath, string accessToken, string
     std::string output = fastWriter.writeWithNoEndLine(postArg);
     Traza::print(output, W_DEBUG);
     cabeceras.insert( make_pair("Dropbox-API-Arg", output));
-    
     //Envio del commit
     util.post(DROPBOXURLCOMMITCHUNKED, "", &cabeceras);
+    Traza::print("retorno commit", util.getHttp_code(), W_DEBUG);
     
     std::string res = util.getData();
-    Traza::print(res, W_DEBUG);
-    bool parsingSuccessful = reader.parse( res, root );
-    if ( !parsingSuccessful ){
-         // report to the user the failure and their locations in the document.
-        Traza::print("Dropbox::commitChunkedUpload: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+    if (util.getHttp_code() == 200){
+        return true;
     } else {
-        upId = root.get("session_id","").asString();
+        Traza::print("Dropbox::commitChunkedUpload. Error in commit", W_ERROR);
+        return false;
     }
-    return false;
+    
 }
 
 /**
