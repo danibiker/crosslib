@@ -531,6 +531,7 @@ class Constant{
         static string replace(std::string str, std::string tofind, std::string toreplace);
         static string replace(std::string str, std::string tofind, std::string toreplace, int fromPos);
         static string replaceMetaCaracters(string);
+        static string toAlphanumeric(string input);
         static void stringTrim(char *dato);
         static string getFileSep();
         static string fecha();

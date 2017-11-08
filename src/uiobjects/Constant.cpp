@@ -938,6 +938,23 @@ inline std::string Constant::codePointToUTF8(unsigned int cp) {
 }
 
 /**
+ * Removes all character not alphanumeric
+ * @param input
+ * @return 
+ */
+string Constant::toAlphanumeric(string input){
+    string out = "";
+    for (int i=0; i < input.size(); i++) {
+        if ( ((int)input[i] >= 48 && (int)input[i] < 57) ||
+             ((int)input[i] >= 65 && (int)input[i] < 90) ||
+             ((int)input[i] >= 97 && (int)input[i] < 122)){
+            out += input[i];
+        }
+    }
+    return out;    
+}
+
+/**
 *
 */
 unsigned int Constant::getRandomRange(int min_, int max_){
