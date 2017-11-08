@@ -29,17 +29,18 @@ private:
 
     static volatile uint32_t status; //Para controlar el estado en UNIX
     GMutex *hSingleStart;
+    static uint32_t ret;
 // -----------------------------------------------------------------------------
 private:
     // This function gets executed by a concurrent thread.
     static void *run(void * thread_obj)
     {
         Thread<T>* thread = (Thread<T>*)thread_obj;
-        uint32_t retorno = (thread->object->*thread->method) ();
+        ret = (thread->object->*thread->method) ();
         status = THREAD_FINISHED;
 //        cout << "exiting thread now" << endl;
-        pthread_exit((void *)retorno);
-        return (void *)retorno;
+        pthread_exit(&ret);
+        return &ret;
     }
     // Prevent copying of threads: No sensible implementation!
     Thread(const Thread<T>& other) {}
@@ -156,6 +157,7 @@ public:
 };
 
 template <class T> volatile uint32_t Thread<T>::status;
+template <class T> uint32_t Thread<T>::ret;
 // #############################################################################
 
 #endif // __THREAD_H__

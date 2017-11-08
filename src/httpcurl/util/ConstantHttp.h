@@ -14,6 +14,7 @@
 #include <iomanip>
 
 #ifdef WIN
+    #include <winsock2.h>
     #include <windows.h>
 #endif // WIN
 

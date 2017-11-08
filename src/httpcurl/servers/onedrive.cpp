@@ -232,7 +232,7 @@ string Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, strin
     postArg["item"] = parmItem;
 
     Json::FastWriter fastWriter;
-    postData = fastWriter.writeWithNoEndLine(postArg);
+    postData = fastWriter.write(postArg);
 
     size_t tam = 0;
     unsigned long iteraciones = 0;

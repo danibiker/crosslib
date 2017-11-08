@@ -279,7 +279,7 @@ string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string
                 postArg["cursor"] = parmCursor;
                 
                 Json::FastWriter fastWriter;
-                std::string output = fastWriter.writeWithNoEndLine(postArg);
+                std::string output = fastWriter.write(postArg);
                 
                 Traza::print(output, W_DEBUG);
                 cabeceras.insert( make_pair("Dropbox-API-Arg", output));
@@ -323,7 +323,7 @@ bool Dropbox::commitChunkedUpload(string dropboxPath, string accessToken, string
     postArg["commit"] = partCommit;
     
     Json::FastWriter fastWriter;
-    std::string output = fastWriter.writeWithNoEndLine(postArg);
+    std::string output = fastWriter.write(postArg);
     Traza::print(output, W_DEBUG);
     cabeceras.insert( make_pair("Dropbox-API-Arg", output));
     //Envio del commit
@@ -356,7 +356,7 @@ bool Dropbox::deleteFiles(string fileid, string accessToken){
         Json::Value postArg;
         postArg["path"] = fileid;
         Json::FastWriter fastWriter;
-        std::string output = fastWriter.writeWithNoEndLine(postArg);
+        std::string output = fastWriter.write(postArg);
         Traza::print("Ruta a eliminar: " + fileid, W_DEBUG);
         util.post(url, output, &cabeceras);
 
@@ -397,7 +397,7 @@ int Dropbox::getFile(string filesystemPath, string cloudIdPath, string accessTok
     cabeceras.insert( make_pair("Authorization", AuthOauth2));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
     postArg["path"] = cloudIdPath;
-    std::string output = fastWriter.writeWithNoEndLine(postArg);
+    std::string output = fastWriter.write(postArg);
     cabeceras.insert( make_pair("Dropbox-API-Arg", output));
     
     Traza::print(string("Descargando ") + cloudIdPath + " en " + filesystemPath, W_DEBUG);
@@ -431,7 +431,7 @@ string Dropbox::getJSONListDropbox(string filesystemPath, string accessToken){
         postArg["include_has_explicit_shared_members"] = false;
         postArg["include_mounted_folders"] = false;
         Json::FastWriter fastWriter;
-        std::string output = fastWriter.writeWithNoEndLine(postArg);
+        std::string output = fastWriter.write(postArg);
 
         util.post(DROPBOXURLLIST, output, &cabeceras);
         responseMetadata = util.getData();  
@@ -455,7 +455,7 @@ string Dropbox::getJSONListContinueDropbox(string cursor, string accessToken){
         Json::Value postArg;
         postArg["cursor"] = cursor;
         Json::FastWriter fastWriter;
-        std::string output = fastWriter.writeWithNoEndLine(postArg);
+        std::string output = fastWriter.write(postArg);
 
         util.post(DROPBOXURLLISTNEXT, output, &cabeceras);
         responseMetadata = util.getData();  

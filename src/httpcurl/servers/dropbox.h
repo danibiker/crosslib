@@ -2,9 +2,6 @@
 #define DROPBOX_H
 
 #include <iostream>
-#ifdef WIN
-    #include <windows.h>
-#endif // WIN
 #include "util/ConstantHttp.h"
 #include <vector>
 #include <map>
