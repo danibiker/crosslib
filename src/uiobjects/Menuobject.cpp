@@ -295,8 +295,10 @@ Object * tmenu_gestor_objects::add(string tname, int ttype, int tx, int ty, int 
             arrayNewObj[size] = new UITextElementsArea();
         } else if (ttype == GUISPECTRUM){
             arrayNewObj[size] = new UISpectrum();
-         } else if (ttype == GUISLIDER){
+        } else if (ttype == GUISLIDER){
             arrayNewObj[size] = new UISlider();
+        } else if (ttype == GUITREELISTBOX){
+            arrayNewObj[size] = new UITreeListBox();
         } else {
             arrayNewObj[size] = new Object();
         }

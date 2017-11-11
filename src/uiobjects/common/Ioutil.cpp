@@ -264,6 +264,9 @@ void Ioutil::drawObject(Object *obj, tEvento *evento){
         case GUILISTGROUPBOX:
             drawUIListGroupBox(obj);
             break;
+        case GUITREELISTBOX:
+            drawUITreeListBox(obj);
+            break;
         case GUICOMBOBOX:
             drawUIComboBox(obj);
             break;
@@ -3816,3 +3819,40 @@ void Ioutil::drawTextInsideArea( int posArrayTexto, int x, int y, Object *obj, S
 }
 
 
+/**
+* Pinta una lista
+*/
+void Ioutil::drawUITreeListBox(Object *obj){
+    if (obj->isVisible()){
+        int x = obj->getX();
+        int y = obj->getY();
+        int w = obj->getW();
+        int h = obj->getH();
+        UITreeListBox *listObj = (UITreeListBox *)obj;
+
+        
+            int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
+            Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
+            Traza::print("Alto de la lista: ", h, W_PARANOIC);
+            
+            pintarContenedor(x,y,w,h,listObj->isFocus() && listObj->isEnabled(), obj, obj->getColor());
+            x += INPUTCONTENT;
+            y += INPUTCONTENT;
+
+            t_color colorText = listObj->isEnabled() && listObj->isFocus() ? obj->getTextColor() : cGris;
+            if (listObj->getObjectType() == GUITREELISTBOX && listObj->getSize() > 0){
+                //Ponemos el color por defecto para las listas
+                colorText = listObj->isEnabled() && listObj->isFocus() ? obj->getTextColor() : cGris;
+                TTF_SetFontStyle(font, TTF_STYLE_NORMAL);
+                Traza::print("listObj->getPosIniLista(): ", listObj->getPosIniLista(), W_PARANOIC);
+                Traza::print("listObj->getPosFinLista(): ", listObj->getPosFinLista(), W_PARANOIC);
+                //Dibujamos el resto de la lista
+                //if (listObj->getListScheme() == SCHEMEICONS){
+                    //drawListIcoHor(obj, x, y, w, h);
+                //} else {
+                    //drawListContent(obj, x, y, w, h);
+                //}
+            }
+           
+    }
+}

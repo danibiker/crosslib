@@ -162,7 +162,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/20f55786/ImagenGestor.o \
 	${OBJECTDIR}/_ext/20f55786/Launcher.o \
 	${OBJECTDIR}/_ext/20f55786/ListaSimple.o \
-	${OBJECTDIR}/_ext/20f55786/Menuobject.o \
 	${OBJECTDIR}/_ext/20f55786/SHA1.o \
 	${OBJECTDIR}/_ext/20f55786/Traza.o \
 	${OBJECTDIR}/_ext/8d36c5a9/Database.o \
@@ -871,11 +870,6 @@ ${OBJECTDIR}/_ext/20f55786/ListaSimple.o: ../src/uiobjects/ListaSimple.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/ListaSimple.o ../src/uiobjects/ListaSimple.cpp
-
-${OBJECTDIR}/_ext/20f55786/Menuobject.o: ../src/uiobjects/Menuobject.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Menuobject.o ../src/uiobjects/Menuobject.cpp
 
 ${OBJECTDIR}/_ext/20f55786/SHA1.o: ../src/uiobjects/SHA1.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786

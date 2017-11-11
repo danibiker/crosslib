@@ -25,6 +25,7 @@
     #include "cursor.h"
     #include "listaIni.h"
     #include "Colorutil.h"
+    #include "UITreeListBox.h"
 
     struct tInput{
         int cursorX;
@@ -98,6 +99,7 @@
             void drawScrollBar(Object *obj);
             void drawUITextElementsArea(Object *obj);
             void drawUISpectrum(Object *obj);
+            void drawUITreeListBox(Object *obj);
             t_color MapColor (int s);
             void drawUISpectrumFft(Object *obj);
             void drawUISlider(Object *obj, tEvento *evento);

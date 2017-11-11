@@ -90,7 +90,7 @@ class DataList{
             return this->valores->at(i);
         };
 
-        string getKey(){
+        string getKey() const{
             return key;
         };
 
@@ -110,6 +110,29 @@ class DataList{
             }
             return -1;
         };
+        
+        bool comparar(const DataList &c) const {
+            return getKey().compare(c.getKey());
+        }
+
+        bool operator==(const DataList &c) const {
+            return !comparar(c);
+        }
+        bool operator!=(const DataList &c) const {
+            return comparar(c);
+        }
+        bool operator<(const DataList &c) const {
+            return comparar(c) < 0;
+        }
+        bool operator>(const DataList &c) const {
+            return comparar(c) > 0;
+        }
+        bool operator<=(const DataList &c) const {
+            return comparar(c) <= 0;
+        }
+        bool operator>=(const DataList &c) const {
+            return comparar(c) >= 0;
+        }
 
     private:
         string key;
@@ -132,11 +155,12 @@ class nodoSimple {
     void setValor(TIPO v){ valor = v;}
     //int comparar(TIPO);
     //Los metodos de comparar es mejor que los implemente uno a uno por temas de rendimiento.
-    //Sino estar�a obligado a parsear los propios strings sin hacer falta
-    int comparar(int);
-    int comparar(string);
-    int comparar(DataList);
-    int comparar(FileProps);
+    //Sino estaria obligado a parsear los propios strings sin hacer falta
+//    int comparar(int);
+//    int comparar(string);
+//    int comparar(DataList);
+//    int comparar(FileProps);
+    int comparar(TIPO);
 
    protected:
         TIPO valor;
@@ -144,29 +168,37 @@ class nodoSimple {
    friend class listaSimple<TIPO>;
 };
 
-template<class TIPO> int nodoSimple<TIPO>::comparar(int t){
+template<class TIPO> int nodoSimple<TIPO>::comparar(TIPO t){
         if (t > getValor()) return -1;
         else if (t < getValor()) return 1;
         else return 0;
 }
-
-template<class TIPO> int nodoSimple<TIPO>::comparar(string t){
-        return getValor().compare(t);
-}
-
-template<class TIPO> int nodoSimple<TIPO>::comparar(DataList t){
-        return getValor().getKey().compare(t.getKey());
-}
-
-template<class TIPO> int nodoSimple<TIPO>::comparar(FileProps t){
-        //return strcmpi(getValor().filename.c_str(), t.filename.c_str());
-        //return Constant::stricmp(getValor().filename.c_str(), t.filename.c_str());
-        string str1 = getValor().filename;
-        string str2 = t.filename;
-        Constant::lowerCase(&str1);
-        Constant::lowerCase(&str2);
-        return str1.compare(str2);
-}
+//
+//template<class TIPO> int nodoSimple<TIPO>::comparar(int t){
+//        if (t > getValor()) return -1;
+//        else if (t < getValor()) return 1;
+//        else return 0;
+//}
+//
+//
+//
+//template<class TIPO> int nodoSimple<TIPO>::comparar(string t){
+//        return getValor().compare(t);
+//}
+//
+//template<class TIPO> int nodoSimple<TIPO>::comparar(DataList t){
+//        return getValor().getKey().compare(t.getKey());
+//}
+//
+//template<class TIPO> int nodoSimple<TIPO>::comparar(FileProps t){
+//        //return strcmpi(getValor().filename.c_str(), t.filename.c_str());
+//        //return Constant::stricmp(getValor().filename.c_str(), t.filename.c_str());
+//        string str1 = getValor().filename;
+//        string str2 = t.filename;
+//        Constant::lowerCase(&str1);
+//        Constant::lowerCase(&str2);
+//        return str1.compare(str2);
+//}
 
 template<class TIPO> class listaSimple : public Excepcion, public Fileio{
    public:

@@ -2,7 +2,7 @@
 #define COMMON_H_INCLUDED
 
 enum {
-    COBJECT,
+    COBJECT = 0,
     GUIBUTTON,
     GUICHECK,
     GUIPANELBORDER,
@@ -18,7 +18,8 @@ enum {
     GUITEXTELEMENTSAREA,
     GUISPECTRUM,
     GUILISTGROUPBOX,
-    GUISLIDER
+    GUISLIDER,
+    GUITREELISTBOX
 };
 
     struct t_region{

@@ -226,8 +226,6 @@
         <itemPath>../src/uiobjects/beans/listgroupcol.cpp</itemPath>
         <itemPath>../src/uiobjects/beans/listgroupcol.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="common" displayName="common" projectFiles="true">
-      </logicalFolder>
       <logicalFolder name="font" displayName="font" projectFiles="true">
         <itemPath>../src/uiobjects/font/Arimo_Regular.ttf.h</itemPath>
       </logicalFolder>
@@ -260,8 +258,6 @@
       <itemPath>../src/uiobjects/Launcher.h</itemPath>
       <itemPath>../src/uiobjects/ListaSimple.cpp</itemPath>
       <itemPath>../src/uiobjects/ListaSimple.h</itemPath>
-      <itemPath>../src/uiobjects/Menuobject.cpp</itemPath>
-      <itemPath>../src/uiobjects/Menuobject.h</itemPath>
       <itemPath>../src/uiobjects/SHA1.cpp</itemPath>
       <itemPath>../src/uiobjects/SHA1.h</itemPath>
       <itemPath>../src/uiobjects/Traza.cpp</itemPath>
@@ -982,10 +978,6 @@
       <item path="../src/uiobjects/ListaSimple.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Menuobject.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1820,10 +1812,6 @@
       <item path="../src/uiobjects/ListaSimple.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Menuobject.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -2666,10 +2654,6 @@
       <item path="../src/uiobjects/ListaSimple.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Menuobject.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="9">
       </item>

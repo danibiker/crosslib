@@ -26,6 +26,7 @@
 #include "uitextelementsarea.h"
 #include "uispectrum.h"
 #include "uislider.h"
+#include "UITreeListBox.h"
 
 
 
