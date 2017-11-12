@@ -100,6 +100,7 @@
             void drawUITextElementsArea(Object *obj);
             void drawUISpectrum(Object *obj);
             void drawUITreeListBox(Object *obj);
+            void drawTreeListContent(Object *obj, int x, int y, int w, int h);
             t_color MapColor (int s);
             void drawUISpectrumFft(Object *obj);
             void drawUISlider(Object *obj, tEvento *evento);

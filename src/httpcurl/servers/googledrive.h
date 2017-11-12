@@ -23,7 +23,7 @@ class GoogleDrive : public IOauth2
         string launchAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
         bool deleteFiles(string fileid, string accessToken);
         string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
-        string chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
+        bool chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
         bool listFiles(string fileid, string accessToken, CloudFiles *files);
         int getFile(string filesystemPath, string cloudIdPath, string accessToken);
         string fileExist(string filename, string parentid, string accessToken);
@@ -33,7 +33,7 @@ class GoogleDrive : public IOauth2
         
 
     protected:
-        long resumableChunckedUpload(string filesystemPath, string url, size_t pos, size_t tam, string accessToken);
+        bool resumableChunckedUpload(string filesystemPath, string url, size_t pos, size_t tam, string accessToken);
         string getJSONList(string fileid, string accessToken, string nextPageToken);
         uint32_t checkOauthErrors(string data, Json::Value *root);
 

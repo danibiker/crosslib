@@ -226,14 +226,15 @@ string GoogleDrive::launchAccessToken(string clientid, string secret, string cod
 /**
 * Sube un fichero con la limitacion de que sea menor a 5120GB
 */
-string GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
+bool GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
     map<string, string> cabeceras;
     string postData = "";
     string AuthOauth2 = "Bearer " + accessToken;
     string url = GOOGLEURLPUT + "?uploadType=resumable";
     //string url = "https://www.googleapis.com/upload/drive/v2/files?uploadType=resumable";
     Dirutil dir;
-
+    bool ret = false;
+    
     postData = "{\"name\": \"" + Constant::toUTF8(dir.getFileName(filesystemPath)) + "\""
            + "," + "\"mimeType\": \"application/octet-stream\""
            + string(cloudIdPath.empty() ? "" : ",\"parents\": [\"" + cloudIdPath + "\"]")
@@ -283,17 +284,17 @@ string GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, st
         Traza::print("Enviando al location:'" + location, W_DEBUG);
         size_t pos = 0;
         while (pos < tam){
-            resumableChunckedUpload(filesystemPath, location, pos, tam, accessToken);
+            ret = resumableChunckedUpload(filesystemPath, location, pos, tam, accessToken);
             pos += GOOGLECHUNK;
         }
     }
-    return location;
+    return ret;
 }
 
 /**
 *
 */
-long GoogleDrive::resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken){
+bool GoogleDrive::resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken){
     map<string, string> cabeceras;
     string AuthOauth2 = "Bearer " + accessToken;
     Dirutil dir;
@@ -331,7 +332,7 @@ long GoogleDrive::resumableChunckedUpload(string filesystemPath, string url, siz
     }
     //Control error de token caducado de OAUTH2
 
-    return util.getHttp_code();
+    return (util.getHttp_code() == 200);
 }
 
 /**

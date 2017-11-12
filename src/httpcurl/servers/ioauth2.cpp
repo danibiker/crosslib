@@ -59,8 +59,8 @@ void IOauth2::abortDownload(){
 /**
 *
 */
-string IOauth2::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
-    return "";
+bool IOauth2::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
+    return false;
 }
 
 /**

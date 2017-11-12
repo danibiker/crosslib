@@ -2356,16 +2356,6 @@ void Ioutil::drawListContent(Object *obj, int x, int y, int w, int h){
             if (icono >= 0){
                 drawIco(icono, x, y + centeredY + cont*Constant::getMENUSPACE());
             }
-
-            if (listObj->getObjectType() == GUILISTBOX){
-                if (listObj->getPosIniLista() > 0){
-                    pintarTriangulo (listObj->getX() + listObj->getW() - 6,listObj->getY() + INPUTCONTENT, 8, 8, true, colorText);
-                }
-
-                if (listObj->getPosFinLista() + 1 < (unsigned int)listObj->getSize()){
-                    pintarTriangulo (listObj->getX() + listObj->getW() - 6,listObj->getY() + listObj->getH() - INPUTCONTENT, 8, 8, false, colorText);
-                }
-            }
             cont++;
         }
         drawScrollBar(listObj);
@@ -3591,14 +3581,13 @@ void Ioutil::drawScrollBar(Object *obj){
 
     int minY = obj->getY() + INPUTCONTENT + TRISCROLLBARTAM;
     int maxY = obj->getY() + obj->getH() - INPUTCONTENT - TRISCROLLBARTAM;
-    int maxScrollBarY = maxY;
     bool drawScroll = false;
 
-
-    if (obj->getObjectType() == GUILISTBOX || obj->getObjectType() == GUILISTGROUPBOX){
+    if (obj->getObjectType() == GUILISTBOX || obj->getObjectType() == GUILISTGROUPBOX || obj->getObjectType() == GUITREELISTBOX){
         UIListCommon *objList = (UIListCommon *)obj;
-        minY += Constant::getMENUSPACE();
-
+        int cabecera = (obj->getObjectType() == GUILISTGROUPBOX ? Constant::getMENUSPACE() : 0); 
+        
+        minY += cabecera;
         if (objList->getSize() > objList->getElemVisibles()){
             //Cuantos mas elementos haya en la lista, mas pequenya sera la barra de desplazamiento
             scrollbarHeight = (maxY - minY) * objList->getElemVisibles() / (float) objList->getSize();
@@ -3617,10 +3606,11 @@ void Ioutil::drawScrollBar(Object *obj){
             posRelativa = (maxY - minY - scrollbarHeight) * objList->getPosActualLista() / (float) objList->getSize();
         }
         drawScroll = objList->isShowScrollbar() && ((allElementsVisible && objList->isShowScrollbarAlways()) || !allElementsVisible) ;
-
+        
+        
         //Se pinta el triangulo superior
         if (objList->getPosIniLista() > 0){
-            pintarTriangulo (obj->getX() + obj->getW() - 6, obj->getY() + INPUTCONTENT + Constant::getMENUSPACE(), TRISCROLLBARTAM, TRISCROLLBARTAM, true, obj->getTextColor());
+            pintarTriangulo (obj->getX() + obj->getW() - 6, obj->getY() + INPUTCONTENT + cabecera, TRISCROLLBARTAM, TRISCROLLBARTAM, true, obj->getTextColor());
         }
         //Se pinta el triangulo inferior
         if (objList->getPosFinLista() + 1 < (unsigned int)objList->getSize()){
@@ -3639,8 +3629,6 @@ void Ioutil::drawScrollBar(Object *obj){
 
         posRelativa = -1 * (maxY - minY - scrollbarHeight) * objText->getOffsetDesplazamiento() / (float) objText->getMaxOffsetY();
         drawScroll = true;
-        int offDesp = objText->getOffsetDesplazamiento();
-        int maxOffDesp = objText->getMaxOffsetY();
 
         //Se pinta el triangulo superior
         if (abs(objText->getOffsetDesplazamiento()) > 0){
@@ -3671,7 +3659,6 @@ void Ioutil::drawScrollBar(Object *obj){
 *
 */
 void Ioutil::drawUITextElementsArea(Object *obj){
-    bool centrar = true;
 
     if (obj->isVisible()){
         int x = obj->getX();
@@ -3831,28 +3818,92 @@ void Ioutil::drawUITreeListBox(Object *obj){
         UITreeListBox *listObj = (UITreeListBox *)obj;
 
         
-            int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
-            Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
-            Traza::print("Alto de la lista: ", h, W_PARANOIC);
-            
-            pintarContenedor(x,y,w,h,listObj->isFocus() && listObj->isEnabled(), obj, obj->getColor());
-            x += INPUTCONTENT;
-            y += INPUTCONTENT;
+        int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
+        Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
+        Traza::print("Alto de la lista: ", h, W_PARANOIC);
 
-            t_color colorText = listObj->isEnabled() && listObj->isFocus() ? obj->getTextColor() : cGris;
-            if (listObj->getObjectType() == GUITREELISTBOX && listObj->getSize() > 0){
-                //Ponemos el color por defecto para las listas
-                colorText = listObj->isEnabled() && listObj->isFocus() ? obj->getTextColor() : cGris;
-                TTF_SetFontStyle(font, TTF_STYLE_NORMAL);
-                Traza::print("listObj->getPosIniLista(): ", listObj->getPosIniLista(), W_PARANOIC);
-                Traza::print("listObj->getPosFinLista(): ", listObj->getPosFinLista(), W_PARANOIC);
-                //Dibujamos el resto de la lista
-                //if (listObj->getListScheme() == SCHEMEICONS){
-                    //drawListIcoHor(obj, x, y, w, h);
-                //} else {
-                    //drawListContent(obj, x, y, w, h);
-                //}
-            }
+        pintarContenedor(x,y,w,h,listObj->isFocus() && listObj->isEnabled(), obj, obj->getColor());
+        x += INPUTCONTENT;
+        y += INPUTCONTENT;
+
+        t_color colorText = listObj->isEnabled() && listObj->isFocus() ? obj->getTextColor() : cGris;
+        if (listObj->getObjectType() == GUITREELISTBOX && listObj->getSize() > 0){
+            //Ponemos el color por defecto para las listas
+            colorText = listObj->isEnabled() && listObj->isFocus() ? obj->getTextColor() : cGris;
+            TTF_SetFontStyle(font, TTF_STYLE_NORMAL);
+            Traza::print("listObj->getPosIniLista(): ", listObj->getPosIniLista(), W_PARANOIC);
+            Traza::print("listObj->getPosFinLista(): ", listObj->getPosFinLista(), W_PARANOIC);
+            //Dibujamos el resto de la lista
+            //if (listObj->getListScheme() == SCHEMEICONS){
+                //drawListIcoHor(obj, x, y, w, h);
+            //} else {
+                drawTreeListContent(obj, x, y, w, h);
+            //}
+        }
            
     }
+}
+
+void Ioutil::drawTreeListContent(Object *obj, int x, int y, int w, int h){
+    if (obj->isVisible()){
+        
+        UITreeListBox *listObj = (UITreeListBox *)obj;
+        int icono = -1;
+        //t_color colorText = listObj->isEnabled() && listObj->isFocus() ? cNegro : cGris;
+        t_color colorText = listObj->isEnabled() ? listObj->getTextColor() : cGris;
+        int cont = 0;
+        int centeredY = 0;
+        
+        centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
+        SDL_Rect textArea = { 0, 0, w - INPUTCONTENT, Constant::getMENUSPACE() };
+        
+        if (!listObj->getImgDrawed()){
+            int lastNode = -1;
+            for (unsigned int i=listObj->getPosIniLista(); i <= listObj->getPosFinLista(); i++ ){
+                TreeNode node = listObj->get(i);
+                if (lastNode != node.realPos){
+                    lastNode = node.realPos; //workaround to avoid repetitions
+                    Traza::print("pintando: " + node.text 
+                                    + " realpos: " + Constant::TipoToStr(node.realPos)
+                                    + " i: " + Constant::TipoToStr(i)
+                                    + " FinLista: " + Constant::TipoToStr(listObj->getPosFinLista())
+                                , W_PARANOIC);
+                    icono = node.ico;
+                    textArea.w = w - INPUTCONTENT - (icono >= 0 ? ICOSPACE : 0);
+
+                    if (i == listObj->getPosActualLista()){
+                        drawRectAlpha(x - INPUTCONTENT, y + cont*Constant::getMENUSPACE(), listObj->getW(),
+                                       Constant::getMENUSPACE(), cAzul, listObj->isFocus() ? 255 : 128);
+                        colorText = cBlanco;
+                        TTF_SetFontStyle(font, TTF_STYLE_BOLD);
+                        drawTextInArea(node.text.c_str() , x + ((icono >= 0) ? ICOSPACE : 0),
+                                       y + centeredY + cont*Constant::getMENUSPACE(), colorText, &textArea);
+                        colorText = listObj->isEnabled() ? listObj->getTextColor() : cGris;
+                        TTF_SetFontStyle(font, TTF_STYLE_NORMAL);
+                    } else if (i == listObj->getLastSelectedPos() && listObj->isEnableLastSelected()){
+                        //Dibujamos el rectangulo del ultimo elemento seleccionado
+                        drawRectAlpha(x - INPUTCONTENT, y + cont*Constant::getMENUSPACE(), listObj->getW(),
+                                      Constant::getMENUSPACE(), cVerde, 50);
+                        drawTextInArea(node.text.c_str() , x + ((icono >= 0) ? ICOSPACE : 0),
+                                       y + centeredY + cont*Constant::getMENUSPACE(), listObj->isEnabled() ? cBlanco : cGris, &textArea);
+
+                    } else {
+                        drawTextInArea(node.text.c_str() , x + ((icono >= 0) ? ICOSPACE : 0), y + centeredY + cont*Constant::getMENUSPACE(), colorText, &textArea);
+                    }
+
+                    pintarLinea(x, y + (cont+1)*Constant::getMENUSPACE(), x + w - 2*INPUTCONTENT,  y + (cont+1)*Constant::getMENUSPACE(), cSeparator);
+
+                    if (icono >= 0){
+                        drawIco(icono, x, y + centeredY + cont*Constant::getMENUSPACE());
+                    }
+                    cont++;
+                }
+            }
+            drawScrollBar(listObj);
+            cachearObjeto(obj);
+        } else {
+            Traza::print("Alto de la lista: ", h, W_PARANOIC);
+            cachearObjeto(obj);
+        }
+    }    
 }

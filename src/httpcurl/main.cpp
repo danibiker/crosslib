@@ -222,8 +222,9 @@ int main(int argc, char *argv[]){
 //
         string rutaTraza = dir.getDirActual() + Constant::getFileSep() + "Traza.txt";
         Traza *traza = new Traza(rutaTraza.c_str());
-//        
         traza->print("Inicio", W_DEBUG);
+        cout << "Trazas en: " << rutaTraza << endl;
+        
 //        
         DWORD ret = dropbox.authenticate();
         string accessToken = dropbox.getAccessToken();
@@ -244,26 +245,30 @@ int main(int argc, char *argv[]){
         //cout << "Cifrando fichero..." << endl;
 //        cifrador.cifrar("C:\\calc.exe", "C:\\calc.exe.cif");
         cout << "Subiendo fichero..." << endl;
-        dropbox.chunckedUpload("C:\\calc.exe", "/calc.exe", accessToken);
+        if (dropbox.chunckedUpload("D:\\subir\\01.mp3", "/01.mp3", accessToken)){
+        //if (dropbox.chunckedUpload("D:\\subir\\02.flac", "/02.flac", accessToken)){
+        //if (dropbox.chunckedUpload("D:\\subir\\calc.exe", "/calc.exe", accessToken)){
+            cout << "Fin de la subida. Descargando..." << endl;
+            //dropbox.getFile("C:\\01_.mp3", "/01.mp3", accessToken);
+        } else {
+            cout << "Error en la subida" << endl;
+        }
         //dropbox.chunckedUpload("C:\\temptempfile.txt", "/temptempfile.txt", accessToken);
-        cout << "Fin de la subida. Descargando..." << endl;
+        
         //dropbox.getFile("C:\\ejemplo.exe.cif", "calc.exe", accessToken);
 //        cout << "Descifrando fichero..." << endl;
 //        cifrador.descifrar("C:\\ejemplo.exe.cif", "C:\\ejemplo.exe");
- //       dropbox.getFile("C:\\calc3.exe", "/calc.exe", accessToken);
-//
-//
-        dropbox.deleteFiles("/calc.exe", accessToken);
 
+        //dropbox.deleteFiles("/calc.exe", accessToken);
         /**Pruebas para listar un directorio o fichero*/
-        CloudFiles files;
-        dropbox.listFiles("/music", accessToken, &files);
+//        CloudFiles files;
+//        dropbox.listFiles("/music", accessToken, &files);
 //        dropbox.listFiles("/music/m-clan - sopa frÝa", accessToken, &files);
 //        dropbox.listFiles("/music/m-clan - sopa fr\355a", accessToken, &files);
         //0x61f7130 "/music/m-clan - sopa fr\355a"
-        for (int i=0; i < files.fileList.size(); i++){
-            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
-        }
+//        for (int i=0; i < files.fileList.size(); i++){
+//            cout << ((CloudFiles *)files.fileList.at(i))->path << endl;
+//        }
 //        
 //        Traza::print("Buscando en " + ((CloudFiles *)files.fileList.at(7))->path, W_DEBUG);
 //        string id = ((CloudFiles *)files.fileList.at(7))->strHash;

@@ -51,19 +51,12 @@
       </logicalFolder>
       <logicalFolder name="servers" displayName="servers" projectFiles="true">
         <itemPath>../src/httpcurl/servers/allmyvideos.cpp</itemPath>
-        <itemPath>../src/httpcurl/servers/allmyvideos.h</itemPath>
         <itemPath>../src/httpcurl/servers/dropbox.cpp</itemPath>
-        <itemPath>../src/httpcurl/servers/dropbox.h</itemPath>
         <itemPath>../src/httpcurl/servers/googledrive.cpp</itemPath>
-        <itemPath>../src/httpcurl/servers/googledrive.h</itemPath>
         <itemPath>../src/httpcurl/servers/ioauth2.cpp</itemPath>
-        <itemPath>../src/httpcurl/servers/ioauth2.h</itemPath>
         <itemPath>../src/httpcurl/servers/onedrive.cpp</itemPath>
-        <itemPath>../src/httpcurl/servers/onedrive.h</itemPath>
         <itemPath>../src/httpcurl/servers/streamcloud.cpp</itemPath>
-        <itemPath>../src/httpcurl/servers/streamcloud.h</itemPath>
         <itemPath>../src/httpcurl/servers/vk.cpp</itemPath>
-        <itemPath>../src/httpcurl/servers/vk.h</itemPath>
       </logicalFolder>
       <logicalFolder name="util" displayName="util" projectFiles="true">
         <itemPath>../src/httpcurl/util/ConstantHttp.cpp</itemPath>
@@ -258,10 +251,12 @@
       <itemPath>../src/uiobjects/Launcher.h</itemPath>
       <itemPath>../src/uiobjects/ListaSimple.cpp</itemPath>
       <itemPath>../src/uiobjects/ListaSimple.h</itemPath>
+      <itemPath>../src/uiobjects/Menuobject.cpp</itemPath>
       <itemPath>../src/uiobjects/SHA1.cpp</itemPath>
       <itemPath>../src/uiobjects/SHA1.h</itemPath>
       <itemPath>../src/uiobjects/Traza.cpp</itemPath>
       <itemPath>../src/uiobjects/Traza.h</itemPath>
+      <itemPath>../src/uiobjects/UITreeListBox.cpp</itemPath>
       <itemPath>../src/uiobjects/common.h</itemPath>
       <itemPath>../src/uiobjects/cursor.cpp</itemPath>
       <itemPath>../src/uiobjects/cursor.h</itemPath>
@@ -625,26 +620,14 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/allmyvideos.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/dropbox.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/dropbox.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/googledrive.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/googledrive.h"
-            ex="false"
-            tool="3"
             flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/ioauth2.cpp"
@@ -652,28 +635,17 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/ioauth2.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/onedrive.cpp"
             ex="false"
             tool="1"
             flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/onedrive.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/streamcloud.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/streamcloud.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/vk.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/ConstantHttp.cpp"
             ex="false"
@@ -979,6 +951,8 @@
       </item>
       <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/SHA1.h" ex="false" tool="3" flavor2="0">
@@ -986,6 +960,8 @@
       <item path="../src/uiobjects/Traza.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/Traza.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/UITreeListBox.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1459,26 +1435,14 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/allmyvideos.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/dropbox.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/dropbox.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/googledrive.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/googledrive.h"
-            ex="false"
-            tool="3"
             flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/ioauth2.cpp"
@@ -1486,28 +1450,17 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/ioauth2.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/onedrive.cpp"
             ex="false"
             tool="1"
             flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/onedrive.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/streamcloud.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/streamcloud.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/vk.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/ConstantHttp.cpp"
             ex="false"
@@ -1813,6 +1766,8 @@
       </item>
       <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/SHA1.h" ex="false" tool="3" flavor2="0">
@@ -1820,6 +1775,8 @@
       <item path="../src/uiobjects/Traza.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/Traza.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/UITreeListBox.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -2301,26 +2258,14 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/allmyvideos.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/dropbox.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/dropbox.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/googledrive.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/googledrive.h"
-            ex="false"
-            tool="3"
             flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/ioauth2.cpp"
@@ -2328,28 +2273,17 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/ioauth2.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/onedrive.cpp"
             ex="false"
             tool="1"
             flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/onedrive.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/servers/streamcloud.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../src/httpcurl/servers/streamcloud.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/vk.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/ConstantHttp.cpp"
             ex="false"
@@ -2655,6 +2589,8 @@
       </item>
       <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/SHA1.h" ex="false" tool="3" flavor2="0">
@@ -2662,6 +2598,8 @@
       <item path="../src/uiobjects/Traza.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/Traza.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/UITreeListBox.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="9">
       </item>

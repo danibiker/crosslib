@@ -13,32 +13,89 @@
 
 #include "UITreeListBox.h"
 #include "Constant.h"
-#include "ArbolAAB.h"
 #include "ListaSimple.h"
 
+/**
+ * 
+ */
+UITreeListBox::UITreeListBox() {
+   inicializarObjeto(GUITREELISTBOX);
+}
 
+/**
+ * 
+ */
+UITreeListBox::~UITreeListBox() {
+}
+
+/**
+ * 
+ * @param evento
+ */
+void UITreeListBox::action(tEvento *evento){
+    static unsigned long lastClick = 0;
+    
+    //Si hay un popup lanzado por este elemento, debe dejar de procesar los eventos
+    if (popup == false){
+        if (evento->isMouse && evento->mouse == MOUSE_BUTTON_LEFT && evento->mouse_state == SDL_PRESSED){
+           Traza::print("UITreeListBox::action: Mouse Pressed: " + this->getName(), W_DEBUG);
+           if (SDL_GetTicks() - lastClick < DBLCLICKSPEED){
+               lastSelectedPos = this->posActualLista;
+               lastClick = SDL_GetTicks() - DBLCLICKSPEED;  //reseteo del dobleclick
+               TreeNode node = get(this->posActualLista);
+               Traza::print("UITreeListBox::action: Double Click: " + node.id + (node.show ? " S" : " N"), W_DEBUG);
+               unfold(&lista, node.id, node.show);
+            } else {
+                lastClick = SDL_GetTicks();
+            }
+           checkPos(*evento);
+           this->setImgDrawed(false);
+        } else if ( (evento->key == SDLK_RETURN && !(evento->keyMod & KMOD_LALT)) || evento->joy == JoyMapper::getJoyMapper(JOY_BUTTON_A)){
+            lastSelectedPos = this->posActualLista;
+            TreeNode node = get(this->posActualLista);
+            Traza::print("UITreeListBox::action: return: " + node.id + (node.show ? " S" : " N"), W_DEBUG);
+            unfold(&lista, node.id, node.show);
+            this->setImgDrawed(false);
+        } else {
+            //Traza::print("UIListGroup::action: Pasando al padre: " + this->getName(), W_DEBUG);
+            UIListCommon::action(evento);
+        }
+    }
+}
+
+/**
+ * 
+ * @param lista
+ * @param id
+ * @param unfold
+ */
 void UITreeListBox::unfold(listaSimple<TreeNode> *lista, string id, bool unfold){
-    int i = 0;
-    
+    //Recorremos al reves para saber si la rama tiene hojas
+    int i = lista->getSize() - 1;
     string tmpId = "";
-    size_t cut = 0;
+    string cut = "";
     bool salir = false;
+    int subnivelPos = 0;
     
-    do{
+    while (i >= 0 && !salir){
         tmpId = lista->get(i).id;
-        cut = tmpId.find_last_of(".");
-        if (cut != string::npos){
-            if (tmpId.substr(0,cut).compare(id) == 0){
-                (&lista->get(i))->show = true;
+        cut = tmpId.substr(0,id.length());
+        subnivelPos = tmpId.find_last_of(".");
+        
+        if (cut.compare(id) == 0 && tmpId.compare(id) != 0){
+            //tieneHojas = true;
+            if (lista->get(i).show || (!lista->get(i).show && tmpId.substr(0,subnivelPos).compare(id) == 0)){
                 TreeNode *tmpNode = new TreeNode();
                 *tmpNode = lista->get(i);
-                tmpNode->show = unfold;
+                tmpNode->show = !tmpNode->show;
                 lista->set(i, tmpNode);
-                cout << "Marcando " << lista->get(i).id << (lista->get(i).show ? "S" : "N") << endl;
-            } 
+                Traza::print("Marcando: " + lista->get(i).id + (lista->get(i).show ? " S" : " N"), W_DEBUG);
+            }
         }
-        i++;
-    } while (i < lista->getSize() && !salir);
+        i--;
+    }
+    
+    calcularScrPos();
 }
 
 /**
@@ -56,126 +113,6 @@ void UITreeListBox::mostrar(){
    }   
 }
 
-UITreeListBox::UITreeListBox() {
-   inicializarObjeto(GUITREELISTBOX);
-    
-   TreeNode node;
-   node.id = "1";
-   lista.add(node);
-   node.id = "2";
-   lista.add(node);
-   node.id = "3";
-   lista.add(node);
-   node.id = "4";
-   lista.add(node);
-   node.id = "2.1";
-   lista.add(node);
-   node.id = "2.2";
-   lista.add(node);
-   node.id = "4.1";
-   lista.add(node);
-   node.id = "4.3";
-   lista.add(node);
-   node.id = "4.2";
-   lista.add(node);
-   node.id = "4.2.1";
-   lista.add(node);
-   node.id = "4.2.1.1";
-   lista.add(node);
-   node.id = "4.2.1.2";
-   lista.add(node);
-   lista.sort();
-   
-//   string parent = "";
-//   size_t pos = 0;
-//   
-//   unfold(&lista, "4", true);
-//   mostrar();
-//   unfold(&lista, "4", false);
-//   mostrar();
-//   
-////   unfold(&lista, "4", true);
-//   unfold(&lista, "4.2.1", true);
-//   mostrar();
-   // Un árbol de enteros
-   /*ABB<int> ArbolInt;
-
-   // Inserción de nodos en árbol:
-   ArbolInt.Insertar(10);
-   ArbolInt.Insertar(5);
-   ArbolInt.Insertar(12);
-   ArbolInt.Insertar(4);
-   ArbolInt.Insertar(7);
-   ArbolInt.Insertar(3);
-   ArbolInt.Insertar(6);
-   ArbolInt.Insertar(9);
-   ArbolInt.Insertar(8);
-   ArbolInt.Insertar(11);
-   ArbolInt.Insertar(14);
-   ArbolInt.Insertar(13);
-   ArbolInt.Insertar(2);
-   ArbolInt.Insertar(1);
-   ArbolInt.Insertar(15);
-   ArbolInt.Insertar(10);
-   ArbolInt.Insertar(17);
-   ArbolInt.Insertar(18);
-   ArbolInt.Insertar(16);
-
-   cout << "Altura de arbol " << ArbolInt.AlturaArbol() << endl;
-
-   // Mostrar el árbol en tres ordenes distintos:
-   cout << "InOrden: ";
-   ArbolInt.InOrden(Mostrar);
-   cout << endl;
-   cout << "PreOrden: ";
-   ArbolInt.PreOrden(Mostrar);
-   cout << endl;
-   cout << "PostOrden: ";
-   ArbolInt.PostOrden(Mostrar);
-   cout << endl;
-
-   // Borraremos algunos elementos:
-   cout << "N nodos: " << ArbolInt.NumeroNodos() << endl;
-   ArbolInt.Borrar(5);
-   cout << "Borrar   5: ";
-   ArbolInt.InOrden(Mostrar);
-   cout << endl;
-   ArbolInt.Borrar(8);
-   cout << "Borrar   8: ";
-   ArbolInt.InOrden(Mostrar);
-   cout << endl;
-   ArbolInt.Borrar(15);
-   cout << "Borrar  15: ";
-   ArbolInt.InOrden(Mostrar);
-   cout << endl;
-   ArbolInt.Borrar(245);
-   cout << "Borrar 245: ";
-   ArbolInt.InOrden(Mostrar);
-   cout << endl;
-   ArbolInt.Borrar(4);
-   cout << "Borrar   4: ";
-   ArbolInt.InOrden(Mostrar);
-   ArbolInt.Borrar(17);
-   cout << endl;
-   cout << "Borrar  17: ";
-   ArbolInt.InOrden(Mostrar);
-   cout << endl;
-
-   // Veamos algunos parámetros
-   cout << "N nodos: " << ArbolInt.NumeroNodos() << endl;
-   cout << "Altura de 1 " << ArbolInt.Altura(1) << endl;
-   cout << "Altura de 10 " << ArbolInt.Altura(10) << endl;
-   cout << "Altura de arbol " << ArbolInt.AlturaArbol() << endl;
-    */
- 
-}
-
-/**
- * 
- */
-UITreeListBox::~UITreeListBox() {
-}
-
 /**
  * 
  * @param row
@@ -183,18 +120,39 @@ UITreeListBox::~UITreeListBox() {
  */
 TreeNode UITreeListBox::get(int row){
     int i = 0;
-    int posLista = 0;
-    do{
-        if (lista.get(i).show == true){
+    int posLista = -1;
+    string tmpId = "";
+    size_t cut = 0;
+    int posFound = 0;
+    
+    if (lista.getSize() > 0)
+    while (i < lista.getSize() && posLista < row){
+        tmpId = lista.get(i).id;
+        cut = tmpId.find_last_of(".");
+        if (lista.get(i).show == true || cut == string::npos){
             posLista++;
+            posFound = i;
         }
         i++;
-    } while (i < lista.getSize() && posLista > row);
-    if (i<lista.getSize())
-        return lista.get(i);
-    else 
+    }
+    
+    if (posFound < lista.getSize()){
+        TreeNode res = lista.get(posFound);
+        res.realPos = posFound;
+        return res;
+    } else 
         throw(Excepcion(ENULL, "UITreeListBox: Columna vacia"));
 }
+
+/**
+ * 
+ * @param realrow
+ * @param estado
+ */
+void UITreeListBox::refreshNode(TreeNode tmpNode){
+    lista.set(tmpNode.realPos, &tmpNode);
+}
+
 /**
  * 
  * @param row
@@ -211,4 +169,54 @@ string UITreeListBox::getValue(int row){
  */
 int UITreeListBox::getDestino(int row){
     return get(row).dest;
+}
+
+/**
+ * 
+ * @return 
+ */
+unsigned int UITreeListBox::getSize(){
+    unsigned int i = 0;
+    unsigned int nElems = 0;
+    string tmpId = "";
+    size_t cut = 0;
+
+    while (i < lista.getSize()){
+        tmpId = lista.get(i).id;
+        cut = tmpId.find_last_of(".");
+        if (lista.get(i).show == true || cut == string::npos){
+            nElems++;
+        }
+        i++;
+    }
+    return nElems;
+}
+
+/**
+ * 
+ */
+void UITreeListBox::sort(){
+    this->lista.sort();
+}
+
+/**
+ * 
+ * @param vid
+ * @param vtext
+ * @param vvalue
+ * @param vico
+ * @param vdest
+ * @param vshow
+ */
+void UITreeListBox::add(string vid, string vtext, string vvalue, int vico, int vdest, int vshow){
+    this->lista.add(TreeNode(vid, vtext, vvalue, vico, vdest, vshow));
+}
+
+void UITreeListBox::add(string vid, string vtext, string vvalue, int vico, int vdest, int vshow, int vestado){
+    this->lista.add(TreeNode(vid, vtext, vvalue, vico, vdest, vshow, vestado));
+}
+
+void UITreeListBox::clearLista(){
+    this->lista.clear();
+    UIListCommon::clearLista();
 }

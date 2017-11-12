@@ -222,11 +222,8 @@ int Dropbox::putFile(string filesystemPath, string dropboxPath, string accessTok
 /**
 *
 */
-string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
+bool Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
     map<string, string> cabeceras;
-    string postData;
-
-    string url = "";
     string AuthOauth2 = "Bearer " + accessToken;
     //postData = "Ejemplo automatizado de generacion del token";
     size_t tam;
@@ -234,16 +231,21 @@ string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string
     size_t offsetForDropbox = 0;
     Json::Value root;   // will contains the root value after parsing.
     Json::Reader reader;
+    bool ret = false;
 
     int iteraciones = 0;
     size_t chunkFileSize = 0;
-    struct stat file_info;
+    
+    static const size_t DROPBOXCHUNK = 150 * 1024 * 1024; //500KB
 
     if (!accessToken.empty()){
         ifstream file (filesystemPath.c_str(), ios::in|ios::binary|ios::ate);
         if (file.is_open()){
             tam = file.tellg();
-            iteraciones = tam / CHUNCKSIZE;
+            iteraciones = tam / DROPBOXCHUNK;
+        } else {
+            Traza::print("Dropbox::chunckedUpload. No se ha podido abrir el fichero: " + filesystemPath, W_ERROR);
+            return false;
         }
         file.close();
         
@@ -251,56 +253,85 @@ string Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string
         cabeceras.insert( make_pair("Authorization", AuthOauth2));
         //DROPBOXAPIV2
         cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
-        util.post(DROPBOXURLPUTSTART, "", &cabeceras);
-
-        bool parsingSuccessful = reader.parse( util.getData(), root );
+        
+//        Json::Value postArg;
+//        postArg["close"] = false;
+//        Json::FastWriter fastWriter;
+//        std::string startoutput = fastWriter.write(postArg);
+//        Traza::print(startoutput, W_DEBUG);
+//        cabeceras.insert( make_pair("Dropbox-API-Arg", startoutput));      
+        //util.post(DROPBOXURLPUTSTART, "", &cabeceras);
+        
+        offsetForDropbox = 0;      
+        util.post(DROPBOXURLPUTSTART, filesystemPath.c_str(), (tam < DROPBOXCHUNK) ? tam : DROPBOXCHUNK, offsetForDropbox, &cabeceras);            
+        string resp = util.getData();
+        
+        bool parsingSuccessful = reader.parse( resp, root );
         if ( !parsingSuccessful ){
              // report to the user the failure and their locations in the document.
-            Traza::print("Dropbox::chunckedUpload: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+            //Traza::print("Dropbox::chunckedUpload: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+            Traza::print("Dropbox::chunckedUpload: " + resp, W_ERROR);
         } else {
-            Traza::print(util.getData(), W_DEBUG);
             upId = root.get("session_id","").asString();
+            Traza::print("Obtenido un session_id: " + upId, W_DEBUG);
         }
         //DROPBOXAPIV2
+        int httpCode = util.getHttp_code();
         
-        for (int posIt = 0; posIt <= iteraciones; posIt++){
-            chunkFileSize = (posIt < iteraciones) ? CHUNCKSIZE : tam % CHUNCKSIZE;
-            if (chunkFileSize > 0){
-                offsetForDropbox = CHUNCKSIZE * posIt;
-                Traza::print("Subiendo" , (offsetForDropbox / (float) tam) *100, W_DEBUG);
-                cabeceras.clear();
-                cabeceras.insert( make_pair("Authorization", AuthOauth2));
-                cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
-                Json::Value postArg;
-                Json::Value parmCursor;
-                parmCursor["offset"] = (Json::UInt64)offsetForDropbox;
-                parmCursor["session_id"]= upId.empty() ? "" : upId;
-                postArg["close"] = false;
-                postArg["cursor"] = parmCursor;
-                
-                Json::FastWriter fastWriter;
-                std::string output = fastWriter.write(postArg);
-                
-                Traza::print(output, W_DEBUG);
-                cabeceras.insert( make_pair("Dropbox-API-Arg", output));
-                util.post(DROPBOXURLPUTCHUNKED, filesystemPath.c_str(), chunkFileSize, offsetForDropbox, &cabeceras);
-                Traza::print("retorno subida", util.getHttp_code(), W_DEBUG);
+        offsetForDropbox += (tam < DROPBOXCHUNK) ? tam : DROPBOXCHUNK;     
+        while (offsetForDropbox < tam){
+            Traza::print("Subiendo %" , (offsetForDropbox / (float) tam) *100, W_DEBUG);
+            Traza::print("Offset: " + Constant::TipoToStr(offsetForDropbox) 
+                         + " tam: " + Constant::TipoToStr(chunkFileSize), W_DEBUG);
+
+            cabeceras.clear();
+            cabeceras.insert( make_pair("Authorization", AuthOauth2));
+            cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
+            cabeceras.insert( make_pair("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"));
+            cabeceras.insert( make_pair("Accept", "*/*"));
+
+
+            Json::Value postArg;
+            Json::Value parmCursor;
+            parmCursor["offset"] = (Json::UInt64)offsetForDropbox;
+            parmCursor["session_id"]= upId.empty() ? "" : upId;
+//                parmCursor["validateResponse"] = false;
+//                parmCursor["file"] = cloudIdPath;
+            postArg["close"] = false;
+            postArg["cursor"] = parmCursor;
+            Json::FastWriter fastWriter;
+
+            std::string output = fastWriter.write(postArg);
+            Traza::print(output, W_DEBUG);
+            cabeceras.insert( make_pair("Dropbox-API-Arg", output));
+            util.post(DROPBOXURLPUTCHUNKED, filesystemPath.c_str(), chunkFileSize, offsetForDropbox, &cabeceras);
+            //httpCode = util.getHttp_code();
+
+            Traza::print("retorno subida", httpCode, W_DEBUG);
+            if (httpCode != 200){
+                resp = util.getData();
+                Traza::print(resp, W_DEBUG);
             }
+            offsetForDropbox += DROPBOXCHUNK;
         }
         
-        if (!upId.empty()) 
-            commitChunkedUpload(cloudIdPath, accessToken, upId, offsetForDropbox + chunkFileSize);
-        
+        if (httpCode == 200) {
+            chunkFileSize = tam - offsetForDropbox;
+            Traza::print("FINAL. Offset: " + Constant::TipoToStr(offsetForDropbox) 
+                             + " tam: " + Constant::TipoToStr(chunkFileSize), W_DEBUG);
+            
+            ret = commitChunkedUpload(filesystemPath, cloudIdPath, accessToken, upId, offsetForDropbox, chunkFileSize);
+        }
     } else {
         Traza::print("Upload aborted. Access token empty", W_ERROR);
     }
-    return upId;
+    return ret;
 }
 
 /**
 *
 */
-bool Dropbox::commitChunkedUpload(string dropboxPath, string accessToken, string upId, size_t offset){
+bool Dropbox::commitChunkedUpload(string filesystemPath, string dropboxPath, string accessToken, string upId, size_t offset, size_t tam){
     string AuthOauth2 = "Bearer " + accessToken;
     map<string, string> cabeceras;
     Json::Value root;   // will contains the root value after parsing.
@@ -327,14 +358,15 @@ bool Dropbox::commitChunkedUpload(string dropboxPath, string accessToken, string
     Traza::print(output, W_DEBUG);
     cabeceras.insert( make_pair("Dropbox-API-Arg", output));
     //Envio del commit
-    util.post(DROPBOXURLCOMMITCHUNKED, "", &cabeceras);
+    util.post(DROPBOXURLCOMMITCHUNKED, filesystemPath.c_str(), tam, offset, &cabeceras);
+    //util.post(DROPBOXURLCOMMITCHUNKED, "", &cabeceras);
     Traza::print("retorno commit", util.getHttp_code(), W_DEBUG);
     
     std::string res = util.getData();
     if (util.getHttp_code() == 200){
         return true;
     } else {
-        Traza::print("Dropbox::commitChunkedUpload. Error in commit", W_ERROR);
+        Traza::print("Dropbox::commitChunkedUpload. Error in commit: " + res, W_ERROR);
         return false;
     }
     

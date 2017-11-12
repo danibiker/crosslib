@@ -36,7 +36,7 @@ class Dropbox : public IOauth2
         void launchAuthorize(string clientid);
         string launchAccessToken(string clientid, string secret, string code, bool refresh);
         bool deleteFiles(string fileid, string accessToken);
-        string chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
+        bool chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
         string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
         bool listFiles(string filesystemPath, string accessToken, CloudFiles *files);
         int getFile(string filesystemPath, string cloudIdPath, string accessToken);
@@ -45,7 +45,7 @@ class Dropbox : public IOauth2
 
     private:
         /**Metodos propios para dropbox*/
-        bool commitChunkedUpload(string dropboxPath, string accessToken, string upId, size_t offset);
+        bool commitChunkedUpload(string filesystemPath, string dropboxPath, string accessToken, string upId, size_t offset, size_t tam);
         string getJSONListDropbox(string filesystemPath, string accessToken);
         string getJSONListContinueDropbox(string cursor, string accessToken);
         int putFile(string filesystemPath, string dropboxPath, string accessToken);

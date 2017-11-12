@@ -37,10 +37,10 @@ void UIListCommon::action(tEvento *evento){
     static unsigned long lastClick = 0;
     //Si hay un popup lanzado por este elemento, debe dejar de procesar los eventos
     if (popup == false){
-        if (evento->isKey || evento->isJoy || (evento->isMouse && evento->mouse_state == SDL_PRESSED &&
+        if (evento->isKey || evento->isJoy || (evento->isMouse &&
                                                (evento->mouse == MOUSE_BUTTON_WHEELDOWN || evento->mouse == MOUSE_BUTTON_WHEELUP)) ){
 
-            Traza::print("UIList::action: " + this->getName(), W_PARANOIC);
+            Traza::print("UIList::action: " + this->getName(), W_DEBUG);
 
             this->setImgDrawed(false);
             //Para mostrar el popup que permite elegir una letra para posicionarnos en la lista
@@ -88,7 +88,8 @@ void UIListCommon::action(tEvento *evento){
             } else if (evento->key == SDLK_HOME){
                 this->inicioLista();
             } else if (evento->key == SDLK_BACKSPACE || evento->joy == JoyMapper::getJoyMapper(JOY_BUTTON_B)){
-                this->posActualLista = (this->getSize() > 0) ? this->getSize() - 1 : 0;
+                unsigned int sizeList = this->getSize();
+                this->posActualLista = (sizeList > 0) ? sizeList - 1 : 0;
                 this->setChecked(true);
                 Traza::print("BACKSPACE: Checkeando el elemento: " + this->getName(), W_PARANOIC);
             } else {
@@ -154,7 +155,6 @@ void UIListCommon::checkPos(tEvento evento){
         if (this->getPosIniLista() + posClick < getSize()){
             this->setPosActualLista(this->getPosIniLista() + posClick);
         }
-
     }
 }
 
@@ -174,11 +174,12 @@ bool UIListCommon::searchTextInList(int key){
 */
 void UIListCommon::nextElemLista(){
     lastPosActualLista = posActualLista;
-    if (this->getSize() >= 0){
-        if ( posActualLista + 1 < (unsigned int)this->getSize() ){
+    unsigned int sizeList = this->getSize();
+    if (sizeList >= 0){
+        if ( posActualLista + 1 < sizeList ){
             posActualLista++;
         } else {
-            posActualLista = this->getSize() - 1;
+            posActualLista = sizeList - 1;
         }
         calcularScrPos();
     }
@@ -255,7 +256,8 @@ unsigned int UIListCommon::getElemVisibles(){
 */
 void UIListCommon::calcularScrPos(){
     unsigned int elemVisibles = getElemVisibles();
-
+    unsigned int sizeList = this->getSize();
+    
     if (getListScheme() == SCHEMEICONS){
         if (this->getH() > 0 && this->getW() > 0){
 //            Traza::print("elemVisibles",elemVisibles,W_DEBUG);
@@ -276,15 +278,15 @@ void UIListCommon::calcularScrPos(){
 
                 if (posActualLista >= lados){
                     posIniLista = posActualLista - lados;
-                    if (posActualLista + lados + 1 > this->getSize() && this->getSize() > 0){
-                        posFinLista = this->getSize() > 0 ? this->getSize() - 1 : 0;
+                    if (posActualLista + lados + 1 > sizeList && sizeList > 0){
+                        posFinLista = sizeList > 0 ? sizeList - 1 : 0;
                     } else {
                         posFinLista = posActualLista + lados;
                     }
                 } else {
                     posIniLista = 0;
-                    if (elemVisibles > this->getSize()){
-                        posFinLista = this->getSize() > 0 ? this->getSize() - 1 : 0;
+                    if (elemVisibles > sizeList){
+                        posFinLista = sizeList > 0 ? sizeList - 1 : 0;
                     } else {
                         posFinLista = elemVisibles - 1;
                     }
@@ -303,7 +305,7 @@ void UIListCommon::calcularScrPos(){
         unsigned int elemVisibles = getElemVisibles();
 //        Traza::print("Redimensionando: " + Constant::TipoToStr(this->getH() / Constant::getMENUSPACE()) + " elementos para un height: " + Constant::TipoToStr(this->getH()), W_PARANOIC);
 //        Traza::print("posActualLista: " + Constant::TipoToStr(posActualLista) + " posFinLista: " + Constant::TipoToStr(posFinLista), W_PARANOIC);
-        if (getSize() > 0 && posIniLista < posFinLista){
+        if (sizeList > 0 && posIniLista < posFinLista){
             //Movemos los limites iniciales y finales hasta que la posicion actual quede entre
             //los dos limites
             do{
@@ -323,7 +325,7 @@ void UIListCommon::calcularScrPos(){
             if (posIniLista > posActualLista)
                 posIniLista = posActualLista;
 
-        } else if (posIniLista == posFinLista && posActualLista < getSize()){
+        } else if (posIniLista == posFinLista && posActualLista < sizeList){
             posIniLista = posActualLista;
             posFinLista = posActualLista;
         } else {
@@ -334,9 +336,9 @@ void UIListCommon::calcularScrPos(){
         }
 
         //Comprobamos que la posicion final sea lo que realmente se puede mostrar
-        if (getSize() <= elemVisibles && getSize() > 0){
-            posFinLista = getSize() - 1;
-        } else if (getSize() > elemVisibles && elemVisibles > 0){
+        if (sizeList <= elemVisibles && sizeList > 0){
+            posFinLista = sizeList - 1;
+        } else if (sizeList > elemVisibles && elemVisibles > 0){
             posFinLista = posIniLista + elemVisibles - 1 ;
         }
 

@@ -210,11 +210,12 @@ bool Onedrive::deleteFiles(string fileid, string accessToken){
  * @param accessToken
  * @return 
  */
-string Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
+bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
     map<string, string> cabeceras;
     string postData = "";
     string AuthOauth2 = "Bearer " + accessToken;
     string url = "";
+    bool ret = false;
     
     if (((int)cloudIdPath.find_first_of("!")) >= 0) {
         url = ONEDRIVEURLPUT + "/items/" + Constant::url_encode(cloudIdPath) + "/createUploadSession";
@@ -283,13 +284,14 @@ string Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, strin
     if (!location.empty()){
         Traza::print("Enviando al location:'" + location, W_DEBUG);
         size_t pos = 0;
-        long resp = 100; //HTTP/1.1 100 Continue, HTTP/1.1 202 Accepted
-        while (pos < tam && (resp == 100 || resp == 202)){
+        bool resp = true; 
+        while (pos < tam && resp){
             resp = resumableChunckedUpload(filesystemPath, location, pos, tam, accessToken);
             pos += ONEDRIVECHUNK;
+            ret = resp;
         }
     }
-    return location;
+    return ret;
 }
 
 /**
@@ -301,7 +303,7 @@ string Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, strin
  * @param accessToken
  * @return 
  */
-long Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken){
+bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken){
     map<string, string> cabeceras;
     string AuthOauth2 = "Bearer " + accessToken;
     Dirutil dir;
@@ -333,14 +335,15 @@ long Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t
     //Control error de token caducado de OAUTH2
     Json::Value root;   // will contains the root value after parsing.
     uint32_t oauthOut = checkOauthErrors(util.getData(), &root);
+    //Control error de token caducado de OAUTH2
     if (oauthOut == ERRORREFRESHTOKEN){
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
         //Utilizando recursividad
         return resumableChunckedUpload(filesystemPath, url, offset, tam, this->getAccessToken());
     }
-    //Control error de token caducado de OAUTH2
-
-    return util.getHttp_code();
+    
+    //HTTP/1.1 100 Continue, HTTP/1.1 202 Accepted
+    return (util.getHttp_code() == 100 || util.getHttp_code() == 202);
 }
 
 /**

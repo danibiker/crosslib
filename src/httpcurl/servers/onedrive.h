@@ -47,7 +47,7 @@ public:
     void launchAuthorize(string clientid);
     string launchAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
     bool deleteFiles(string fileid, string accessToken);
-    string chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
+    bool chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
     string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
     bool listFiles(string filesystemPath, string accessToken, CloudFiles *files);
     int getFile(string filesystemPath, string cloudIdPath, string accessToken);
@@ -59,7 +59,7 @@ public:
 private:
     uint32_t checkOauthErrors(string data, Json::Value *root);
     string getJSONList(string fileid, string accessToken, string nextPageToken);
-    long resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken);
+    bool resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken);
 };
 
 #endif /* ONEDRIVE_H */
