@@ -111,15 +111,15 @@ class DataList{
             return -1;
         };
         
-        bool comparar(const DataList &c) const {
+        int comparar(const DataList &c) const {
             return getKey().compare(c.getKey());
         }
 
         bool operator==(const DataList &c) const {
-            return !comparar(c);
+            return comparar(c) == 0;
         }
         bool operator!=(const DataList &c) const {
-            return comparar(c);
+            return comparar(c) != 0;
         }
         bool operator<(const DataList &c) const {
             return comparar(c) < 0;

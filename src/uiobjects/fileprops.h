@@ -13,7 +13,7 @@ using namespace std;
             string dir;
             int ico;
             
-            bool comparar(const FileProps &c) const {
+            int comparar(const FileProps &c) const {
                 string str1 = filename;
                 string str2 = c.filename;
                 Constant::lowerCase(&str1);
@@ -22,10 +22,10 @@ using namespace std;
             }
             
             bool operator==(const FileProps &c) const {
-                return !comparar(c);
+                return comparar(c) == 0;
             }
             bool operator!=(const FileProps &c) const {
-                return comparar(c);
+                return comparar(c) != 0;
             }
             bool operator<(const FileProps &c) const {
                 return comparar(c) < 0;

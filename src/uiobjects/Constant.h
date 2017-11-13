@@ -467,6 +467,7 @@ class Constant{
         static int IMGBOXARTWIDTH; //Ancho de la imagen de la rom
         static int IMGBOXARTHEIGHT; //Alto de la imagen de la rom
         static uint8_t c1;  // Last character buffer
+        static size_t CURL_DOWNLOAD_LIMIT;
         
 
     public:
@@ -569,6 +570,8 @@ class Constant{
         static std::string TrimLeft(const std::string& s);
         static std::string TrimRight(const std::string& s);
         static std::string Trim(const std::string& s);
+        static void setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT);
+        static size_t getCURL_DOWNLOAD_LIMIT();
 };
 
 #endif // CONSTANT_H_INCLUDED

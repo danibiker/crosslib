@@ -55,6 +55,7 @@ public:
     
     string mkdir(string dirname, string parentid, string accessToken);
     
+    int getShared(string accessToken);
     
 private:
     uint32_t checkOauthErrors(string data, Json::Value *root);

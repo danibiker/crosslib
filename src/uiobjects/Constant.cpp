@@ -21,6 +21,7 @@ int Constant::COMBOLISTHEIGHT = (Constant::INPUTH + INPUTCONTENT) * 5;
 int Constant::IMGBOXARTWIDTH = 250; //Ancho de la imagen de la rom
 int Constant::IMGBOXARTHEIGHT = 250; //Alto de la imagen de la rom
 uint8_t Constant::c1;  // Last character buffer
+size_t Constant::CURL_DOWNLOAD_LIMIT = 0;
 
 
 static const char* DIAS[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
@@ -1105,4 +1106,12 @@ std::string Constant::TrimRight(const std::string& s)
 std::string Constant::Trim(const std::string& s)
 {   
     return TrimRight(TrimLeft(s));
+}
+
+static void Constant::setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT) {
+    Constant::CURL_DOWNLOAD_LIMIT = CURL_DOWNLOAD_LIMIT;
+}
+
+static size_t Constant::getCURL_DOWNLOAD_LIMIT() {
+    return CURL_DOWNLOAD_LIMIT;
 }

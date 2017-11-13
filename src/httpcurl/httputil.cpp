@@ -420,9 +420,27 @@ size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, 
     size_t realsize = size * nmemb;
     struct MemoryStruct *mem = (struct MemoryStruct *)userp;
 
-//    cout << mem->size << endl;
-//    if (mem->size > 500)
-//        return 0;
+    
+    
+    size_t totalDown = 0;
+    if (mem->filepath == NULL){
+        totalDown = mem->size + realsize;
+    } else {
+        ifstream file (mem->filepath, ios::in|ios::binary|ios::ate);
+        if (file.is_open()){
+            totalDown = (size_t)file.tellg() + realsize;
+        } 
+        file.close();
+    }
+    
+//    cout << "totalDown: " <<  totalDown << endl;
+    
+    if (Constant::getCURL_DOWNLOAD_LIMIT() > 0 && totalDown > Constant::getCURL_DOWNLOAD_LIMIT()){
+        Traza::print("CURL_DOWNLOAD_LIMIT. Size of download exceeded", totalDown, W_DEBUG);
+        cout << "CURL_DOWNLOAD_LIMIT. Size of download exceeded: " << totalDown << endl;
+        Constant::setCURL_DOWNLOAD_LIMIT(0); //We don't want to forget to set to 0 again
+        return 0; 
+    }
 
     if (mem->filepath == NULL){
         //Escribimos el fichero descargado en la memoria

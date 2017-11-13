@@ -644,3 +644,32 @@ string Onedrive::fileExist(string filename, string parentid, string accessToken)
     }
     return retorno;
 }
+
+int Onedrive::getShared(string accessToken){
+    map<string, string> cabeceras;
+    string url = "https://graph.microsoft.com/v1.0/me/drive/sharedWithMe";
+    string AuthOauth2 = "Bearer " + accessToken;
+    Traza::print(url, W_DEBUG);
+    
+    cabeceras.clear();
+    cabeceras.insert( make_pair("Authorization", AuthOauth2));
+    cabeceras.insert( make_pair("Accept", "*/*"));
+    cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
+    cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
+    cabeceras.insert( make_pair("Content-Type", "text/plain"));
+    
+    util.get(url, &cabeceras);
+    
+    Traza::print("Onedrive::getShared. Code", util.getHttp_code(), W_DEBUG);
+    Traza::print(util.getData(), W_DEBUG);
+    
+    if (util.getHttp_code() == 401){
+        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        //Utilizando recursividad
+        return getShared(this->getAccessToken());
+    } if (util.getHttp_code() != 200){
+        Traza::print("Error getShared ", W_ERROR);
+        return -1;
+    }
+    return 0;
+}
