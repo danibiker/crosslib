@@ -113,6 +113,7 @@ void IcoGestor::cargarIconos(){
     cargarIcono("drive_network.png");
     cargarIcono("map_go.png");
     cargarIcono("onedrive.png");
+    cargarIcono("new_window.png");
 }
 
 /**

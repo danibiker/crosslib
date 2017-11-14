@@ -17,7 +17,7 @@ void UIPicture::action(tEvento *evento){
 
     if (evento->isKey && evento->key == SDLK_s){
         this->imgGestor->setResize(!this->imgGestor->isResize());
-        //this->imgGestor->isResize() ? setAutoMessage("Tamaño automático") : setAutoMessage("Tamaño original");
+        //this->imgGestor->isResize() ? setAutoMessage("Tamanyo automatico") : setAutoMessage("Tamanyo original");
         this->setImgDrawed(false);
     } else if (evento->isKey && evento->key == SDLK_f){
         this->imgGestor->setSmooth(!this->imgGestor->isSmooth());
@@ -87,7 +87,7 @@ void UIPicture::loadImgFromFile(string ruta){
 */
 void UIPicture::loadImgFromBin(const char* ruta, const char *password, unsigned long long offset, unsigned long long offsetAnt){
     imgGestor->setRuta(ruta);//Especificamos la ruta del fichero a abrir
-    imgGestor->calculaPass(password); //Ponemos el password si no lo teníamos
+    imgGestor->calculaPass(password); //Ponemos el password si no lo teniamos
     imgGestor->setBestfit(false)->setResize(true)->setZoom(0)
             ->setTopDif(0)->setLeftDif(0);
      try{

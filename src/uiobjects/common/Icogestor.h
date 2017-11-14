@@ -16,6 +16,11 @@ class IcoGestor{
         bool drawIcono(int, SDL_Surface *, int, int);
         bool drawIcono(int, SDL_Surface *, int, int, int, int, int);
         static float relacion(int, int, int , int );
+        SDL_Surface *getSurfaceIco(int nico){
+            if (nico < totalIcons){
+                return arrayIcons.Icon[totalIcons];
+            }
+        }
 
     private:
         Fileio *fileio;

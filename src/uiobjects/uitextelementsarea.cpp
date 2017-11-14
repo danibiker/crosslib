@@ -12,12 +12,8 @@ UITextElementsArea::~UITextElementsArea(){
     clear();
 }
 
-void UITextElementsArea::addField(string name, string label, string text, t_posicion pos, bool useMaxLabelMargin ){
-    textVector.push_back(new TextElement(name, label, text, pos, useMaxLabelMargin ));
-}
-
-void UITextElementsArea::addField(string name, string label, string text, t_element_style style, bool useMaxLabelMargin ){
-    textVector.push_back(new TextElement(name, label, text, style, useMaxLabelMargin ));
+void UITextElementsArea::addField(TextElement *textElem){
+    textVector.push_back(new TextElement(textElem));
 }
 
 void UITextElementsArea::clear(){
@@ -43,7 +39,7 @@ void UITextElementsArea::setPosition(string name, t_posicion pos){
 void UITextElementsArea::action(tEvento *evento){
     //Si hay un popup lanzado por este elemento, debe dejar de procesar los eventos
     if (popup == false){
-        if (evento->isKey || evento->isJoy || (evento->isMouse && evento->mouse_state == SDL_PRESSED &&
+        if (evento->isKey || evento->isJoy || (evento->isMouse &&
                                                (evento->mouse == MOUSE_BUTTON_WHEELDOWN || evento->mouse == MOUSE_BUTTON_WHEELUP)) ){
 
             Traza::print("UITextElementsArea::action: " + this->getName(), W_PARANOIC);

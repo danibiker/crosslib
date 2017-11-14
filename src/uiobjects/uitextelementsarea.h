@@ -5,20 +5,11 @@
 
 struct t_element_style{
     t_posicion pos;
-    int fontSize;
-    bool bold;
+    int fontSize = FONTSIZE;
+    bool bold = false;
 };
 
 class TextElement{
-    protected :
-        string name;
-        string text;
-        string label;
-        t_element_style style;
-        bool useMaxLabelMargin;
-        string url;
-
-
     public :
         TextElement(){
             name = "";
@@ -30,29 +21,26 @@ class TextElement{
             style.pos.h = 0;
             useMaxLabelMargin = false;
             url = "";
+            ico = -1;
         }
-
-        TextElement(string name, string label, string text, t_posicion pos, bool useMaxLabelMargin ){
-            this->name = name;
-            this->text = text;
-            this->label = label;
-            this->useMaxLabelMargin = useMaxLabelMargin;
-            this->style.pos = pos;
-            this->style.fontSize = FONTSIZE;
-            this->style.bold = false;
-        }
-
-        TextElement(string name, string label, string text, t_element_style style, bool useMaxLabelMargin ){
-            this->name = name;
-            this->text = text;
-            this->label = label;
-            this->useMaxLabelMargin = useMaxLabelMargin;
-            this->style.pos = style.pos;
-            this->style.fontSize = style.fontSize;
-            this->style.bold = style.bold;
-        }
-
         ~TextElement(){}
+        
+        TextElement(const TextElement *var){
+            name = var->name;
+            text = var->text;
+            label = var->label;
+            style.pos.x = var->style.pos.x;
+            style.pos.y = var->style.pos.y;
+            style.pos.w = var->style.pos.w;
+            style.pos.h = var->style.pos.h;
+            style.fontSize = var->style.fontSize;
+            style.bold = var->style.bold;
+            useMaxLabelMargin = var->useMaxLabelMargin;
+            url = var->url;
+            ico = var->ico;
+        }
+        
+        
 
         string getName(){ return name;}
         void setName(string var){ name = var;}
@@ -62,6 +50,8 @@ class TextElement{
         void setText(string var){ text = var;}
         string getUrl(){ return url;}
         void setUrl(string var){ url = var;}
+        void setIco(int var){ico=var;}
+        int getIco(){return ico;}
 
 
         t_posicion * getPos(){ return &style.pos;}
@@ -74,6 +64,16 @@ class TextElement{
         bool isUseMaxLabelMargin(){ return useMaxLabelMargin;}
         void setUseMaxLabelMargin(bool var){ useMaxLabelMargin = var;}
 
+protected :
+    string name;
+    string text;
+    string label;
+    t_element_style style;
+    bool useMaxLabelMargin;
+    string url;
+    int ico;
+
+
 
 
 };
@@ -84,9 +84,8 @@ class UITextElementsArea : public Object
         UITextElementsArea();
         virtual ~UITextElementsArea();
         vector <TextElement *> textVector;
-
-        void addField(string name, string label, string text, t_posicion pos, bool useMaxLabelMargin );
-        void addField(string name, string label, string text, t_element_style style, bool useMaxLabelMargin );
+        void addField(TextElement *textElem);
+        
         void clear();
         vector <TextElement *> *getTextVector(){return &textVector;}
         void setFieldText(string name, string text);

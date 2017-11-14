@@ -3757,7 +3757,9 @@ void Ioutil::drawTextInsideArea( int posArrayTexto, int x, int y, Object *obj, S
     if (font != NULL){
 
         UITextElementsArea *objText = (UITextElementsArea *)obj;
-        string dato = objText->getTextVector()->at(posArrayTexto)->getText();
+        
+        TextElement *txtElem = objText->getTextVector()->at(posArrayTexto);
+        string dato = txtElem->getText();
 
         SDL_Color foregroundColor = { (unsigned char)obj->getTextColor().r,
         (unsigned char)obj->getTextColor().g, (unsigned char)obj->getTextColor().b };
@@ -3772,11 +3774,12 @@ void Ioutil::drawTextInsideArea( int posArrayTexto, int x, int y, Object *obj, S
         bool retorno = false;
         int objPosY = obj->getY();
 
+        
         for (int i = 0; i < vtexto.size(); i++){
             tmpStr = vtexto.at(i);
             retorno = tmpStr.compare("\n") == 0;
             tamPalabra = fontStrLen(tmpStr + " ");
-
+                       
             if (acumLinePx + tamPalabra >= maxLineaPx || retorno){
                 offsetY += Constant::getMENUSPACE();
                 acumLinePx = 0;
@@ -3788,15 +3791,19 @@ void Ioutil::drawTextInsideArea( int posArrayTexto, int x, int y, Object *obj, S
 
                 if (screenLocation.y < obj->getY() + obj->getH() - Constant::getMENUSPACE()
                     && screenLocation.y >= obj->getY() ){
+                    
                     SDL_Surface* textSurface =  TTF_RenderText_Blended(font, tmpStr.c_str(), foregroundColor);
                     SDL_BlitSurface(textSurface, NULL, screen, &screenLocation);
                     SDL_FreeSurface(textSurface);
-
-                    if (objText->getSelectedPos() == posArrayTexto && !objText->getTextVector()->at(posArrayTexto)->getUrl().empty()){
+                    
+                    if (txtElem->getIco() >= 0 && i == vtexto.size() -1)
+                        drawIco(txtElem->getIco(),screenLocation.x + tamPalabra, screenLocation.y);
+                    
+                    if (objText->getSelectedPos() == posArrayTexto && !txtElem->getUrl().empty()){
                         pintarLinea(screenLocation.x,
-                                    screenLocation.y + objText->getTextVector()->at(posArrayTexto)->getStyle()->fontSize,
+                                    screenLocation.y + txtElem->getStyle()->fontSize,
                                     screenLocation.x + tamPalabra,
-                                    screenLocation.y + objText->getTextVector()->at(posArrayTexto)->getStyle()->fontSize,
+                                    screenLocation.y + txtElem->getStyle()->fontSize,
                                     obj->getTextColor());
                     }
                 }
