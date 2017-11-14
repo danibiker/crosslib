@@ -63,7 +63,11 @@ void Traza::print(string msg,int msg2, int logLevel){
 * print
 */
 void Traza::print(string msg, int logLevel){
+#ifdef RELEASE
+    if (pintarTrazas && logLevel <= W_ERROR){
+#else
     if (pintarTrazas && logLevel <= Constant::getTrazaLevel()){
+#endif        
         if ( fout != NULL){
             if (!msg.empty()){
                 string type = "-DEBUG";

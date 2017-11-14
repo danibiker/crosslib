@@ -296,87 +296,87 @@ ${OBJECTDIR}/_ext/45e9766a/vector.o: ../src/gumbo-parser-master/src/vector.c
 ${OBJECTDIR}/_ext/64c357a0/freedb.o: ../src/httpcurl/cddb/freedb.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/64c357a0
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/64c357a0/freedb.o ../src/httpcurl/cddb/freedb.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/64c357a0/freedb.o ../src/httpcurl/cddb/freedb.cpp
 
 ${OBJECTDIR}/_ext/f109d26e/htmlparser.o: ../src/httpcurl/htmlparser.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f109d26e
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f109d26e/htmlparser.o ../src/httpcurl/htmlparser.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f109d26e/htmlparser.o ../src/httpcurl/htmlparser.cpp
 
 ${OBJECTDIR}/_ext/f109d26e/httputil.o: ../src/httpcurl/httputil.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f109d26e
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f109d26e/httputil.o ../src/httpcurl/httputil.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f109d26e/httputil.o ../src/httpcurl/httputil.cpp
 
 ${OBJECTDIR}/_ext/3400367a/uiimgdownloader.o: ../src/httpcurl/image/uiimgdownloader.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/3400367a
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/3400367a/uiimgdownloader.o ../src/httpcurl/image/uiimgdownloader.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/3400367a/uiimgdownloader.o ../src/httpcurl/image/uiimgdownloader.cpp
 
 ${OBJECTDIR}/_ext/3400367a/uiimgencoder.o: ../src/httpcurl/image/uiimgencoder.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/3400367a
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/3400367a/uiimgencoder.o ../src/httpcurl/image/uiimgencoder.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/3400367a/uiimgencoder.o ../src/httpcurl/image/uiimgencoder.cpp
 
 ${OBJECTDIR}/_ext/51d5feb5/MusixMatch.o: ../src/httpcurl/lyrics/MusixMatch.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/51d5feb5
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/MusixMatch.o ../src/httpcurl/lyrics/MusixMatch.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/MusixMatch.o ../src/httpcurl/lyrics/MusixMatch.cpp
 
 ${OBJECTDIR}/_ext/51d5feb5/darklyrics.o: ../src/httpcurl/lyrics/darklyrics.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/51d5feb5
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/darklyrics.o ../src/httpcurl/lyrics/darklyrics.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/darklyrics.o ../src/httpcurl/lyrics/darklyrics.cpp
 
 ${OBJECTDIR}/_ext/51d5feb5/lyricsbase.o: ../src/httpcurl/lyrics/lyricsbase.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/51d5feb5
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/lyricsbase.o ../src/httpcurl/lyrics/lyricsbase.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/lyricsbase.o ../src/httpcurl/lyrics/lyricsbase.cpp
 
 ${OBJECTDIR}/_ext/51d5feb5/lyricswikia.o: ../src/httpcurl/lyrics/lyricswikia.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/51d5feb5
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/lyricswikia.o ../src/httpcurl/lyrics/lyricswikia.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/lyricswikia.o ../src/httpcurl/lyrics/lyricswikia.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/allmyvideos.o: ../src/httpcurl/servers/allmyvideos.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/allmyvideos.o ../src/httpcurl/servers/allmyvideos.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/allmyvideos.o ../src/httpcurl/servers/allmyvideos.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/dropbox.o: ../src/httpcurl/servers/dropbox.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/dropbox.o ../src/httpcurl/servers/dropbox.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/dropbox.o ../src/httpcurl/servers/dropbox.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/googledrive.o: ../src/httpcurl/servers/googledrive.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/googledrive.o ../src/httpcurl/servers/googledrive.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/googledrive.o ../src/httpcurl/servers/googledrive.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/ioauth2.o: ../src/httpcurl/servers/ioauth2.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/ioauth2.o ../src/httpcurl/servers/ioauth2.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/ioauth2.o ../src/httpcurl/servers/ioauth2.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/onedrive.o: ../src/httpcurl/servers/onedrive.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/onedrive.o ../src/httpcurl/servers/onedrive.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/onedrive.o ../src/httpcurl/servers/onedrive.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/streamcloud.o: ../src/httpcurl/servers/streamcloud.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/streamcloud.o ../src/httpcurl/servers/streamcloud.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/streamcloud.o ../src/httpcurl/servers/streamcloud.cpp
 
 ${OBJECTDIR}/_ext/391a7aef/vk.o: ../src/httpcurl/servers/vk.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/391a7aef
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/vk.o ../src/httpcurl/servers/vk.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/391a7aef/vk.o ../src/httpcurl/servers/vk.cpp
 
 ${OBJECTDIR}/_ext/64cbc303/ConstantHttp.o: ../src/httpcurl/util/ConstantHttp.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/64cbc303
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/64cbc303/ConstantHttp.o ../src/httpcurl/util/ConstantHttp.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/64cbc303/ConstantHttp.o ../src/httpcurl/util/ConstantHttp.cpp
 
 ${OBJECTDIR}/_ext/f9265173/cdjpeg.o: ../src/libjpeg/cdjpeg.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/f9265173
@@ -686,17 +686,17 @@ ${OBJECTDIR}/_ext/f9265173/wrtarga.o: ../src/libjpeg/wrtarga.c
 ${OBJECTDIR}/_ext/a8c489d9/filecipher.o: ../src/rijndael/filecipher.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/a8c489d9
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/a8c489d9/filecipher.o ../src/rijndael/filecipher.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/a8c489d9/filecipher.o ../src/rijndael/filecipher.cpp
 
 ${OBJECTDIR}/_ext/a8c489d9/rijndael.o: ../src/rijndael/rijndael.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/a8c489d9
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/a8c489d9/rijndael.o ../src/rijndael/rijndael.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/a8c489d9/rijndael.o ../src/rijndael/rijndael.cpp
 
 ${OBJECTDIR}/_ext/a8c489d9/sha256.o: ../src/rijndael/sha256.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/a8c489d9
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/a8c489d9/sha256.o ../src/rijndael/sha256.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/a8c489d9/sha256.o ../src/rijndael/sha256.cpp
 
 ${OBJECTDIR}/_ext/79a67082/sqlite3.o: ../src/sqllite/sqlite3.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/79a67082
@@ -836,207 +836,207 @@ ${OBJECTDIR}/_ext/6eccffd9/win32tc.o: ../src/tidy/src/win32tc.c
 ${OBJECTDIR}/_ext/20f55786/Colorutil.o: ../src/uiobjects/Colorutil.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Colorutil.o ../src/uiobjects/Colorutil.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Colorutil.o ../src/uiobjects/Colorutil.cpp
 
 ${OBJECTDIR}/_ext/20f55786/Constant.o: ../src/uiobjects/Constant.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Constant.o ../src/uiobjects/Constant.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Constant.o ../src/uiobjects/Constant.cpp
 
 ${OBJECTDIR}/_ext/20f55786/Dirutil.o: ../src/uiobjects/Dirutil.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Dirutil.o ../src/uiobjects/Dirutil.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Dirutil.o ../src/uiobjects/Dirutil.cpp
 
 ${OBJECTDIR}/_ext/20f55786/Excepcion.o: ../src/uiobjects/Excepcion.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Excepcion.o ../src/uiobjects/Excepcion.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Excepcion.o ../src/uiobjects/Excepcion.cpp
 
 ${OBJECTDIR}/_ext/20f55786/Fileio.o: ../src/uiobjects/Fileio.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Fileio.o ../src/uiobjects/Fileio.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Fileio.o ../src/uiobjects/Fileio.cpp
 
 ${OBJECTDIR}/_ext/20f55786/ImagenGestor.o: ../src/uiobjects/ImagenGestor.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/ImagenGestor.o ../src/uiobjects/ImagenGestor.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/ImagenGestor.o ../src/uiobjects/ImagenGestor.cpp
 
 ${OBJECTDIR}/_ext/20f55786/Launcher.o: ../src/uiobjects/Launcher.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Launcher.o ../src/uiobjects/Launcher.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Launcher.o ../src/uiobjects/Launcher.cpp
 
 ${OBJECTDIR}/_ext/20f55786/ListaSimple.o: ../src/uiobjects/ListaSimple.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/ListaSimple.o ../src/uiobjects/ListaSimple.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/ListaSimple.o ../src/uiobjects/ListaSimple.cpp
 
 ${OBJECTDIR}/_ext/20f55786/Menuobject.o: ../src/uiobjects/Menuobject.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Menuobject.o ../src/uiobjects/Menuobject.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Menuobject.o ../src/uiobjects/Menuobject.cpp
 
 ${OBJECTDIR}/_ext/20f55786/SHA1.o: ../src/uiobjects/SHA1.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/SHA1.o ../src/uiobjects/SHA1.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/SHA1.o ../src/uiobjects/SHA1.cpp
 
 ${OBJECTDIR}/_ext/20f55786/Traza.o: ../src/uiobjects/Traza.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Traza.o ../src/uiobjects/Traza.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/Traza.o ../src/uiobjects/Traza.cpp
 
 ${OBJECTDIR}/_ext/20f55786/UITreeListBox.o: ../src/uiobjects/UITreeListBox.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/UITreeListBox.o ../src/uiobjects/UITreeListBox.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/UITreeListBox.o ../src/uiobjects/UITreeListBox.cpp
 
 ${OBJECTDIR}/_ext/8d36c5a9/Database.o: ../src/uiobjects/bbdd/Database.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/8d36c5a9
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/8d36c5a9/Database.o ../src/uiobjects/bbdd/Database.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/8d36c5a9/Database.o ../src/uiobjects/bbdd/Database.cpp
 
 ${OBJECTDIR}/_ext/19a342fa/listgroupcol.o: ../src/uiobjects/beans/listgroupcol.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/19a342fa
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/19a342fa/listgroupcol.o ../src/uiobjects/beans/listgroupcol.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/19a342fa/listgroupcol.o ../src/uiobjects/beans/listgroupcol.cpp
 
 ${OBJECTDIR}/_ext/20f55786/cursor.o: ../src/uiobjects/cursor.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/cursor.o ../src/uiobjects/cursor.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/cursor.o ../src/uiobjects/cursor.cpp
 
 ${OBJECTDIR}/_ext/20f55786/filelaunch.o: ../src/uiobjects/filelaunch.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/filelaunch.o ../src/uiobjects/filelaunch.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/filelaunch.o ../src/uiobjects/filelaunch.cpp
 
 ${OBJECTDIR}/_ext/20f55786/joymapper.o: ../src/uiobjects/joymapper.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/joymapper.o ../src/uiobjects/joymapper.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/joymapper.o ../src/uiobjects/joymapper.cpp
 
 ${OBJECTDIR}/_ext/20f55786/object.o: ../src/uiobjects/object.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/object.o ../src/uiobjects/object.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/object.o ../src/uiobjects/object.cpp
 
 ${OBJECTDIR}/_ext/20f55786/registry.o: ../src/uiobjects/registry.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/registry.o ../src/uiobjects/registry.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/registry.o ../src/uiobjects/registry.cpp
 
 ${OBJECTDIR}/_ext/fd9e4b8e/tinystr.o: ../src/uiobjects/tinyxml/tinystr.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/fd9e4b8e
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinystr.o ../src/uiobjects/tinyxml/tinystr.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinystr.o ../src/uiobjects/tinyxml/tinystr.cpp
 
 ${OBJECTDIR}/_ext/fd9e4b8e/tinyxml.o: ../src/uiobjects/tinyxml/tinyxml.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/fd9e4b8e
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinyxml.o ../src/uiobjects/tinyxml/tinyxml.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinyxml.o ../src/uiobjects/tinyxml/tinyxml.cpp
 
 ${OBJECTDIR}/_ext/fd9e4b8e/tinyxmlerror.o: ../src/uiobjects/tinyxml/tinyxmlerror.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/fd9e4b8e
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinyxmlerror.o ../src/uiobjects/tinyxml/tinyxmlerror.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinyxmlerror.o ../src/uiobjects/tinyxml/tinyxmlerror.cpp
 
 ${OBJECTDIR}/_ext/fd9e4b8e/tinyxmlparser.o: ../src/uiobjects/tinyxml/tinyxmlparser.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/fd9e4b8e
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinyxmlparser.o ../src/uiobjects/tinyxml/tinyxmlparser.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/fd9e4b8e/tinyxmlparser.o ../src/uiobjects/tinyxml/tinyxmlparser.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uiart.o: ../src/uiobjects/uiart.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uiart.o ../src/uiobjects/uiart.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uiart.o ../src/uiobjects/uiart.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uibutton.o: ../src/uiobjects/uibutton.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uibutton.o ../src/uiobjects/uibutton.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uibutton.o ../src/uiobjects/uibutton.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uicheck.o: ../src/uiobjects/uicheck.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uicheck.o ../src/uiobjects/uicheck.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uicheck.o ../src/uiobjects/uicheck.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uicombobox.o: ../src/uiobjects/uicombobox.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uicombobox.o ../src/uiobjects/uicombobox.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uicombobox.o ../src/uiobjects/uicombobox.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uiinput.o: ../src/uiobjects/uiinput.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uiinput.o ../src/uiobjects/uiinput.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uiinput.o ../src/uiobjects/uiinput.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uilabel.o: ../src/uiobjects/uilabel.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilabel.o ../src/uiobjects/uilabel.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilabel.o ../src/uiobjects/uilabel.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uilist.o: ../src/uiobjects/uilist.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilist.o ../src/uiobjects/uilist.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilist.o ../src/uiobjects/uilist.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uilistcommon.o: ../src/uiobjects/uilistcommon.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilistcommon.o ../src/uiobjects/uilistcommon.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilistcommon.o ../src/uiobjects/uilistcommon.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uilistgroup.o: ../src/uiobjects/uilistgroup.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilistgroup.o ../src/uiobjects/uilistgroup.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uilistgroup.o ../src/uiobjects/uilistgroup.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uipanel.o: ../src/uiobjects/uipanel.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipanel.o ../src/uiobjects/uipanel.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipanel.o ../src/uiobjects/uipanel.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uipanelborder.o: ../src/uiobjects/uipanelborder.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipanelborder.o ../src/uiobjects/uipanelborder.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipanelborder.o ../src/uiobjects/uipanelborder.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uipicture.o: ../src/uiobjects/uipicture.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipicture.o ../src/uiobjects/uipicture.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipicture.o ../src/uiobjects/uipicture.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uipopupmenu.o: ../src/uiobjects/uipopupmenu.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipopupmenu.o ../src/uiobjects/uipopupmenu.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uipopupmenu.o ../src/uiobjects/uipopupmenu.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uiprogressbar.o: ../src/uiobjects/uiprogressbar.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uiprogressbar.o ../src/uiobjects/uiprogressbar.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uiprogressbar.o ../src/uiobjects/uiprogressbar.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uislider.o: ../src/uiobjects/uislider.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uislider.o ../src/uiobjects/uislider.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uislider.o ../src/uiobjects/uislider.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uispectrum.o: ../src/uiobjects/uispectrum.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uispectrum.o ../src/uiobjects/uispectrum.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uispectrum.o ../src/uiobjects/uispectrum.cpp
 
 ${OBJECTDIR}/_ext/20f55786/uitextelementsarea.o: ../src/uiobjects/uitextelementsarea.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/20f55786
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uitextelementsarea.o ../src/uiobjects/uitextelementsarea.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/20f55786/uitextelementsarea.o ../src/uiobjects/uitextelementsarea.cpp
 
 ${OBJECTDIR}/_ext/1ab3761f/unziptool.o: ../src/uiobjects/unzip/unziptool.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/1ab3761f
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1ab3761f/unziptool.o ../src/uiobjects/unzip/unziptool.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1ab3761f/unziptool.o ../src/uiobjects/unzip/unziptool.cpp
 
 ${OBJECTDIR}/_ext/e901d183/ioapi.o: ../src/ziputils/unzip/ioapi.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/e901d183
@@ -1051,7 +1051,7 @@ ${OBJECTDIR}/_ext/e901d183/unzip.o: ../src/ziputils/unzip/unzip.c
 ${OBJECTDIR}/_ext/e901d183/unziptool.o: ../src/ziputils/unzip/unziptool.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/e901d183
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e901d183/unziptool.o ../src/ziputils/unzip/unziptool.cpp
+	$(COMPILE.cc) -O3 -DRELEASE -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/ziputils/unzip -I../src/ziputils/zlib -I../src/uiobjects -I../src/sqllite -I../src/rijndael -I../src/httpcurl -I../src/libjpeg -I../src/httpcurl/jsoncpp-0.10.5/include -I../src/tidy/include -I../src/gumbo-parser-master/src -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/e901d183/unziptool.o ../src/ziputils/unzip/unziptool.cpp
 
 ${OBJECTDIR}/_ext/fc87cd0/adler32.o: ../src/ziputils/zlib/adler32.c
 	${MKDIR} -p ${OBJECTDIR}/_ext/fc87cd0

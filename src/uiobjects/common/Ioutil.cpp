@@ -2509,8 +2509,10 @@ tInput Ioutil::calculaTextoInput(Object *obj){
 }
 
 /**
-*
-*/
+ * 
+ * @param obj
+ * @param evento
+ */
 void Ioutil::drawUIProgressBar(Object *obj, tEvento *evento){
 
     UIProgressBar *objProg = (UIProgressBar *)obj;
@@ -2523,9 +2525,17 @@ void Ioutil::drawUIProgressBar(Object *obj, tEvento *evento){
         pintarContenedor(x,y,w,h,objProg->isFocus() && objProg->isEnabled(), obj, cInputContent);
 
         if (w > 0 && h > 0){
-            int wsel = (objProg->getProgressPos() / (float)objProg->getProgressMax()) * w;
-            if (wsel > 0)
-                drawRect(x+INPUTBORDER,y+INPUTBORDER,wsel,h-INPUTBORDER,cAzul); // Dibujo el contenedor
+            
+            if (objProg->getProgressMax() > 0){
+                int wsel = w;
+                if (objProg->getProgressPos() <= objProg->getProgressMax()){
+                    wsel = (objProg->getProgressPos() / (float)objProg->getProgressMax()) * w; 
+                }
+                
+                if (wsel > 0)
+                    drawRect(x+INPUTBORDER,y+INPUTBORDER,wsel,h-INPUTBORDER,cAzul); // Dibujo el progreso
+            }
+            
 
             //Calculamos el hint de la barra cuando pasamos el mouse por encima
             if (evento->mouse_x > 0 && evento->mouse_y > 0){

@@ -185,7 +185,7 @@ bool Onedrive::deleteFiles(string fileid, string accessToken){
     string AuthOauth2 = "Bearer " + accessToken;
     string url = "";
     
-    if (((int)fileid.find_first_of("!")) >= 0) {
+    if ( isOneDriveId(fileid) ) {
         url = ONEDRIVEURLDELETE + Constant::url_encode(fileid) ;
     } else {
         return false;
@@ -217,7 +217,7 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
     string url = "";
     bool ret = false;
     
-    if (((int)cloudIdPath.find_first_of("!")) >= 0) {
+    if (isOneDriveId(cloudIdPath)) {
         url = ONEDRIVEURLPUT + "/items/" + Constant::url_encode(cloudIdPath) + "/createUploadSession";
     } else {
         url = ONEDRIVEURLPUT + "root:/" + Constant::url_encode(cloudIdPath) + ":/createUploadSession";
@@ -404,7 +404,7 @@ string Onedrive::getJSONList(string fileid, string accessToken, string nextPageT
         
         if (fileid.empty()){
             url = ONEDRIVEURLLIST;
-        } else if (nextPageToken.empty() && ((int)fileid.find_first_of("!")) >= 0) {
+        } else if (nextPageToken.empty() && isOneDriveId(fileid)) {
             url = ONEDRIVEURLLISTCHILDREN + "/" + Constant::url_encode(fileid) + "/children";
         } else if (nextPageToken.empty()){
             url = ONEDRIVEURLLISTCHILDRENPATH + ":/" + Constant::url_encode(fileid) + ":/children";
@@ -672,4 +672,16 @@ int Onedrive::getShared(string accessToken){
         return -1;
     }
     return 0;
+}
+
+bool Onedrive::isOneDriveId(string path){
+    bool strOk = true;
+    for (int i=0; i < path.length() && strOk; i++){
+        if  (!(((int)path[i] >= 48 && (int)path[i] <= 57)
+                || ((int)path[i] >= 65 && (int)path[i] <= 70)
+                || path[i] == '!')){
+            strOk = false;
+        }
+    }
+    return strOk;
 }

@@ -61,6 +61,7 @@ private:
     uint32_t checkOauthErrors(string data, Json::Value *root);
     string getJSONList(string fileid, string accessToken, string nextPageToken);
     bool resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken);
+    bool isOneDriveId(string path);
 };
 
 #endif /* ONEDRIVE_H */

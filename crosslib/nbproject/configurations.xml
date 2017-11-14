@@ -2041,6 +2041,7 @@
           </incDir>
           <commandLine>-fpermissive</commandLine>
           <preprocessorList>
+            <Elem>RELEASE</Elem>
             <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
             <Elem>SKIP_PEER_VERIFICATION</Elem>
             <Elem>WIN</Elem>
