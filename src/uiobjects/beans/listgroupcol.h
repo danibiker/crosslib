@@ -5,6 +5,7 @@
 #include <string>         // std::string
 #include <iostream>
 #include <vector>
+#include "Constant.h"
 
 using namespace std;
 
@@ -21,8 +22,8 @@ class ListGroupCol
         string getValor(){return valor;}
         int getDestino(){return destino;}
         int getIcono(){return icono;}
-        void setTexto(string var){texto = var;}
-        void setValor(string var){valor = var;}
+        void setTexto(string var){texto = Constant::txtDisplay(var);}
+        void setValor(string var){valor = Constant::txtDisplay(var);}
         void setDestino(int var){destino = var;}
         void setIcono(int var){icono = var;}
         int getSortOrder(){return sortOrder;}

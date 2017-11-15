@@ -561,6 +561,8 @@ class Constant{
         static std::string GetClipboardText();
         static void waitms(unsigned long ms);
         static string url_encode(string value);
+        static string url_decode(string str);
+        static string txtDisplay(string str);
         static std::string to_hex( unsigned int c );
         static string uencodeUTF8(string latin1Str);
         static string udecodeUTF8(string &SRC);

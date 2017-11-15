@@ -20,7 +20,6 @@ Dropbox::~Dropbox(){
 uint32_t Dropbox::authenticate(){
     string strAccessToken;
     filecipher cifrador;
-    string accessTokenCipherB64;
     string accessTokenCipher;
     Dirutil dir;
     bool error=false;
@@ -55,10 +54,16 @@ uint32_t Dropbox::authenticate(){
             //DROPBOXAPIV2
             Json::Value root;   // will contains the root value after parsing.
             Json::Reader reader; 
-            bool parsingSuccessful = reader.parse( util.getData(), root );
+            bool parsingSuccessful = false;
+            
             Traza::print("util.getHttp_code()", util.getHttp_code(), W_DEBUG);
-            Traza::print("util.getData(): " + string(util.getData()), W_DEBUG);
-
+            if (util.getHttp_code() != 200){
+                error = true;
+                retorno = ERRORCONNECT;
+            } else {
+                parsingSuccessful = reader.parse( util.getData(), root );
+            }
+            
             if ( !parsingSuccessful ){
                  // report to the user the failure and their locations in the document.
                 Traza::print("Dropbox::authenticate: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
