@@ -14,16 +14,77 @@
 #include "Traza.h"
 #include "unzip/GZipHelper.h"
 #include <curl/curl.h>
+#include <gmutex.h>
 
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3
 
 using namespace std;
 
 
+class Progress {
+ public:
+        Progress(){ 
+            Progress(0,1);
+        }
+        ~Progress(){
+            mutex.Lock();
+            if (this->arrProgress != NULL){
+                delete[] this->arrProgress;
+                this->arrProgress = NULL;
+            }
+            mutex.Unlock();
+        }
+        
+        Progress(int posListThreads, int nThreads){ 
+            mutex.Lock();
+            this->posListThreads = posListThreads;
+            this->nThreads = nThreads;
+            this->arrProgress = new float[nThreads]();
+            
+            for (int i=0; i < nThreads; i++){
+                this->arrProgress[i] = 0.0;
+            }
+            mutex.Unlock();
+        }
+        
+        void setProgress(float progress) { 
+            if (this->arrProgress != NULL){
+                this->arrProgress[this->posListThreads] = progress; 
+            }
+        }
+        
+        float getProgress(){
+            if (this->arrProgress != NULL){
+                return this->arrProgress[this->posListThreads];
+            } else {
+                return 0.0;
+            }
+        }
+        
+        double lastruntime;
+        std::ifstream::pos_type maxBytesDownload;
+        CURL *curl;
+        
+        void setPosListThreads(int posListThreads){this->posListThreads = posListThreads;}
+        int getPosListThreads(){
+            return this->posListThreads;
+        }
+        void setNThreads(int nThreads){this->nThreads = nThreads;}
+        int getNThreads(){
+            return this->nThreads;
+        };
+ private:
+    static float *arrProgress;
+    int nThreads;
+    int posListThreads;
+    GMutex mutex;
+};
+
 class HttpUtil
 {
     public:
         HttpUtil();
+        HttpUtil(int posListThreads, int nThreads);
         virtual ~HttpUtil();
 
         bool download(string);
@@ -65,13 +126,15 @@ class HttpUtil
         int getTimeout(){return timeout;}
         void setTimeout(int var){timeout = var;}
         void abort(){aborted = true;}
-        void setMaxBytesDownload(std::ifstream::pos_type var){maxBytesDownload = var;}
-        float getDownloadProgress(){return downloadProgress;}
+        void setMaxBytesDownload(std::ifstream::pos_type var){prog->maxBytesDownload = var;}
+        //float getDownloadProgress(){return prog.getProgress();}
+        float getDownloadProgress(){return prog->getProgress();}
         long getHttp_code(){return http_code;}
         map<string, string> *getResponseHeaders(){return &this->cabecerasResp;}
 
         void setSendContentLength(bool var){sendContentLength = var;}
         bool getSendContentLength(){return sendContentLength;}
+        
     protected:
     private:
         string proxyIP;
@@ -83,6 +146,7 @@ class HttpUtil
           size_t size;
           char *filepath;
         };
+        
 
         void parserCabeceras();
         map<string, string> cabecerasResp;
@@ -91,10 +155,14 @@ class HttpUtil
         struct MemoryStruct header;
         int timeout;
 
-        struct myprogress {
-          double lastruntime;
-          CURL *curl;
-        }prog;
+//        struct myprogress {
+//          double lastruntime;
+//          float downloadProgress;
+//          std::ifstream::pos_type maxBytesDownload;
+//          CURL *curl;
+//        } prog;
+        
+        Progress *prog;
 
         static std::string readBufferHeader;
         static size_t handleHeader(void *contents, size_t size, size_t nmemb, void *userp);
@@ -106,17 +174,15 @@ class HttpUtil
         static int older_progress(void *p,
                           double dltotal, double dlnow,
                           double ultotal, double ulnow);
+        
         static int xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
                     curl_off_t ultotal, curl_off_t ulnow);
 
         static bool aborted;
-        static std::ifstream::pos_type maxBytesDownload;
-        static float downloadProgress;
+//        static std::ifstream::pos_type maxBytesDownload;
         long http_code;
         bool sendContentLength;
-
-
 };
 
 #endif // HTTPUTIL_H

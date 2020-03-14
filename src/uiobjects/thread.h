@@ -27,7 +27,8 @@ private:
     T*      object;          // the object which owns the method
     Method  method;          // the method of the object
 
-    static volatile uint32_t status; //Para controlar el estado en UNIX
+    //static volatile uint32_t status; //Para controlar el estado en UNIX
+    uint32_t status; //Para controlar el estado en UNIX
     GMutex *hSingleStart;
     static uint32_t ret;
 // -----------------------------------------------------------------------------
@@ -37,7 +38,7 @@ private:
     {
         Thread<T>* thread = (Thread<T>*)thread_obj;
         ret = (thread->object->*thread->method) ();
-        status = THREAD_FINISHED;
+        thread->setStatus(THREAD_FINISHED);
 //        cout << "exiting thread now" << endl;
         pthread_exit(&ret);
         return &ret;
@@ -63,6 +64,13 @@ public:
         //std::cout << "Thread::Destructor"<<std::endl;
         pthread_attr_destroy(&attr);
         delete hSingleStart;
+    }
+// -----------------------------------------------------------------------------
+    T* getObject(){
+        return object;
+    }
+    void setObject(T* pObject){
+        object = pObject;
     }
 // -----------------------------------------------------------------------------
     /* Starts executing the objects method in a concurrent thread. True if the
@@ -156,7 +164,7 @@ public:
 // -----------------------------------------------------------------------------
 };
 
-template <class T> volatile uint32_t Thread<T>::status;
+//template <class T> volatile uint32_t Thread<T>::status;
 template <class T> uint32_t Thread<T>::ret;
 // #############################################################################
 

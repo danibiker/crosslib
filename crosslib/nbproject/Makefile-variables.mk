@@ -15,21 +15,21 @@ CND_PACKAGE_DIR_Linux_Debug=dist/Linux_Debug/GNU-Linux/package
 CND_PACKAGE_NAME_Linux_Debug=crosslib.tar
 CND_PACKAGE_PATH_Linux_Debug=dist/Linux_Debug/GNU-Linux/package/crosslib.tar
 # Debug2 configuration
-CND_PLATFORM_Debug2=MinGW2_64-Windows
-CND_ARTIFACT_DIR_Debug2=dist/Debug2/MinGW2_64-Windows
+CND_PLATFORM_Debug2=MinGW64-Windows
+CND_ARTIFACT_DIR_Debug2=dist/Debug2/MinGW64-Windows
 CND_ARTIFACT_NAME_Debug2=libcrosslib.a
-CND_ARTIFACT_PATH_Debug2=dist/Debug2/MinGW2_64-Windows/libcrosslib.a
-CND_PACKAGE_DIR_Debug2=dist/Debug2/MinGW2_64-Windows/package
+CND_ARTIFACT_PATH_Debug2=dist/Debug2/MinGW64-Windows/libcrosslib.a
+CND_PACKAGE_DIR_Debug2=dist/Debug2/MinGW64-Windows/package
 CND_PACKAGE_NAME_Debug2=crosslib.tar
-CND_PACKAGE_PATH_Debug2=dist/Debug2/MinGW2_64-Windows/package/crosslib.tar
+CND_PACKAGE_PATH_Debug2=dist/Debug2/MinGW64-Windows/package/crosslib.tar
 # Release configuration
-CND_PLATFORM_Release=MinGW2_64-Windows
-CND_ARTIFACT_DIR_Release=dist/Release/MinGW2_64-Windows
+CND_PLATFORM_Release=MinGW64-Windows
+CND_ARTIFACT_DIR_Release=dist/Release/MinGW64-Windows
 CND_ARTIFACT_NAME_Release=libcrosslib.a
-CND_ARTIFACT_PATH_Release=dist/Release/MinGW2_64-Windows/libcrosslib.a
-CND_PACKAGE_DIR_Release=dist/Release/MinGW2_64-Windows/package
+CND_ARTIFACT_PATH_Release=dist/Release/MinGW64-Windows/libcrosslib.a
+CND_PACKAGE_DIR_Release=dist/Release/MinGW64-Windows/package
 CND_PACKAGE_NAME_Release=crosslib.tar
-CND_PACKAGE_PATH_Release=dist/Release/MinGW2_64-Windows/package/crosslib.tar
+CND_PACKAGE_PATH_Release=dist/Release/MinGW64-Windows/package/crosslib.tar
 #
 # include compiler specific variables
 #

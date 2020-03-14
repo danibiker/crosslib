@@ -1190,7 +1190,7 @@
     </conf>
     <conf name="Debug2" type="3">
       <toolsSet>
-        <compilerSet>MinGW2_64|MinGW</compilerSet>
+        <compilerSet>MinGW64|MinGW</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
@@ -2005,7 +2005,7 @@
     </conf>
     <conf name="Release" type="3">
       <toolsSet>
-        <compilerSet>MinGW2_64|MinGW</compilerSet>
+        <compilerSet>MinGW64|MinGW</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>

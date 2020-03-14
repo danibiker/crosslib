@@ -3,15 +3,20 @@
 #include "Constant.h"
 
 bool HttpUtil::aborted;
-std::ifstream::pos_type HttpUtil::maxBytesDownload;
-float HttpUtil::downloadProgress;
-
+//std::ifstream::pos_type HttpUtil::maxBytesDownload;
+//float HttpUtil::downloadProgress;
 std::string HttpUtil::readBufferHeader;
+//float Progress::percent;
+float * Progress::arrProgress;
 
 /**
 *
 */
 HttpUtil::HttpUtil(){
+    HttpUtil(0,1);
+}
+
+HttpUtil::HttpUtil(int posListThreads, int nThreads){
     //cout << "HttpUtil: constructor" << endl;
     aborted = false;
     chunk.memory = NULL;
@@ -21,7 +26,8 @@ HttpUtil::HttpUtil(){
     header.memory = NULL;
     header.filepath = NULL;
     header.size = 0;
-
+    
+    prog = new Progress(posListThreads, nThreads);
     this->setProxyIP(Constant::getPROXYIP());
     this->setProxyPort(Constant::strToTipo<int>(Constant::getPROXYPORT()));
     this->setProxyUser(Constant::getPROXYUSER());
@@ -29,6 +35,7 @@ HttpUtil::HttpUtil(){
     this->setTimeout(0);
     this->setMaxBytesDownload(0);
     sendContentLength = true;
+    
 }
 
 /**
@@ -44,8 +51,10 @@ HttpUtil::~HttpUtil(){
 
     if(chunk.filepath)
         free(chunk.filepath);
+    
+    delete prog;
+    
 }
-
 
 /**
 * Solo descarga una url en memoria
@@ -308,12 +317,8 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curlheaders);
         }
 
-        prog.lastruntime = 0;
-        prog.curl = curl;
-
-        /*Funcion para el progreso de la descarga o para abortarla*/
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &prog);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, older_progress);
+        prog->lastruntime = 0;
+        prog->curl = curl;
 
 
         #if LIBCURL_VERSION_NUM >= 0x072000
@@ -327,10 +332,14 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
            New libcurls will prefer the new callback and instead use that one even
            if both callbacks are set. */
 
-        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, xferinfo);
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, HttpUtil::xferinfo);
         /* pass the struct pointer into the xferinfo function, note that this is
            an alias to CURLOPT_PROGRESSDATA */
-        curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &prog);
+        curl_easy_setopt(curl, CURLOPT_XFERINFODATA, this->prog);
+        #else
+        /*Funcion para el progreso de la descarga o para abortarla*/
+            curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, prog);
+            curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, older_progress);
         #endif
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
         /*Funcion para escribir en memoria o en el disco*/
@@ -536,7 +545,11 @@ int HttpUtil::xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
                     curl_off_t ultotal, curl_off_t ulnow)
 {
-  struct myprogress *myp = (struct myprogress *)p;
+  //struct myprogress *myp = (struct myprogress *)p;
+  Progress *myp = (Progress *)p;
+  //auto myp = static_cast<Progress *>(p);
+  
+  
   CURL *curl = myp->curl;
   double curtime = 0;
 
@@ -549,13 +562,15 @@ int HttpUtil::xferinfo(void *p,
     myp->lastruntime = curtime;
     //Traza::print("TOTAL TIME: " + Constant::TipoToStr(curtime), W_DEBUG);
   }
-
-  downloadProgress = dltotal > 0.0 ? (dlnow / (float)dltotal * 100) : 0.0;
-//  Traza::print(" Progress " + Constant::TipoToStr(downloadProgress) + "%", W_DEBUG);
-//  Traza::print(Constant::TipoToStr(ulnow) + ";" + Constant::TipoToStr(ultotal) + ";" + Constant::TipoToStr(dlnow)
-//               + ";" + Constant::TipoToStr(dltotal) + ";" + Constant::TipoToStr(downloadProgress), W_DEBUG);
-
-  if( (maxBytesDownload > 0 && dlnow > maxBytesDownload) || aborted)
+  
+  if (dltotal > 0.0){
+        myp->setProgress(dltotal > 0.0 ? (dlnow / (float)dltotal * 100) : 0.0);
+//        Traza::print(" Progress " + Constant::TipoToStr(myp->getProgress()) + "%", W_DEBUG);
+//        Traza::print(Constant::TipoToStr(ulnow) + ";" + Constant::TipoToStr(ultotal) + ";" + Constant::TipoToStr(dlnow)
+//                     + ";" + Constant::TipoToStr(dltotal) + ";" + Constant::TipoToStr(myp->getProgress()), W_DEBUG);
+  }
+  
+  if( (myp->maxBytesDownload > 0 && dlnow > myp->maxBytesDownload) || aborted)
     return 1;
   return 0;
 }
