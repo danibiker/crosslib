@@ -556,6 +556,7 @@ class Constant{
         static string toAnsiString(string dato);
         static string toUTF8(string s);
         static std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len);
+        static std::string base64_encode(string var);
         static std::string base64_decode(std::string const& encoded_string);
         static inline bool is_base64(unsigned char c);
         static std::string GetClipboardText();

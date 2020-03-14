@@ -289,9 +289,14 @@ bool ImagenGestor::loadImgDisplay(const char *uri, SDL_Surface **destino){
         if (this->getFileSize() > 0 && cargado){
             SDL_Surface *tmpImage;
             loadImgFromMem(this->getFile(), this->getFileSize(), &tmpImage);
-            *destino = SDL_DisplayFormat(tmpImage);
-            SDL_FreeSurface(tmpImage);
-            return true;
+            if (tmpImage != NULL){
+                *destino = SDL_DisplayFormat(tmpImage);
+                SDL_FreeSurface(tmpImage);
+                return true;
+            } else {
+                return false;
+            }
+            
         } else {
             return false;
         }
@@ -361,12 +366,16 @@ void ImagenGestor::loadImgFromMem(char *fileArray, int size, SDL_Surface **desti
     if (VIEWALPHA){
         SDL_Surface *memImg = IMG_Load_RW(tempSurfWop,0);
         SDL_FreeRW(tempSurfWop);
-        if (memImg == NULL) throw Excepcion(EFIO);
+        if (memImg == NULL) 
+            throw Excepcion(EFIO);
+        
         *destino = SDL_DisplayFormatAlpha(memImg);
         SDL_FreeSurface(memImg);
     } else {
+        
         *destino = IMG_Load_RW(tempSurfWop,0);
-        if (destino == NULL) throw Excepcion(EFIO);
+        if (destino == NULL) 
+            throw Excepcion(EFIO);
     }
 }
 
@@ -555,7 +564,7 @@ bool ImagenGestor::blitImage(SDL_Surface *src, SDL_Surface *dst, SDL_Rect *dstRe
 
 /**
 * hace lo mismo que drawImgMem pero almacena en un surface temporal la imagen redimensionada
-* para que se pueda mover a través de ella mas rapidamente
+* para que se pueda mover a travï¿½s de ella mas rapidamente
 */
 bool ImagenGestor::drawZoomImgMem(SDL_Surface *dst){
     try{
@@ -677,7 +686,7 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
                     //bordes por la redimension de la imagen
                     thumbSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, destw, desth, dst->format->BitsPerPixel,0,0,0,0);
                 } else {
-                    //Creamos un surface con el tamanyo justo de la imagen si se da el caso de que es demasiado pequeña o demasiado grande.
+                    //Creamos un surface con el tamanyo justo de la imagen si se da el caso de que es demasiado pequeï¿½a o demasiado grande.
                     float i_relacion = relacion(mySurface,desth,destw);//Calcula cuanto hay que reducir la imagen para que quepa por pantalla
                     if (i_relacion != 1. && i_relacion != 0.){
                         destw = mySurface->w / i_relacion;

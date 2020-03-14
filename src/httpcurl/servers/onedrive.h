@@ -53,6 +53,9 @@ public:
     int getFile(string filesystemPath, string cloudIdPath, string accessToken);
     string fileExist(string filename, string parentid, string accessToken);
     
+    string getJSONListSharepoint(string fileid, string accessToken);
+    
+    
     string mkdir(string dirname, string parentid, string accessToken);
     
     int getShared(string accessToken);

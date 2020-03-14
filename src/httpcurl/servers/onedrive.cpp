@@ -110,7 +110,7 @@ void Onedrive::launchAuthorize(string clientid){
     
     string tmpUrl = ONEDRIVEURLAUTH
                     + "?client_id=" + Constant::url_encode(clientid)
-                    + "&scope=" + Constant::url_encode("files.readwrite offline_access User.Read")
+                    + "&scope=" + Constant::url_encode("files.readwrite offline_access User.Read openid")
                     + "&response_type=code"
                     //+ "&redirect_uri=" + Constant::url_encode("urn:ietf:wg:oauth:2.0:oob")
                     + "&redirect_uri=" + Constant::url_encode("https://login.live.com/oauth20_desktop.srf")
@@ -684,4 +684,42 @@ bool Onedrive::isOneDriveId(string path){
         }
     }
     return strOk;
+}
+
+
+
+/**
+ * 
+ * @param fileid
+ * @param accessToken
+ * @param nextPageToken
+ * @return 
+ */
+string Onedrive::getJSONListSharepoint(string fileid, string accessToken){
+    map<string, string> cabeceras;
+    string postData;
+    string responseMetadata;
+    string url = "";
+    string AuthOauth2 = "Bearer " + accessToken;
+
+    if (!accessToken.empty()){
+        cabeceras.clear();
+        cabeceras.insert( make_pair("Authorization", AuthOauth2));
+        cabeceras.insert( make_pair("Accept", "*/*"));
+        cabeceras.insert( make_pair("Accept-Encoding", "gzip,deflate"));
+        cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
+        cabeceras.insert( make_pair("Content-Type", "text/plain"));
+        
+        url = "https://graph.microsoft.com/v1.0/shares/"  + fileid;
+        //url = "https://graph.microsoft.com/v1.0/sites/miumh-my.sharepoint.com:/personal/daniel_mazuela_miumh_umh_es";
+        //url = "https://graph.microsoft.com/v1.0/me?$select=mySite";
+        //url = "https://miumh-my.sharepoint.com/personal/daniel_mazuela_miumh_umh_es/_api/v2.0/drive/oneDrive.sharedWithMe";
+//        url = "https://graph.microsoft.com/beta/sites/root";
+        //url = "https://graph.microsoft.com/v1.0/sites/lists/535d701d%2D4b68%2D4a70%2D8f65%2D1682177ffba4";
+        util.get(url, &cabeceras);
+        
+        
+        return util.getData();
+    }
+    return responseMetadata;
 }

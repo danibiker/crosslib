@@ -582,6 +582,13 @@ double Constant::diferenciaTiempos(time_t x, time_t y){
 }
 
 
+std::string Constant::base64_encode(string var) {
+    char *cipheredStr = new char[var.length()+ 1];
+    strcpy(cipheredStr,var.c_str());
+    string base64Value = Constant::base64_encode(reinterpret_cast<const unsigned char*>(cipheredStr), var.length());
+    delete [] cipheredStr;
+    return base64Value;
+}
 
 std::string Constant::base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
   std::string ret;

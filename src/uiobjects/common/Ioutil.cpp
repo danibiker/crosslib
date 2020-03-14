@@ -188,7 +188,7 @@ void Ioutil::initSDL(bool calcFS){
         //Finalmente establecemos el modo del video
         screen = SDL_SetVideoMode(this->w, this->h, bpp, this->fullsflags);
         if(!screen){
-            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicaci�n" << endl;
+            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicaciï¿½n" << endl;
             exit(0);
         }
 	}
@@ -504,8 +504,11 @@ tEvento Ioutil::WaitForKey(){
 
     clearEvento(&evento);
     SDL_Event event;
+#ifdef UNIX
     while( SDL_PollEvent( &event ) ){
-    //if( SDL_PollEvent( &event ) ){
+#else
+    if( SDL_PollEvent( &event ) ){
+#endif
     //if (SDL_WaitEvent (&event)){
         switch( event.type ){
             case SDL_VIDEORESIZE:
@@ -3017,7 +3020,7 @@ void Ioutil::pintarCirculo (int n_cx, int n_cy, int r, t_color color)
 //            centro_y = j - y;
 //            //Funcion del circulo -> x^2 + y^2 = r^2
 //            raiz = centro_x*centro_x + centro_y*centro_y;
-//            //el -2 es un factor de correcci�n necesario para c�rculos pequenyos, sino queda muy pixelado
+//            //el -2 es un factor de correcciï¿½n necesario para cï¿½rculos pequenyos, sino queda muy pixelado
 //            if (raiz < radio2-4){
 //                putpixelSafe(screen,i,j,r_color);
 //            }
@@ -3168,7 +3171,7 @@ void Ioutil::pintarSemiCirculo (int x, int y, int r, t_color color, int angle)
             centro_y = j - y;
             //Funcion del circulo -> x^2 + y^2 = r^2
             raiz = centro_x*centro_x + centro_y*centro_y;
-            //el -2 es un factor de correcci�n necesario para c�rculos pequenyos, sino queda muy pixelado
+            //el -2 es un factor de correcciï¿½n necesario para cï¿½rculos pequenyos, sino queda muy pixelado
             if (raiz < radio2-4){
                 putpixelSafe(screen,i,j,r_color);
             }
@@ -3430,7 +3433,7 @@ string Ioutil::configButtonsJOY(tEvento *evento){
 
     long delay = 0;
     unsigned long before = 0;
-    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "P�gina anterior", "P�gina siguiente", "Select", "Buscar elemento"};
+    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "Pï¿½gina anterior", "Pï¿½gina siguiente", "Select", "Buscar elemento"};
     int JoyButtonsVal[] = {JOY_BUTTON_UP, JOY_BUTTON_DOWN, JOY_BUTTON_LEFT, JOY_BUTTON_RIGHT, JOY_BUTTON_A, JOY_BUTTON_B, JOY_BUTTON_L, JOY_BUTTON_R, JOY_BUTTON_SELECT, JOY_BUTTON_R3};
     //Posiciones de los botones calculadas en porcentaje respecto al alto y ancho de la imagen
     t_posicion_precise imgButtonsRelScreen[] = {{0.3512,0.682,0,0},{0.3512,0.84,0,0},{0.295,0.76,0,0},{0.4075,0.76,0,0},
