@@ -1,3 +1,5 @@
+#include <mutex>
+
 #include "httputil.h"
 #include "util/ConstantHttp.h"
 #include "Constant.h"
@@ -7,6 +9,7 @@ bool HttpUtil::aborted;
 //float HttpUtil::downloadProgress;
 std::string HttpUtil::readBufferHeader;
 //float Progress::percent;
+//float Progress::arrProgress[MAX_THREADS];
 float * Progress::arrProgress;
 
 /**
@@ -34,8 +37,8 @@ HttpUtil::HttpUtil(int posListThreads, int nThreads){
     this->setProxyPass(Constant::getPROXYPASS());
     this->setTimeout(0);
     this->setMaxBytesDownload(0);
+    this->setConnectionRetries(3);            
     sendContentLength = true;
-    
 }
 
 /**
@@ -60,21 +63,21 @@ HttpUtil::~HttpUtil(){
 * Solo descarga una url en memoria
 */
 bool HttpUtil::download(string url){
-    return sendHttp(url, "", 0, 0, NULL, HTTP_GET);
+    return sendHttpWithRetries(url, "", 0, 0, NULL, HTTP_GET);
 }
 
 /**
 * Descarga una url al disco duro
 */
 bool HttpUtil::download(string url, string pathfilename){
-    return sendHttp(url, pathfilename.c_str(), 0, 0, NULL, HTTP_GET);
+    return sendHttpWithRetries(url, pathfilename.c_str(), 0, 0, NULL, HTTP_GET);
 }
 
 /**
 * Descarga una url al disco duro pero utilizando cabeceras para la peticion http
 */
 bool HttpUtil::download(string url, string pathfilename, map <string, string> *headers){
-    return sendHttp(url, pathfilename.c_str(), 0, 0, headers, HTTP_GET);
+    return sendHttpWithRetries(url, pathfilename.c_str(), 0, 0, headers, HTTP_GET);
 }
 
 
@@ -82,7 +85,7 @@ bool HttpUtil::download(string url, string pathfilename, map <string, string> *h
 * Realiza una peticion http get con las cabeceras especificadas
 */
 bool HttpUtil::get(string url, map <string, string> *headers){
-    return sendHttp(url, "", 0, 0, headers, HTTP_GET);
+    return sendHttpWithRetries(url, "", 0, 0, headers, HTTP_GET);
 }
 
 /**
@@ -90,7 +93,7 @@ bool HttpUtil::get(string url, map <string, string> *headers){
 * Es requerido por el api de dropbox
 */
 bool HttpUtil::post(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers){
-    return sendHttp(url, data, tam, offset, headers, HTTP_POST2);
+    return sendHttpWithRetries(url, data, tam, offset, headers, HTTP_POST2);
 }
 
 /**
@@ -100,7 +103,7 @@ bool HttpUtil::post(string url, const char* data, size_t tam, size_t offset, map
 *   del array y que se interprete correctamente en el post
 */
 bool HttpUtil::post(string url, const char* data, size_t tam, map <string, string> *headers){
-    return sendHttp(url, data, tam, 0, headers, HTTP_POST);
+    return sendHttpWithRetries(url, data, tam, 0, headers, HTTP_POST);
 }
 
 /**
@@ -108,14 +111,14 @@ bool HttpUtil::post(string url, const char* data, size_t tam, map <string, strin
 * http://streamcloud.eu/512zjmlchbr7
 */
 bool HttpUtil::post(string url, string data, map <string, string> *headers){
-    return sendHttp(url, data.c_str(), data.length(), 0, headers, HTTP_POST);
+    return sendHttpWithRetries(url, data.c_str(), data.length(), 0, headers, HTTP_POST);
 }
 
 /**
  * To download by post
 */
 bool HttpUtil::postDownload(string url, string data, map <string, string> *headers){
-    return sendHttp(url, data.c_str(), data.length(), 0, headers, HTTP_POST3);
+    return sendHttpWithRetries(url, data.c_str(), data.length(), 0, headers, HTTP_POST3);
 }
 
 
@@ -123,17 +126,30 @@ bool HttpUtil::postDownload(string url, string data, map <string, string> *heade
 * Realiza una peticion http put con las cabeceras especificadas para subir un fichero
 */
 bool HttpUtil::put(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers){
-    return sendHttp(url, data, tam, offset, headers, HTTP_PUT);
+    return sendHttpWithRetries(url, data, tam, offset, headers, HTTP_PUT);
 }
 
 /**
 *
 */
 bool HttpUtil::del(string url, map <string, string> *headers){
-    return sendHttp(url, "", 0, 0, headers, HTTP_DELETE);
+    return sendHttpWithRetries(url, "", 0, 0, headers, HTTP_DELETE);
 }
 
 
+bool HttpUtil::sendHttpWithRetries(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers, long httpType){
+    bool success = false;
+    int nTry = 0;
+    
+    do{
+        success = sendHttp(url, data, tam, offset, headers, httpType);
+        nTry++;
+        if (!success){
+            Traza::print("Reintentando envio de " + url, nTry, W_ERROR);
+        }
+    } while (nTry < this->getConnectionRetries() && !success);
+    return success;
+}
 
 /**
 * url    : Es la url a la que conectarse
@@ -179,7 +195,10 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
+    mutex.Lock();
     curl = curl_easy_init();
+    mutex.Unlock();
+    
     /* specify proxy*/
     if (!proxyIP.empty()){
         string auth = proxyUser + ":" + proxyPass;
@@ -358,8 +377,8 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &http_code);
         /* Check for errors */
         if(res != CURLE_OK){
-            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-            Traza::print("curl_easy_perform() failed", http_code, W_ERROR);
+            //fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            Traza::print("curl_easy_perform() failed: " + string(curl_easy_strerror(res)), http_code, W_ERROR);
         } else {
             downState = true;
             parserCabeceras();
@@ -573,4 +592,12 @@ int HttpUtil::xferinfo(void *p,
   if( (myp->maxBytesDownload > 0 && dlnow > myp->maxBytesDownload) || aborted)
     return 1;
   return 0;
+}
+
+void HttpUtil::setConnectionRetries(int connectionRetries) {
+    this->connectionRetries = connectionRetries;
+}
+
+int HttpUtil::getConnectionRetries() const {
+    return connectionRetries;
 }

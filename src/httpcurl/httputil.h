@@ -20,6 +20,7 @@
 
 using namespace std;
 
+static const int MAX_THREADS = 8;
 
 class Progress {
  public:
@@ -39,23 +40,23 @@ class Progress {
             mutex.Lock();
             this->posListThreads = posListThreads;
             this->nThreads = nThreads;
-            this->arrProgress = new float[nThreads]();
+            this->arrProgress = new float[nThreads];
             
             for (int i=0; i < nThreads; i++){
-                this->arrProgress[i] = 0.0;
+                this->arrProgress[i % MAX_THREADS] = 0.0;
             }
             mutex.Unlock();
         }
         
         void setProgress(float progress) { 
             if (this->arrProgress != NULL){
-                this->arrProgress[this->posListThreads] = progress; 
+                this->arrProgress[this->posListThreads % MAX_THREADS] = progress; 
             }
         }
         
         float getProgress(){
             if (this->arrProgress != NULL){
-                return this->arrProgress[this->posListThreads];
+                return this->arrProgress[this->posListThreads % MAX_THREADS];
             } else {
                 return 0.0;
             }
@@ -134,6 +135,9 @@ class HttpUtil
 
         void setSendContentLength(bool var){sendContentLength = var;}
         bool getSendContentLength(){return sendContentLength;}
+        void setConnectionRetries(int connectionRetries);
+        int getConnectionRetries() const;
+        
         
     protected:
     private:
@@ -147,7 +151,8 @@ class HttpUtil
           char *filepath;
         };
         
-
+        int connectionRetries;
+        
         void parserCabeceras();
         map<string, string> cabecerasResp;
 
@@ -170,6 +175,7 @@ class HttpUtil
         static size_t read_callback(void *ptr, size_t size, size_t nmemb, FILE *stream);
         bool writeToFile(const char *, char *, ifstream::pos_type, bool);
         bool sendHttp(string url, const char* data, size_t, size_t, map <string, string> *headers, long httpType);
+        bool sendHttpWithRetries(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers, long httpType);
 
         static int older_progress(void *p,
                           double dltotal, double dlnow,
@@ -183,6 +189,7 @@ class HttpUtil
 //        static std::ifstream::pos_type maxBytesDownload;
         long http_code;
         bool sendContentLength;
+        GMutex mutex;
 };
 
 #endif // HTTPUTIL_H
