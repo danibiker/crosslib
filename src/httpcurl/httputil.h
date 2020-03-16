@@ -16,12 +16,9 @@
 #include <curl/curl.h>
 #include <gmutex.h>
 
-#define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3
+#define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3.0
 
 using namespace std;
-
-static const int MAX_THREADS = 8;
-
 class Progress {
  public:
         Progress(){ 
@@ -33,6 +30,14 @@ class Progress {
                 delete[] this->arrProgress;
                 this->arrProgress = NULL;
             }
+            if (this->arrBytesDown != NULL){
+                delete[] this->arrBytesDown;
+                this->arrBytesDown = NULL;
+            }
+            if (this->arrSpeedDown != NULL){
+                delete[] this->arrSpeedDown;
+                this->arrSpeedDown = NULL;
+            }
             mutex.Unlock();
         }
         
@@ -41,28 +46,66 @@ class Progress {
             this->posListThreads = posListThreads;
             this->nThreads = nThreads;
             this->arrProgress = new float[nThreads];
+            this->arrBytesDown = new double[nThreads];
+            this->arrSpeedDown = new double[nThreads];
+            
+            this->lastruntime = 0.0;
+            this->lastBytesDownloaded = 0.0;
+            this->lastruntimeBytesDown = 0.0;
             
             for (int i=0; i < nThreads; i++){
-                this->arrProgress[i % MAX_THREADS] = 0.0;
+                this->arrProgress[i] = 0.0;
+                this->arrBytesDown[i] = 0.0;
+                this->arrSpeedDown[i] = 0.0;
             }
             mutex.Unlock();
         }
         
         void setProgress(float progress) { 
             if (this->arrProgress != NULL){
-                this->arrProgress[this->posListThreads % MAX_THREADS] = progress; 
+                this->arrProgress[this->posListThreads % this->nThreads] = progress; 
             }
         }
         
         float getProgress(){
             if (this->arrProgress != NULL){
-                return this->arrProgress[this->posListThreads % MAX_THREADS];
+                return this->arrProgress[this->posListThreads % this->nThreads];
             } else {
                 return 0.0;
             }
         }
         
+        void setDlSizeBytes(double bytes) { 
+            if (this->arrBytesDown != NULL){
+                this->arrBytesDown[this->posListThreads % this->nThreads] = bytes; 
+            }
+        }
+        
+        double getDlSizeBytes(){
+            if (this->arrBytesDown != NULL){
+                return this->arrBytesDown[this->posListThreads % this->nThreads];
+            } else {
+                return 0.0;
+            }
+        }
+                
+        void setDlSpeed(double speed) { 
+            if (this->arrSpeedDown != NULL){
+                this->arrSpeedDown[this->posListThreads % this->nThreads] = speed; 
+            }
+        }
+        
+        double getDlSpeed(){
+            if (this->arrSpeedDown != NULL){
+                return this->arrSpeedDown[this->posListThreads % this->nThreads];
+            } else {
+                return 0.0;
+            }
+        }
         double lastruntime;
+
+        double lastruntimeBytesDown;
+        double lastBytesDownloaded;
         std::ifstream::pos_type maxBytesDownload;
         CURL *curl;
         
@@ -76,6 +119,8 @@ class Progress {
         };
  private:
     static float *arrProgress;
+    static double *arrBytesDown;
+    static double *arrSpeedDown;
     int nThreads;
     int posListThreads;
     GMutex mutex;
@@ -128,8 +173,9 @@ class HttpUtil
         void setTimeout(int var){timeout = var;}
         void abort(){aborted = true;}
         void setMaxBytesDownload(std::ifstream::pos_type var){prog->maxBytesDownload = var;}
-        //float getDownloadProgress(){return prog.getProgress();}
         float getDownloadProgress(){return prog->getProgress();}
+        double getDownloadSpeed(){return prog->getDlSpeed();}
+        double getDownloadTotal(){return prog->getDlSizeBytes();}
         long getHttp_code(){return http_code;}
         map<string, string> *getResponseHeaders(){return &this->cabecerasResp;}
 

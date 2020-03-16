@@ -337,8 +337,8 @@ int Constant::contiene (const char *s1, const char s2)
 string Constant::pad(string var, int paddedLength, char caracter){
 //            stringstream ss;
 //            ss << setw(sizepad) << var;
-    if (paddedLength > var.size())
-        var.insert(var.begin(), paddedLength - var.size(), caracter);
+    if (paddedLength > 0 && paddedLength > var.length())
+        var.insert(var.begin(), paddedLength - var.length(), caracter);
     return var;
 }
 
@@ -1147,10 +1147,44 @@ std::string Constant::Trim(const std::string& s)
     return TrimRight(TrimLeft(s));
 }
 
-static void Constant::setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT) {
+std::string Constant::cutToLength(const std::string& s, int cutLen){
+    string ret = s;
+    if (!s.empty()){
+        if (s.length() > cutLen - 3 - 1){
+            ret = s.substr(0, cutLen - 3) + "...";
+        }
+    }
+    return ret;
+}
+
+/**
+ * 
+ * @param bytes
+ * @param precision
+ * @return 
+ */
+string Constant::printBytesSize(double bytes, int precision){
+    string res;
+    static const double kb = 1024.0;
+    const int tam = sizeof(SIZES_STR) / sizeof(SIZES_STR[0]);
+    int i=0;
+    std::stringstream stream;
+    
+    do{
+        if (bytes < (kb * pow(kb,i))){
+            stream << std::fixed << std::setprecision(precision) << (bytes / pow(kb,i));
+            res = stream.str() + string(SIZES_STR[i]);
+        }
+        i++;
+    } while (res.empty() && i < tam);
+    return res;
+}
+
+
+void Constant::setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT) {
     Constant::CURL_DOWNLOAD_LIMIT = CURL_DOWNLOAD_LIMIT;
 }
 
-static size_t Constant::getCURL_DOWNLOAD_LIMIT() {
+size_t Constant::getCURL_DOWNLOAD_LIMIT() {
     return CURL_DOWNLOAD_LIMIT;
 }

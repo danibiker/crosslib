@@ -5,12 +5,10 @@
 #include "Constant.h"
 
 bool HttpUtil::aborted;
-//std::ifstream::pos_type HttpUtil::maxBytesDownload;
-//float HttpUtil::downloadProgress;
 std::string HttpUtil::readBufferHeader;
-//float Progress::percent;
-//float Progress::arrProgress[MAX_THREADS];
 float * Progress::arrProgress;
+double * Progress::arrBytesDown;
+double * Progress::arrSpeedDown;
 
 /**
 *
@@ -337,6 +335,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         }
 
         prog->lastruntime = 0;
+        prog->lastBytesDownloaded = 0;
         prog->curl = curl;
 
 
@@ -573,7 +572,6 @@ int HttpUtil::xferinfo(void *p,
   double curtime = 0;
 
   curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &curtime);
-
   /* under certain circumstances it may be desirable for certain functionality
      to only run every N seconds, in order to do this the transaction time can
      be used */
@@ -582,6 +580,13 @@ int HttpUtil::xferinfo(void *p,
     //Traza::print("TOTAL TIME: " + Constant::TipoToStr(curtime), W_DEBUG);
   }
   
+  if ((curtime - myp->lastruntimeBytesDown) >= 1.0){
+      myp->lastruntimeBytesDown = curtime;
+      myp->setDlSpeed(dlnow - myp->lastBytesDownloaded);
+      myp->lastBytesDownloaded = dlnow;
+  }
+
+  myp->setDlSizeBytes(dltotal);
   if (dltotal > 0.0){
         myp->setProgress(dltotal > 0.0 ? (dlnow / (float)dltotal * 100) : 0.0);
 //        Traza::print(" Progress " + Constant::TipoToStr(myp->getProgress()) + "%", W_DEBUG);

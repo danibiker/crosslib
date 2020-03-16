@@ -25,7 +25,7 @@
 #include <iomanip>
 #include <cstddef>
 #include <stdint.h>
-
+#include <math.h>
 
 
 using namespace std;
@@ -209,6 +209,7 @@ static const int mapHeight = 256;
              "abcdefghijklmnopqrstuvwxyz"
              "0123456789+/";
 
+    static const char* SIZES_STR[] = {"B","KB","MB","GB","TB"};
 
     typedef enum{W_FATAL = 0,W_ERROR,W_WARN,W_INFO,W_DEBUG,W_PARANOIC} enumTraza;
 
@@ -574,6 +575,9 @@ class Constant{
         static std::string TrimLeft(const std::string& s);
         static std::string TrimRight(const std::string& s);
         static std::string Trim(const std::string& s);
+        static std::string cutToLength(const std::string& s, int cutLen);
+        static std::string printBytesSize(double bytes, int precision);
+        
         static void setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT);
         static size_t getCURL_DOWNLOAD_LIMIT();
 };
