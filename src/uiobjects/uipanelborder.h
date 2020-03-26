@@ -1,7 +1,7 @@
 #ifndef UIPANELBORDER_H
 #define UIPANELBORDER_H
 
-#include <uipanel.h>
+#include "uipanel.h"
 
 
 class UIPanelBorder : public UIPanel

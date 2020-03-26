@@ -6,18 +6,18 @@
 
 bool HttpUtil::aborted;
 std::string HttpUtil::readBufferHeader;
-float * Progress::arrProgress;
-double * Progress::arrBytesDown;
-double * Progress::arrSpeedDown;
-
 /**
 *
 */
 HttpUtil::HttpUtil(){
-    HttpUtil(0,1);
+    init(0, 1);
 }
 
 HttpUtil::HttpUtil(int posListThreads, int nThreads){
+    init(posListThreads, nThreads);
+}
+
+void HttpUtil::init(int posListThreads, int nThreads){
     //cout << "HttpUtil: constructor" << endl;
     aborted = false;
     chunk.memory = NULL;
@@ -43,18 +43,25 @@ HttpUtil::HttpUtil(int posListThreads, int nThreads){
 *
 */
 HttpUtil::~HttpUtil(){
-    //cout << "HttpUtil: destructor" << endl;
-    if(chunk.memory)
+    cleanChunkData();
+    if (prog != NULL){
+       delete prog;
+    }
+}
+
+void HttpUtil::cleanChunkData(){
+    if(chunk.memory != NULL){
         free(chunk.memory);
-
-    if(header.memory)
+        chunk.memory = NULL;
+    }
+    if(header.memory != NULL){
         free(header.memory);
-
-    if(chunk.filepath)
+        header.memory = NULL;
+    }
+    if(chunk.filepath != NULL){
         free(chunk.filepath);
-    
-    delete prog;
-    
+        chunk.filepath = NULL;
+    }
 }
 
 /**
@@ -170,18 +177,10 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     FILE * hd_src = NULL;
     struct stat file_info;
     aborted = false;
-    
-    
+
+    mutex.Lock();
     //Traza::print("HttpUtil::sendHttp " + string(httpType == 0 ? "POST" : httpType == 1 ? "GET" : "PUT") + ", " +  url, W_INFO);
-
-    if(chunk.memory)
-        free(chunk.memory);
-
-    if(header.memory)
-        free(header.memory);
-
-    if (chunk.filepath)
-        free(chunk.filepath);
+    cleanChunkData();
 
     chunk.memory = (char *) malloc(1);  /* will be grown as needed by the realloc above */
     chunk.size = 0;
@@ -193,12 +192,13 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
-    mutex.Lock();
+    
     curl = curl_easy_init();
     mutex.Unlock();
     
     /* specify proxy*/
     if (!proxyIP.empty()){
+        Traza::print("Setting proxy settings", W_ERROR);
         string auth = proxyUser + ":" + proxyPass;
         curl_easy_setopt(curl, CURLOPT_PROXY, proxyIP.c_str());
         curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxyPort);
@@ -333,11 +333,13 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
             }
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curlheaders);
         }
-
-        prog->lastruntime = 0;
-        prog->lastBytesDownloaded = 0;
-        prog->curl = curl;
-
+        
+        if (prog != NULL){
+            prog->lastruntime = 0;
+            prog->lastBytesDownloaded = 0;
+            prog->curl = curl;
+        }
+        
 
         #if LIBCURL_VERSION_NUM >= 0x072000
         /* xferinfo was introduced in 7.32.0, no earlier libcurl versions will
@@ -376,8 +378,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &http_code);
         /* Check for errors */
         if(res != CURLE_OK){
-            //fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-            Traza::print("curl_easy_perform() failed: " + string(curl_easy_strerror(res)), http_code, W_ERROR);
+            Traza::print("curl_easy_perform() failed: " + string(curl_easy_strerror(res)) + ". Url: " + url, http_code, W_ERROR);
         } else {
             downState = true;
             parserCabeceras();
@@ -464,7 +465,7 @@ size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, 
     
     if (Constant::getCURL_DOWNLOAD_LIMIT() > 0 && totalDown > Constant::getCURL_DOWNLOAD_LIMIT()){
         Traza::print("CURL_DOWNLOAD_LIMIT. Size of download exceeded", totalDown, W_DEBUG);
-        cout << "CURL_DOWNLOAD_LIMIT. Size of download exceeded: " << totalDown << endl;
+//        cout << "CURL_DOWNLOAD_LIMIT. Size of download exceeded: " << totalDown << endl;
         Constant::setCURL_DOWNLOAD_LIMIT(0); //We don't want to forget to set to 0 again
         return 0; 
     }
@@ -567,6 +568,11 @@ int HttpUtil::xferinfo(void *p,
   Progress *myp = (Progress *)p;
   //auto myp = static_cast<Progress *>(p);
   
+  if (myp == NULL)
+      return 0;
+  
+  if (myp->curl == NULL)
+      return 0;
   
   CURL *curl = myp->curl;
   double curtime = 0;
@@ -592,10 +598,14 @@ int HttpUtil::xferinfo(void *p,
 //        Traza::print(" Progress " + Constant::TipoToStr(myp->getProgress()) + "%", W_DEBUG);
 //        Traza::print(Constant::TipoToStr(ulnow) + ";" + Constant::TipoToStr(ultotal) + ";" + Constant::TipoToStr(dlnow)
 //                     + ";" + Constant::TipoToStr(dltotal) + ";" + Constant::TipoToStr(myp->getProgress()), W_DEBUG);
+  } else {
+      myp->setProgress(0.0);
   }
   
   if( (myp->maxBytesDownload > 0 && dlnow > myp->maxBytesDownload) || aborted)
     return 1;
+  
+  
   return 0;
 }
 

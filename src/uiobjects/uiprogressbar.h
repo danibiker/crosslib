@@ -1,7 +1,7 @@
 #ifndef UIPROGRESSBAR_H
 #define UIPROGRESSBAR_H
 
-#include <object.h>
+#include "object.h"
 
 typedef enum {HINT_TIME = 0,
               HINT_PERCENT} tTypesHint;

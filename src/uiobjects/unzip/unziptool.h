@@ -2,14 +2,14 @@
 #define UNZIPTOOL_H
 
 #include <unistd.h>
-#include "zlib.h"
-#include "unzip.h"
-#include "crypt.h"
+#include <zlib.h>
+#include <minizip\unzip.h>
+//#include "..\..\ziputils\unzip\crypt.h"
+#include "..\Fileio.h"
+#include "..\Dirutil.h"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include "Fileio.h"
-#include "Dirutil.h"
 
 using namespace std;
 

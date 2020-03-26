@@ -1,7 +1,7 @@
 #ifndef UIListCommon_H
 #define UIListCommon_H
 
-#include <object.h>
+#include "object.h"
 
 enum {
     SCHEMELIST,

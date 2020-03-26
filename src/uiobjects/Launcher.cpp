@@ -175,10 +175,10 @@ bool Launcher::lanzarProgramaUNIXFork(FileLaunch *emulInfo){
         if (Constant::getExecMethod() == launch_spawn){
             int pid = -1;
             if (execCmd.filenameinparms){
-                const char* argv[] = { execCmd.ejecutable.c_str(), execCmd.param.c_str(), 0 };
+                char* argv[] = { (char *)execCmd.ejecutable.c_str(),(char *)execCmd.param.c_str(), 0 };
                 pid = spawnv(P_WAIT, argv[0], argv);
             } else {
-                const char* argv[] = { execCmd.ejecutable.c_str(), execCmd.param.c_str(), execCmd.filerompath.c_str(), 0 };
+                char* argv[] = { (char *)execCmd.ejecutable.c_str(),(char *) execCmd.param.c_str(), (char *)execCmd.filerompath.c_str(), 0 };
                 pid = spawnv(P_WAIT, argv[0], argv);
             }
             if (pid == -1){

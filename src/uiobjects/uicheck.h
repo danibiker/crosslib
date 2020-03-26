@@ -1,7 +1,7 @@
 #ifndef UICHECK_H
 #define UICHECK_H
 
-#include <object.h>
+#include "object.h"
 
 
 class UICheck : public Object

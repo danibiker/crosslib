@@ -1,7 +1,7 @@
 #ifndef UISPECTRUM_H
 #define UISPECTRUM_H
 
-#include <object.h>
+#include "object.h"
 
 typedef enum {
         BARSPECTRUM,          //0

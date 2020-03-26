@@ -1,7 +1,7 @@
 #ifndef UIPANEL_H
 #define UIPANEL_H
 
-#include <object.h>
+#include "object.h"
 
 
 class UIPanel : public Object

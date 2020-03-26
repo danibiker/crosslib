@@ -1,0 +1,595 @@
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <string.h>
+#include <sstream>
+#include <cstdlib>
+
+#include "thread.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
+#include "SDL/SDL_ttf.h"
+#include "font/Arimo_Regular.ttf.h"
+#include "Fileio.h"
+#include "Dirutil.h"
+#include "Launcher.h"
+#include "AudioPlayer.h"
+#include "ListaSimple.h"
+#include "audiocd/CAudioCD.h"
+
+using namespace std;
+
+#define W 640
+#define H 480
+#define H2 (H/2)
+#define H4 (H/4)
+#define Y(sample) (((sample)*H)/4/0x7fff)
+
+Uint32 flips=0;
+Uint32 black,white;
+SDL_Surface *screen=NULL;
+TTF_Font* fuente; //Fuente de textos
+//ifstream* srcStream;
+//ofstream* dstStream;
+
+t_color ColorScale [] =
+{
+	cAzulOscuro, // dk blue
+    cAzulTotal, // lt blue
+    cVerde, // lt green
+    cVerde,
+    cAmarillo, // lt yellow
+    cAmarillo,
+    cAmarillo,
+    cAmarillo,
+    cNaranja, // orange
+    cNaranja,
+    cNaranja,
+    cNaranja,
+    cNaranja,
+    cNaranja,
+    cNaranja,
+    cNaranja,
+    cRojo // lt red
+};
+
+void refresh(AudioPlayer *player){
+	int x;
+	Sint16 *buf;
+
+	/*fprintf(stderr,"len=%d   \r",len); */
+    AudioPlayer::TStreamMusicPlaying *streamData = player->getStreamMusicPlaying();
+	buf=streamData->stream[streamData->which];
+	player->setNeed_refresh(0);
+
+	SDL_LockSurface(screen);
+	/* clear the screen */
+	/*SDL_FillRect(s,NULL,black); */
+
+	/* draw the wav from the saved stream buffer */
+	for(x=0;x<W*2;x++)
+	{
+		const int X=x>>1, b=x&1 ,t=H4+H2*b;
+		int y1,h1;
+		if(buf[x]<0)
+		{
+			h1=-Y(buf[x]);
+			y1=t-h1;
+		}
+		else
+		{
+			y1=t;
+			h1=Y(buf[x]);
+		}
+		{
+			SDL_Rect r={X,H2*b,1};
+			r.h=y1-r.y;
+			SDL_FillRect(screen,&r,0);
+		}
+		{
+			SDL_Rect r={X,y1,1,h1};
+			SDL_FillRect(screen,&r,white);
+		}
+		{
+			SDL_Rect r={X,y1+h1,1};
+			r.h=H2+H2*b-r.y;
+			SDL_FillRect(screen,&r,0);
+		}
+	}
+	SDL_UnlockSurface(screen);
+	flips++;
+}
+
+t_color MapColor (int s){
+
+    int totalColores = sizeof (ColorScale) / sizeof(t_color);
+
+    s = (s / (double)MAXVALUEFFT) * totalColores;
+
+	if (s > totalColores - 1)
+		s = totalColores - 1;
+	return ColorScale [s];
+}
+
+void refreshBars(AudioPlayer *player){
+	int x;
+	Sint16 *buf;
+
+    AudioPlayer::TStreamMusicPlaying *streamData = player->getStreamMusicPlaying();
+	player->setNeed_refresh(0);
+
+	SDL_LockSurface(screen);
+	/* clear the screen */
+	SDL_FillRect(screen,NULL,black);
+
+    int valueFreq = 0;
+    double percent = 0;
+    int barWidth = W /(double)NBIQUADFILTERS;
+    t_color barColor;
+    SDL_Color foregroundColor;
+
+    for (int i=0; i < NBIQUADFILTERS; i++){
+        valueFreq = streamData->arrFreqVis[i] > MAXVALUEFFT ? MAXVALUEFFT : streamData->arrFreqVis[i];
+        barColor = MapColor(valueFreq);
+        percent = valueFreq / (double) MAXVALUEFFT;
+
+        SDL_Rect r={i * barWidth, H - (H * percent), barWidth, H * percent};
+        SDL_FillRect(screen,&r,SDL_MapRGB(screen->format,barColor.r,barColor.g,barColor.b));
+    }
+
+	SDL_UnlockSurface(screen);
+	flips++;
+}
+
+///**
+//*
+//*/
+//void pauseMusic(){
+//   Mix_UnregisterEffect(MIX_CHANNEL_POST, &musicLengthCallback);
+//}
+//
+///**
+//*
+//*/
+//void resumeMusic( Music * music ){
+//    music->currentPosition = 0;
+//    Mix_RegisterEffect(MIX_CHANNEL_POST, &musicLengthCallback,0, music);
+//}
+
+/**
+*
+*/
+void liberarRecursos(){
+    Mix_HaltMusic();
+//    Mix_FreeMusic(music);
+    Mix_CloseAudio();
+    SDL_Quit();
+}
+
+
+/**
+*
+*/
+void drawTextInArea( const char* dato, int x, int y, t_color color, SDL_Rect *textLocation){
+    if (fuente != NULL){
+        SDL_Color foregroundColor = { (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b };
+        SDL_Surface* textSurface =  TTF_RenderText_Blended(fuente,dato, foregroundColor);
+        SDL_Rect screenLocation = { (short int)x, (short int)y, 0, 0 };
+        SDL_BlitSurface(textSurface, textLocation, screen, &screenLocation);
+        SDL_FreeSurface(textSurface);
+    } else {
+        Traza::print("Fallo en drawTextInArea: La fuente es NULL", W_ERROR);
+    }
+}
+
+/**
+*
+*/
+double getSongTime(string filepath){
+    Launcher lanzador;
+    FileLaunch emulInfo;
+    Dirutil dir;
+    //Se especifica el fichero de musica a reproducir
+    emulInfo.rutaroms = dir.getFolder(filepath);
+    emulInfo.nombrerom = dir.getFileName(filepath);
+    //Se especifica el ejecutable
+    emulInfo.rutaexe = "C:\\";
+    //emulInfo.fileexe = "ffmpeg.exe";
+    //emulInfo.parmsexe = "-i";
+    emulInfo.fileexe = "ffprobe.exe";
+    emulInfo.parmsexe = " -i \"%ROMFULLPATH%\" -show_entries format=duration -v quiet -of csv=\"p=0\" > \"%ROMFULLPATH%.dat\"";
+    //Lanzamos el programa
+    bool resultado = lanzador.lanzarProgramaUNIXFork(&emulInfo);
+    Fileio fichero;
+    fichero.loadFromFile(emulInfo.rutaroms + emulInfo.nombrerom + ".dat");
+    cout << "Obtenido: " << fichero.getFile() << endl;
+    if (resultado){
+        cout << "Lanzamiento OK" << endl;
+    } else {
+        cout << "Error en el lanzamiento" << endl;
+    }
+    return Constant::strToTipo<double>(fichero.getFile());
+}
+
+struct TID3Tags{
+    string album;
+    string title;
+    string tlen;
+    string track;
+    string genre;
+    string publisher;
+    string album_artist;
+    string composer;
+    string artist;
+    string date;
+};
+
+char arrTags[][20] = {{"ALBUM"},{"TITLE"},
+{"TLEN"},{"track"},{"GENRE"},{"PUBLISHER"},
+{"album_artist"},{"COMPOSER"},{"ARTIST"},{"DATE"}};
+
+typedef enum{album,title,tlen,track,genre,publisher,
+album_artist,composer,artist,date}id3Pos;
+
+TID3Tags getSongInfo(string filepath){
+    Launcher lanzador;
+    FileLaunch emulInfo;
+    Dirutil dir;
+    //Se especifica el fichero de musica a reproducir
+    emulInfo.rutaroms = dir.getFolder(filepath);
+    emulInfo.nombrerom = dir.getFileName(filepath);
+    //Se especifica el ejecutable
+    emulInfo.rutaexe = "C:\\";
+    emulInfo.fileexe = "ffmpeg.exe";
+
+    emulInfo.parmsexe = "-i \"%ROMFULLPATH%\" -y -f ffmetadata \"%ROMFULLPATH%.txt\" 2> \"%ROMFULLPATH%.id3\"";
+    //Lanzamos el programa
+    bool resultado = lanzador.lanzarProgramaUNIXFork(&emulInfo);
+//    Fileio fichero;
+//    fichero.loadFromFile(emulInfo.rutaroms + emulInfo.nombrerom + ".id3");
+//    cout << "Obtenido: " << fichero.getFile() << endl;
+    if (resultado){
+        cout << "Lanzamiento OK" << endl;
+    } else {
+        cout << "Error en el lanzamiento" << endl;
+    }
+//    //return Constant::strToTipo<double>(fichero.getFile());
+    TID3Tags songTags;
+    listaSimple<string> *lista = new listaSimple<string>();
+    lista->loadStringsFromFile(emulInfo.rutaroms + emulInfo.nombrerom + ".id3");
+    size_t  pos = 0;
+    string line;
+    string value;
+    for (int i=0; i < lista->getSize(); i++){
+        line = lista->get(i);
+        for (int j=0; j < 10; j++){
+            if ( line.find(arrTags[j]) != string::npos
+                && (pos = line.find(":")) != string::npos){
+                value = line.substr(pos+2);
+                if (j == album){
+                    songTags.album = value;
+                } else if (j == title){
+                    songTags.title = value;
+                } else if (j == tlen){
+                    songTags.tlen = value;
+                } else if (j == track){
+                    songTags.track = value;
+                } else if (j == genre){
+                    songTags.genre = value;
+                } else if (j == publisher){
+                    songTags.publisher = value;
+                } else if (j == album_artist){
+                    songTags.album_artist = value;
+                } else if (j == composer){
+                    songTags.composer = value;
+                } else if (j == artist){
+                    songTags.artist = value;
+                } else if (j == date){
+                    songTags.date = value;
+                }
+            }
+        }
+
+    }
+    delete lista;
+    return songTags;
+}
+
+
+
+int main(int argc, char *argv[]) {
+
+    CAudioCD AudioCD;
+
+    if ( ! AudioCD.Open( 'E' ) ){
+        printf( "Cannot open cd-drive!\n" );
+        return 0;
+    }
+
+    ULONG TrackCount = AudioCD.GetTrackCount();
+    printf( "Track-Count: %i\n", TrackCount );
+
+    int padSize = Constant::TipoToStr(TrackCount).length();
+    //if (padSize < 2) padSize = 2;
+
+    for ( ULONG i=0; i<TrackCount; i++ ){
+        ULONG Time = AudioCD.GetTrackTime( i );
+        printf( "Track %i: %i:%.2i;  %i bytes of size\n", i+1, Time/60, Time%60, AudioCD.GetTrackSize(i) );
+
+        string songName = "C:\\Track " + Constant::pad(Constant::TipoToStr(i), padSize, '0') +  ".wav";
+        // Save track-data to file...
+        if ( ! AudioCD.ExtractTrack( i, songName.c_str() ) )
+            printf( "Cannot extract track 7!\n" );
+        // ... or just get the data into memory
+//        CBuf<char> Buf;
+//        if ( ! AudioCD.ReadTrack(i, &Buf) )
+//            printf( "Cannot read track!\n" );
+    }
+
+
+
+
+
+/**Prueba para obtener la info de las canciones */
+//    TID3Tags songTags = getSongInfo("C:\\loneeee.ogg");
+//
+//    Constant::setExecMethod(launch_create_process);
+//
+//    cout << songTags.album << " ; " << songTags.title << " ; " << songTags.album_artist
+//    << " ; " << songTags.composer << " ; " << songTags.date << " ; " << songTags.genre
+//    << " ; " << songTags.publisher << " ; " << songTags.tlen << " ; " << songTags.track
+//    << endl;
+
+/**Prueba reproductor*/
+//    atexit(liberarRecursos);
+//    if ( SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) != 0) {
+//        cout << "Konnte nicht initialisiert werden: " << SDL_GetError() << endl;
+//        exit (1);
+//    }
+//
+//    if(!(screen=SDL_SetVideoMode(W,H,(argc>2?atoi(argv[2]):8),(argc>3?SDL_FULLSCREEN:0)|SDL_HWSURFACE|SDL_DOUBLEBUF)))
+//		exit (1);
+//
+//    SDL_WM_SetCaption("sdlwav - SDL_mixer demo","sdlwav");
+//    /* hide the annoying mouse pointer */
+//	SDL_ShowCursor(SDL_DISABLE);
+//	/* get the colors we use */
+//	white=SDL_MapRGB(screen->format,0xff,0xff,0xff);
+//	black=SDL_MapRGB(screen->format,0,0,0);
+//
+//    // Initialize SDL_TTF
+//    TTF_Init();
+//    Fileio *fontfile = new Fileio();
+//    fontfile->loadFromMem((const char *)Arimo_Regular_ttf, Arimo_Regular_ttf_size);
+//    SDL_RWops *RWOps = SDL_RWFromMem(fontfile->getFile(), fontfile->getFileSize());
+//    if (RWOps != NULL){
+//        fuente = TTF_OpenFontRW(RWOps,1,18);
+//    }
+//
+//    string filename = "C:\\Johny.ogg";
+////    srcStream = new ifstream(filename.c_str(), ios::in | ios::binary);
+////    srcStream->seekg(0, ios::end);
+////    FileLenght = srcStream->tellg();
+////    srcStream->seekg(0, ios::beg);
+////    buffer = (char *) malloc(bufLen);
+////    string destFile = "C:\\tmpstreaming";
+////    dstStream = new ofstream(destFile.c_str(), ios::out | ios::binary);
+////    srcStream->read (buffer, bufLen);
+////    dstStream->write(buffer, bufLen);
+//    //Comprobamos el tamanyo de la cancion
+//    cout << "La cancion dura: " << getSongTime(filename) << endl;
+//    AudioPlayer *player = new AudioPlayer();
+//    player->setScreen(screen);
+//    player->initAudio();
+//    player->setFilename(filename);
+//
+//    Thread<AudioPlayer> *thread = new Thread<AudioPlayer>(player, &AudioPlayer::loadFile);
+//    if (thread->start())
+//        std::cout << "Thread started with id: " << thread->getThreadID() << std::endl;
+//    //Esperamos a que termine el thread pero procesamos la pantalla,
+//    //para que se actualicen los cambios que hagamos.
+//    //thread->join();
+//    SDL_Event e;
+//    while (thread->isRunning()){
+//   		while(SDL_PollEvent(&e) && player->getMusicplaying()){
+//    			switch(e.type){
+//    				case SDL_KEYDOWN:
+//    					switch(e.key.keysym.sym){
+//    						case SDLK_ESCAPE:
+//    							player->stop();
+//    							break;
+//    						case SDLK_LEFT:
+//    							if(e.key.keysym.mod&KMOD_SHIFT){
+//    								player->rewind();
+//    							} else {
+//    							    player->rewind(5);
+//    							}
+//    							break;
+//    						case SDLK_RIGHT:
+//    						    player->forward(5);
+//    							break;
+//    						case SDLK_UP:
+//    							player->volUp();
+//    							break;
+//    						case SDLK_DOWN:
+//    							player->volDown();
+//    							break;
+//    						case SDLK_SPACE:
+//    						    player->pause();
+////    						    player->stop();
+////    						    while (thread->isRunning()){};
+////                                player->setFilename("C:\\06 Katy Too.ogg");
+////                                thread = new Thread<AudioPlayer>(player, &AudioPlayer::loadFile);
+////                                thread->start();
+////                                thread->join();
+//
+//    							break;
+//    						default:
+//    							break;
+//    					}
+//    					break;
+//    				case SDL_QUIT:
+//    					player->stop();
+//    					break;
+//    				default:
+//    					break;
+//    			}
+//        }
+//        /* the postmix processor tells us when there's new data to draw */
+//        if(player->getNeed_refresh()){
+//            //refresh(player);
+//            refreshBars(player);
+//            //SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0,0,0));
+//            drawTextInArea(Constant::timeFormat(player->getActualPlayTime() / 1000).c_str(), 20,20,cBlanco, NULL);
+//            //drawTextInArea(Constant::TipoToStr(totalLeido / (double)FileLenght * 100 ).c_str(), 20,50,cBlanco, NULL);
+//            //drawTextInArea(Constant::TipoToStr(musica->currentPosition).c_str(), 20,80,cBlanco, NULL);
+//            SDL_UpdateRect(screen, 0,0,0,0);
+//        }
+//    }
+//    delete player;
+
+
+/**Prueba para streaming*/
+//    //Aqui abrimos el fichero descargado parcialmente
+//    FILE *fp = fopen(destFile.c_str(), "rb");
+//    SDL_RWops *rw2 = SDL_RWFromFP(fp, SDL_TRUE);
+//    Music * musica = new Music();
+//    musica->music = Mix_LoadMUS_RW(rw2);
+//    resumeMusic(musica);
+//    //Cuando termine, se liberan los recursos de SDL
+//    Mix_HookMusicFinished(musicfinished);
+//
+//    /**
+//    * Temas para el dibujado de pantalla
+//    */
+//    int audio_rate_obtained,audio_channels_obtained;
+//	Uint16 audio_format_obtained;
+//    /* print out some info on the audio device and stream */
+//	Mix_QuerySpec(&audio_rate_obtained, &audio_format_obtained, &audio_channels_obtained);
+//	bits=audio_format_obtained&0xFF;
+//	sample_size=bits/8+audio_channels_obtained;
+//	rate=audio_rate_obtained;
+//	printf("Opened audio at %d Hz %d bit %s, %d bytes audio buffer\n", audio_rate_obtained,
+//            bits, audio_channels_obtained>1?"stereo":"mono", BUFFER );
+//
+//    //Realizamos comprobaciones de que se puede reproducir el archivo
+//    if (musica->music == NULL) {
+//        cout << "No se puede cargar el archivo: " << Mix_GetError() << endl;
+//        return 1;
+//    }
+//
+//    if (Mix_PlayMusic(musica->music, 0) == -1) {
+//        cout << "No se puede reproducir el archivo" << Mix_GetError() << endl;
+//        return 1;
+//    }
+//
+//    long initialPlayTime = SDL_GetTicks();
+//    long actualPlayTime = 0;
+//    long avance = 0;
+//    long leido = 0;
+//    bool paused = false;
+//    long pauseMoment = 0;
+//    size_t totalLeido = bufLen;
+//    SDL_Event e;
+//
+//    while(musicplaying) {
+//        //Procesamos eventos
+//        if (!paused){
+//            actualPlayTime = SDL_GetTicks() - initialPlayTime + avance;
+//        }
+//
+//        //Vamos rellenando a intervalos de 2 segungos el fichero temporal que se reproduce
+//        //Asi simulamos perfectamente un streaming de datos
+//        if (totalLeido < FileLenght && actualPlayTime % 1500 == 0){
+//            srcStream->read (buffer, bufLen);
+//            leido = srcStream->gcount();
+//            totalLeido += leido;
+//            dstStream->write(buffer, leido);
+//        }
+//
+//		while(SDL_PollEvent(&e) && musicplaying){
+//			switch(e.type){
+//				case SDL_KEYDOWN:
+//					switch(e.key.keysym.sym){
+//						case SDLK_ESCAPE:
+//							musicplaying=0;
+//							break;
+//						case SDLK_LEFT:
+//							if(e.key.keysym.mod&KMOD_SHIFT){
+//								Mix_RewindMusic();
+//							} else {
+//							    if (avance > 5000){
+//                                    avance -= 5000;
+//                                    Mix_RewindMusic();
+//                                    Mix_SetMusicPosition(avance / 1000);
+//                                } else if (actualPlayTime > 5000){
+//                                    initialPlayTime = initialPlayTime + 5000;
+//                                    Mix_RewindMusic();
+//                                    Mix_SetMusicPosition((actualPlayTime - 5000) / 1000);
+//                                } else {
+//                                    avance = 0;
+//                                    actualPlayTime = 0;
+//                                    initialPlayTime = SDL_GetTicks();
+//                                    Mix_RewindMusic();
+//                                    Mix_SetMusicPosition(0);
+//                                }
+//							}
+//							break;
+//						case SDLK_RIGHT:
+//						    if (Mix_SetMusicPosition((avance + 5000) / 1000) != -1){
+//                                avance += 5000;
+//						    } else {
+//                                printf("error avanzando\n");
+//						    }
+//							break;
+//						case SDLK_UP:
+//							volume=(volume+1)<<1;
+//							if(volume>SDL_MIX_MAXVOLUME)
+//								volume=SDL_MIX_MAXVOLUME;
+//							Mix_VolumeMusic(volume);
+//							break;
+//						case SDLK_DOWN:
+//							volume>>=1;
+//							Mix_VolumeMusic(volume);
+//							break;
+//						case SDLK_SPACE:
+//						    paused = !paused;
+//							if(Mix_PausedMusic()){
+//                                initialPlayTime += SDL_GetTicks() - pauseMoment;
+//                                Mix_ResumeMusic();
+//							} else {
+//							    pauseMoment = SDL_GetTicks();
+//							    Mix_PauseMusic();
+//							}
+//
+//							break;
+//						default:
+//							break;
+//					}
+//					break;
+//				case SDL_QUIT:
+//					musicplaying=0;
+//					break;
+//				default:
+//					break;
+//			}
+//		}
+//		/* the postmix processor tells us when there's new data to draw */
+//		if(need_refresh){
+//            refresh();
+////            SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0,0,0));
+//            drawTextInArea(Constant::timeFormat(actualPlayTime / 1000).c_str(), 20,20,cBlanco, NULL);
+//            drawTextInArea(Constant::TipoToStr(totalLeido / (double)FileLenght * 100 ).c_str(), 20,50,cBlanco, NULL);
+//            drawTextInArea(Constant::TipoToStr(musica->currentPosition).c_str(), 20,80,cBlanco, NULL);
+//            SDL_UpdateRect(screen, 0,0,0,0);
+//		}
+//
+//    }
+//    srcStream->close();
+//    delete srcStream;
+//    dstStream->close();
+//    delete dstStream;
+//    SDL_RWclose(rw2); /* Automatically does an fclose(fp) in this case */
+//    Mix_FreeMusic(musica->music);
+    return 0;
+}

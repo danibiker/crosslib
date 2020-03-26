@@ -193,7 +193,7 @@ void UIInput::action(tEvento *evento){
             std::vector<std::string> strSplitted = Constant::splitPos(this->getText(), posCursor);
 
             if (evento->keyMod & KMOD_LCTRL && evento->key == SDLK_v){
-                string clipText = Constant::GetClipboardText();
+                string clipText = SOUtils::GetClipboardText();
                 Traza::print("intentado pegar el texto: " + clipText, W_PARANOIC);
                 this->setText(strSplitted.at(0) + clipText + strSplitted.at(1));
                 this->posChar = posCursor + clipText.length();

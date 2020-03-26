@@ -6,9 +6,9 @@
 #include "ListaSimple.h"
 #include "Excepcion.h"
 #include "Dirutil.h"
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
-#include "SDL/SDL_rotozoom.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_rotozoom.h>
 #include "common.h"
 
 class ImagenGestor : public Fileio{

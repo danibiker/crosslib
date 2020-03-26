@@ -34,14 +34,16 @@ string extractSection(ifstream *myfile, string *line, string section){
 
     while (!endReached && continueReading){
         if (posSection == 0){
-            continueReading = getline (*myfile, *line);
+            getline (*myfile, *line);
+            continueReading = !line->empty();
             posSection = line->find("- ");
             posEnd = line->find("$end");
             while ( (posEnd == string::npos || posEnd > 0) && (posSection == string::npos || posSection > 0) && continueReading){
                 if (!line->empty()){
                     sectionValue.append(*line + VBCRLF);
                 }
-                continueReading = getline (*myfile, *line);
+                getline (*myfile, *line);
+                continueReading = !line->empty();
                 posSection = line->find("- ");
                 posEnd = line->find("$end");
             }
@@ -49,7 +51,8 @@ string extractSection(ifstream *myfile, string *line, string section){
         } else {
             posEnd = line->find("$end");
             if (posEnd == string::npos || posEnd > 0){
-                continueReading = getline (*myfile, *line);
+                getline (*myfile, *line);
+                continueReading = !line->empty();
                 posSection = line->find("- " + section + " -");
             } else {
                 endReached = true;
@@ -104,7 +107,8 @@ void loadHistoryDatMameMap(string ruta, map<string, map<string, string> > *mapHi
                 //Si hemos encontrado un fichero, comprobamos que tenga descripcion, que debe estar en la
                 //linea 5 despues de la $info
                 for (int i=0; i < 5 && continueReading; i++){
-                    continueReading = getline (myfile, line);
+                    getline (myfile, line);
+                    continueReading = !line.empty();
                 }
 
 //                if (i < file->getSize() - 5) i+=5;
@@ -116,7 +120,8 @@ void loadHistoryDatMameMap(string ruta, map<string, map<string, string> > *mapHi
                     if (!line.empty()){
                         descRom.append(line + VBCRLF);
                     }
-                    continueReading = getline (myfile, line);
+                    getline (myfile, line);
+                    continueReading = !line.empty();
                     posSection = line.find("- ");
                 }
 

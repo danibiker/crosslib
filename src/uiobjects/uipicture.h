@@ -1,7 +1,7 @@
 #ifndef UIPICTURE_H
 #define UIPICTURE_H
 
-#include <object.h>
+#include "object.h"
 
 
 class UIPicture : public Object

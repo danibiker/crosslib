@@ -342,6 +342,14 @@ string Constant::pad(string var, int paddedLength, char caracter){
     return var;
 }
 
+std::string Constant::padRight(std::string str, size_t s, char caracter)
+{
+    if ( str.size() < s )
+        return str + std::string(s-str.size(), caracter);
+    else
+        return str;
+}
+
 /**
 *
 */
@@ -683,90 +691,7 @@ inline bool Constant::is_base64(unsigned char c) {
 
 
 
-/**
-*
-*/
-std::string Constant::GetClipboardText(){
-  std::string text = "";
-  #ifdef WIN
-  // Try opening the clipboard
-  if (! OpenClipboard(NULL)){
-    return "";
-  }
 
-  // Get handle of clipboard object for ANSI text
-  HANDLE hData = GetClipboardData(CF_TEXT);
-  if (hData == NULL)
-   return "";
-
-  // Lock the handle to get the actual text pointer
-  char * pszText = static_cast<char*>( GlobalLock(hData) );
-  if (pszText == NULL)
-    return "";
-
-  // Save text in a string class instance
-  text = pszText;
-
-  // Release the lock
-  GlobalUnlock( hData );
-
-  // Release the clipboard
-  CloseClipboard();
-#endif
-
-#ifdef UNIX
-  char *result;
-  unsigned long ressize, restail;
-  const char bufname[] = "CLIPBOARD";
-  const char fmtname[] = "UTF8_STRING"; //"STRING"
-  int resbits;
-  Display *display = XOpenDisplay(NULL);
-  unsigned long color = BlackPixel(display, DefaultScreen(display));
-  Window window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0,0, 1,1, 0, color, color);
-  
-  Atom bufid = XInternAtom(display, bufname, False),
-       fmtid = XInternAtom(display, fmtname, False),
-       propid = XInternAtom(display, "XSEL_DATA", False),
-       incrid = XInternAtom(display, "INCR", False);
-  XEvent event;
-
-  XConvertSelection(display, bufid, fmtid, propid, window, CurrentTime);
-  do {
-    XNextEvent(display, &event);
-  } while (event.type != SelectionNotify || event.xselection.selection != bufid);
-
-  if (event.xselection.property)
-  {
-    XGetWindowProperty(display, window, propid, 0, LONG_MAX/4, False, AnyPropertyType,
-      &fmtid, &resbits, &ressize, &restail, (unsigned char**)&result);
-
-    if (fmtid == incrid)
-      printf("Buffer is too large and INCR reading is not implemented yet.\n");
-    else
-      printf("%.*s", (int)ressize, result);
-    text.assign(result);
-    XFree(result);
-  }
-  else // request failed, e.g. owner can't convert to the target format
-    printf("Request failed.\n");
-  
-  XDestroyWindow(display, window);
-  XCloseDisplay(display);
-
-#endif  
-  return text;
-}
-
-/**
-*
-*/
-void Constant::waitms(unsigned long ms){
-    #ifdef WIN
-        Sleep(ms);
-    #elif UNIX
-        sleep(ms);
-    #endif
-}
 
 /**
 *
@@ -1172,7 +1097,7 @@ string Constant::printBytesSize(double bytes, int precision){
     
     do{
         if (bytes < (kb * pow(kb,i))){
-            stream << std::fixed << std::setprecision(precision) << (bytes / pow(kb,i));
+            stream << std::fixed << std::setprecision(i >= 2 ? precision : 0) << (bytes / pow(kb,i));
             res = stream.str() + string(SIZES_STR[i]);
         }
         i++;

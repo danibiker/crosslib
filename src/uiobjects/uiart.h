@@ -1,7 +1,7 @@
 #ifndef UIART_H
 #define UIART_H
 
-#include <object.h>
+#include "object.h"
 
 
 class UIArt : public Object

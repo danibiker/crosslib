@@ -47,8 +47,123 @@
 #ifndef __GZipHelper__
 #define __GZipHelper__
 
-#include "zutil.h"
+#include <zlib.h>
 
+#if defined(MSDOS) || (defined(WINDOWS) && !defined(WIN32))
+#  define OS_CODE  0x00
+#  if defined(__TURBOC__) || defined(__BORLANDC__)
+#    if(__STDC__ == 1) && (defined(__LARGE__) || defined(__COMPACT__))
+       /* Allow compilation with ANSI keywords only enabled */
+       void _Cdecl farfree( void *block );
+       void *_Cdecl farmalloc( unsigned long nbytes );
+#    else
+#      include <alloc.h>
+#    endif
+#  else /* MSC or DJGPP */
+#    include <malloc.h>
+#  endif
+#endif
+
+#ifdef AMIGA
+#  define OS_CODE  0x01
+#endif
+
+#if defined(VAXC) || defined(VMS)
+#  define OS_CODE  0x02
+#  define F_OPEN(name, mode) \
+     fopen((name), (mode), "mbc=60", "ctx=stm", "rfm=fix", "mrs=512")
+#endif
+
+#if defined(ATARI) || defined(atarist)
+#  define OS_CODE  0x05
+#endif
+
+#ifdef OS2
+#  define OS_CODE  0x06
+#endif
+
+#if defined(MACOS) || defined(TARGET_OS_MAC)
+#  define OS_CODE  0x07
+#  if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
+#    include <unix.h> /* for fdopen */
+#  else
+#    ifndef fdopen
+#      define fdopen(fd,mode) NULL /* No fdopen() */
+#    endif
+#  endif
+#endif
+
+#ifdef TOPS20
+#  define OS_CODE  0x0a
+#endif
+
+#ifdef WIN32
+#  ifndef __CYGWIN__  /* Cygwin is Unix, not Win32 */
+#    define OS_CODE  0x0b
+#  endif
+#endif
+
+#ifdef __50SERIES /* Prime/PRIMOS */
+#  define OS_CODE  0x0f
+#endif
+
+#if defined(_BEOS_) || defined(RISCOS)
+#  define fdopen(fd,mode) NULL /* No fdopen() */
+#endif
+
+#if (defined(_MSC_VER) && (_MSC_VER > 600))
+#  if defined(_WIN32_WCE)
+#    define fdopen(fd,mode) NULL /* No fdopen() */
+#    ifndef _PTRDIFF_T_DEFINED
+       typedef int ptrdiff_t;
+#      define _PTRDIFF_T_DEFINED
+#    endif
+#  else
+#    define fdopen(fd,type)  _fdopen(fd,type)
+#  endif
+#endif
+
+        /* common defaults */
+
+#ifndef OS_CODE
+#  define OS_CODE  0x03  /* assume Unix */
+#endif
+
+#if defined(pyr)
+#  define NO_MEMCPY
+#endif
+#if defined(SMALL_MEDIUM) && !defined(_MSC_VER) && !defined(__SC__)
+ /* Use our own functions for small and medium model with MSC <= 5.0.
+  * You may have to use the same strategy for Borland C (untested).
+  * The __SC__ check is for Symantec.
+  */
+#  define NO_MEMCPY
+#endif
+#if defined(STDC) && !defined(HAVE_MEMCPY) && !defined(NO_MEMCPY)
+#  define HAVE_MEMCPY
+#endif
+#ifdef HAVE_MEMCPY
+#  ifdef SMALL_MEDIUM /* MSDOS small or medium model */
+#    define zmemcpy _fmemcpy
+#    define zmemcmp _fmemcmp
+#    define zmemzero(dest, len) _fmemset(dest, 0, len)
+#  else
+#    define zmemcpy memcpy
+#    define zmemcmp memcmp
+#    define zmemzero(dest, len) memset(dest, 0, len)
+#  endif
+#else
+   extern void zmemcpy  OF((Bytef* dest, const Bytef* source, uInt len));
+   extern int  zmemcmp  OF((const Bytef* s1, const Bytef* s2, uInt len));
+   extern void zmemzero OF((Bytef* dest, uInt len));
+#endif
+   
+#if MAX_MEM_LEVEL >= 8
+#  define DEF_MEM_LEVEL 8
+#else
+#  define DEF_MEM_LEVEL  MAX_MEM_LEVEL
+#endif
+/* default memLevel */
 
 #define ALLOC(size) malloc(size)
 #define TRYFREE(p) {if (p) free(p);}

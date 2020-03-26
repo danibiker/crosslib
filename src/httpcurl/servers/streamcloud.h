@@ -4,6 +4,7 @@
 #include "httputil.h"
 #include "htmlparser.h"
 #include "util/ConstantHttp.h"
+#include "soutils/SOUtils.h"
 
 class Streamcloud
 {

@@ -2,15 +2,15 @@
 #define HTMLPARSER_H
 
 #include <buffio.h>
+#include <tidy.h>
+#include <gumbo.h>
+#include "Constant.h"
 #include <iostream>
 #include <string>
 #include <stdlib.h>
 #include <fstream>
 #include <map>
 #include <vector>
-#include <tidy.h>
-#include <gumbo.h>
-#include "Constant.h"
 
 using namespace std;
 

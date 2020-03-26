@@ -4,20 +4,16 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
             <name>crosslib</name>
-            <c-extensions>c</c-extensions>
+            <c-extensions/>
             <cpp-extensions>cpp</cpp-extensions>
             <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../src/uiobjects</sourceRootElem>
-                <sourceRootElem>../src/sqllite</sourceRootElem>
-                <sourceRootElem>../src/ziputils</sourceRootElem>
-                <sourceRootElem>../src/libjpeg</sourceRootElem>
                 <sourceRootElem>../src/httpcurl</sourceRootElem>
                 <sourceRootElem>../src/rijndael</sourceRootElem>
-                <sourceRootElem>../src/gumbo-parser-master/src</sourceRootElem>
-                <sourceRootElem>../src/tidy/src</sourceRootElem>
+                <sourceRootElem>../src/audioplayer</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

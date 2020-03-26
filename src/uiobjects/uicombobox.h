@@ -1,7 +1,7 @@
 #ifndef UICOMBOBOX_H
 #define UICOMBOBOX_H
 
-#include <uilist.h>
+#include "uilist.h"
 
 class UIComboBox : public UIList
 {

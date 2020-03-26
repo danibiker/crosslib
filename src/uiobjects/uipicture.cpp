@@ -83,8 +83,12 @@ void UIPicture::loadImgFromFile(string ruta){
 
 
 /**
-*
-*/
+ * 
+ * @param ruta
+ * @param password
+ * @param offset
+ * @param offsetAnt
+ */
 void UIPicture::loadImgFromBin(const char* ruta, const char *password, unsigned long long offset, unsigned long long offsetAnt){
     imgGestor->setRuta(ruta);//Especificamos la ruta del fichero a abrir
     imgGestor->calculaPass(password); //Ponemos el password si no lo teniamos

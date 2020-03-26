@@ -1,7 +1,7 @@
 #ifndef UILIST_H
 #define UILIST_H
 
-#include <uilistcommon.h>
+#include "uilistcommon.h"
 
 
 class UIList : public UIListCommon

@@ -1,7 +1,7 @@
 #ifndef UILABEL_H
 #define UILABEL_H
 
-#include <object.h>
+#include "object.h"
 
 
 class UILabel : public Object

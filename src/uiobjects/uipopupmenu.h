@@ -1,7 +1,7 @@
 #ifndef UIPOPUPMENU_H
 #define UIPOPUPMENU_H
 
-#include <uilist.h>
+#include "uilist.h"
 #include <SDL/SDL_ttf.h>
 
 

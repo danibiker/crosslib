@@ -530,6 +530,7 @@ class Constant{
         static int contiene (const char *s1, const char *s2);
         static int contiene (const char *s1, const char s2);
         static string pad(string var, int paddedLength, char caracter);
+        static std::string padRight(std::string str, size_t s, char caracter);
         static string replaceAll(std::string str, std::string tofind, std::string toreplace);
         static string replace(std::string str, std::string tofind, std::string toreplace);
         static string replace(std::string str, std::string tofind, std::string toreplace, int fromPos);
@@ -560,8 +561,6 @@ class Constant{
         static std::string base64_encode(string var);
         static std::string base64_decode(std::string const& encoded_string);
         static inline bool is_base64(unsigned char c);
-        static std::string GetClipboardText();
-        static void waitms(unsigned long ms);
         static string url_encode(string value);
         static string url_decode(string str);
         static string txtDisplay(string str);
@@ -577,7 +576,6 @@ class Constant{
         static std::string Trim(const std::string& s);
         static std::string cutToLength(const std::string& s, int cutLen);
         static std::string printBytesSize(double bytes, int precision);
-        
         static void setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT);
         static size_t getCURL_DOWNLOAD_LIMIT();
 };

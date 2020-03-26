@@ -58,7 +58,7 @@ string Streamcloud::download(string url){
             if ( i < len - 1) postData.append("&");
         }
         //Esperamos 10s para simular el comportamiento de la pagina
-        Constant::waitms(10000);
+        SOUtils::waitms(10000);
         map<string, string> v_post;
         v_post.insert( make_pair("Referer", url));
         util.post(url, postData, &v_post);

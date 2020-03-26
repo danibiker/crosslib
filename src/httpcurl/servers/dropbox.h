@@ -15,6 +15,7 @@
 #include "Dirutil.h"
 #include "thread.h"
 #include "ioauth2.h"
+#include "listaIni.h"
 
 using namespace std;
 
