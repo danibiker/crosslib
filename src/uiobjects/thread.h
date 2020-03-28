@@ -30,7 +30,7 @@ private:
     //static volatile uint32_t status; //Para controlar el estado en UNIX
     volatile uint32_t status; //Para controlar el estado en UNIX
     GMutex *hSingleStart;
-    static volatile uint32_t ret;
+    static uint32_t ret;
 // -----------------------------------------------------------------------------
 private:
     // This function gets executed by a concurrent thread.
@@ -77,7 +77,7 @@ public:
     thread was started successfully; otherwise false. */
     bool start(){
         if (this->status != THREAD_STILL_ACTIVE){
-            int rc;
+            volatile int rc;
             hSingleStart->Lock();
             // Initialize and set thread joinable
             pthread_attr_init(&attr);
@@ -163,7 +163,7 @@ public:
 };
 
 //template <class T> volatile uint32_t Thread<T>::status;
-template <class T> volatile uint32_t Thread<T>::ret;
+template <class T> uint32_t Thread<T>::ret;
 // #############################################################################
 
 #endif // __THREAD_H__
