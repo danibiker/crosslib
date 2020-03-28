@@ -21,9 +21,9 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=MinGW64-Windows
+CND_PLATFORM=MinGW32-Windows
 CND_DLIB_EXT=dll
-CND_CONF=Debug2
+CND_CONF=Debug32
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 

@@ -400,13 +400,15 @@ int AudioPlayer::loadFile(string filename){
             SDL_Delay(1);
         }
     }
-
+    
+    Traza::print("Closing resources in function loadFile", W_DEBUG);
     Mix_PauseMusic();
     Mix_HaltMusic();
     Mix_UnregisterEffect(MIX_CHANNEL_POST, &musicLengthCallback);
     SDL_RWclose(rw2); /* Automatically does an fclose(fp) in this case */
     musica.music = NULL; // so we know we freed it...
     mutex.Unlock();
+    Traza::print("Exiting audio player in function loadFile", W_DEBUG);
     return 0;
 }
 

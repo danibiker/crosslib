@@ -631,6 +631,7 @@ tEvento Ioutil::WaitForKey(){
                 break;
             case SDL_QUIT:
                 evento.quit = true;
+                Traza::print("SDL_QUIT Detected", W_DEBUG);
                 break;
             default :
                 break;

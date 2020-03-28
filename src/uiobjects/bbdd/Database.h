@@ -4,6 +4,8 @@
 #include <sqlite3.h>
 #include "Excepcion.h"
 #include "Dirutil.h"
+
+#define TIXML_USE_STL
 #include "tinyxml/tinyxml.h"
 
 

@@ -28,9 +28,9 @@ private:
     Method  method;          // the method of the object
 
     //static volatile uint32_t status; //Para controlar el estado en UNIX
-    uint32_t status; //Para controlar el estado en UNIX
+    volatile uint32_t status; //Para controlar el estado en UNIX
     GMutex *hSingleStart;
-    static uint32_t ret;
+    static volatile uint32_t ret;
 // -----------------------------------------------------------------------------
 private:
     // This function gets executed by a concurrent thread.
@@ -134,10 +134,8 @@ public:
 //        return false;
 //    }
 // -----------------------------------------------------------------------------
-    inline bool isRunning(){
-        if (status == THREAD_STILL_ACTIVE)
-            return true;
-        return false;
+    inline volatile bool isRunning(){
+        return status == THREAD_STILL_ACTIVE;
     }
 // -----------------------------------------------------------------------------
     // Getter & Setter
@@ -165,7 +163,7 @@ public:
 };
 
 //template <class T> volatile uint32_t Thread<T>::status;
-template <class T> uint32_t Thread<T>::ret;
+template <class T> volatile uint32_t Thread<T>::ret;
 // #############################################################################
 
 #endif // __THREAD_H__
