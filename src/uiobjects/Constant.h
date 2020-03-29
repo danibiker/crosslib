@@ -477,7 +477,13 @@ class Constant{
         Constant(){}
         ~Constant(){};
         static int getWINDOW_WIDTH(){return WINDOW_WIDTH;}
+        static void setWINDOW_WIDTH(int pWidth){
+            WINDOW_WIDTH = pWidth;
+        }
         static int getWINDOW_HEIGHT(){return WINDOW_HEIGHT;}
+        static void setWINDOW_HEIGHT(int pHeight){
+            WINDOW_HEIGHT = pHeight;
+        }
         static void setTrazaLevel(int var){TRAZA_LEVEL = var;}
         static int getTrazaLevel(){return TRAZA_LEVEL;}
         static int upperZero(int);

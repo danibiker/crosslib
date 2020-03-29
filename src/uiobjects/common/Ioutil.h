@@ -55,6 +55,13 @@
         cNaranja,
         cRojo // lt red
     };
+    
+    typedef enum PROCESS_DPI_AWARENESS {
+    PROCESS_DPI_UNAWARE = 0,
+    PROCESS_SYSTEM_DPI_AWARE = 1,
+    PROCESS_PER_MONITOR_DPI_AWARE = 2
+    } PROCESS_DPI_AWARENESS;
+
 
     class Ioutil : public Fileio{
         public:
@@ -64,6 +71,11 @@
             void initSDL(bool); //Inicia el subsistema de SDL
             void killSDL();
             void toggleFullScreen();
+            int setFullscreenMode(int mode);
+            void dpi();
+            BOOL(WINAPI *SetProcessDPIAware)(void); // Vista and later
+            HRESULT(WINAPI *SetProcessDpiAwareness)(PROCESS_DPI_AWARENESS dpiAwareness); // Windows 8.1 and later
+
 
             void drawText(const char* , int , int , t_color ); //Escribe texto en la pantalla
             void drawTextInt(int , int , int ,  t_color ); // Escribe un entero en la pantalla

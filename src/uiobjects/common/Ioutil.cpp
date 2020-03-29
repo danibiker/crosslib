@@ -91,6 +91,10 @@ Ioutil::~Ioutil(){
 */
 void Ioutil::initSDL(bool calcFS){
     Traza::print("Iniciando SDL", W_DEBUG);
+    #ifdef WIN
+        dpi();
+    #endif
+
     SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);			// Initialize SDL
 
     //Audio Stuff
@@ -129,7 +133,7 @@ void Ioutil::initSDL(bool calcFS){
 
     screen = NULL;
     //Iniciamos en modo Fullscreen para saber la resolucion del escritorio
-    const SDL_VideoInfo* videoInfo = SDL_GetVideoInfo ();
+    const SDL_VideoInfo* videoInfo = SDL_GetVideoInfo();
     WINDOW_WIDTH_FULLSCREEN = videoInfo->current_w;
     WINDOW_HEIGHT_FULLSCREEN = videoInfo->current_h;
     SCREEN_BITS_FULLSCREEN = videoInfo->vfmt->BitsPerPixel ;
@@ -188,10 +192,12 @@ void Ioutil::initSDL(bool calcFS){
         //Finalmente establecemos el modo del video
         screen = SDL_SetVideoMode(this->w, this->h, bpp, this->fullsflags);
         if(!screen){
-            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicaciï¿½n" << endl;
+            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicaciÃ¯Â¿Â½n" << endl;
             exit(0);
         }
-	}
+        Constant::setWINDOW_HEIGHT(this->h);
+        Constant::setWINDOW_WIDTH(this->w);
+    }
 
     Traza::print("Mostrando cursor", W_DEBUG);
 	SDL_ShowCursor(CURSORVISIBLE);	// Disable mouse cursor on gp2x
@@ -342,11 +348,83 @@ void Ioutil::toggleFullScreen(){
     screen = SDL_SetVideoMode(tempw, temph, tempbpp, screen->flags ^ SDL_FULLSCREEN);
     this->fullsflags = screen->flags;
     this->w = tempw;
-	this->h = temph;
+    this->h = temph;
     /* If toggle FullScreen failed, then switch back */
     if(screen == NULL) screen = SDL_SetVideoMode(Constant::getWINDOW_WIDTH(), Constant::getWINDOW_HEIGHT(), SCREEN_BITS, flags);
     /* If you can't switch back for some reason, then epic fail */
     if(screen == NULL) exit(1);
+}
+
+/**
+ * Disables dpi scaling in windows 7 and later. It makes impossible to
+ * set the correct fullscreen size
+ */
+void Ioutil::dpi(){
+    void* userDLL;
+    void* shcoreDLL;
+    
+    userDLL = SDL_LoadObject("USER32.DLL");
+    if (userDLL) {
+        SetProcessDPIAware = (BOOL(WINAPI *)(void)) SDL_LoadFunction(userDLL, "SetProcessDPIAware");
+    }
+    shcoreDLL = SDL_LoadObject("SHCORE.DLL");
+    if (shcoreDLL) {
+        SetProcessDpiAwareness = (HRESULT(WINAPI *)(PROCESS_DPI_AWARENESS)) SDL_LoadFunction(shcoreDLL, "SetProcessDpiAwareness");
+    }
+
+    if (SetProcessDpiAwareness) {
+        /* Try Windows 8.1+ version */
+        HRESULT result = SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+        printf("called SetProcessDpiAwareness: %d", (result == S_OK) ? 1 : 0);
+    }
+    else if (SetProcessDPIAware) {
+        /* Try Vista - Windows 8 version.
+        This has a constant scale factor for all monitors.
+        */
+        BOOL success = SetProcessDPIAware();
+        printf("called SetProcessDPIAware: %d", (int)success);
+    }
+}
+
+/**
+ * 
+ * @param mode
+ */
+int Ioutil::setFullscreenMode(int mode){
+    
+    SDL_Rect **modes;
+    int i;
+    int selMode = -1;
+    
+    /* Get available fullscreen/hardware modes */
+    modes=SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+
+    /* Check is there are any modes available */
+    if(modes == (SDL_Rect **)0){
+        printf("No modes available!\n");
+        return;
+    }
+
+    /* Check if our resolution is restricted */
+    if(modes == (SDL_Rect **)-1){
+        printf("All resolutions available.\n");
+    } else {
+        /* Print valid modes */
+        printf("Available Modes\n");
+        for(i=0;modes[i];++i){
+            printf("%d:  %d x %d\n",i, modes[i]->w, modes[i]->h);
+            if (i == mode){
+                printf("Setting mode to: %d x %d\n", modes[i]->w, modes[i]->h);
+                /*Toggles FullScreen Mode */
+                screen = SDL_SetVideoMode(modes[i]->w, modes[i]->h, SCREEN_BITS_FULLSCREEN, screen->flags | SDL_FULLSCREEN);
+                this->fullsflags = screen->flags;
+                this->w = modes[i]->w;
+                this->h = modes[i]->h;
+                selMode = i;
+            }
+        }
+    }
+    return selMode;
 }
 
 /**
@@ -512,7 +590,9 @@ tEvento Ioutil::WaitForKey(){
     //if (SDL_WaitEvent (&event)){
         switch( event.type ){
             case SDL_VIDEORESIZE:
-                screen = SDL_SetVideoMode (event.resize.w, event.resize.h, SCREEN_BITS, SCREEN_MODE);
+                if (!(screen->flags & SDL_FULLSCREEN)){
+                    screen = SDL_SetVideoMode (event.resize.w, event.resize.h, SCREEN_BITS, SCREEN_MODE);
+                }
                 this->w = event.resize.w;
                 this->h = event.resize.h;
                 evento.resize = true;
@@ -3021,7 +3101,7 @@ void Ioutil::pintarCirculo (int n_cx, int n_cy, int r, t_color color)
 //            centro_y = j - y;
 //            //Funcion del circulo -> x^2 + y^2 = r^2
 //            raiz = centro_x*centro_x + centro_y*centro_y;
-//            //el -2 es un factor de correcciï¿½n necesario para cï¿½rculos pequenyos, sino queda muy pixelado
+//            //el -2 es un factor de correcciÃ¯Â¿Â½n necesario para cÃ¯Â¿Â½rculos pequenyos, sino queda muy pixelado
 //            if (raiz < radio2-4){
 //                putpixelSafe(screen,i,j,r_color);
 //            }
@@ -3172,7 +3252,7 @@ void Ioutil::pintarSemiCirculo (int x, int y, int r, t_color color, int angle)
             centro_y = j - y;
             //Funcion del circulo -> x^2 + y^2 = r^2
             raiz = centro_x*centro_x + centro_y*centro_y;
-            //el -2 es un factor de correcciï¿½n necesario para cï¿½rculos pequenyos, sino queda muy pixelado
+            //el -2 es un factor de correcciÃ¯Â¿Â½n necesario para cÃ¯Â¿Â½rculos pequenyos, sino queda muy pixelado
             if (raiz < radio2-4){
                 putpixelSafe(screen,i,j,r_color);
             }
@@ -3434,7 +3514,7 @@ string Ioutil::configButtonsJOY(tEvento *evento){
 
     long delay = 0;
     unsigned long before = 0;
-    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "Pï¿½gina anterior", "Pï¿½gina siguiente", "Select", "Buscar elemento"};
+    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "PÃ¯Â¿Â½gina anterior", "PÃ¯Â¿Â½gina siguiente", "Select", "Buscar elemento"};
     int JoyButtonsVal[] = {JOY_BUTTON_UP, JOY_BUTTON_DOWN, JOY_BUTTON_LEFT, JOY_BUTTON_RIGHT, JOY_BUTTON_A, JOY_BUTTON_B, JOY_BUTTON_L, JOY_BUTTON_R, JOY_BUTTON_SELECT, JOY_BUTTON_R3};
     //Posiciones de los botones calculadas en porcentaje respecto al alto y ancho de la imagen
     t_posicion_precise imgButtonsRelScreen[] = {{0.3512,0.682,0,0},{0.3512,0.84,0,0},{0.295,0.76,0,0},{0.4075,0.76,0,0},

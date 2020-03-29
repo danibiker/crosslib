@@ -1411,6 +1411,7 @@
       <compileType>
         <cTool>
           <developmentMode>5</developmentMode>
+          <standard>10</standard>
           <incDir>
             <pElem>../src/httpcurl</pElem>
             <pElem>../src/rijndael</pElem>
@@ -1419,6 +1420,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <standard>8</standard>
           <incDir>
             <pElem>../src/httpcurl</pElem>
             <pElem>../src/rijndael</pElem>
