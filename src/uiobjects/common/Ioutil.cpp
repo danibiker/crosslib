@@ -138,7 +138,7 @@ void Ioutil::initSDL(bool calcFS){
     WINDOW_HEIGHT_FULLSCREEN = videoInfo->current_h;
     SCREEN_BITS_FULLSCREEN = videoInfo->vfmt->BitsPerPixel ;
 
-    if(!screen){
+    if(screen == NULL){
         //Comprobamos si es la primera vez que arrancamos la aplicacion y cargamos los valores definidos en el
         //fichero de configuracion
         try{
@@ -187,16 +187,18 @@ void Ioutil::initSDL(bool calcFS){
             this->h = 480;
             bpp = 16;
         }
-
+        
         SDL_putenv("SDL_VIDEO_CENTERED=center"); //Center the game Window
         //Finalmente establecemos el modo del video
         screen = SDL_SetVideoMode(this->w, this->h, bpp, this->fullsflags);
         if(!screen){
-            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicaciÃ¯Â¿Â½n" << endl;
+            cerr << "Error iniciando la pantalla width: " << this->w << " height: " << this->h << ". Saliendo de la aplicacion" << endl;
             exit(0);
         }
+        //SDL_("SDL_VIDEO_CENTERED=0"); //Center the game Window
         Constant::setWINDOW_HEIGHT(this->h);
         Constant::setWINDOW_WIDTH(this->w);
+        SDL_putenv( "SDL_VIDEO_CENTERED="); //Reset the centering when the screen resizes
     }
 
     Traza::print("Mostrando cursor", W_DEBUG);
@@ -375,14 +377,14 @@ void Ioutil::dpi(){
     if (SetProcessDpiAwareness) {
         /* Try Windows 8.1+ version */
         HRESULT result = SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-        printf("called SetProcessDpiAwareness: %d", (result == S_OK) ? 1 : 0);
+        Traza::print("called SetProcessDpiAwareness",(result == S_OK) ? 1 : 0, W_DEBUG);
     }
     else if (SetProcessDPIAware) {
         /* Try Vista - Windows 8 version.
         This has a constant scale factor for all monitors.
         */
         BOOL success = SetProcessDPIAware();
-        printf("called SetProcessDPIAware: %d", (int)success);
+        Traza::print("called SetProcessDpiAwareness",(int)success, W_DEBUG);
     }
 }
 
@@ -3101,7 +3103,7 @@ void Ioutil::pintarCirculo (int n_cx, int n_cy, int r, t_color color)
 //            centro_y = j - y;
 //            //Funcion del circulo -> x^2 + y^2 = r^2
 //            raiz = centro_x*centro_x + centro_y*centro_y;
-//            //el -2 es un factor de correcciÃ¯Â¿Â½n necesario para cÃ¯Â¿Â½rculos pequenyos, sino queda muy pixelado
+//            //el -2 es un factor de correccion necesario para circulos pequenyos, sino queda muy pixelado
 //            if (raiz < radio2-4){
 //                putpixelSafe(screen,i,j,r_color);
 //            }
@@ -3252,7 +3254,7 @@ void Ioutil::pintarSemiCirculo (int x, int y, int r, t_color color, int angle)
             centro_y = j - y;
             //Funcion del circulo -> x^2 + y^2 = r^2
             raiz = centro_x*centro_x + centro_y*centro_y;
-            //el -2 es un factor de correcciÃ¯Â¿Â½n necesario para cÃ¯Â¿Â½rculos pequenyos, sino queda muy pixelado
+            //el -2 es un factor de correccion necesario para circulos pequenyos, sino queda muy pixelado
             if (raiz < radio2-4){
                 putpixelSafe(screen,i,j,r_color);
             }
@@ -3514,7 +3516,7 @@ string Ioutil::configButtonsJOY(tEvento *evento){
 
     long delay = 0;
     unsigned long before = 0;
-    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "PÃ¯Â¿Â½gina anterior", "PÃ¯Â¿Â½gina siguiente", "Select", "Buscar elemento"};
+    const char* JoystickButtonsMSG[] = {"Arriba","Abajo","Izquierda","Derecha","Aceptar","Cancelar", "Pagina anterior", "Pagina siguiente", "Select", "Buscar elemento"};
     int JoyButtonsVal[] = {JOY_BUTTON_UP, JOY_BUTTON_DOWN, JOY_BUTTON_LEFT, JOY_BUTTON_RIGHT, JOY_BUTTON_A, JOY_BUTTON_B, JOY_BUTTON_L, JOY_BUTTON_R, JOY_BUTTON_SELECT, JOY_BUTTON_R3};
     //Posiciones de los botones calculadas en porcentaje respecto al alto y ancho de la imagen
     t_posicion_precise imgButtonsRelScreen[] = {{0.3512,0.682,0,0},{0.3512,0.84,0,0},{0.295,0.76,0,0},{0.4075,0.76,0,0},
