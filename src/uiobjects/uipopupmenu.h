@@ -17,7 +17,7 @@ class UIPopupMenu : public UIList
 
         void setCallerPopup(Object *var){callerPopup = var;}
         Object * getCallerPopup(){return callerPopup;}
-        void addElemLista(string name, string value, int ico, int destino);
+        void addElemLista(string name, string value, int ico, string destino);
         void addElemLista(string name, string value, int ico);
         void addElemLista(string name, string value);
         void clearLista();

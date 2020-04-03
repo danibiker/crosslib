@@ -16,6 +16,7 @@ void UIListCommon::inicializarObjeto(int objType){
     posFinLista = 0;
     posActualLista = 0;
     lastSelectedPos = 0;
+    lastClick = 0;
     showScrollbar = true;
     showScrollbarAlways = false;
     enableLastSelected = false;
@@ -34,7 +35,7 @@ void UIListCommon::inicializarObjeto(int objType){
 *
 */
 void UIListCommon::action(tEvento *evento){
-    static unsigned long lastClick = 0;
+    
     //Si hay un popup lanzado por este elemento, debe dejar de procesar los eventos
     if (popup == false){
         if (evento->isKey || evento->isJoy || (evento->isMouse &&
@@ -102,18 +103,12 @@ void UIListCommon::action(tEvento *evento){
                 }
             }
         } else if (evento->isMouse && evento->mouse == MOUSE_BUTTON_LEFT && evento->mouse_state == SDL_PRESSED){
-           Traza::print("UIList::action: Mouse Pressed: " + this->getName(), W_PARANOIC);
-           if (SDL_GetTicks() - lastClick < DBLCLICKSPEED){
-               lastSelectedPos = this->posActualLista;
-               lastClick = SDL_GetTicks() - DBLCLICKSPEED;  //reseteo del dobleclick
-            } else {
-                lastClick = SDL_GetTicks();
-            }
-           checkPos(*evento);
-           this->setImgDrawed(false);
+            Traza::print("UIList::action: Mouse Pressed: " + this->getName(), W_PARANOIC);
+            checkPos(*evento);
+            this->setImgDrawed(false);
         } else if (evento->isMouse && evento->mouse == MOUSE_BUTTON_LEFT && evento->mouse_state == SDL_RELEASED){
-           Traza::print("UIList::action: Mouse Released: " + this->getName(), W_PARANOIC);
-           this->setImgDrawed(false);
+            Traza::print("UIList::action: Mouse Released: " + this->getName(), W_PARANOIC);
+            this->setImgDrawed(false);
         } else {
             Object::action(evento);
         }
@@ -136,11 +131,6 @@ void UIListCommon::checkPos(tEvento evento){
     int tempX = evento.mouse_x;
     if (tempX >= this->getX() && tempX <= this->getX() + this->getW() &&
         tempY >= this->getY() && tempY <= this->getY() + this->getH()){
-        //Se setea el checked cuando se hace doble click
-        if (evento.isMousedblClick){
-            //this->setChecked(true);
-            this->setChecked(true);
-        }
         int posClick = 0;
 
         if (getListScheme() == SCHEMEICONS){
@@ -154,6 +144,18 @@ void UIListCommon::checkPos(tEvento evento){
 
         if (this->getPosIniLista() + posClick < getSize()){
             this->setPosActualLista(this->getPosIniLista() + posClick);
+        }
+        
+        //Se setea el checked cuando se hace doble click
+        if (evento.isMousedblClick){
+            if (lastSelectedPos == this->posActualLista){
+                this->setChecked(true);
+            }
+            lastSelectedPos = this->posActualLista;
+            lastClick = SDL_GetTicks() - DBLCLICKSPEED;  //reseteo del dobleclick
+        } else if (evento.isMouse && evento.mouse == MOUSE_BUTTON_LEFT && evento.mouse_state == SDL_PRESSED){
+            lastSelectedPos = this->posActualLista;
+            lastClick = SDL_GetTicks();
         }
     }
 }
@@ -368,7 +370,7 @@ string UIListCommon::getValue(int row){
 * Por defecto obtiene el destino de la primera columna de la fila que se le
 * indica por parametro
 */
-int UIListCommon::getDestino(int row){
+string UIListCommon::getDestino(int row){
     return 0;
 }
 

@@ -116,8 +116,10 @@ void Onedrive::launchAuthorize(string clientid){
                     + "&redirect_uri=" + Constant::url_encode("https://login.live.com/oauth20_desktop.srf")
 //                    + "&redirect_uri=" + Constant::url_encode("https://login.microsoftonline.com/common/oauth2/nativeclient")
                     ;
-    string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
-    system(cmd.c_str());
+    //string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
+    //system(cmd.c_str());
+    
+    openExplorer(tmpUrl);
 }
 
 /**

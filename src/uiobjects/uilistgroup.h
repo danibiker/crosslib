@@ -40,7 +40,7 @@ class UIListGroup : public UIListCommon
         bool isColAnchorPressed(){return colAnchorPressed;}
         int getPosColAnchorPressed(){return posColAnchorPressed;}
         string getValue(int row);
-        int getDestino(int row);
+        string getDestino(int row);
         void resizeLista(unsigned int tam);
         void clearLista();
         void sort(int col);

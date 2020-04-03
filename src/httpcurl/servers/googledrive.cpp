@@ -171,8 +171,9 @@ void GoogleDrive::launchAuthorize(string clientid){
                     + "&scope=" + Constant::url_encode("https://www.googleapis.com/auth/drive.file")
                     ;
 
-    string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
-    system(cmd.c_str());
+    //string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
+    //system(cmd.c_str());
+    openExplorer(tmpUrl);
 }
 
 /**

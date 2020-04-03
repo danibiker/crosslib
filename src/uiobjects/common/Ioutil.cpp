@@ -1153,15 +1153,11 @@ void Ioutil::drawUIArt(Object *obj){
 *
 */
 bool Ioutil::drawImgObj(Object *obj){
-    bool salida = true;
-
+    bool salida = false;
     int bordeAdd = 0;
-
     if (obj->isVerContenedor()){
         bordeAdd = INPUTBORDER;
     }
-
-
     SDL_Rect imgLocation = { (short int)obj->getX() , (short int)obj->getY(), (short unsigned int)obj->getW() - bordeAdd, (short unsigned int)obj->getH() - bordeAdd};
 
     if (!obj->getImgDrawed()){
@@ -1169,14 +1165,7 @@ bool Ioutil::drawImgObj(Object *obj){
         t_region regionPantalla = {obj->getX() + bordeAdd, obj->getY() + bordeAdd, obj->getW(), obj->getH()};
         Traza::print("Region generated", W_PARANOIC);
         salida = obj->getImgGestor()->drawImgMem(-1, obj->getW(), obj->getH()-1, regionPantalla, screen);
-        Traza::print("Image Drawed", W_PARANOIC);
-
-        if (salida == false){
-            int pixelDato = 0;
-            char msg[] = {"Fin/inicio del contenido"};
-            TTF_SizeText(this->font,msg,&pixelDato,NULL );
-            drawText("Fin/inicio del contenido", obj->getX() + (obj->getW() - pixelDato) / 2, obj->getY() + (obj->getH() - Constant::getMENUSPACE()) / 2, cBlanco);
-        }
+        Traza::print(string("Image Drawed with result") + string(salida ? "Ok" : "Error"), W_PARANOIC);
     } else {
         SDL_Rect imgRect = { (short int)obj->getImgGestor()->getLeftDif() ,
                              (short int)obj->getImgGestor()->getTopDif(),
@@ -1184,6 +1173,7 @@ bool Ioutil::drawImgObj(Object *obj){
                              (short unsigned int)(obj->getImgGestor()->getTopDif() + obj->getH()) };
         Traza::print("getLeftDif",obj->getImgGestor()->getLeftDif(),W_PARANOIC);
         SDL_BlitSurface(obj->getImgGestor()->getSurface(), &imgRect, screen, &imgLocation);
+        salida = true;
     }
     return salida;
 }
@@ -1379,19 +1369,21 @@ void Ioutil::drawUIPicture(Object *obj){
         int y_ = obj->getY();
         int w_ = obj->getW();
         int h_ = obj->getH();
-
+        boolean imgFound = false;
+        
         if (!obj->getImgDrawed()){
-
             t_color fondo = obj->getImgGestor()->isFillBackgroundColour() ?
                                 obj->getImgGestor()->getColorBackground() : cInputContent;
 
             pintarContenedor(x_,y_,w_,h_,obj->isFocus() && obj->isEnabled(), obj, fondo);
             if (obj->getImgGestor() != NULL){
-                drawImgObj(obj);
-                if (obj->getAlpha() >= 0)
+                imgFound = drawImgObj(obj);
+                if (imgFound && obj->getAlpha() >= 0){
                     drawRectAlpha(x_+INPUTBORDER,y_+INPUTBORDER,w_-INPUTBORDER,h_-INPUTBORDER,cInputContent, obj->getAlpha()); // Difumino la imagen
+                }
             }
-            cachearObjeto(obj);
+            if (imgFound) 
+                cachearObjeto(obj);
         } else {
             cachearObjeto(obj);
         }
@@ -2851,7 +2843,7 @@ void Ioutil::showMessage(string mensaje, unsigned long delay){
 
 void Ioutil::showMessage(string mensaje, unsigned long delay, bool restoreBackground, t_posicion txtDesp){
     const int borde = 20;
-
+    mensaje = Constant::txtDisplay(mensaje);
     SDL_Surface *pointerSurface = NULL;
     if (pointerSurface == NULL && restoreBackground){
         takeScreenShot(&pointerSurface);

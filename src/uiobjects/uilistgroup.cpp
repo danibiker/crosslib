@@ -228,7 +228,7 @@ string UIListGroup::getValue(int row){
 * Por defecto obtiene el destino de la primera columna de la fila que se le
 * indica por parametro
 */
-int UIListGroup::getDestino(int row){
+string UIListGroup::getDestino(int row){
     return getCol(row, 0)->getDestino();
 }
 
@@ -342,7 +342,7 @@ void UIListGroup::sort(int col){
             order = 0;
         getHeaderCol(col)->setSortOrder(order);
         //Restamos 1 al tamanyo para que no ordene el boton de volver
-        quickSort(listaAgrupada, 0, getSize() - 1, col);
+        quickSort(listaAgrupada, 0, getSize(), col);
     }
 }
 
@@ -391,7 +391,7 @@ int UIListGroup::partition(vector <vector <ListGroupCol *> >& A, int p, int q, i
 
 /**
 * Funcion para buscar un elemento en la lista conforme vamos tecleando
-* el texto mientras la lista está con el foco. De esta forma se puede
+* el texto mientras la lista esta con el foco. De esta forma se puede
 * buscar el elemento que sea.
 */
 bool UIListGroup::searchTextInList(int key){

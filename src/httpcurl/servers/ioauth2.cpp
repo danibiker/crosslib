@@ -111,3 +111,35 @@ void IOauth2::addToken(string parmName, string parmValue, ListaIni<Data> *config
         config->add(dato);
     }
 }
+
+/**
+ * 
+ * @param url
+ */
+void IOauth2::openExplorer(string url){
+        if (!url.empty()){
+#ifdef WIN
+            char infoBuf[MAX_PATH];
+            GetWindowsDirectory( infoBuf, MAX_PATH );
+
+            Launcher lanzador;
+            FileLaunch emulInfo;
+            emulInfo.rutaexe = infoBuf;
+            emulInfo.fileexe = "explorer.exe";
+            emulInfo.parmsexe = url;
+            bool resultado = lanzador.lanzarProgramaUNIXFork(&emulInfo);
+#endif
+
+#ifdef UNIX
+            
+//            string cmd = CMD_LAUNCH_BROWSER + " \"" + url + "\"";
+//            system(cmd.c_str());
+            Launcher lanzador;
+            FileLaunch emulInfo;
+            emulInfo.rutaexe = "/usr/bin";
+            emulInfo.fileexe = CMD_LAUNCH_BROWSER;
+            emulInfo.parmsexe = url;
+            bool resultado = lanzador.lanzarProgramaUNIXFork(&emulInfo);
+#endif            
+        }
+}

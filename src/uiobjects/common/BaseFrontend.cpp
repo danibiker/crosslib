@@ -18,6 +18,7 @@
  */
 BaseFrontend::BaseFrontend() {
     Traza::print("Iniciando BaseFrontend", W_INFO);
+    initUIObjs();
 }
 
 /**
@@ -27,12 +28,13 @@ BaseFrontend::~BaseFrontend() {
     Traza::print("Destructor de BaseFrontend", W_INFO);
     //  A los objetos no los podemos eliminar porque no fueron creados dinamicamente
     Traza::print("Eliminando objetos de cada Menu", W_INFO);
-    for (int i=0; i < getNumMenus(); i++){
-        Traza::print("Eliminando menu: ", i, W_PARANOIC);
-        if (getMenu(i) != NULL){
-            delete getMenu(i);
-        }
+    // Create a map iterator and point to beginning of map
+    std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
+    // Iterate over the map using Iterator till end.
+    for(it; it != objectsMenu.end(); it++){
+        delete it->second;
     }
+    
     Traza::print("Fin Destructor de BaseFrontend", W_INFO);
 }
 
@@ -40,31 +42,31 @@ BaseFrontend::~BaseFrontend() {
  * 
  */
 void BaseFrontend::initUIObjs(){
-    tmenu_gestor_objects *obj  = createMenu("PANTALLABROWSER2");
-    obj->add("ImgFondo", GUIPICTURE, 0, Constant::getINPUTH(), 0, 0, "ImgFondo", true)->setEnabled(false);
-    obj->getObjByName("ImgFondo")->setAlpha(150);
-    obj->add(OBJLISTABROWSER2, GUILISTBOX, 0, 0, 0, 0, "LISTADODIR", false)->setVerContenedor(false)->setShadow(false);
+    tmenu_gestor_objects *obj  = createMenu(PANTALLABROWSER2);
+    obj->add(uiimgFondo, GUIPICTURE, 0, Constant::getINPUTH(), 0, 0, uiimgFondo, true)->setEnabled(false);
+    obj->getObjByName(uiimgFondo)->setAlpha(150);
+    obj->add(OBJLISTABROWSER2, GUILISTBOX, 0, 0, 0, 0, uilistadodir, false)->setVerContenedor(false)->setShadow(false);
     obj->add(BTNACEPTARBROWSER, GUIBUTTON, -(BUTTONW/2 + 5), 0, BUTTONW,BUTTONH, "Aceptar", true)->setIcon(tick);
     obj->add(BTNCANCELARBROWSER, GUIBUTTON, (BUTTONW/2 + 5), 0, BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
-    obj->add(ARTDIRBROWSER, GUIARTSURFACE, 0, 0, INPUTW, Constant::getINPUTH(), Constant::txtDisplay("Direcci%C3%B3n Browser"), false)->setEnabled(false);
-    obj->add("comboBrowser", GUICOMBOBOX, 0, 0, 0, 0, "", false);
+    obj->add(ARTDIRBROWSER, GUIARTSURFACE, 0, 0, INPUTW, Constant::getINPUTH(), "Direcci%C3%B3n Browser", false)->setEnabled(false);
+    obj->add(uicomboBrowser, GUICOMBOBOX, 0, 0, 0, 0, "", false);
     
-    obj = createMenu("PANTALLAPREGUNTA");
-    obj->add("valor", GUIINPUTWIDE, 0, -20 * zoomText, INPUTW, Constant::getINPUTH(), "Dato:", true);
-    obj->add("btnAceptarPregunta", GUIBUTTON, -(BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Aceptar", true)->setIcon(tick);
-    obj->add("btnCancelarPregunta", GUIBUTTON, (BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
-    obj->add("borde", GUIPANELBORDER,0,0,0,0, "Introduzca el dato", false);
-    obj->getObjByName("valor")->setColor(cBlanco);
+    obj = createMenu(PANTALLAPREGUNTA);
+    obj->add(uivalor, GUIINPUTWIDE, 0, -20 * zoomText, INPUTW, Constant::getINPUTH(), "Dato:", true);
+    obj->add(btnAceptarPregunta, GUIBUTTON, -(BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Aceptar", true)->setIcon(tick);
+    obj->add(btnCancelarPregunta, GUIBUTTON, (BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
+    obj->add(uiborde, GUIPANELBORDER,0,0,0,0, "Introduzca el dato", false);
+    obj->getObjByName(uivalor)->setColor(cBlanco);
     
-    obj = createMenu("PANTALLACONFIRMAR");
-    obj->add("borde", GUIPANELBORDER,0,0,0,0, Constant::txtDisplay("Seleccione una opci%C3%B3n"), false);
-    obj->add("textosBox", GUITEXTELEMENTSAREA, 0, -50 * zoomText, getWidth()-50, 120, "", true)->setVerContenedor(false);
-    obj->add("btnSiConfirma", GUIBUTTON, -(BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Aceptar", true)->setIcon(tick);
-    obj->add("btnNoConfirma", GUIBUTTON, (BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
+    obj = createMenu(PANTALLACONFIRMAR);
+    obj->add(uiborde, GUIPANELBORDER,0,0,0,0, "Seleccione una opci%C3%B3n", false);
+    obj->add(uitextosBox, GUITEXTELEMENTSAREA, 0, -50 * zoomText, getWidth()-50, 120, "", true)->setVerContenedor(false);
+    obj->add(btnSiConfirma, GUIBUTTON, -(BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Aceptar", true)->setIcon(tick);
+    obj->add(btnNoConfirma, GUIBUTTON, (BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
 
-    UITextElementsArea *infoTextRom = (UITextElementsArea *)obj->getObjByName("textosBox");
+    UITextElementsArea *infoTextRom = (UITextElementsArea *)obj->getObjByName(uitextosBox);
     TextElement detalleElement;
-    detalleElement.setName("labelDetalle");
+    detalleElement.setName(uilabelDetalle);
     detalleElement.setUseMaxLabelMargin(true);
     infoTextRom->addField(&detalleElement);
     infoTextRom->setTextColor(cBlanco);
@@ -74,11 +76,12 @@ void BaseFrontend::initUIObjs(){
     addEvent(BTNACEPTARBROWSER, &BaseFrontend::marcarBotonSeleccionado);
     addEvent(BTNCANCELARBROWSER, &BaseFrontend::marcarBotonSeleccionado);
     addEvent(OBJLISTABROWSER2, &BaseFrontend::accionesListaExplorador);
-    addEvent("btnAceptarPregunta", &BaseFrontend::simularIntro);
-    addEvent("btnCancelarPregunta", &BaseFrontend::simularEscape);
+    addEvent(uicomboBrowser, &BaseFrontend::accionCombo);
+    addEvent(btnAceptarPregunta, &BaseFrontend::simularIntro);
+    addEvent(btnCancelarPregunta, &BaseFrontend::simularEscape);
     //Botones para la pantalla de confirmacion
-    addEvent("btnSiConfirma", &BaseFrontend::marcarBotonSeleccionado);
-    addEvent("btnNoConfirma", &BaseFrontend::marcarBotonSeleccionado);
+    addEvent(btnSiConfirma, &BaseFrontend::marcarBotonSeleccionado);
+    addEvent(btnNoConfirma, &BaseFrontend::marcarBotonSeleccionado);
 }
 
 /**
@@ -88,8 +91,7 @@ void BaseFrontend::initUIObjs(){
  */
 tmenu_gestor_objects *BaseFrontend::createMenu(string menuName){
     tmenu_gestor_objects *menuObj = new tmenu_gestor_objects(this->getWidth(), this->getHeight());
-    objectsMenuPos.insert(make_pair(menuName, getNumMenus()));
-    objectsMenu.push_back(menuObj);
+    objectsMenu.insert(make_pair(menuName, menuObj));
     return menuObj;
 }
 
@@ -99,9 +101,9 @@ tmenu_gestor_objects *BaseFrontend::createMenu(string menuName){
  * @return 
  */
 tmenu_gestor_objects * BaseFrontend::getMenu(string menuName){
-    int pos = getPosMenu(menuName);
-    if (pos >= 0){
-        return getMenu(objectsMenuPos.at(menuName));
+    std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.find(menuName);
+    if (it != objectsMenu.end()){
+        return it->second;
     } else {
         Traza::print("Menu " + menuName + " not found", W_ERROR);
         return NULL;
@@ -110,53 +112,19 @@ tmenu_gestor_objects * BaseFrontend::getMenu(string menuName){
 
 /**
  * 
- * @param menuName
- * @return 
- */
-tmenu_gestor_objects * BaseFrontend::getMenu(int menuPos){
-    if (menuPos < getNumMenus())
-        return objectsMenu[menuPos];
-    else 
-        return NULL;
-}
-
-/**
- * 
  * @param var
  */
-void BaseFrontend::setSelMenu(int var){
+void BaseFrontend::setSelMenu(string var){
     comprobarUnicode(var); 
     selMenu = var;
 }
 
 /**
  * 
- * @param var
- */
-void BaseFrontend::setSelMenu(string var){
-    int pos = getPosMenu(var);
-    if (pos >= 0){
-        setSelMenu( objectsMenuPos.at(var) );
-    } 
-}
-
-/**
- * 
  * @return 
  */
-int BaseFrontend::getSelMenu(){ 
+string BaseFrontend::getSelMenu(){ 
     return selMenu;
-}
-
-/**
- * 
- * @param var
- * @return 
- */
-int BaseFrontend::getPosMenu(string var){
-    if (objectsMenuPos.count(var) > 0){
-        return objectsMenuPos.at(var);
-    } else return -1;
 }
 
 /**
@@ -166,27 +134,28 @@ void BaseFrontend::setDinamicSizeObjects(){
     try{
         //Calculamos el tamanyo del titulo de los elementos que lo tengan, y redimensionamos el elemento
         //lista que tenga ese menu con el total de la ventana que queda
-        for (int i=0; i<getNumMenus(); i++){
+        std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
+        for(it; it != objectsMenu.end(); it++){
             try{
                 Object *posibleObj = NULL;
-                posibleObj = getMenu(i)->getObjByName(TITLESCREEN);
+                posibleObj = it->second->getObjByName(TITLESCREEN);
                 //Caso especial de redimension
                 if(posibleObj != NULL)
                     posibleObj->setTam( 0, 0, this->getWidth(),Constant::getINPUTH());
 
                 int j = 0;
 
-                while (j < getMenu(i)->getSize()){
-                    posibleObj = getMenu(i)->getObjByPos(j);
+                while (j < it->second->getSize()){
+                    posibleObj = it->second->getObjByPos(j);
                     if(posibleObj != NULL){
-                        if (posibleObj->getObjectType() == GUILISTBOX || getMenu(i)->getObjByPos(j)->getObjectType() == GUIPICTURE
+                        if (posibleObj->getObjectType() == GUILISTBOX || it->second->getObjByPos(j)->getObjectType() == GUIPICTURE
                             || posibleObj->getObjectType() == GUILISTGROUPBOX){
                             posibleObj->setTam(0,Constant::getINPUTH(), this->getWidth(), this->getHeight()-Constant::getINPUTH());
                         }
 
-                        if (getMenu(i)->getObjByPos(j)->getObjectType() == GUILISTBOX){
+                        if (it->second->getObjByPos(j)->getObjectType() == GUILISTBOX){
                             ((UIList *)posibleObj)->calcularScrPos();
-                        } else if (getMenu(i)->getObjByPos(j)->getObjectType() == GUILISTGROUPBOX){
+                        } else if (it->second->getObjByPos(j)->getObjectType() == GUILISTGROUPBOX){
                             ((UIListGroup *)posibleObj)->calcularScrPos();
                         }
                     }
@@ -196,11 +165,11 @@ void BaseFrontend::setDinamicSizeObjects(){
         }
         
         //Redimension para el browser de directorios2
-        getMenu("PANTALLABROWSER2")->getObjByName(OBJLISTABROWSER2)->setTam(0, Constant::getINPUTH() + COMBOHEIGHT + 4,this->getWidth(), this->getHeight() - BUTTONH - Constant::getINPUTH() - COMBOHEIGHT - 10 - 4);
-        getMenu("PANTALLABROWSER2")->getObjByName("comboBrowser")->setTam(1, Constant::getINPUTH() + 4, 160, 100);
-        getMenu("PANTALLABROWSER2")->getObjByName(BTNACEPTARBROWSER)->setTam( (this->getWidth() / 2) -(BUTTONW + 5), this->getHeight() - BUTTONH - 5, BUTTONW,BUTTONH);
-        getMenu("PANTALLABROWSER2")->getObjByName(BTNCANCELARBROWSER)->setTam( (this->getWidth() / 2) + 5, this->getHeight() - BUTTONH - 5, BUTTONW,BUTTONH);
-        getMenu("PANTALLABROWSER2")->getObjByName(ARTDIRBROWSER)->setTam( 0, 0, this->getWidth(), Constant::getINPUTH());
+        getMenu(PANTALLABROWSER2)->getObjByName(OBJLISTABROWSER2)->setTam(0, Constant::getINPUTH() + COMBOHEIGHT + 4,this->getWidth(), this->getHeight() - BUTTONH - Constant::getINPUTH() - COMBOHEIGHT - 10 - 4);
+        getMenu(PANTALLABROWSER2)->getObjByName(uicomboBrowser)->setTam(1, Constant::getINPUTH() + 4, 160, 100);
+        getMenu(PANTALLABROWSER2)->getObjByName(BTNACEPTARBROWSER)->setTam( (this->getWidth() / 2) -(BUTTONW + 5), this->getHeight() - BUTTONH - 5, BUTTONW,BUTTONH);
+        getMenu(PANTALLABROWSER2)->getObjByName(BTNCANCELARBROWSER)->setTam( (this->getWidth() / 2) + 5, this->getHeight() - BUTTONH - 5, BUTTONW,BUTTONH);
+        getMenu(PANTALLABROWSER2)->getObjByName(ARTDIRBROWSER)->setTam( 0, 0, this->getWidth(), Constant::getINPUTH());
 
         
     } catch (Excepcion &e){
@@ -213,36 +182,27 @@ void BaseFrontend::setDinamicSizeObjects(){
 * No deberian haber botones del mismo nombre
 */
 void BaseFrontend::addEvent(string nombre, typept2Func funcion){
-    addEvent(nombre, funcion, -1);
+    addEvent(nombre, funcion, "");
 }
 
 /**
 *
 */
-void BaseFrontend::addEvent(string nombre, typept2Func funcion, int parms){
+void BaseFrontend::addEvent(string nombre, typept2Func funcion, string parms){
         tprops *props = new tprops;
-        props->parms = Constant::TipoToStr(parms);
+        props->parms = parms;
         props->pt2Func = funcion;
         propertiesPt2Func.insert(make_pair(nombre, props));
 }
-
-///**
-//* Se busca la posicion del puntero a funcion asociado con el nombre del boton
-//*/
-//int BaseFrontend::findEventPos(string var){
-//    if (propertiesPt2Func.count(var) > 0){
-//        return propertiesPt2Func.at(var);
-//    } else return -1;
-//}
 
 /**
 * Se busca la posicion del puntero a funcion asociado con el nombre del boton y se modifica
 */
 void BaseFrontend::setEvent(string nombre, typept2Func funcion){
-    setEvent(nombre, funcion, -1);
+    setEvent(nombre, funcion, "");
 }
 
-void BaseFrontend::setEvent(string nombre, typept2Func funcion, int parms){
+void BaseFrontend::setEvent(string nombre, typept2Func funcion, string parms){
     tprops *props = getEvent(nombre);
     if (props != NULL){
         propertiesPt2Func.at(nombre)->parms = parms;
@@ -257,7 +217,6 @@ void BaseFrontend::setEvent(string nombre, typept2Func funcion, int parms){
  */
 BaseFrontend::tprops * BaseFrontend::getEvent(string eventName){
     std::map<string, BaseFrontend::tprops *>::iterator it;
-    
     it = propertiesPt2Func.find(eventName);
     if (it != propertiesPt2Func.end()){
         return it->second;
@@ -271,7 +230,7 @@ BaseFrontend::tprops * BaseFrontend::getEvent(string eventName){
 bool BaseFrontend::drawMenu(tEvento evento){
     Traza::print("BaseFrontend::drawMenu Inicio", W_PARANOIC);
     bool salir = false;
-    this->clearScr(cGrisOscuro);
+    this->clearScr(Constant::getBACKGROUNDCOLOR());
     Traza::print("BaseFrontend::clearScr Fin", W_PARANOIC);
     //Realiza las acciones de cada elemento de pantalla
     salir = casoDEFAULT(evento);
@@ -389,6 +348,7 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
                         case GUICOMBOBOX:
                         case GUITEXTELEMENTSAREA:
                         case GUITREELISTBOX:
+                        case GUIPICTURE:
                             if (procesarBoton(object, objMenu)){ //Comprobamos si se ha pulsado el elemento
                                 function = getEvent(object->getName());
                                 if (function != NULL){ //Si hemos encontrado una funcion
@@ -424,6 +384,8 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
         }
         //Dibujamos el cursor solo si procede
         this->pintarCursor(evento->mouse_x, evento->mouse_y, cursorPrincipal);
+        //Comprobar si al cerrar
+        this->ComprobarPopupsCerrados(objMenu, evento);
 
     } catch (Excepcion &e) {
          Traza::print("Excepcion procesarControles: " + string(e.getMessage()), W_ERROR);
@@ -431,7 +393,15 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
     return salir;
 }
 
-
+/**
+ * 
+ * @param objMenu
+ * @param evento
+ * @return 
+ */
+bool BaseFrontend::procesarMenuActual(tmenu_gestor_objects *objMenu, tEvento *evento){
+    return true;
+}
 
 /**
  * 
@@ -439,11 +409,10 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
  * @return 
  */
 int BaseFrontend::accionesMenu(tEvento *evento){
-    bool salir = false;
+     bool salir = false;
 
     try{
-        int menu = this->getSelMenu();
-        tmenu_gestor_objects *objsMenu = getMenu(menu);
+        tmenu_gestor_objects *objsMenu = getMenu(this->getSelMenu());
         Object *object = objsMenu->getObjByPos(objsMenu->getFocus());
 
         if (object != NULL){
@@ -454,12 +423,62 @@ int BaseFrontend::accionesMenu(tEvento *evento){
                 UIListCommon *objList = (UIListCommon *)object;
                 unsigned int pos = objList->getPosActualLista();
                 string valorSelec = objList->getValue(pos);
-                int destino = objList->getDestino(pos);
+                string destino = objList->getDestino(pos);
                 objList->setImgDrawed(false);
 
                 if (valorSelec.compare("salir") == 0){
                     salir = true;
-                } else if (destino != -1){
+                } else if (valorSelec.compare("shutdown") == 0 or valorSelec.compare("reboot") == 0){
+                    Launcher *launcher = new Launcher();
+                    FileLaunch *emulInfo = new FileLaunch();
+                    string option = "";
+
+                    #ifdef UNIX
+                        if (valorSelec.compare("reboot") == 0){
+                            option = "-r";
+                        } else if(valorSelec.compare("shutdown") == 0){
+                            option = "-h";
+                        }
+
+                        emulInfo->fileexe = "sudo shutdown " +  option + " now";
+                        emulInfo->parmsexe = "";
+                    #elif WIN
+                        if (valorSelec.compare("reboot") == 0){
+                            option = "-r";
+                        } else if(valorSelec.compare("shutdown") == 0){
+                            option = "-s";
+                        }
+
+                        flipScr();
+                        emulInfo->rutaexe = Constant::TipoToStr(getenv("windir")) + "\\system32";
+                        emulInfo->fileexe = "shutdown.exe";
+                        emulInfo->parmsexe = option + " -f -t 1";
+                    #endif
+
+                    string pregunta = "";
+                    if (valorSelec.compare("reboot") == 0){
+                        pregunta = "%C2%BFEsta seguro de que desea reiniciar la maquina?";
+                    } else if(valorSelec.compare("shutdown") == 0){
+                        pregunta = "%C2%BFEsta seguro de que desea apagar la maquina?";
+                    }
+
+                    bool confirmed = casoPANTALLACONFIRMAR("Confirmacion", pregunta);
+
+                    if (confirmed){
+                        if (valorSelec.compare("reboot") == 0){
+                            showMessage("El sistema se va a reiniciar. Espere un momento...", 1);
+                        } else if(valorSelec.compare("shutdown") == 0){
+                            showMessage("El sistema se va a apagar. Espere un momento...", 1);
+                        }
+                        Traza::print("Antes de ejecutar programa", W_DEBUG);
+                        launcher->lanzarProgramaUNIXFork(emulInfo);
+                        salir = true;
+                    }
+
+                    delete emulInfo;
+                    delete launcher;
+
+                } else if (!destino.empty()){
                     this->cargaMenuFromLista(objList, evento);
                 }
             }
@@ -474,19 +493,20 @@ int BaseFrontend::accionesMenu(tEvento *evento){
 * Con el menu pasado por parametro lo dibujamos entero
 */
 void BaseFrontend::resizeMenu(){
-    for (int i=0; i< getNumMenus(); i++){
-        getMenu(i)->setAreaObjMenu(getWidth(),getHeight());
+    std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
+    for(it; it != objectsMenu.end(); it++){
+        it->second->setAreaObjMenu(getWidth(),getHeight());
     }
     setDinamicSizeObjects();
 }
 
 /**
-* El campo checked del control se da valor desde la llamada al procEvent del respectivo menu
-* En esta funcion se comprueba el valor checked para saber si se ha pulsado el elemento
+* El campo checked del control se da uivalor desde la llamada al procEvent del respectivo menu
+* En esta funcion se comprueba el uivalor checked para saber si se ha pulsado el elemento
 */
 bool BaseFrontend::procesarBoton(Object * obj, tmenu_gestor_objects *gestorMenu){
     try{
-        //Traza::print("Checkeando name: " + string(name) + " valor: " + string(objMenu->getObjByName(name)->isChecked()?"S":"N"), W_ERROR);
+        //Traza::print("Checkeando name: " + string(name) + " uivalor: " + string(objMenu->getObjByName(name)->isChecked()?"S":"N"), W_ERROR);
         if (obj->getObjectType() == GUICOMBOBOX){
             if (((UIComboBox *)obj)->isValueChanged()){
                 ((UIComboBox *)obj)->setValueChanged(false);
@@ -515,7 +535,7 @@ void BaseFrontend::cargaMenuFromLista(UIListCommon *obj, tEvento *evento){
     if (obj->getPosActualLista() < 0){
         obj->setPosActualLista(0);
     } else {
-        int menucarga = obj->getDestino(obj->getPosActualLista());
+        string menucarga = obj->getDestino(obj->getPosActualLista());
         string valorSelec = obj->getValue(obj->getPosActualLista());
         //Si hemos pulsado el boton de volver (que es el ultimo de la lista)
         //reiniciamos la posicion por si volvemos a entrar
@@ -531,20 +551,13 @@ void BaseFrontend::cargaMenuFromLista(UIListCommon *obj, tEvento *evento){
 /**
 *
 */
-void BaseFrontend::cargaMenu(int menucarga, string valorSelec, tEvento *evento){
+void BaseFrontend::cargaMenu(string menucarga, string valorSelec, tEvento *evento){
     comprobarUnicode(menucarga);
-    if (menucarga >= 0 && menucarga <= getNumMenus()){
+    tmenu_gestor_objects *objsMenu = getMenu(menucarga);
+    if (objsMenu != NULL){
         this->setSelMenu(menucarga);
         //Damos el foco al primer elemento que haya en el menu
         this->getMenu(menucarga)->setFirstFocus();
-    }
-
-    tmenu_gestor_objects *objsMenu = getMenu(menucarga);
-    UIListCommon *objTemp = NULL;
-
-    switch (menucarga){
-        default:
-            break;
     }
 }
 
@@ -552,44 +565,50 @@ void BaseFrontend::cargaMenu(int menucarga, string valorSelec, tEvento *evento){
 * En este metodo se comprueba si tenemos que activar unicode para que
 * las teclas del teclado se traduzcan sin problemas de dependencia de layouts
 */
-void BaseFrontend::comprobarUnicode(int menu){
+void BaseFrontend::comprobarUnicode(string menu){
 
     tmenu_gestor_objects *objsMenu = getMenu(menu);
-    int i=0;
-    bool found = false;
-
-    while (i < objsMenu->getSize() && !found){
-        if (objsMenu->getObjByPos(i) != NULL)
-            if (objsMenu->getObjByPos(i)->getObjectType() == GUIINPUTWIDE)
-                found = true;
-        i++;
-    }
-
-    Traza::print("comprobarUnicode: " + Constant::TipoToStr(menu) + ((found == true) ? " UNICODE=S":" UNICODE=N"), W_PARANOIC);
-    SDL_EnableUNICODE(found);
+    if (objsMenu != NULL){
+        int i=0;
+        bool found = false;
+        while (i < objsMenu->getSize() && !found){
+            if (objsMenu->getObjByPos(i) != NULL)
+                if (objsMenu->getObjByPos(i)->getObjectType() == GUIINPUTWIDE)
+                    found = true;
+            i++;
+        }
+        Traza::print("comprobarUnicode: " + Constant::TipoToStr(menu) + ((found == true) ? " UNICODE=S":" UNICODE=N"), W_PARANOIC);
+        SDL_EnableUNICODE(found);
+    }    
 }
 
-
-
 /**
-*
-*/
+ * 
+ * @param evento
+ * @return 
+ */
 int BaseFrontend::accionesGotoPantalla(tEvento *evento){
-    int menu = this->getSelMenu();
-    tmenu_gestor_objects *objsMenu = getMenu(menu);
+    return !gotoPantalla(evento).empty();
+}
+
+string BaseFrontend::gotoPantalla(tEvento *evento){
+    tmenu_gestor_objects *objsMenu = getMenu(this->getSelMenu());
+    if (objsMenu == NULL)
+        return "";
+    
     Object *object = objsMenu->getObjByPos(objsMenu->getFocus());
     tprops * event = getEvent(object->getName());
     
     if (event != NULL){ //Si hemos encontrado una funcion
-        int posMenu = Constant::strToTipo<int>(event->parms);
-        if (posMenu >= 0){
-            this->setSelMenu(posMenu);
-            this->getMenu(posMenu)->findNextFocus();
-            comprobarUnicode(posMenu);
-            return posMenu;
+        string menuToLoad = event->parms;
+        if (!menuToLoad.empty()){
+            this->setSelMenu(menuToLoad);
+            this->getMenu(menuToLoad)->findNextFocus();
+            comprobarUnicode(menuToLoad);
+            return menuToLoad;
         }
     }
-    return false;
+    return "";
 }
 
 /**
@@ -602,13 +621,15 @@ string BaseFrontend::casoPANTALLAPREGUNTA(string titulo, string label){
     tEvento askEvento;
     clearEvento(&askEvento);
     string salida = "";
-    int menuAnt = getSelMenu();
-    setSelMenu("PANTALLAPREGUNTA");
+    string menuAnt = getSelMenu();
+    setSelMenu(PANTALLAPREGUNTA);
+    titulo = Constant::txtDisplay(titulo);
+    label = Constant::txtDisplay(label);
 
-    tmenu_gestor_objects *objMenu = getMenu("PANTALLAPREGUNTA");
-    objMenu->getObjByName("valor")->setLabel(label);
-    ((UIInput *)objMenu->getObjByName("valor"))->setText("");
-    objMenu->getObjByName("borde")->setLabel(titulo);
+    tmenu_gestor_objects *objMenu = getMenu(PANTALLAPREGUNTA);
+    objMenu->getObjByName(uivalor)->setLabel(label);
+    ((UIInput *)objMenu->getObjByName(uivalor))->setText("");
+    objMenu->getObjByName(uiborde)->setLabel(titulo);
 
 
     long delay = 0;
@@ -624,7 +645,7 @@ string BaseFrontend::casoPANTALLAPREGUNTA(string titulo, string label){
         salir = (askEvento.isJoy && askEvento.joy == JoyMapper::getJoyMapper(JOY_BUTTON_B)) ||
         (askEvento.isKey && askEvento.key == SDLK_ESCAPE);
 
-        UIInput *input = (UIInput *)objMenu->getObjByName("valor");
+        UIInput *input = (UIInput *)objMenu->getObjByName(uivalor);
 
         if (input->getSize() > 0 &&
             ( (askEvento.isKey && askEvento.key == SDLK_RETURN)
@@ -642,6 +663,20 @@ string BaseFrontend::casoPANTALLAPREGUNTA(string titulo, string label){
 }
 
 /**
+ * 
+ * @param evento
+ * @return 
+ */
+int BaseFrontend::accionesCargaPantalla(tEvento *evento){
+    string posMenu = gotoPantalla(evento);
+    if (!posMenu.empty()){
+        cargaMenu(posMenu, "", evento);
+        return true;
+    }
+    return false;
+}
+
+/**
 *
 */
 bool BaseFrontend::casoPANTALLACONFIRMAR(string titulo, string txtDetalle){
@@ -651,7 +686,9 @@ bool BaseFrontend::casoPANTALLACONFIRMAR(string titulo, string txtDetalle){
     tEvento askEvento;
     clearEvento(&askEvento);
     bool salida = false;
-    int menuInicial = getSelMenu();
+    string menuInicial = getSelMenu();
+    titulo = Constant::txtDisplay(titulo);
+    txtDetalle = Constant::txtDisplay(txtDetalle);
 
     //Procesamos el menu antes de continuar para que obtengamos la captura
     //de pantalla que usaremos de fondo
@@ -662,13 +699,13 @@ bool BaseFrontend::casoPANTALLACONFIRMAR(string titulo, string txtDetalle){
     takeScreenShot(&mySurface, iconRectFondo);
 
     //Seguidamente cambiamos la pantalla a la de la confirmacion
-    setSelMenu("PANTALLACONFIRMAR");
-    tmenu_gestor_objects *objMenu = getMenu("PANTALLACONFIRMAR");
-    objMenu->getObjByName("borde")->setLabel(titulo);
+    setSelMenu(PANTALLACONFIRMAR);
+    tmenu_gestor_objects *objMenu = getMenu(PANTALLACONFIRMAR);
+    objMenu->getObjByName(uiborde)->setLabel(titulo);
 
-    UITextElementsArea *textElems = (UITextElementsArea *)objMenu->getObjByName("textosBox");
+    UITextElementsArea *textElems = (UITextElementsArea *)objMenu->getObjByName(uitextosBox);
     textElems->setImgDrawed(false);
-    textElems->setFieldText("labelDetalle", txtDetalle);
+    textElems->setFieldText(uilabelDetalle, txtDetalle);
 
     int len = fontStrLen(txtDetalle);
     if (len < this->getWidth()){
@@ -697,15 +734,15 @@ bool BaseFrontend::casoPANTALLACONFIRMAR(string titulo, string txtDetalle){
         salir = (askEvento.isJoy && askEvento.joy == JoyMapper::getJoyMapper(JOY_BUTTON_B)) ||
         (askEvento.isKey && askEvento.key == SDLK_ESCAPE);
 
-        if (objMenu->getObjByName("btnSiConfirma")->getTag().compare("selected") == 0){
+        if (objMenu->getObjByName(btnSiConfirma)->getTag().compare("selected") == 0){
             salir = true;
             salida = true;
-            objMenu->getObjByName("btnSiConfirma")->setTag("");
+            objMenu->getObjByName(btnSiConfirma)->setTag("");
             Traza::print("Detectado SI pulsado", W_DEBUG);
-        } else if (objMenu->getObjByName("btnNoConfirma")->getTag().compare("selected") == 0){
+        } else if (objMenu->getObjByName(btnNoConfirma)->getTag().compare("selected") == 0){
             salir = true;
             salida = false;
-            objMenu->getObjByName("btnNoConfirma")->setTag("");
+            objMenu->getObjByName(btnNoConfirma)->setTag("");
             Traza::print("Detectado NO pulsado", W_DEBUG);
         }
 
@@ -721,7 +758,7 @@ bool BaseFrontend::casoPANTALLACONFIRMAR(string titulo, string txtDetalle){
 * Muestra el menu pasado por parametro como si fuera emergente, dejando el menu anterior
 * difuminado sobre el fondo
 */
-void BaseFrontend::showMenuEmergente(int menu, string objImagenFondo){
+void BaseFrontend::showMenuEmergente(string menu, string objImagenFondo){
     try{
          Traza::print("BaseFrontend::showMenuEmergente", W_INFO);
         //Procesamos el menu actual para que se vuelva a repintar
@@ -752,9 +789,9 @@ string BaseFrontend::showExplorador(tEvento *evento){
     bool salir = false;
     tEvento askEvento;
     clearEvento(&askEvento);
-    int menuInicio = this->getSelMenu();
-    this->setSelMenu("PANTALLABROWSER2");
-    tmenu_gestor_objects *objMenu = getMenu("PANTALLABROWSER2");
+    string menuInicio = this->getSelMenu();
+    this->setSelMenu(PANTALLABROWSER2);
+    tmenu_gestor_objects *objMenu = getMenu(PANTALLABROWSER2);
     UIList *obj = NULL;
     ignoreButtonRepeats = true;
     string fileUri = "";
@@ -763,7 +800,7 @@ string BaseFrontend::showExplorador(tEvento *evento){
     static string lastDirOpened;
 
     try{
-        loadComboUnidades("comboBrowser", getPosMenu("PANTALLABROWSER2"), -1);
+        loadComboUnidades(uicomboBrowser, PANTALLABROWSER2, -1);
         obj = (UIList *)objMenu->getObjByName(OBJLISTABROWSER2);
         obj->setFocus(true);
         obj->setTag("");
@@ -772,7 +809,7 @@ string BaseFrontend::showExplorador(tEvento *evento){
         objMenu->resetElements();
         //Seleccionamos a la lista que esta en primer lugar
         //objMenu->findNextFocus();
-        getMenu("PANTALLABROWSER2")->setFocus(OBJLISTABROWSER2);
+        getMenu(PANTALLABROWSER2)->setFocus(OBJLISTABROWSER2);
 
         if (!lastDirOpened.empty()){
             dir.changeDirAbsolute(dir.getFolder(lastDirOpened).c_str());
@@ -791,7 +828,7 @@ string BaseFrontend::showExplorador(tEvento *evento){
             if (pos >= 0){
                 fileTempSelec = obj->getListNames()->get(pos);
                 string ruta = dir.getDirActual() +  Constant::getFileSep() + fileTempSelec;
-                UIPicture *objPict = (UIPicture *)objMenu->getObjByName("ImgFondo");
+                UIPicture *objPict = (UIPicture *)objMenu->getObjByName(uiimgFondo);
 
                 if (objPict->getImgGestor()->getRuta().compare(ruta) != 0){
                     if (dir.findIcon(fileTempSelec.c_str()) == page_white_picture){
@@ -873,7 +910,7 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
 
     try{
         Traza::print("BaseFrontend::accionesListaExplorador", W_INFO);
-        tmenu_gestor_objects *objMenu = getMenu("PANTALLABROWSER2");
+        tmenu_gestor_objects *objMenu = getMenu(PANTALLABROWSER2);
         UIList * obj = (UIList *)objMenu->getObjByName(OBJLISTABROWSER2);
         Dirutil dir;
         bool dirChanged = false;
@@ -928,14 +965,14 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
         Traza::print("accionesListaExplorador: " + string (e.getMessage()), W_ERROR);
     }
 
-    getMenu("PANTALLABROWSER2")->setFocus(OBJLISTABROWSER2);
+    getMenu(PANTALLABROWSER2)->setFocus(OBJLISTABROWSER2);
     return true;
 }
 
 /**
 *
 */
-void BaseFrontend::loadComboUnidades(string objName, int pantalla, int types){
+void BaseFrontend::loadComboUnidades(string objName, string pantalla, int types){
     Traza::print("BaseFrontend::loadComboUnidades", W_INFO);
     UIList *combo = (UIList *)getMenu(pantalla)->getObjByName(objName);
     combo->clearLista();
@@ -968,7 +1005,7 @@ void BaseFrontend::loadComboUnidades(string objName, int pantalla, int types){
  */
 int BaseFrontend::accionCombo(tEvento *evento){
     Traza::print("BaseFrontend::accionCombo", W_INFO);
-    UIComboBox *combo = (UIComboBox *)getMenu("PANTALLABROWSER2")->getObjByName("comboBrowser");
+    UIComboBox *combo = (UIComboBox *)getMenu(PANTALLABROWSER2)->getObjByName(uicomboBrowser);
     string unidad = combo->getValue(combo->getPosActualLista());
     Traza::print("BaseFrontend::accionCombo. Drive: " + unidad, W_DEBUG);
     Dirutil dir;
@@ -982,7 +1019,7 @@ int BaseFrontend::accionCombo(tEvento *evento){
 
     clearEvento(evento);
     this->accionesListaExplorador(NULL);
-    getMenu("PANTALLABROWSER2")->setFocus(OBJLISTABROWSER2);
+    getMenu(PANTALLABROWSER2)->setFocus(OBJLISTABROWSER2);
     return 0;
 }
 
@@ -999,7 +1036,7 @@ int BaseFrontend::loadDirFromExplorer(tEvento *evento){
         tmenu_gestor_objects *objMenu = getMenu(this->getSelMenu());
         //Obtenemos el objeto que ha sido seleccionado y que tiene el foco
         Object *obj = objMenu->getObjByPos(objMenu->getFocus());
-        //Obtenemos el tag del elemento que indica en que campo deberemos dar valor a la seleccion
+        //Obtenemos el tag del elemento que indica en que campo deberemos dar uivalor a la seleccion
         //que hagamos del explorador de archivos
         string tag = obj->getTag();
         if (!tag.empty()){
@@ -1042,16 +1079,6 @@ void BaseFrontend::setTextFromExplorador(tEvento *evento, UIInput *objCampoEdit)
     } catch (Excepcion &e){
         Traza::print("setTextFromExplorador: " + string(e.getMessage()), W_ERROR);
     }
-}
-
-/**
- * 
- * @param objMenu
- * @param evento
- * @return 
- */
-bool BaseFrontend::procesarMenuActual(tmenu_gestor_objects *objMenu, tEvento *evento){
-    return true;
 }
 
 /**
@@ -1173,17 +1200,15 @@ int BaseFrontend::simularEscape(tEvento *evento){
  * @return 
  */
 int BaseFrontend::marcarBotonSeleccionado(tEvento *evento){
-
-    int menu = getSelMenu();
-    tmenu_gestor_objects *objMenu = getMenu(menu);
+    tmenu_gestor_objects *objMenu = getMenu(getSelMenu());
     int pos = objMenu->getFocus();
 
     Traza::print("marcarBotonSeleccionado: " + objMenu->getObjByPos(pos)->getName(), W_DEBUG);
     if (pos >= 0){
         objMenu->getObjByPos(pos)->setTag("selected");
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
 /**
@@ -1193,8 +1218,8 @@ int BaseFrontend::marcarBotonSeleccionado(tEvento *evento){
  * @param pantalla
  * @return 
  */
-bool BaseFrontend::waitAceptCancel(string btnAceptar, string btnCancelar, int pantalla){
-    int menuInicial = getSelMenu();
+bool BaseFrontend::waitAceptCancel(string btnAceptar, string btnCancelar, string pantalla){
+    string menuInicial = getSelMenu();
     tEvento askEvento;
     clearEvento(&askEvento);
 
@@ -1259,13 +1284,13 @@ bool BaseFrontend::waitAceptCancel(string btnAceptar, string btnCancelar, int pa
 int BaseFrontend::accionCopiarTextoPopup(tEvento *evento){
     Traza::print("accionCopiarTextoPopup", W_INFO);
     //Se obtiene el objeto menupopup que en principio esta seleccionado
-    int menu = this->getSelMenu();
+    string menu = this->getSelMenu();
     tmenu_gestor_objects *objsMenu = getMenu(menu);
     Object *obj = objsMenu->getObjByPos(objsMenu->getFocus());
     //Comprobamos que efectivamente, el elemento es un popup
     if (obj->getObjectType() == GUIPOPUPMENU){
         UIPopupMenu *objPopup = (UIPopupMenu *)obj;
-        //Obtenemos el valor del elemento seleccionado en el popup
+        //Obtenemos el uivalor del elemento seleccionado en el popup
         string selected = objPopup->getListValues()->get(objPopup->getPosActualLista());
         if (objPopup->getCallerPopup() != NULL){
             //Obtenemos el objeto llamador
@@ -1279,4 +1304,25 @@ int BaseFrontend::accionCopiarTextoPopup(tEvento *evento){
         }
     }
     return 0;
+}
+
+/**
+*
+*/
+void BaseFrontend::ComprobarPopupsCerrados(tmenu_gestor_objects *objMenu, tEvento *evento){
+    //Comprobacion para evitar problemas con popups
+    Object *object = objMenu->getObjByPos(objMenu->getFocus());
+    if (object != NULL){
+        if (object->isPopup() == false && object->isFocus() == false && evento
+            && objMenu->getObjByName(object->getName())->getObjectType() == GUIPOPUPMENU)
+        {
+            if (evento->isMouse && (evento->mouse == MOUSE_BUTTON_RIGHT || evento->mouse == MOUSE_BUTTON_LEFT)
+                && evento->mouse_state == SDL_PRESSED)
+            {
+                UIPopupMenu *objPopup = (UIPopupMenu *)objMenu->getObjByName(object->getName());
+                objMenu->setFocus(objPopup->getCallerPopup()->getName());
+                Traza::print("ComprobarPopupsCerrados. Foco a: " + objPopup->getCallerPopup()->getName(), W_DEBUG);
+            }
+        }
+    }
 }

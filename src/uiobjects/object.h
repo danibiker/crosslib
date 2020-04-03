@@ -39,7 +39,7 @@ class Object{
         string getLabel(){return label;}
         string getName(){return name;}
         void setName(string var){name=var;}
-        void setLabel(string var){label=var;}
+        void setLabel(string var){label=Constant::txtDisplay(var);}
         void setOrigx(int var) {origx = var;}
         void setOrigy(int var) {origy = var;}
         void setEnabled(bool var){enabled = var;}

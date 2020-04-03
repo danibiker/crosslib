@@ -137,8 +137,9 @@ string Dropbox::storeAccessToken(string clientid, string secret, string codeOrRe
 */
 void Dropbox::launchAuthorize(string clientid){
     string tmpUrl = DROPBOXURLAUTH + "?response_type=code&client_id=" + clientid;
-    string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
-    system(cmd.c_str());
+    //string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
+    //system(cmd.c_str());
+    openExplorer(tmpUrl);
 }
 
 /**

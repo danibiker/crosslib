@@ -18,7 +18,7 @@ ListGroupCol::ListGroupCol(string texto, string valor){
     this->destino = -1;
 }
 
-ListGroupCol::ListGroupCol(string texto, string valor, int icono, int destino){
+ListGroupCol::ListGroupCol(string texto, string valor, int icono, string destino){
     sortOrder = -1;
     this->texto = Constant::txtDisplay(texto);
     this->valor = Constant::txtDisplay(valor);

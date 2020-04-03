@@ -77,7 +77,7 @@ void UIPopupMenu::clearLista(){
 /**
 *
 */
-void UIPopupMenu::addElemLista(string name, string value, int ico, int destino){
+void UIPopupMenu::addElemLista(string name, string value, int ico, string destino){
 
     int elemW = fontStrLen(name);
     if (autosize && elemW > 0){
@@ -112,7 +112,7 @@ void UIPopupMenu::addElemLista(string name, string value){
 *
 */
 void UIPopupMenu::addElemLista(string name, string value, int ico){
-    addElemLista(name, value, ico, -1);
+    addElemLista(name, value, ico, "");
 }
 
 /**

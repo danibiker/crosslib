@@ -288,8 +288,6 @@ static const int mapHeight = 256;
     static const double ZOOMINCREMENT = 0.4; //Incremento de zoom que se aplicara a la imagen
     static const int MOVEINCREMENT = 15; //Pixels que se desplazara la imagen con una pulsacion
     static const bool VIEWALPHA = false;
-
-
     static const float zoomText = 1;
     static const int textFontYCorrection = 0;
     static const int ICOSPACE = 25 * zoomText;
@@ -297,7 +295,6 @@ static const int mapHeight = 256;
     static const int FAMFAMICONH = 16 * zoomText;
     static const int ICOBOTTOMSPACE = 5 * zoomText;
     static const unsigned char FONTSIZE = 12 * zoomText;
-
     static const int BORDERSELECTION = 2 * zoomText;
     static const int CHECKW = 11 * zoomText; //Ancho de la cajita de seleccion de un input check
     static const int CHECKH = 11 * zoomText; //Alto de la cajita de seleccion de un input check
@@ -327,17 +324,13 @@ static const int mapHeight = 256;
     static const int TEXLABELTEXTSPACE = 5 * zoomText; //Separacion del label respecto a su texto
     static const int IMGBOXARTMARGIN = 10 * zoomText; //Alto de la imagen de la rom
     static const int ALBUMWIDTH = 200;
-
     static const int COMBOHEIGHT = 20;
     //Variables para el formulario de querys
     static const int MENUCATEGWIDTH = 100;
     static const int TRIGLTAM = 10;
-
     static const int TRISCROLLBARTAM = 8;
     static const int SCROLLBARWIDTH = 6;
     static const int MINSCROLLBARHEIGHT = 20;
-
-
     static const int DEADZONE = 23000;
     static const int JOYHATOFFSET = 100;
     static const int JOYAXISOFFSET = 200;
@@ -470,6 +463,7 @@ class Constant{
         static int IMGBOXARTHEIGHT; //Alto de la imagen de la rom
         static uint8_t c1;  // Last character buffer
         static size_t CURL_DOWNLOAD_LIMIT;
+        static t_color BACKGROUNDCOLOR;
         
 
     public:
@@ -511,6 +505,8 @@ class Constant{
         static void setIMGBOXARTWIDTH(int var){IMGBOXARTWIDTH = var;}
         static int getIMGBOXARTHEIGHT(){return IMGBOXARTHEIGHT;}
         static void setIMGBOXARTHEIGHT(int var){IMGBOXARTHEIGHT = var;}
+        static void setBACKGROUNDCOLOR(t_color BACKGROUNDCOLOR);
+        static t_color getBACKGROUNDCOLOR();
 
 
         template<class TIPO> static string TipoToStr(TIPO number){
@@ -584,6 +580,7 @@ class Constant{
         static std::string printBytesSize(double bytes, int precision);
         static void setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT);
         static size_t getCURL_DOWNLOAD_LIMIT();
+
 };
 
 #endif // CONSTANT_H_INCLUDED

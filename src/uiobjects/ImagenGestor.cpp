@@ -94,7 +94,9 @@ void ImagenGestor::cargarOffsets(){
 /**
 * extraerImg
 */
-void ImagenGestor::extraerImg(unsigned int pos){
+bool ImagenGestor::extraerImg(unsigned int pos){
+    bool ret = false;
+    
     if (offsets != NULL){
         unsigned long long inicio=0;
         unsigned long long tam=0;
@@ -114,21 +116,24 @@ void ImagenGestor::extraerImg(unsigned int pos){
 //        Traza::print("extraerImg.tam:", tam, W_DEBUG);
 //        Traza::print("extraerImg.rutaImg:", rutaImg.c_str(), W_DEBUG);
 
-        this->loadFromFile(rutaImg.c_str(), inicio, tam);
+        ret = this->loadFromFile(rutaImg.c_str(), inicio, tam);
         cifrarXOR(this->getFile(),tam);
         zoomValue = 0;
 
     } else {
         throw(Excepcion(ENULL));
     }
+    
+    return ret;
 }
 
 /**
 * extraerImgBin
 */
-void ImagenGestor::extraerImgBin(unsigned long long  offset, unsigned long long  offsetAnt){
+bool ImagenGestor::extraerImgBin(unsigned long long  offset, unsigned long long  offsetAnt){
         unsigned long long inicio=0;
         unsigned long long tam=0;
+        bool ret = false;
 
         if (offsetAnt == 0){
             tam = offset; //Tamanyo
@@ -139,12 +144,14 @@ void ImagenGestor::extraerImgBin(unsigned long long  offset, unsigned long long 
         }
 
         if (tam > 0 && inicio >= 0){
-            this->loadFromFile(rutaImg.c_str(), inicio, tam);
+            ret = this->loadFromFile(rutaImg.c_str(), inicio, tam);
             cifrarXOR(this->getFile(),tam);
             zoomValue = 0;
         } else {
              Traza::print("extraerImgBin: Error al calcular el tamanyo de la imagen en base a los offsets", W_ERROR);
         }
+        
+        return ret;
 }
 
 /**
@@ -337,8 +344,8 @@ bool ImagenGestor::loadImgFromFileZoom(const char *uri, SDL_Surface **destino, S
 * Carga la imagen desde el array binario creado en memoria y establece el tamanyo
 * original de la imagen para poder utilizarlo posteriormente
 */
-void ImagenGestor::loadImgFromMem(SDL_Surface **destino){
-    loadImgFromMem(this->getFile(), this->getFileSize(), destino);
+bool ImagenGestor::loadImgFromMem(SDL_Surface **destino){
+    bool ret = loadImgFromMem(this->getFile(), this->getFileSize(), destino);
     if (*destino != NULL){
         //Guardamos la posicion de la imagen relativa a la superficie de destino,
         //que suele ser la propia pantalla. Es util para dibujar sobre una imagen
@@ -346,38 +353,45 @@ void ImagenGestor::loadImgFromMem(SDL_Surface **destino){
         this->setImgOrigWidth(((SDL_Surface *)*destino)->w);
         this->setImgOrigHeight(((SDL_Surface *)*destino)->h);
     }
+    return ret;
 }
 
 /**
 * Carga la imagen desde el array binario creado en memoria
 */
-void ImagenGestor::loadImgFromMem(char *fileArray, int size, SDL_Surface **destino){
+bool ImagenGestor::loadImgFromMem(char *fileArray, int size, SDL_Surface **destino){
     /*
     IMG_Load_RW(SDL_RWops *src, int freesrc);
     src - The source SDL_RWops as a pointer. The image is loaded from this.
     freesrc - A non-zero value mean is will automatically close/free the src for you.
     */
+    bool ret = false;
 
     if (moveSurface != NULL){
         SDL_FreeSurface(moveSurface);
         moveSurface = NULL;
     }
-    SDL_RWops *tempSurfWop = SDL_RWFromMem(fileArray,size);
+    if (size > 0 && fileArray != NULL){
+        SDL_RWops *tempSurfWop = SDL_RWFromMem(fileArray,size);
+        if (tempSurfWop != NULL){
+            if (VIEWALPHA){
+                SDL_Surface *memImg = IMG_Load_RW(tempSurfWop,0);
+                SDL_FreeRW(tempSurfWop);
+                if (memImg == NULL) 
+                    throw Excepcion(EFIO);
 
-    if (VIEWALPHA){
-        SDL_Surface *memImg = IMG_Load_RW(tempSurfWop,0);
-        SDL_FreeRW(tempSurfWop);
-        if (memImg == NULL) 
-            throw Excepcion(EFIO);
-        
-        *destino = SDL_DisplayFormatAlpha(memImg);
-        SDL_FreeSurface(memImg);
-    } else {
-        
-        *destino = IMG_Load_RW(tempSurfWop,0);
-        if (destino == NULL) 
-            throw Excepcion(EFIO);
+                *destino = SDL_DisplayFormatAlpha(memImg);
+                SDL_FreeSurface(memImg);
+                ret = true;
+            } else {
+                *destino = IMG_Load_RW(tempSurfWop,0);
+                if (destino == NULL) 
+                    throw Excepcion(EFIO);
+                ret = true;
+            }
+        }
     }
+    return ret;
 }
 
 void ImagenGestor::makeMoveSurface(SDL_Surface *mySurface, int w, int h){
@@ -646,39 +660,39 @@ bool ImagenGestor::drawImgMem(SDL_Surface *dst){
 * imagenes en forma de grid.
 */
 bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst){
+        bool ret = false;
         try{
-            SDL_Surface *mySurface;
-            int maxX = calcMaxX(destw, regionPantalla.selW);
-            int maxY = calcMaxY(desth, regionPantalla.selH);
-            Traza::print("maxX: " + Constant::TipoToStr(maxX) + " maxY: " + Constant::TipoToStr(maxY), W_PARANOIC);
-
-            if ((destw <= 0 || desth <= 0) && maxX > 0 && maxY > 0){
-                destw  = (regionPantalla.selW - SEPTHUMB - SEPTHUMB * maxX) / maxX;
-                desth = (regionPantalla.selH - SEPTHUMB - SEPTHUMB * maxY) / maxY;
-            }
-            const int maxImg = maxX * maxY;
-
-            if (indice >= maxImg) return false;
-            Traza::print("Calculando posiciones", W_PARANOIC);
-            //Calculamos las filas por columnas y la posicion
-            const int fila = maxX > 0 ? indice / maxX : 0; //El cociente son las filas
-            Traza::print("filas: " + Constant::TipoToStr(fila), W_PARANOIC);
-            const int col  = maxX > 0 ? indice % maxX : 0; //El resto son las columnas
-            Traza::print("cols: " + Constant::TipoToStr(col), W_PARANOIC);
-            const short int posX = (short int)(regionPantalla.selX + col*(destw+SEPTHUMB)+ ((col > 0) ? SEPTHUMB : 0));
-            const short int posY = (short int)(regionPantalla.selY + fila*(desth+SEPTHUMB)+ ((fila > 0) ? SEPTHUMB : 0));
-
-            Traza::print("Drawing at position posX: " + Constant::TipoToStr(posX) + " posY: " + Constant::TipoToStr(posY), W_PARANOIC);
-
-            SDL_Rect imgLocation = { posX,
-                                     posY,
-                                     (short unsigned int)destw,
-                                     (short unsigned int)desth };
-
-
+            SDL_Surface *mySurface = NULL;
             //Cargamos la imagen
-            loadImgFromMem(&mySurface);
-            if (mySurface != NULL) {
+            ret = loadImgFromMem(&mySurface);
+            if (mySurface != NULL && ret) {
+                int maxX = calcMaxX(destw, regionPantalla.selW);
+                int maxY = calcMaxY(desth, regionPantalla.selH);
+                Traza::print("maxX: " + Constant::TipoToStr(maxX) + " maxY: " + Constant::TipoToStr(maxY), W_PARANOIC);
+
+                if ((destw <= 0 || desth <= 0) && maxX > 0 && maxY > 0){
+                    destw  = (regionPantalla.selW - SEPTHUMB - SEPTHUMB * maxX) / maxX;
+                    desth = (regionPantalla.selH - SEPTHUMB - SEPTHUMB * maxY) / maxY;
+                }
+                const int maxImg = maxX * maxY;
+
+                if (indice >= maxImg) return false;
+                Traza::print("Calculando posiciones", W_PARANOIC);
+                //Calculamos las filas por columnas y la posicion
+                const int fila = maxX > 0 ? indice / maxX : 0; //El cociente son las filas
+                Traza::print("filas: " + Constant::TipoToStr(fila), W_PARANOIC);
+                const int col  = maxX > 0 ? indice % maxX : 0; //El resto son las columnas
+                Traza::print("cols: " + Constant::TipoToStr(col), W_PARANOIC);
+                const short int posX = (short int)(regionPantalla.selX + col*(destw+SEPTHUMB)+ ((col > 0) ? SEPTHUMB : 0));
+                const short int posY = (short int)(regionPantalla.selY + fila*(desth+SEPTHUMB)+ ((fila > 0) ? SEPTHUMB : 0));
+
+                Traza::print("Drawing at position posX: " + Constant::TipoToStr(posX) + " posY: " + Constant::TipoToStr(posY), W_PARANOIC);
+
+                SDL_Rect imgLocation = { posX,
+                                         posY,
+                                         (short unsigned int)destw,
+                                         (short unsigned int)desth };
+
                 Traza::print("Imagen cargada de memoria: " + Constant::TipoToStr(mySurface->w) + "x" + Constant::TipoToStr(mySurface->h), W_PARANOIC);
                 //Creamos la imagen y la pintamos por pantalla
                 SDL_Surface *thumbSurface;
@@ -723,14 +737,14 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
                 SDL_BlitSurface(thumbSurface, NULL, dst, &imgLocation);
                 SDL_FreeSurface( thumbSurface );
                 Traza::print("Imagen dibujada", W_PARANOIC);
+                ret = true;
             } else {
                 Traza::print("Imagen null no dibujada", W_PARANOIC);
             }
-            return true;
         } catch (Excepcion &e) {
              Traza::print("Excepcion Ioutil::drawImgMem:" + string(e.getMessage()), W_ERROR);
-             return false;
         }
+        return ret;
 }
 
 /**

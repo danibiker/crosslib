@@ -19,8 +19,8 @@ class UIList : public UIListCommon
         //Metodos propios de la lista
         void addElemLista(string, string);
         void addElemLista(string, string, int);
-        void addElemLista(string, string, int, int);
-        void addElemLista(string, string, int, string imagePath, int);
+        void addElemLista(string, string, int, string);
+        void addElemLista(string, string, int, string imagePath, string);
         void addElemListaScroll(string, string);
         void clearLista();
         void resizeLista(unsigned int);
@@ -30,17 +30,17 @@ class UIList : public UIListCommon
         listaSimple<string> * getListValues() {return listValues;}
         listaSimple<string> * getListImage() {return listImage;}
         listaSimple<int> * getListIcons() {return listIcons;}
-        listaSimple<int> * getListDestinos(){return listDestinos;}
+        listaSimple<string> * getListDestinos(){return listDestinos;}
 
         string getValue(int row);
-        int getDestino(int row);
+        string getDestino(int row);
 
     protected:
         listaSimple<string> *listValues;
         listaSimple<string> *listNames;
         listaSimple<string> *listImage;
         listaSimple<int> *listIcons;
-        listaSimple<int> *listDestinos;
+        listaSimple<string> *listDestinos;
     private:
 };
 

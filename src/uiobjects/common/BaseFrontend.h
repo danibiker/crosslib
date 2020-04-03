@@ -35,6 +35,7 @@
 #include "beans/listgroupcol.h"
 #include "uilistcommon.h"
 #include "UITreeListBox.h"
+#include "BaseDefines.h"
 
 const unsigned int ALPHABACKGROUND = 235;
 
@@ -48,6 +49,8 @@ protected:
     
     virtual void initUIObjs();
     virtual void setDinamicSizeObjects();
+    virtual void cargaMenu(string, string, tEvento *);
+    virtual bool procesarMenuActual(tmenu_gestor_objects *objMenu, tEvento *evento);
     
     struct tscreenobj{
         bool drawComponents;
@@ -63,54 +66,54 @@ protected:
     
     tmenu_gestor_objects *createMenu(string menuName);
     tmenu_gestor_objects *getMenu(string menuName);
-    tmenu_gestor_objects *getMenu(int menuName);
-    void setSelMenu(int var);
+    
     void setSelMenu(string var);
-    int getSelMenu();
-    int getPosMenu(string var);
+    string getSelMenu();
     int getNumMenus(){
         return objectsMenu.size();
     }
 
     void addEvent(string, typept2Func);
-    void addEvent(string, typept2Func, int);
+    void addEvent(string, typept2Func, string);
     void setEvent(string, typept2Func);
-    void setEvent(string, typept2Func, int);
+    void setEvent(string, typept2Func, string);
     tprops * getEvent(string);
     bool procesarControles(tmenu_gestor_objects *, tEvento *, tscreenobj *);
-    bool procesarMenuActual(tmenu_gestor_objects *objMenu, tEvento *evento);
     int casoDEFAULT(tEvento );
     int accionesMenu(tEvento *);
     bool procesarBoton(Object *, tmenu_gestor_objects *);
     void cargaMenuFromLista(UIListCommon *, tEvento *);
-    void cargaMenu(int, string, tEvento *);
+    
     void resizeMenu();
-    void comprobarUnicode(int);
+    void comprobarUnicode(string);
     int accionesGotoPantalla(tEvento *);
+    string gotoPantalla(tEvento *evento);
     string casoPANTALLAPREGUNTA(string, string);
     bool casoPANTALLACONFIRMAR(string, string);
     int loadDirFromExplorer(tEvento *);
     int accionCombo(tEvento *evento);
-    void loadComboUnidades(string objName, int pantalla,  int types);
+    void loadComboUnidades(string objName, string pantalla,  int types);
     int accionesListaExplorador(tEvento *);
-    void showMenuEmergente(int menu, string objImagenFondo);
+    void showMenuEmergente(string menu, string objImagenFondo);
     string showExplorador(tEvento *);
     void setTextFromExplorador(tEvento *, UIInput *);
     UIPopupMenu * addPopup(string pantalla, string popupName, string callerName);
     bool procesarPopups(tmenu_gestor_objects *objMenu, tEvento *evento);
-    bool waitAceptCancel(string btnAceptar, string btnCancelar, int pantalla);
+    bool waitAceptCancel(string btnAceptar, string btnCancelar, string pantalla);
     int accionCopiarTextoPopup(tEvento *evento);
     string casoJOYBUTTONS(tEvento *evento);
     //Eventos asignados a los botones
     int simularEscape(tEvento *);
     int simularIntro(tEvento *);
     int marcarBotonSeleccionado(tEvento *);
+    void ComprobarPopupsCerrados(tmenu_gestor_objects *objMenu,tEvento *evento);
+    int accionesCargaPantalla(tEvento *evento);
+    
     
 private:
-    int selMenu;
+    string selMenu;
     map<string, tprops*> propertiesPt2Func;
-    vector<tmenu_gestor_objects *> objectsMenu;
-    map<string, size_t> objectsMenuPos;
+    map<string, tmenu_gestor_objects *> objectsMenu;
 };
 
 #endif /* BASEFRONTEND_H */

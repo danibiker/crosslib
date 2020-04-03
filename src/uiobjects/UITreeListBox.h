@@ -85,7 +85,7 @@ class TreeNode{
         string text;    //Texto que se muestra al usuario
         string value;   //Valor que se almacena
         int ico;        //Icono que se muestra en la lista al usuario
-        int dest;       //Destino 
+        string dest;       //Destino 
         bool show;      //Indica si se esta mostrando el elemento en pantalla
         int estado;     //Para saber el estado del nodo en cualquier implementacion
         int realPos;    //Posicion real en la lista de, no en la posicion que se muestra al usuario.
@@ -138,7 +138,7 @@ public:
     void action(tEvento *evento);
     TreeNode get(int row);
     string getValue(int row);
-    int getDestino(int row);
+    string getDestino(int row);
     unsigned int getSize();
     void sort();
     void add(string vid, string vtext, string vvalue, int vico, int vdest, int vshow);

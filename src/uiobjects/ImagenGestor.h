@@ -17,9 +17,9 @@ class ImagenGestor : public Fileio{
         ~ImagenGestor();
         char * calculaPass(string );
         void cargarOffsets();
-        void extraerImg(unsigned int);
+        bool extraerImg(unsigned int);
         //void extraerImgBin(string, string);
-        void extraerImgBin(unsigned long long , unsigned long long );
+        bool extraerImgBin(unsigned long long , unsigned long long );
         listaSimple<unsigned long long> *offsets;
 
         void catDiractualRuta(string);
@@ -88,8 +88,8 @@ class ImagenGestor : public Fileio{
         bool loadImgDisplay(const char *uri, SDL_Surface **destino);
         bool loadImgFromFile(const char *uri, SDL_Surface **destino);
         bool loadImgFromFileZoom(const char *uri, SDL_Surface **destino, SDL_Rect *dstrect);
-        void loadImgFromMem(SDL_Surface **destino);
-        void loadImgFromMem(char *fileArray, int size, SDL_Surface **destino);
+        bool loadImgFromMem(SDL_Surface **destino);
+        bool loadImgFromMem(char *fileArray, int size, SDL_Surface **destino);
         bool updateImgScr(SDL_Surface * srcSurface, SDL_Surface * dstSurface);
 
         int getScreenHeight(){return screenHeight;}

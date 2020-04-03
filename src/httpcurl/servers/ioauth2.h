@@ -7,6 +7,9 @@
 #include "util/ConstantHttp.h"
 #include "json/json.h"
 #include "listaIni.h"
+#include "Launcher.h"
+#include "filelaunch.h"
+
 
 
 static const string passwordAT = "klYcZaKgGWO36d1";
@@ -50,6 +53,7 @@ class IOauth2
 
         uint32_t getOauthStatus(){return oauthStatus;}
         void setOauthStatus(uint32_t var){oauthStatus = var;}
+        void openExplorer(string);
 
     protected:
         HttpUtil util;

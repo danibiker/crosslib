@@ -26,7 +26,7 @@ void UIList::inicializarObjeto(int objType){
     listValues = new listaSimple<string>();
     listNames = new listaSimple<string>();
     listIcons = new listaSimple<int>();
-    listDestinos = new listaSimple<int>();
+    listDestinos = new listaSimple<string>();
     listImage = new listaSimple<string>();
 }
 
@@ -62,20 +62,20 @@ void UIList::addElemLista(string name, string value){
 *
 */
 void UIList::addElemLista(string name, string value, int ico){
-    addElemLista(name, value, ico, -1);
+    addElemLista(name, value, ico, "");
 }
 
-void UIList::addElemLista(string name, string value, int ico, int destino){
+void UIList::addElemLista(string name, string value, int ico, string destino){
     addElemLista(name, value, ico, "", destino);
 }
 
 /**
 * name: Descripcion del registro en la lista
 * value: valor del registro en la lista
-* ico: incono que se mostrará en la lista
+* ico: incono que se mostrarï¿½ en la lista
 * destino: Pantalla destino
 */
-void UIList::addElemLista(string name, string value, int ico, string imagePath, int destino){
+void UIList::addElemLista(string name, string value, int ico, string imagePath, string destino){
 
         int elemVisibles = this->getH() / Constant::getMENUSPACE();
         listNames->add(name);
@@ -125,7 +125,7 @@ void UIList::resizeLista(unsigned int tam){
         listNames = new listaSimple<string>(tam);
         listValues = new listaSimple<string>(tam);
         listIcons = new listaSimple<int>(tam);
-        listDestinos = new listaSimple<int>(tam);
+        listDestinos = new listaSimple<string>(tam);
         listImage = new listaSimple<string>(tam);
 
         UIListCommon::resizeLista(tam);
@@ -145,7 +145,7 @@ void UIList::clearLista(){
         listNames = new listaSimple<string>();
         listValues = new listaSimple<string>();
         listIcons = new listaSimple<int>();
-        listDestinos = new listaSimple<int>();
+        listDestinos = new listaSimple<string>();
         listImage = new listaSimple<string>();
         UIListCommon::clearLista();
 }
@@ -178,7 +178,7 @@ bool UIList::selectValueInList(string texto){
 
 /**
 * Funcion para buscar un elemento en la lista conforme vamos tecleando
-* el texto mientras la lista está con el foco. De esta forma se puede
+* el texto mientras la lista estï¿½ con el foco. De esta forma se puede
 * buscar el elemento que sea.
 */
 bool UIList::searchTextInList(int key){
@@ -264,7 +264,7 @@ string UIList::getValue(int row){
 * Por defecto obtiene el destino de la primera columna de la fila que se le
 * indica por parametro
 */
-int UIList::getDestino(int row){
+string UIList::getDestino(int row){
    return getListDestinos()->get(row);
 }
 

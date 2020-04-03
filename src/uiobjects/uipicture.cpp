@@ -64,14 +64,16 @@ void UIPicture::action(tEvento *evento){
 /**
 *
 */
-void UIPicture::loadImgFromFile(string ruta){
+bool UIPicture::loadImgFromFile(string ruta){
     imgGestor->setRuta(ruta);
     imgGestor->setBestfit(true)->setResize(true)->setZoom(0)
             ->setTopDif(0)->setLeftDif(0);
+    bool ret = false;
+    
     try{
         Dirutil dir;
         if (dir.existe(ruta)){
-            imgGestor->loadFromFile(ruta);
+            ret = imgGestor->loadFromFile(ruta);
             setImgDrawed(false);
         } else {
             Traza::print("UIPicture::loadImgFromFile. No existe la ruta: " + ruta, W_ERROR);
@@ -79,6 +81,7 @@ void UIPicture::loadImgFromFile(string ruta){
     } catch (Excepcion &e) {
          Traza::print("Excepcion loadImgFromFile: " + string(e.getMessage()), W_ERROR);
     }
+    return ret;
 }
 
 
@@ -89,17 +92,21 @@ void UIPicture::loadImgFromFile(string ruta){
  * @param offset
  * @param offsetAnt
  */
-void UIPicture::loadImgFromBin(const char* ruta, const char *password, unsigned long long offset, unsigned long long offsetAnt){
+bool UIPicture::loadImgFromBin(const char* ruta, const char *password, unsigned long long offset, unsigned long long offsetAnt){
     imgGestor->setRuta(ruta);//Especificamos la ruta del fichero a abrir
     imgGestor->calculaPass(password); //Ponemos el password si no lo teniamos
     imgGestor->setBestfit(false)->setResize(true)->setZoom(0)
             ->setTopDif(0)->setLeftDif(0);
+    bool ret = false;
+    
      try{
-        imgGestor->extraerImgBin(offset, offsetAnt);
+        ret = imgGestor->extraerImgBin(offset, offsetAnt);
         setImgDrawed(false);
      } catch (Excepcion &e) {
          Traza::print("Excepcion loadImgFromFile" + string(e.getMessage()), W_ERROR);
      }
+    
+    return ret;
 }
 
 void UIPicture::clearImg(){

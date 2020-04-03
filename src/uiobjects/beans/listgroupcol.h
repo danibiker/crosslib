@@ -17,14 +17,14 @@ class ListGroupCol
         /** Default destructor */
         virtual ~ListGroupCol();
         ListGroupCol(string texto, string valor);
-        ListGroupCol(string texto, string valor, int icono, int destino);
+        ListGroupCol(string texto, string valor, int icono, string destino);
         string getTexto(){return texto;}
         string getValor(){return valor;}
-        int getDestino(){return destino;}
+        string getDestino(){return destino;}
         int getIcono(){return icono;}
         void setTexto(string var){texto = Constant::txtDisplay(var);}
         void setValor(string var){valor = Constant::txtDisplay(var);}
-        void setDestino(int var){destino = var;}
+        void setDestino(string var){destino = var;}
         void setIcono(int var){icono = var;}
         int getSortOrder(){return sortOrder;}
         void setSortOrder(int var){sortOrder = var;}
@@ -34,7 +34,7 @@ class ListGroupCol
     protected:
         string texto;
         string valor;
-        int destino;
+        string destino;
         int icono;
         int sortOrder;
 

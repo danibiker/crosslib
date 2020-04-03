@@ -22,6 +22,7 @@ int Constant::IMGBOXARTWIDTH = 250; //Ancho de la imagen de la rom
 int Constant::IMGBOXARTHEIGHT = 250; //Alto de la imagen de la rom
 uint8_t Constant::c1;  // Last character buffer
 size_t Constant::CURL_DOWNLOAD_LIMIT = 0;
+t_color Constant::BACKGROUNDCOLOR = cBlanco;
 
 
 static const char* DIAS[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
@@ -1112,4 +1113,12 @@ void Constant::setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT) {
 
 size_t Constant::getCURL_DOWNLOAD_LIMIT() {
     return CURL_DOWNLOAD_LIMIT;
+}
+
+void Constant::setBACKGROUNDCOLOR(t_color BACKGROUNDCOLOR) {
+    Constant::BACKGROUNDCOLOR = BACKGROUNDCOLOR;
+}
+
+t_color Constant::getBACKGROUNDCOLOR() {
+    return BACKGROUNDCOLOR;
 }

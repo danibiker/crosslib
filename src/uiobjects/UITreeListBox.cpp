@@ -167,7 +167,7 @@ string UITreeListBox::getValue(int row){
  * @param row
  * @return 
  */
-int UITreeListBox::getDestino(int row){
+string UITreeListBox::getDestino(int row){
     return get(row).dest;
 }
 

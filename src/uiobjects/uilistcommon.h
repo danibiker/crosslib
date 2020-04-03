@@ -24,7 +24,7 @@ class UIListCommon : public Object
         unsigned virtual getSize();
         bool virtual searchTextInList(int key);
         string virtual getValue(int var);
-        int virtual getDestino(int var);
+        string virtual getDestino(int var);
         void virtual clearLista();
         void virtual resizeLista(unsigned int);
         unsigned int virtual getElemVisibles();
@@ -103,11 +103,8 @@ class UIListCommon : public Object
         int listScheme;
         int nIconsHoriz;
         bool smoothDraw;
-
         unsigned int lastPosActualLista;
-
-
-
+        unsigned long lastClick;
     private:
 };
 
