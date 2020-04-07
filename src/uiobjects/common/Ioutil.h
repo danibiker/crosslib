@@ -26,6 +26,8 @@
     #include "listaIni.h"
     #include "Colorutil.h"
     #include "UITreeListBox.h"
+    #include "dto/DtoImgList.h"
+    #include "ThreadImgLoader.h"
 
     struct tInput{
         int cursorX;
@@ -83,13 +85,12 @@
             void drawTextInArea( const char*, int, int, t_color, SDL_Rect *);
             void drawTextInAreaSrf( const char* dato, int x, int y, t_color color, SDL_Rect *textLocation , SDL_Surface* dstSrf, bool isAlpha = false);
             void drawTextInsideArea( int posArrayTexto, int x, int y, Object *obj, SDL_Rect *textLocation);
-            void drawRect(int, int, int, int, t_color); //Dibuja un rectangulo rellenado
-            void drawRect(int x, int y, int w, int h, t_color color, SDL_Surface *destSurf);
-            void drawRectAlpha(int, int, int, int, t_color, int); //Dibuja un rectangulo rellenado con valor alpha de transparencia
-            void drawRectAlpha(int x, int y, int w, int h, t_color color, int colorAlpha, SDL_Surface *destSurf);
+            bool drawRect(int, int, int, int, t_color); //Dibuja un rectangulo rellenado
+            bool drawRect(int x, int y, int w, int h, t_color color, SDL_Surface *destSurf);
+            bool drawRectAlpha(int, int, int, int, t_color, int); //Dibuja un rectangulo rellenado con valor alpha de transparencia
+            bool drawRectAlpha(int x, int y, int w, int h, t_color color, int colorAlpha, SDL_Surface *destSurf);
             void drawRectLine(int , int , int , int , int , t_color);//Dibuja un rectangulo sin relleno del ancho especificado
             bool drawImgObj(Object *);
-            bool drawFondoImgSel(tEvento, int, int, int, t_region, t_color);
             void drawUITitleBorder(const char *);
             void drawUITitleBorder(const char *, int, t_color);
             void drawUIButton(Object *obj);
@@ -116,6 +117,9 @@
             t_color MapColor (int s);
             void drawUISpectrumFft(Object *obj);
             void drawUISlider(Object *obj, tEvento *evento);
+            void drawUIThumbnailImgBox(Object *obj);
+            void drawThumbnailSelected(t_posicion posicion, SDL_Rect *imgRect, bool selected);
+            void drawAllThumbnailBackgrounds(UIListGroup *obj);
             void drawIco(int , int , int , int , int );
             void drawIco(int numIco, int angle, int x, int y, int w, int h);
             void pintarHint(int x1, int y1, int w1, int h1, string text, t_color color);
@@ -180,6 +184,7 @@
             void drawListIcoHor(Object *obj, int x, int y, int w, int h);
             void drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h);
             int getFontHeight(){return fontHeight;}
+            bool startLoadingThumbs(UIImgList *listImages);
 
 
         protected:
@@ -190,6 +195,7 @@
             void setCursor(int cursor);
             string dirInicial;
             void drawTextInsideAreaScroll( TextElement *elem, UITextElementsArea *objText, int maxPxLabel, t_color color, SDL_Rect *textLocation);
+            ThreadImgLoader *imgLoader;
 
         private:
             std::map<int, int>* mPrevAxisValues; //Almacena los valores de los ejes de cada joystick
@@ -237,5 +243,6 @@
             Colorutil color3Spectrum;
             t_color degColorSpectrum;
             string windowTitle;
+            
     };
 #endif //Ioutil_H

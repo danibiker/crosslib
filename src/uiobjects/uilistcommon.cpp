@@ -39,7 +39,8 @@ void UIListCommon::action(tEvento *evento){
     //Si hay un popup lanzado por este elemento, debe dejar de procesar los eventos
     if (popup == false){
         if (evento->isKey || evento->isJoy || (evento->isMouse &&
-                                               (evento->mouse == MOUSE_BUTTON_WHEELDOWN || evento->mouse == MOUSE_BUTTON_WHEELUP)) ){
+                                               (evento->mouse == MOUSE_BUTTON_WHEELDOWN || evento->mouse == MOUSE_BUTTON_WHEELUP)
+                                                && evento->mouse_state == 1) ){
 
             Traza::print("UIList::action: " + this->getName(), W_DEBUG);
 

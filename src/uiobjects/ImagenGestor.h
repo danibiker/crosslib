@@ -33,6 +33,10 @@ class ImagenGestor : public Fileio{
         bool isBestfit(){return bestfit;}
         bool isEnabledMoveImg(){return enabledMoveImg;}
         void setEnabledMoveImg(bool var){enabledMoveImg = var;}
+        bool isCentrado(){return centrado;}
+        bool isCentradoX(){return centradoX;}
+        bool isCentradoY(){return centradoY;}
+        
 
         ImagenGestor* setCentrado(bool in){centrado = in; return this;}
         ImagenGestor* setBestfit(bool in){bestfit = in; return this;}
@@ -41,6 +45,8 @@ class ImagenGestor : public Fileio{
         ImagenGestor* setSmooth(bool in){smooth = in; return this;}
         ImagenGestor* setTopDif(int var){top = var;return this;}
         ImagenGestor* setLeftDif(int var){left = var;return this;}
+        ImagenGestor* setCentradoX(bool in){centradoX = in; return this;}
+        ImagenGestor* setCentradoY(bool in){centradoY = in; return this;}
 
 
 
@@ -75,12 +81,13 @@ class ImagenGestor : public Fileio{
         double getZoomY(){return zoomY;}
         void setZoomX(double var){zoomX = var;}
         void setZoomY(double var){zoomY = var;}
-        t_posicion *getImgLocationRelScreen(){return &imgLocationRelScreen;}
+        t_posicion getImgLocationRelScreen(){return imgLocationRelScreen;}
 
         int getImgOrigWidth(){return imgOrigWidth;}
         int getImgOrigHeight(){return imgOrigHeight;}
         void setImgOrigWidth(int var){imgOrigWidth = var;}
         void setImgOrigHeight(int var){imgOrigHeight = var;}
+        
 
         void clearImg(){this->clearFile();}
 
@@ -104,15 +111,16 @@ class ImagenGestor : public Fileio{
         bool drawZoomImgMem(SDL_Surface *dst);
         bool drawImgMem(SDL_Surface *dst);
         bool drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst);
-        unsigned int getPosThumb(int mouse_x, int mouse_y, t_region regionPantalla);
+        bool drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst, SDL_Rect *imgLocation);
+        unsigned int getPosThumb(int mouse_x, int mouse_y, int destw, int desth, t_region regionPantalla);
         bool drawImg(SDL_Surface *dst);
         int calcMaxX(int destw, int surfaceW);
         int calcMaxY(int desth,  int surfaceH);
+        bool calcImgLocationFromIndex(int indice, int destw, int desth, t_region regionPantalla, SDL_Rect *imgLocation);
         t_color getColorBackground(){return colorBackground;}
         void setColorBackground(t_color var){colorBackground = var;}
         bool isFillBackgroundColour(){return fillBackgroundColour;}
         void setFillBackgroundColour(bool var){fillBackgroundColour = var;}
-
         Uint32 getpixel(SDL_Surface *surface, const int x, const int y);
         void putpixel(SDL_Surface *surface, const int x, const int y, const Uint32 pixel);
 
@@ -126,6 +134,8 @@ class ImagenGestor : public Fileio{
         bool bestfit; //Especifica si se debe redimensionar la imagen para encajar al m�ximo en la pantalla
         bool smooth;
         bool centrado;
+        bool centradoX;
+        bool centradoY;
         int bordeTop;
         int bordeBottom;
         int bordeLeft;
@@ -142,6 +152,7 @@ class ImagenGestor : public Fileio{
         int screenHeight, screenWidth;
         t_color colorBackground;
         bool fillBackgroundColour;
+        
 };
 
 

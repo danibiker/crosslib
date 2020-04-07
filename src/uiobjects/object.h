@@ -71,6 +71,15 @@ class Object{
         int getIcon(){return icon;}
         ImagenGestor * getImgGestor(){return imgGestor;}
         ImagenGestor * getOtherCache(){return otherCache;}
+        
+        SDL_Surface *surfaceCache;
+        SDL_Surface *getSurfaceCache(){return surfaceCache;}
+        void setSurfaceCache(SDL_Surface *srf){
+            if (this->surfaceCache != NULL){
+                SDL_FreeSurface(this->surfaceCache);
+            }
+            this->surfaceCache = srf;
+        }
 
         int getAlpha(){return alpha;}
         void setAlpha(int var){alpha = var;}

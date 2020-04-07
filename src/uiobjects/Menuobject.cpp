@@ -77,13 +77,12 @@ void tmenu_gestor_objects::procEvent(tEvento evento){
             Traza::print("procEvent. setFocus: " + object->getName(), W_PARANOIC);
             //Damos el foco al elemento y lo marcamos para repintar
             this->setFocus(object->getName());
-            Traza::print("procEvent. setImgDrawed", W_PARANOIC);
-            object->setImgDrawed(false);
             Traza::print("procEvent. compare", W_PARANOIC);
             //Si despues de cambiar el foco, el elemento anterior era otro,
-            //forzamos a que se repinte y actualice la imagen de seleccionado
+            //forzamos a que se repinte y actualice la imagen de los dos
             if (!lastElement.empty() && lastElement.compare(object->getName()) != 0){
                  Traza::print("procEvent. repaintObject", W_PARANOIC);
+                 repaintObject(object->getName());
                  repaintObject(lastElement);
             }
             Traza::print("procEvent. lastElement", W_PARANOIC);
@@ -299,6 +298,8 @@ Object * tmenu_gestor_objects::add(string tname, int ttype, int tx, int ty, int 
             arrayNewObj[size] = new UISlider();
         } else if (ttype == GUITREELISTBOX){
             arrayNewObj[size] = new UITreeListBox();
+        } else if (ttype == GUILISTIMG){
+            arrayNewObj[size] = new UIImgList();
         } else {
             arrayNewObj[size] = new Object();
         }

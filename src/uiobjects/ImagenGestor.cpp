@@ -10,6 +10,8 @@ ImagenGestor::ImagenGestor(){
     resize = true;
     bestfit = false;
     centrado = false;
+    centradoX = false;
+    centradoY = false;
     smooth = true;
     top = 0;
     left = 0;
@@ -412,10 +414,10 @@ bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, SDL_Surface * dstSurfa
     //double now = SDL_GetTicks();
     if (this->isResize()){
         if (redimension(srcSurface,dstSurface, &bitmap)){
-            calcRectCent(&dstRect, bitmap->w, bitmap->h, dstSurface->w, dstSurface->h);
+//            calcRectCent(&dstRect, bitmap->w, bitmap->h, dstSurface->w, dstSurface->h);
             salida = blitImage(bitmap, dstSurface,&dstRect, true);
         } else {
-            calcRectCent(&dstRect, srcSurface->w, srcSurface->h, dstSurface->w, dstSurface->h);
+//            calcRectCent(&dstRect, srcSurface->w, srcSurface->h, dstSurface->w, dstSurface->h);
             salida = blitImage(srcSurface, dstSurface,&dstRect, true);
         }
         //objTraza->print("Con resize",(int)(SDL_GetTicks()-now));
@@ -423,18 +425,10 @@ bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, SDL_Surface * dstSurfa
         if (isEnabledMoveImg()){
             makeMoveSurface(srcSurface, screenWidth, screenHeight);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
         }
-        calcRectCent(&dstRect, srcSurface->w, srcSurface->h, dstSurface->w, dstSurface->h);
+//        calcRectCent(&dstRect, srcSurface->w, srcSurface->h, dstSurface->w, dstSurface->h);
         salida = blitImage(srcSurface, dstSurface,&dstRect, true);
         //objTraza->print("Sin resize",(int)(SDL_GetTicks()-now));
     }
-
-    //Guardamos el tamanyo y la posicion de la imagen respecto a la pantalla
-    this->getImgLocationRelScreen()->x = dstRect.x;
-    this->getImgLocationRelScreen()->y = dstRect.y;
-    this->getImgLocationRelScreen()->w = dstRect.w;
-    this->getImgLocationRelScreen()->h = dstRect.h;
-
-
     return salida;
 }
 
@@ -443,17 +437,21 @@ bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, SDL_Surface * dstSurfa
 */
 void ImagenGestor::calcRectCent( SDL_Rect *rectCentrado, int srcW, int srcH, int dstW, int dstH){
 
-    int bordesX = this->getBordeLeft() + this->getBordeRight();
-    int bordesY = this->getBordeTop() + this->getBordeBottom();
+//    int bordesX = this->getBordeLeft() + this->getBordeRight();
+//    int bordesY = this->getBordeTop() + this->getBordeBottom();
 
-    int centrox = (dstW - (int)srcW + bordesX)/2;
-    int centroy = (dstH - (int)srcH + bordesY)/2;
+    int centrox = (dstW - (int)srcW + this->getBordeLeft())/2;
+    int centroy = (dstH - (int)srcH + this->getBordeTop())/2;
+    
+    if (!centrado){
+        if (!centradoX) centrox = this->getBordeLeft();
+        if (!centradoY) centroy = this->getBordeTop();
+    }
 
     rectCentrado->x=centrox;
     rectCentrado->y=centroy;
-    rectCentrado->w=dstW;
-    rectCentrado->h=dstH;
-
+    rectCentrado->w=dstW - this->getBordeRight();
+    rectCentrado->h=dstH - this->getBordeBottom();
     rectCentrado->x -= this->getLeftDif();
     rectCentrado->y -= this->getTopDif();
 
@@ -499,8 +497,8 @@ void ImagenGestor::calcRectCent( SDL_Rect *rectCentrado, int srcW, int srcH, int
 */
 bool ImagenGestor::redimension(SDL_Surface *srcSurface, SDL_Surface *dstSurface, SDL_Surface **destino){
     float i_relacion = 1;
-    int h_destino = dstSurface->h - this->getBordeTop() - this->getBordeBottom();
-    int w_destino = dstSurface->w - this->getBordeLeft() - this->getBordeRight();
+    int h_destino = dstSurface->h;
+    int w_destino = dstSurface->w;
 
     i_relacion = relacion(srcSurface,h_destino,w_destino);//Calcula cuanto hay que reducir la imagen para que quepa por pantalla
 
@@ -637,8 +635,73 @@ bool ImagenGestor::drawImg(SDL_Surface *dst){
 }
 
 /**
-*
-*/
+ * 
+ * @param indice
+ * @param destw
+ * @param desth
+ * @param regionPantalla
+ * @param imgLocation
+ * @return 
+ */
+bool ImagenGestor::calcImgLocationFromIndex(int indice, int destw, int desth, t_region regionPantalla, SDL_Rect *imgLocation){
+    boolean ret = false;
+    
+    if (indice < 0){
+        imgLocation->x = regionPantalla.selX;
+        imgLocation->y = regionPantalla.selY;
+        imgLocation->w = (short unsigned int)destw;
+        imgLocation->h = (short unsigned int)desth;
+        return true;
+    }
+    
+    int maxX = calcMaxX(destw, regionPantalla.selW);
+    int maxY = calcMaxY(desth, regionPantalla.selH);
+    Traza::print("maxX: " + Constant::TipoToStr(maxX) + " maxY: " + Constant::TipoToStr(maxY), W_PARANOIC);
+
+    
+    if ((destw <= 0 || desth <= 0) && maxX > 0 && maxY > 0){
+        destw  = (regionPantalla.selW - SEPTHUMB - SEPTHUMB * maxX) / maxX;
+        desth = (regionPantalla.selH - SEPTHUMB - SEPTHUMB * maxY) / maxY;
+    }
+    const int maxImg = maxX * maxY;
+
+    if (indice >= maxImg) 
+        return ret;
+    
+    int fillEmptySpaceX = 0;
+    int fillEmptySpaceY = 0;
+    
+    fillEmptySpaceX = (regionPantalla.selW - maxX * (destw + SEPTHUMB)) / (maxX + 1);
+    fillEmptySpaceY = (regionPantalla.selH - maxY * (desth + SEPTHUMB)) / (maxY + 1);
+    
+    Traza::print("Calculando posiciones", W_PARANOIC);
+    //Calculamos las filas por columnas y la posicion
+    const int fila = maxX > 0 ? indice / maxX : 0; //El cociente son las filas
+    Traza::print("filas: " + Constant::TipoToStr(fila), W_PARANOIC);
+    const int col  = maxX > 0 ? indice % maxX : 0; //El resto son las columnas
+    Traza::print("cols: " + Constant::TipoToStr(col), W_PARANOIC);
+
+    const short int posX = (short int)(regionPantalla.selX + col*(destw+SEPTHUMB+fillEmptySpaceX) 
+        + ((col > 0) ? SEPTHUMB + fillEmptySpaceX: fillEmptySpaceX));
+    const short int posY = (short int)(regionPantalla.selY + fila*(desth+SEPTHUMB+fillEmptySpaceY) 
+        + ((fila > 0) ? SEPTHUMB + fillEmptySpaceY: fillEmptySpaceY));
+
+    Traza::print("Drawing at position posX: " + Constant::TipoToStr(posX) + " posY: " + Constant::TipoToStr(posY), W_PARANOIC);
+    imgLocation->x = posX;
+    imgLocation->y = posY;
+    imgLocation->w = (short unsigned int)destw;
+    imgLocation->h = (short unsigned int)desth;
+    ret = true;
+
+    return ret;
+}
+
+
+/**
+ * 
+ * @param dst
+ * @return 
+ */
 bool ImagenGestor::drawImgMem(SDL_Surface *dst){
         try{
             SDL_Surface *mySurface = NULL;
@@ -654,54 +717,54 @@ bool ImagenGestor::drawImgMem(SDL_Surface *dst){
              return false;
          }
 }
+/**
+ * 
+ * @param indice
+ * @param destw
+ * @param desth
+ * @param regionPantalla
+ * @param dst
+ * @return 
+ */
+bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst){
+    SDL_Rect *imgLocation = new SDL_Rect();
+    drawImgMem(indice, destw, desth, regionPantalla, dst, imgLocation);
+    delete imgLocation;
+}
+
 
 /**
-* drawImgMem - Dibuja por pantalla la imagen pasada por parametro en un conjunto de
-* imagenes en forma de grid.
-*/
-bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst){
+ * drawImgMem - Dibuja por pantalla la imagen pasada por parametro en un conjunto de
+ * imagenes en forma de grid.
+ * @param indice
+ * @param destw
+ * @param desth
+ * @param regionPantalla
+ * @param dst
+ * @param imgLocation: Devuelve el tamanyo y posicion de la imagen dentro del surface dst 
+ * @return 
+ */
+bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst, SDL_Rect *imgLocation){
         bool ret = false;
         try{
             SDL_Surface *mySurface = NULL;
             //Cargamos la imagen
             ret = loadImgFromMem(&mySurface);
+            
             if (mySurface != NULL && ret) {
-                int maxX = calcMaxX(destw, regionPantalla.selW);
-                int maxY = calcMaxY(desth, regionPantalla.selH);
-                Traza::print("maxX: " + Constant::TipoToStr(maxX) + " maxY: " + Constant::TipoToStr(maxY), W_PARANOIC);
-
-                if ((destw <= 0 || desth <= 0) && maxX > 0 && maxY > 0){
-                    destw  = (regionPantalla.selW - SEPTHUMB - SEPTHUMB * maxX) / maxX;
-                    desth = (regionPantalla.selH - SEPTHUMB - SEPTHUMB * maxY) / maxY;
-                }
-                const int maxImg = maxX * maxY;
-
-                if (indice >= maxImg) return false;
-                Traza::print("Calculando posiciones", W_PARANOIC);
-                //Calculamos las filas por columnas y la posicion
-                const int fila = maxX > 0 ? indice / maxX : 0; //El cociente son las filas
-                Traza::print("filas: " + Constant::TipoToStr(fila), W_PARANOIC);
-                const int col  = maxX > 0 ? indice % maxX : 0; //El resto son las columnas
-                Traza::print("cols: " + Constant::TipoToStr(col), W_PARANOIC);
-                const short int posX = (short int)(regionPantalla.selX + col*(destw+SEPTHUMB)+ ((col > 0) ? SEPTHUMB : 0));
-                const short int posY = (short int)(regionPantalla.selY + fila*(desth+SEPTHUMB)+ ((fila > 0) ? SEPTHUMB : 0));
-
-                Traza::print("Drawing at position posX: " + Constant::TipoToStr(posX) + " posY: " + Constant::TipoToStr(posY), W_PARANOIC);
-
-                SDL_Rect imgLocation = { posX,
-                                         posY,
-                                         (short unsigned int)destw,
-                                         (short unsigned int)desth };
-
+                calcImgLocationFromIndex(indice, destw, desth, regionPantalla, imgLocation);
                 Traza::print("Imagen cargada de memoria: " + Constant::TipoToStr(mySurface->w) + "x" + Constant::TipoToStr(mySurface->h), W_PARANOIC);
                 //Creamos la imagen y la pintamos por pantalla
                 SDL_Surface *thumbSurface;
+                destw = destw - getBordeLeft() - getBordeRight();
+                desth = desth - getBordeTop() - getBordeBottom();
+                
                 if (this->isBestfit()){
                     //Como vamos a rellenar la superficie, nos da igual el tamanyo del recuadro a pintar aunque salgan
                     //bordes por la redimension de la imagen
                     thumbSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, destw, desth, dst->format->BitsPerPixel,0,0,0,0);
                 } else {
-                    //Creamos un surface con el tamanyo justo de la imagen si se da el caso de que es demasiado peque�a o demasiado grande.
+                    //Creamos un surface con el tamanyo justo de la imagen si se da el caso de que es demasiado pequenya o demasiado grande.
                     float i_relacion = relacion(mySurface,desth,destw);//Calcula cuanto hay que reducir la imagen para que quepa por pantalla
                     if (i_relacion != 1. && i_relacion != 0.){
                         destw = mySurface->w / i_relacion;
@@ -723,19 +786,33 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
                     SDL_FillRect( thumbSurface, NULL, SDL_MapRGB(dst->format, colorBackground.r, colorBackground.g, colorBackground.b) );
                 }
                 updateImgScr(mySurface, thumbSurface);
-
-                if (imgLocation.w > thumbSurface->w && centrado){
+                
+                int xAntesCentrar = imgLocation->x;
+                int yAntesCentrar = imgLocation->y;
+                
+                if (imgLocation->w > thumbSurface->w && (centrado || centradoX)){
                     //Si no tenemos que pintar el fondo de la imagen, pintaremos la imagen desplazada para que quede centrada
-                    imgLocation.x += (imgLocation.w - thumbSurface->w) / 2;
+                    imgLocation->x += (imgLocation->w - thumbSurface->w) / 2;
+                } else {
+                    imgLocation->x += bordeLeft;
                 }
 
-                if (imgLocation.h > thumbSurface->h && centrado){
+                if (imgLocation->h > thumbSurface->h && (centrado || centradoY)){
                     //Si no tenemos que pintar el fondo de la imagen, pintaremos la imagen desplazada para que quede centrada
-                    imgLocation.y += (imgLocation.h - thumbSurface->h) / 2;
+                    imgLocation->y += (imgLocation->h - thumbSurface->h) / 2;
+                } else {
+                    imgLocation->y += bordeTop;
                 }
-
-                SDL_BlitSurface(thumbSurface, NULL, dst, &imgLocation);
+//                SDL_Rect dstRect = { bordeleft + /2 ,0,0,0 };
+                SDL_BlitSurface(thumbSurface, NULL, dst, imgLocation);
+                //Guardamos el tamanyo y la posicion de la imagen respecto a la pantalla
+                imgLocationRelScreen.x = imgLocation->x - xAntesCentrar;
+                imgLocationRelScreen.y = imgLocation->y - yAntesCentrar;
+                imgLocationRelScreen.w = imgLocation->w;
+                imgLocationRelScreen.h = imgLocation->h;
+                
                 SDL_FreeSurface( thumbSurface );
+                
                 Traza::print("Imagen dibujada", W_PARANOIC);
                 ret = true;
             } else {
@@ -748,8 +825,11 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
 }
 
 /**
-*
-*/
+ * 
+ * @param destw
+ * @param surfaceW
+ * @return 
+ */
 int ImagenGestor::calcMaxX(int destw, int surfaceW)
 {
     int maxX = MAXTHUMBX;
@@ -761,8 +841,11 @@ int ImagenGestor::calcMaxX(int destw, int surfaceW)
 }
 
 /**
-*
-*/
+ * 
+ * @param desth
+ * @param surfaceH
+ * @return 
+ */
 int ImagenGestor::calcMaxY(int desth,  int surfaceH)
 {
     int maxY = MAXTHUMBY;
@@ -774,26 +857,27 @@ int ImagenGestor::calcMaxY(int desth,  int surfaceH)
 }
 
 /**
-*
-*/
-unsigned int ImagenGestor::getPosThumb(int mouse_x, int mouse_y, t_region regionPantalla){
+ * 
+ * @param mouse_x
+ * @param mouse_y
+ * @param regionPantalla
+ * @return 
+ */
+unsigned int ImagenGestor::getPosThumb(int mouse_x, int mouse_y, int destw, int desth, t_region regionPantalla){
     int posClick_x = 0;
     int posClick_y = 0;
-    int destw = THUMBW;
-    int desth = THUMBH;
     int maxX = calcMaxX(destw, regionPantalla.selW);
     int maxY = calcMaxY(desth, regionPantalla.selH);
     unsigned int posicion = 0;
-
-    if ((destw <= 0 || desth <= 0) && maxX > 0 && maxY > 0){
-            destw  = (regionPantalla.selW - SEPTHUMB - SEPTHUMB * maxX) / maxX;
-            desth = (regionPantalla.selH - SEPTHUMB - SEPTHUMB * maxY) / maxY;
+    
+    if (regionPantalla.selW > 0 && maxX){
+        posClick_x = mouse_x / (regionPantalla.selW / maxX);
     }
-
-    posClick_x = (mouse_x - regionPantalla.selX) / (destw+SEPTHUMB);
-    posClick_y = (mouse_y - regionPantalla.selY) / (desth+SEPTHUMB);
-
-    posicion = posClick_y * maxX + posClick_x;
+    
+    if (regionPantalla.selH > 0 && maxY){
+        posClick_y = mouse_y / (regionPantalla.selH / maxY);
+    }
+   posicion = posClick_y * maxX + posClick_x;
 
     return posicion;
 }

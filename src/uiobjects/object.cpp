@@ -6,6 +6,7 @@
 Object::Object(){
     name = "";
     clear();
+    
 }
 
 void Object::clear(){
@@ -39,6 +40,7 @@ void Object::clear(){
     color = cInputContent;
     textColor = cNegro;
     alpha = -1;
+    surfaceCache = NULL;
 
 }
 
@@ -48,6 +50,10 @@ void Object::clear(){
 Object::~Object(){
     delete imgGestor;
     delete otherCache;
+    if (this->surfaceCache != NULL){
+        Traza::print("Eliminando Imagen", W_PARANOIC);
+        SDL_FreeSurface(this->surfaceCache);
+    }
 }
 
 /**

@@ -111,10 +111,7 @@ void UIListGroup::checkPos(tEvento evento){
             } else {
                 lastAcumWidth = acumWidth;
             }
-
         }
-
-
     }
 }
 
@@ -128,26 +125,32 @@ unsigned int UIListGroup::getElemVisibles(){
         return 0;
 }
 
-
-/**
-*
-*/
-void UIListGroup::addElemLista(vector <ListGroupCol *> newRow){
+void UIListGroup::addElemLista(ListGroupElement * newElement){
     //A la altura del objeto le restamos el espacio reservado para las cabeceras de la lista
     int elemVisibles = getElemVisibles();
     //Comprobamos que el numero de columnas a anyadir sea el mismo de las que ya existen
-    if (numCols > 0 && numCols != newRow.size()){
+    if (numCols > 0 && numCols != newElement->GetListGroupCol().size()){
         throw(Excepcion(ENULL, "UIListGroup: Anyadiendo filas con numero distinto de columnas"));
     }
-    numCols = newRow.size();
+    numCols = newElement->GetListGroupCol().size();
     //Anaydimos la fila
-    listaAgrupada.push_back(newRow);
+    listaAgrupada.push_back(newElement);
     //Actualizamos los limites de la lista visible
     int tamLista = this->getSize();
     posFinLista = posIniLista + elemVisibles - 1;
     if ((this->getSize() - 1) < posFinLista){
         posFinLista = tamLista - 1;
     }
+}
+
+/**
+ * 
+ * @param newRow
+ */
+void UIListGroup::addElemLista(vector <ListGroupCol *> newRow){
+    ListGroupElement *listGroupElement = new (ListGroupElement);
+    listGroupElement->SetListGroupCol(newRow);
+    addElemLista(listGroupElement);
 }
 
 /**
@@ -162,8 +165,8 @@ void UIListGroup::setHeaderLista(vector <ListGroupCol *> newRow){
 *
 */
 ListGroupCol * UIListGroup::getCol(unsigned int row, unsigned int col){
-    if (getRow(row).size() > col)
-        return getRow(row).at(col);
+    if (getRow(row)->GetListGroupCol().size() > col)
+        return getRow(row)->GetListGroupCol().at(col);
     else
         throw(Excepcion(ENULL, "UIListGroup: Columna vacia"));
 }
@@ -171,7 +174,7 @@ ListGroupCol * UIListGroup::getCol(unsigned int row, unsigned int col){
 /**
 *
 */
-vector <ListGroupCol *> UIListGroup::getRow(unsigned int row){
+ListGroupElement * UIListGroup::getRow(unsigned int row){
     if (listaAgrupada.size() > row)
         return listaAgrupada.at(row);
     else
@@ -349,7 +352,7 @@ void UIListGroup::sort(int col){
 /**
 *
 */
-void UIListGroup::quickSort(vector <vector <ListGroupCol *> >& A, int p, int q, int col){
+void UIListGroup::quickSort(vector <ListGroupElement *>& A, int p, int q, int col){
     int r;
     if(p < q){
         r=partition(A, p,q, col);
@@ -361,8 +364,8 @@ void UIListGroup::quickSort(vector <vector <ListGroupCol *> >& A, int p, int q, 
 /**
 *
 */
-int UIListGroup::partition(vector <vector <ListGroupCol *> >& A, int p, int q, int col){
-    string x = A[p].at(col)->getTexto();
+int UIListGroup::partition(vector <ListGroupElement *>& A, int p, int q, int col){
+    string x = A[p]->GetListGroupCol().at(col)->getTexto();
     char temp[x.size()+1];//as 1 char space for null is also required
     strcpy(temp, x.c_str());
 
@@ -373,12 +376,12 @@ int UIListGroup::partition(vector <vector <ListGroupCol *> >& A, int p, int q, i
 
     for(j=p+1; j<q; j++){
         if (order == 0){
-            if (Constant::stricmp(A[j].at(col)->getTexto().c_str(), temp) < 0){
+            if (Constant::stricmp(A[j]->GetListGroupCol().at(col)->getTexto().c_str(), temp) < 0){
                 i=i+1;
                 swap(A[i],A[j]);
             }
         } else {
-            if (Constant::stricmp(A[j].at(col)->getTexto().c_str(), temp) >= 0){
+            if (Constant::stricmp(A[j]->GetListGroupCol().at(col)->getTexto().c_str(), temp) >= 0){
                 i=i+1;
                 swap(A[i],A[j]);
             }

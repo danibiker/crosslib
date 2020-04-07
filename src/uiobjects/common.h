@@ -19,7 +19,8 @@ enum {
     GUISPECTRUM,
     GUILISTGROUPBOX,
     GUISLIDER,
-    GUITREELISTBOX
+    GUITREELISTBOX,
+    GUILISTIMG
 };
 
     struct t_region{
@@ -49,6 +50,8 @@ enum {
         bool isRegionSelected;
         bool quit;
         bool keyjoydown;
+        int width;
+        int height;
     };
 
 #endif // COMMON_H_INCLUDED

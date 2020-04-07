@@ -82,6 +82,8 @@
         <itemPath>../src/uiobjects/bbdd/Database.h</itemPath>
       </logicalFolder>
       <logicalFolder name="beans" displayName="beans" projectFiles="true">
+        <itemPath>../src/uiobjects/beans/listGroupElement.cpp</itemPath>
+        <itemPath>../src/uiobjects/beans/listGroupElement.h</itemPath>
         <itemPath>../src/uiobjects/beans/listgroupcol.cpp</itemPath>
         <itemPath>../src/uiobjects/beans/listgroupcol.h</itemPath>
       </logicalFolder>
@@ -466,6 +468,16 @@
       <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/uiobjects/beans/listgroupcol.cpp"
             ex="false"
@@ -865,6 +877,16 @@
       </item>
       <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/beans/listGroupElement.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/uiobjects/beans/listgroupcol.cpp"
             ex="false"
             tool="1"
@@ -1017,12 +1039,14 @@
             <pElem>../src/rijndael</pElem>
             <pElem>../src/uiobjects</pElem>
           </incDir>
+          <warningLevel>0</warningLevel>
         </cTool>
         <ccTool>
           <incDir>
             <pElem>../src/httpcurl</pElem>
             <pElem>../src/rijndael</pElem>
             <pElem>../src/uiobjects</pElem>
+            <pElem>../../../Proyectos/Galera/src</pElem>
           </incDir>
           <commandLine>-fpermissive</commandLine>
           <preprocessorList>
@@ -1031,6 +1055,7 @@
             <Elem>WIN</Elem>
             <Elem>WIN32</Elem>
           </preprocessorList>
+          <warningLevel>0</warningLevel>
         </ccTool>
         <archiverTool>
         </archiverTool>
@@ -1262,6 +1287,16 @@
       <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/uiobjects/beans/listgroupcol.cpp"
             ex="false"
@@ -1665,6 +1700,16 @@
       </item>
       <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/beans/listGroupElement.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/uiobjects/beans/listgroupcol.cpp"
             ex="false"
             tool="1"
@@ -2064,6 +2109,16 @@
       <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/uiobjects/beans/listgroupcol.cpp"
             ex="false"

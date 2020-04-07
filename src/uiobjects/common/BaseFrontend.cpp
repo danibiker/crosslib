@@ -148,7 +148,7 @@ void BaseFrontend::setDinamicSizeObjects(){
                 while (j < it->second->getSize()){
                     posibleObj = it->second->getObjByPos(j);
                     if(posibleObj != NULL){
-                        if (posibleObj->getObjectType() == GUILISTBOX || it->second->getObjByPos(j)->getObjectType() == GUIPICTURE
+                        if (posibleObj->getObjectType() == GUILISTBOX || posibleObj->getObjectType() == GUIPICTURE
                             || posibleObj->getObjectType() == GUILISTGROUPBOX){
                             posibleObj->setTam(0,Constant::getINPUTH(), this->getWidth(), this->getHeight()-Constant::getINPUTH());
                         }
@@ -170,8 +170,6 @@ void BaseFrontend::setDinamicSizeObjects(){
         getMenu(PANTALLABROWSER2)->getObjByName(BTNACEPTARBROWSER)->setTam( (this->getWidth() / 2) -(BUTTONW + 5), this->getHeight() - BUTTONH - 5, BUTTONW,BUTTONH);
         getMenu(PANTALLABROWSER2)->getObjByName(BTNCANCELARBROWSER)->setTam( (this->getWidth() / 2) + 5, this->getHeight() - BUTTONH - 5, BUTTONW,BUTTONH);
         getMenu(PANTALLABROWSER2)->getObjByName(ARTDIRBROWSER)->setTam( 0, 0, this->getWidth(), Constant::getINPUTH());
-
-        
     } catch (Excepcion &e){
         Traza::print("setDinamicSizeObjects: " + string(e.getMessage()), W_ERROR);
     }
@@ -271,6 +269,9 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
     Object *object;
 
     if (execFunc){
+         //Procesando el redimensionado de ventana
+        if (evento->resize)
+            resizeMenu();
         //Se llama al action del objeto que esta seleccionado en este momento.
         //Cada objeto tiene el suyo propio o heredado de Object
         objMenu->procEvent(*evento);
@@ -293,9 +294,7 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
     
     //Recorremos todos los objetos para dibujarlos por pantalla
     try{
-         //Procesando el redimensionado de ventana
-        if (evento->resize)
-            resizeMenu();
+        
 
         //PINTAMOS ANTES DE PROCESAR LAS ACCIONES. NO SE SI ESTO ES BUENA IDEA
         for (int i=0;i<objMenu->getSize();i++){

@@ -29,16 +29,12 @@ class ListGroupCol
         int getSortOrder(){return sortOrder;}
         void setSortOrder(int var){sortOrder = var;}
 
-
-
     protected:
         string texto;
         string valor;
         string destino;
         int icono;
         int sortOrder;
-
-
     private:
 };
 

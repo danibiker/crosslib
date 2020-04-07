@@ -3,6 +3,7 @@
 
 #include "uilistcommon.h"
 #include "beans/listgroupcol.h"
+#include "beans/listGroupElement.h"
 #include <algorithm>
 
 class UIListGroup : public UIListCommon
@@ -16,7 +17,7 @@ class UIListGroup : public UIListCommon
         unsigned int getSize();
         unsigned int getSizeCol(){return numCols;}
 
-        vector <ListGroupCol *> getRow(unsigned int row);
+        ListGroupElement * getRow(unsigned int row);
         ListGroupCol * getCol(unsigned int row, unsigned int col);
         ListGroupCol * getHeaderCol(int col);
 
@@ -27,6 +28,8 @@ class UIListGroup : public UIListCommon
         unsigned int getElemVisibles();
 
         void addElemLista(vector <ListGroupCol *> newRow);
+        void addElemLista(ListGroupElement * newElement);
+        
         void setHeaderLista(vector <ListGroupCol *> newRow);
         void calcularScrPos();
         void adjustToHeader(bool var) {colsAdjustedToHeader = var;}
@@ -48,7 +51,7 @@ class UIListGroup : public UIListCommon
         int getColSelected(){return colSelected;}
 
     protected:
-        vector <vector <ListGroupCol *> > listaAgrupada;
+        vector <ListGroupElement *> listaAgrupada;
         vector <vector <ListGroupCol *> > listaHeaders;
         vector<int> headersWith;
         bool colsAdjustedToHeader;
@@ -60,8 +63,8 @@ class UIListGroup : public UIListCommon
         int cursorInAnchor(tEvento *evento);
         int colSelected;
 
-       int partition(vector <vector <ListGroupCol *> >& A, int p,int q, int col);
-       void quickSort(vector <vector <ListGroupCol *> >& A, int p,int q, int col);
+       int partition(vector <ListGroupElement *>& A, int p,int q, int col);
+       void quickSort(vector <ListGroupElement *>& A, int p,int q, int col);
 
     private:
         void detectarAnchorClick(tEvento *evento);

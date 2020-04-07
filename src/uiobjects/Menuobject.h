@@ -27,6 +27,7 @@
 #include "uispectrum.h"
 #include "uislider.h"
 #include "UITreeListBox.h"
+#include "uiimglist.h"
 
 
 

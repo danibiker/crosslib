@@ -66,8 +66,9 @@ void UIPicture::action(tEvento *evento){
 */
 bool UIPicture::loadImgFromFile(string ruta){
     imgGestor->setRuta(ruta);
-    imgGestor->setBestfit(true)->setResize(true)->setZoom(0)
+    imgGestor->setResize(true)->setZoom(0)
             ->setTopDif(0)->setLeftDif(0);
+    
     bool ret = false;
     
     try{

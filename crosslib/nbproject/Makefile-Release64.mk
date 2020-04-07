@@ -74,6 +74,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/20f55786/Traza.o \
 	${OBJECTDIR}/_ext/20f55786/UITreeListBox.o \
 	${OBJECTDIR}/_ext/8d36c5a9/Database.o \
+	${OBJECTDIR}/_ext/19a342fa/listGroupElement.o \
 	${OBJECTDIR}/_ext/19a342fa/listgroupcol.o \
 	${OBJECTDIR}/_ext/20f55786/cursor.o \
 	${OBJECTDIR}/_ext/20f55786/filelaunch.o \
@@ -321,6 +322,11 @@ ${OBJECTDIR}/_ext/8d36c5a9/Database.o: ../src/uiobjects/bbdd/Database.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/8d36c5a9
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/httpcurl -I../src/rijndael -I../src/uiobjects -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/8d36c5a9/Database.o ../src/uiobjects/bbdd/Database.cpp
+
+${OBJECTDIR}/_ext/19a342fa/listGroupElement.o: ../src/uiobjects/beans/listGroupElement.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/19a342fa
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -DWIN32 -I../src/httpcurl -I../src/rijndael -I../src/uiobjects -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/19a342fa/listGroupElement.o ../src/uiobjects/beans/listGroupElement.cpp
 
 ${OBJECTDIR}/_ext/19a342fa/listgroupcol.o: ../src/uiobjects/beans/listgroupcol.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/19a342fa

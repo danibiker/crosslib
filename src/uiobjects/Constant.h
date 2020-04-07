@@ -57,7 +57,7 @@ static const int mapHeight = 256;
     class t_posicion{
         public:
 
-        t_posicion(short int x, short int y, short int w, short int h){
+        t_posicion(int x, int y, int w, int h){
             this->x = x;
             this->y = y;
             this->w = w;
@@ -68,10 +68,10 @@ static const int mapHeight = 256;
             x=0;y=0;w=0;h=0;
         }
 
-        short int x;
-        short int y;
-        short int w;
-        short int h;
+        int x;
+        int y;
+        int w;
+        int h;
     };
 
     struct t_iPos{
@@ -259,6 +259,10 @@ static const int mapHeight = 256;
     static const t_color cTitleScreen = cAzulOscuro;
     static const t_color cFondoMapa = {0,0,51};
     static const t_color cColorElevacion = {127,127,153};
+    static const t_color cColorThumbSelected = {204,232,255};
+    static const t_color cColorThumbSelectedBorder = {153,209,255};
+    static const t_color cColorThumbRelieve1 = {187,187,187};
+    static const t_color cColorThumbRelieve2 = {221,221,221};
 
 
     //static const t_color cButtonContent = {0xD4,0xD0,0xC8};
