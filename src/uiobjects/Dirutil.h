@@ -23,6 +23,8 @@
 const char jlss_id_mkpath_c[] = "@(#)$Id: mkpath.c,v 1.13 2012/07/15 00:40:37 jleffler Exp $";
 #endif /* lint */
 
+#define STR_DIR_EXT "Dir"
+
 struct t_drive{
     string drive;
     int driveType;
@@ -54,6 +56,7 @@ class Dirutil{
         void countDir(const char *strdir, unsigned int *nFiles, vector<string> *files, string filtro);
         bool borrarArchivo(string);
         void borrarDir(string);
+        bool setFileProperties(FileProps *propFile, string ruta);
 
         bool existe(string);
         bool isDir(string);
@@ -68,6 +71,7 @@ class Dirutil{
         std::ifstream::pos_type filesize(const char* filename);
         //void getDrives(vector<string> *myvector);
         void getDrives(vector<t_drive *> *myvector);
+        char* formatdate(char* str, time_t val);
 
 
 

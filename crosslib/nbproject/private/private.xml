@@ -4,10 +4,22 @@
         <activeConfTypeElem>3</activeConfTypeElem>
         <activeConfIndexElem>2</activeConfIndexElem>
     </data>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>file:/M:/Github/ExternalLibs/crosslib/src/uiobjects/Dirutil.cpp</url>
+            <bookmark id="1">
+                <name/>
+                <line>172</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/M:/Github/ExternalLibs/crosslib/src/uiobjects/ImagenGestor.cpp</file>
+            <file>file:/M:/Github/ExternalLibs/crosslib/src/httpcurl/util/Progress.cpp</file>
+            <file>file:/M:/Github/ExternalLibs/crosslib/src/httpcurl/util/Progress.h</file>
+            <file>file:/M:/Github/ExternalLibs/crosslib/src/httpcurl/httputil.cpp</file>
+            <file>file:/M:/Github/ExternalLibs/crosslib/src/httpcurl/httputil.h</file>
         </group>
     </open-files>
 </project-private>

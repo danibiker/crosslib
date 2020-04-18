@@ -28,51 +28,40 @@ class Progress {
         Progress(int posListThreads, int nThreads);
         
         void setProgress(float progress) { 
-            if (this->arrProgress != NULL){
-                this->arrProgress[this->posListThreads % this->nThreads] = progress; 
-            }
+                this->progress = progress; 
         }
         
         float getProgress(){
-            if (this->arrProgress != NULL){
-                return this->arrProgress[this->posListThreads % this->nThreads];
+            if (this->progress != NULL){
+                return this->progress;
             } else {
                 return 0.0;
             }
         }
         
         void setDlSizeBytes(double bytes) { 
-            if (this->arrBytesDown != NULL){
-                this->arrBytesDown[this->posListThreads % this->nThreads] = bytes; 
-            }
+            this->bytesDown = bytes; 
         }
         
         double getDlSizeBytes(){
-            if (this->arrBytesDown != NULL){
-                return this->arrBytesDown[this->posListThreads % this->nThreads];
+            if (this->bytesDown != NULL){
+                return this->bytesDown;
             } else {
                 return 0.0;
             }
         }
                 
         void setDlSpeed(double speed) { 
-            if (this->arrSpeedDown != NULL){
-                this->arrSpeedDown[this->posListThreads % this->nThreads] = speed; 
-            }
+            this->speedDown = speed; 
         }
         
         double getDlSpeed(){
-            if (this->arrSpeedDown != NULL){
-                return this->arrSpeedDown[this->posListThreads % this->nThreads];
+            if (this->speedDown != NULL){
+                return this->speedDown;
             } else {
                 return 0.0;
             }
         }
-        double lastruntime;
-
-        double lastruntimeBytesDown;
-        double lastBytesDownloaded;
-        std::ifstream::pos_type maxBytesDownload;
         CURL *curl;
         
         void setPosListThreads(int posListThreads){this->posListThreads = posListThreads;}
@@ -82,14 +71,39 @@ class Progress {
         void setNThreads(int nThreads){this->nThreads = nThreads;}
         int getNThreads(){
             return this->nThreads;
-        };
+        }
+        void setMaxBytesDownload(std::ifstream::pos_type maxBytesDownload);
+        std::ifstream::pos_type getMaxBytesDownload();
+        void setLastBytesDownloaded(double lastBytesDownloaded);
+        double getLastBytesDownloaded();
+        void setLastruntimeBytesDown(double lastruntimeBytesDown);
+        double getLastruntimeBytesDown();
+        void setLastruntime(double lastruntime);
+        double getLastruntime();
+        void setTimeNoProgress(double timeNoProgress);
+        double getTimeNoProgress();
+        void setLastProgress(double lastProgress);
+        double getLastProgress();
+        void setTimeout(int timeout);
+        int getTimeout();
+        
+        
+        
+        
  private:
-    static float *arrProgress;
-    static double *arrBytesDown;
-    static double *arrSpeedDown;
+    float progress;
+    double bytesDown;
+    double speedDown;
     int nThreads;
     int posListThreads;
-    GMutex mutex;
+    double lastruntime;
+    double lastruntimeBytesDown;
+    double lastBytesDownloaded;
+    double timeNoProgress;
+    double lastProgress;
+    int timeout;
+    std::ifstream::pos_type maxBytesDownload;
+    void init(int posListThreads, int nThreads);
 };
 
 #endif /* PROGRESS_H */

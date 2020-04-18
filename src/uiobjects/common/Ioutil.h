@@ -26,8 +26,7 @@
     #include "listaIni.h"
     #include "Colorutil.h"
     #include "UITreeListBox.h"
-    #include "dto/DtoImgList.h"
-    #include "ThreadImgLoader.h"
+    #include "image/ThreadImgLoader.h"
 
     struct tInput{
         int cursorX;
@@ -136,6 +135,7 @@
             void drawFastHLine(int x, int y, int w, t_color color);
             void pintarContenedor(int x1, int y1, int w1, int h1, bool selected, Object *obj, t_color color);
             void pintarDegradado(int x1, int y1, int x2, int y2, int lineas, int grayIni, int grayFin);
+            void pintarDegradadoDesplazado(int x1, int y1, int x2, int y2, int lineas, int desplazamiento, int grayIni, int grayFin);
             void pintarCursor(int x, int y, int cursor);
             void printContImg(const char *);
             void printGrafica(double, int);
@@ -185,7 +185,7 @@
             void drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h);
             int getFontHeight(){return fontHeight;}
             bool startLoadingThumbs(UIImgList *listImages);
-
+            void drawThumbnailText(UIImgList *listObj, int i, SDL_Rect *imgRect);
 
         protected:
             bool ignoreButtonRepeats;

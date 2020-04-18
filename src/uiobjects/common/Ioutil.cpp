@@ -726,6 +726,8 @@ tEvento Ioutil::WaitForKey(){
             default :
                 break;
         }
+    } else {
+        clearEvento(&lastEvento);
     }
 
     unsigned long now = SDL_GetTicks();
@@ -988,17 +990,25 @@ void Ioutil::drawRectLine(int x0, int y0, int w0, int h0, int lineWidth, t_color
 */
 void Ioutil::pintarContenedor(int x1, int y1, int w1, int h1, bool selected, Object *obj, t_color color){
     if (w1 >= 0 && h1 >= 0 && w1 >= INPUTBORDER && h1 >= INPUTBORDER){
-        if (obj->isVerContenedor()){
+        
+        int border = INPUTBORDER;
+        if (obj->getImgGestor()->isFillBackgroundColour() && obj->isVerContenedor()  && obj->getObjectType() == GUIPICTURE){
+            border = 0;
+        }
+        
+        if (obj->isVerContenedor() || obj->getImgGestor()->isFillBackgroundColour()){
             if ( (selected && obj == NULL) || (selected && obj != NULL && obj->showShadow()) ){
-                drawRectLine(x1+INPUTBORDER, y1 + INPUTBORDER, w1, h1, BORDERSELECTION, cSelection);//Dibujo la sombra del elemento seleccionado
+                drawRectLine(x1+border, y1 + border, w1, h1, BORDERSELECTION, cSelection);//Dibujo la sombra del elemento seleccionado
             }
             if (obj->getAlpha() >= 0){
-                drawRectAlpha(x1+INPUTBORDER,y1+INPUTBORDER,w1-INPUTBORDER,h1-INPUTBORDER, color, obj->getAlpha()); // Dibujo el contenedor
+                drawRectAlpha(x1+border,y1+border,w1-border,h1-border, color, obj->getAlpha()); // Dibujo el contenedor
             } else {
-                drawRect(x1+INPUTBORDER,y1+INPUTBORDER,w1-INPUTBORDER,h1-INPUTBORDER, color); // Dibujo el contenedor
+                drawRect(x1+border,y1+border,w1-border,h1-border, color); // Dibujo el contenedor
             }
-
-            drawRectLine(x1,y1,w1,h1,INPUTBORDER,cInputBorder);//Dibujo el borde
+            
+            if (border > 0){
+                drawRectLine(x1,y1,w1,h1,border,cInputBorder);//Dibujo el borde
+            }
         }
     } else {
         Traza::print("Error del objeto " + obj->getLabel() + " con ancho y alto en pintarContenedor: " + Constant::TipoToStr(x1) + ";"+ Constant::TipoToStr(y1) + ";"
@@ -1167,10 +1177,13 @@ void Ioutil::drawUIArt(Object *obj){
 bool Ioutil::drawImgObj(Object *obj){
     bool salida = false;
     int bordeAdd = 0;
-    if (obj->isVerContenedor()){
+    
+    if (obj->getImgGestor()->isFillBackgroundColour() && obj->isVerContenedor() && obj->getObjectType() == GUIPICTURE){
+        bordeAdd = 0;
+    } else if (obj->isVerContenedor()){
         bordeAdd = INPUTBORDER;
     }
-    SDL_Rect imgLocation = { (short int)obj->getX() , (short int)obj->getY(), (short unsigned int)obj->getW() - bordeAdd, (short unsigned int)obj->getH() - bordeAdd};
+    SDL_Rect imgLocation = { (Sint16)obj->getX() , (Sint16)obj->getY(), (Uint16) (obj->getW() - bordeAdd), (Uint16)(obj->getH() - bordeAdd)};
 
     if (!obj->getImgDrawed()){
         Traza::print("Drawing image from object", W_PARANOIC);
@@ -1831,72 +1844,23 @@ bool Ioutil::startLoadingThumbs(UIImgList *listImages){
  * @param obj
  */
 void Ioutil::drawUIThumbnailImgBox(Object *obj){
-    int x = obj->getX();
-    int y = obj->getY();
-    int w = obj->getW();
-    int h = obj->getH();
     UIImgList *listObj = (UIImgList *)obj;
-    bool loaded = false;
     int imgIndex = 0;
     t_region regionPantalla = {obj->getX(), obj->getY(), obj->getW(), obj->getH()};
-    SDL_Rect imgLocation = { (short int)obj->getX() , (short int)obj->getY(), (short unsigned int)obj->getW(), (short unsigned int)obj->getH()};
     SDL_Rect *imgRect = new SDL_Rect();
-
-    bool imgDrawed = false;
     int newImagesToDraw = 0;
     
-    //updateScr(NULL);
     for (unsigned int i=listObj->getPosIniLista(); i <= listObj->getPosFinLista(); i++ ){
-//        Traza::print("pintando la imagen",i, W_PARANOIC);
         if (listObj->getRow(i) != NULL){
             UIPicture* pict = listObj->getRow(i)->GetUipicture();
-            string ruta = listObj->getValue(i);
-//            Traza::print("Ruta: " + ruta, W_DEBUG);
-
-            //Loading the image if not previously loaded
-    //        if (pict == NULL && !ruta.empty()){
-    //            pict = new UIPicture();
-    //            pict->getImgGestor()->setResize(true);
-    //            pict->getImgGestor()->setEnabledMoveImg(false);
-    //            pict->getImgGestor()->setFillBackgroundColour(false);
-    //            pict->getImgGestor()->setBestfit(false);
-    //            pict->getImgGestor()->setSmooth(true);
-    //            pict->getImgGestor()->setBordeBottom(20);
-    //            pict->getImgGestor()->setBordeLeft(3);
-    //            pict->getImgGestor()->setBordeRight(3);
-    //            pict->getImgGestor()->setBordeTop(3);
-    //            pict->getImgGestor()->setCentradoX(true);
-    //            pict->setW(listObj->getPrevImgWidth());
-    //            pict->setH(listObj->getPrevImgHeight());
-    //            loaded = pict->loadImgFromFile(ruta);
-    //            if (loaded){
-    //                Traza::print("Cargada ok", W_DEBUG);
-    //            } 
-    //        }
-
-            //Drawing the image
             if (pict != NULL){
-                pict->getImgGestor()->calcImgLocationFromIndex(imgIndex, pict->getW(), pict->getH()-1, regionPantalla, imgRect);
-//                string strPicThumb = "x: " + Constant::TipoToStr(pict->getX()) + ", y: " + Constant::TipoToStr(pict->getY())
-//                    + ", w: " + Constant::TipoToStr(pict->getW()) + ", h: " + Constant::TipoToStr(pict->getH());
-//                Traza::print("image location:" + strPicThumb, W_DEBUG);
-                pict->setX(imgRect->x + pict->getImgGestor()->getImgLocationRelScreen().x);
-                pict->setY(imgRect->y + pict->getImgGestor()->getImgLocationRelScreen().y);
-
-                if (!pict->getImgDrawed()){
-                    Traza::print("Image Should be redrawed", W_DEBUG);
-                    //imgDrawed = pict->getImgGestor()->drawImgMem(imgIndex, pict->getW(), pict->getH()-1, regionPantalla, screen);
-                    //Traza::print(string("Image Drawed with result") + string(imgDrawed ? "Ok" : "Error"), W_DEBUG);
-                    //cachearObjeto(pict);
-    //                listObj->getRow(i)->SetUipicture(pict);   
-    //                t_region region = {imgRect->x, imgRect->y, imgRect->w, imgRect->h};
-    //                updateScr(&region);
-                } else {
+                if (pict->isSafeToDraw() && pict->getImgDrawed()){
+                    pict->getImgGestor()->calcImgLocationFromIndex(imgIndex, pict->getW(), pict->getH()-1, regionPantalla, imgRect);
+                    pict->setX(imgRect->x + pict->getImgGestor()->getImgLocationRelScreen().x);
+                    pict->setY(imgRect->y + pict->getImgGestor()->getImgLocationRelScreen().y);
+//                    drawThumbnailText(obj, i);
                     cachearObjeto(pict);
-                } 
-                //flipScr();
-    //            t_posicion posicion = pict->getImgGestor()->getImgLocationRelScreen();
-    //            drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());
+                }
             } else {
                 newImagesToDraw++;
             }
@@ -1906,15 +1870,14 @@ void Ioutil::drawUIThumbnailImgBox(Object *obj){
     
     Traza::print("newImagesToDraw", newImagesToDraw, W_DEBUG);
     if (newImagesToDraw > 0){
-        if (startLoadingThumbs(listObj)){
-            listObj->setImgDrawed(false);
+        if (listObj->isReloadImages()){
+            listObj->setReloadImages(false);
+            startLoadingThumbs(listObj);
         }
+        listObj->setImgDrawed(false);
     }
-    
     delete imgRect;
 }
-
-
 
 /**
  * 
@@ -1930,15 +1893,19 @@ void Ioutil::drawAllThumbnailBackgrounds(UIListGroup *obj){
             SDL_Rect *imgRect = new SDL_Rect();
             for (unsigned int i=listObj->getPosIniLista(); i <= listObj->getPosFinLista(); i++ ){
                 UIPicture* pict = listObj->getRow(i)->GetUipicture();
+                t_posicion posicion;
+                
                 if (pict != NULL){
                     pict->getImgGestor()->calcImgLocationFromIndex(imgIndex, pict->getW(), pict->getH()-1, regionPantalla, imgRect);
-                    t_posicion posicion = pict->getImgGestor()->getImgLocationRelScreen();
+                    posicion = pict->getImgGestor()->getImgLocationRelScreen();
                     drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());
                 } else {
                     listObj->getImgGestor()->calcImgLocationFromIndex(imgIndex, listObj->getPrevImgWidth(), listObj->getPrevImgHeight(), regionPantalla, imgRect);
-                    t_posicion posicion(imgRect->x, imgRect->y, imgRect->w, imgRect->h);
-                    drawThumbnailSelected(posicion, NULL, i == listObj->getPosActualLista());
+                    drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());
                 }
+//                if (i == listObj->getPosActualLista()){
+                    drawThumbnailText(listObj, i, imgRect);
+//                }
                 imgIndex++;
             }
             delete imgRect;
@@ -1948,47 +1915,106 @@ void Ioutil::drawAllThumbnailBackgrounds(UIListGroup *obj){
 
 /**
  * 
- * @param posicion
- * @param imgRect
+ * @param posicion: Posicion de la imagen respecto a su contenedor
+ * @param imgRect: Contenedor de la imagen
  * @param selected
  */
 void Ioutil::drawThumbnailSelected(t_posicion posicion, SDL_Rect *imgRect, bool selected){
     t_color cThumb = cColorThumbSelected;
     t_color cThumbBorder = cColorThumbSelectedBorder;
     
-    if (imgRect != NULL){
+    if (selected){
+        cThumb = cColorThumbSelected;
+        cThumbBorder = cColorThumbSelectedBorder;
+    } else {
+        cThumb = cGrisClaro;
+        cThumbBorder = cGris;
+    }
+    
+    if (imgRect != NULL && posicion.w > 0 && posicion.h > 0){
         posicion.y += imgRect->y;
         posicion.x += imgRect->x;
-
+        Sint16 dif = 2;
+        
         if (selected){
             Sint16 calcTop = posicion.y - imgRect->y;
             Sint16 calcLeft = posicion.x - imgRect->x;
             Sint16 calcBottom = imgRect->y + imgRect->h - posicion.y - posicion.h;
             Sint16 calcRight = imgRect->x + imgRect->w - posicion.x - posicion.w;
-//            drawRectLine(posicion.x, posicion.y, posicion.w, posicion.h, 1, cRojo);
-//            drawRectLine(imgRect->x, imgRect->y, imgRect->w, imgRect->h, 1, cVerde);
-            drawRect(imgRect->x, imgRect->y, imgRect->w, calcTop, cThumb);
-            drawRect(imgRect->x, imgRect->y, calcLeft, imgRect->h, cThumb);
-            drawRect(imgRect->x + calcLeft, posicion.y + posicion.h, posicion.w, calcBottom, cThumb);
-            drawRect(posicion.x + posicion.w, imgRect->y + calcTop, calcRight, imgRect->h - calcTop, cThumb);
+            drawRect(imgRect->x, imgRect->y, imgRect->w, calcTop - dif, cThumb);
+            drawRect(imgRect->x, imgRect->y, calcLeft - dif, imgRect->h, cThumb);
+            drawRect(imgRect->x + calcLeft - dif, posicion.y + posicion.h - dif, posicion.w + dif, calcBottom + dif, cThumb);
+            drawRect(posicion.x + posicion.w - dif, imgRect->y + calcTop - dif, calcRight + dif, imgRect->h - calcTop + dif, cThumb);
             drawRectLine(imgRect->x, imgRect->y, imgRect->w, imgRect->h, 1, cThumbBorder);
-        }
-        drawFastHLine(posicion.x + 1, posicion.y + posicion.h, posicion.w, cColorThumbRelieve1);
-        drawFastHLine(posicion.x + 2, posicion.y + posicion.h+1, posicion.w, cColorThumbRelieve2);
-        pintarLinea(posicion.x + posicion.w, posicion.y + 1, posicion.x + posicion.w, posicion.y + posicion.h, cColorThumbRelieve1);
-        pintarLinea(posicion.x + posicion.w + 1, posicion.y + 2, posicion.x + posicion.w + 1, posicion.y + posicion.h + 1, cColorThumbRelieve2);
+        } 
         
+        //Degradado derecho
+        pintarDegradadoDesplazado(posicion.x + posicion.w - dif,
+                        posicion.y - 1,
+                        posicion.x + posicion.w - dif,
+                        posicion.y + posicion.h - dif,
+                        3 , 1, 180, 220);
+
+        //Degradado inferior
+        pintarDegradadoDesplazado(posicion.x - 1,
+                        posicion.y + posicion.h - dif,
+                        posicion.x + posicion.w - dif,
+                        posicion.y + posicion.h - dif,
+                        3 , 1, 180, 220);
     } else {
-        if (selected){
-            cThumb = cColorThumbSelected;
-            cThumbBorder = cColorThumbSelectedBorder;
-        } else {
-            cThumb = cGrisClaro;
-            cThumbBorder = cGris;
-        }
-        drawRectAlpha(posicion.x, posicion.y, posicion.w, posicion.h, cThumb, 150);
-        drawRectLine(posicion.x, posicion.y, posicion.w, posicion.h, 1, cThumbBorder);
+        drawRectAlpha(imgRect->x, imgRect->y, imgRect->w, imgRect->h, cThumb, 150);
+        drawRectLine(imgRect->x, imgRect->y, imgRect->w, imgRect->h, 1, cThumbBorder);
     }
+}
+
+/**
+ * 
+ * @param listObj
+ * @param i
+ * @param imgRect
+ */
+void Ioutil::drawThumbnailText(UIImgList *listObj, int i, SDL_Rect *imgRect){
+    
+    if (listObj == NULL)
+        return;
+    if (listObj->getSize() < 1)
+        return;
+    if (listObj->getRow(i) == NULL)
+        return;
+    if (listObj->getRow(i)->GetUipicture() == NULL)
+        return;
+    if (listObj->getRow(i)->GetListGroupCol().size() < 1)
+        return;
+    
+    UIPicture* pict = listObj->getRow(i)->GetUipicture();
+    string text = listObj->getRow(i)->GetListGroupCol().at(0)->getTexto();
+    loadFont(11);
+    int posX = 0, posY = 0, posW = 0;
+    int textW = fontStrLen(text);
+    
+//    posX = pict->getX() - pict->getImgGestor()->getImgLocationRelScreen().x;
+//    if (pict->getW() > textW){
+//        posX += (pict->getW() - textW) / 2;
+//    }
+//    posY = pict->getY() + pict->getH() - Constant::getMENUSPACE();
+//    posW = pict->getW();
+    
+    posX = imgRect->x;
+    if (imgRect->w > textW){
+        posX += (imgRect->w - textW) / 2;
+    }
+    posY = imgRect->y + imgRect->h - Constant::getMENUSPACE();
+    posW = imgRect->w;
+
+    SDL_Rect textArea = { 0, 0, posW, Constant::getMENUSPACE() };
+    
+    drawTextInArea(text.c_str(), 
+            posX,
+            posY,
+            listObj->isEnabled() ? cNegro : cGris,
+            &textArea);
+    
+    loadFont(FONTSIZE);
 }
 
 /**
@@ -2094,26 +2120,27 @@ void Ioutil::drawListGroupContent(Object *obj, int x, int y, int w, int h){
                 Traza::print("pintando columnas de la fila",i, W_PARANOIC);
                 //Ahora recorremos todas las columnas
                 for (unsigned int contCol=0; contCol < listObj->getSizeCol(); contCol++ ){
-
+                    ListGroupCol *column = listObj->getCol(i,contCol);
+                    int sepIco = ((column->getIcono() >= 0) ? ICOSPACE : 0);
                     //Solo pintamos texto que quepa en la columna
-                    textArea.w = listObj->getHeaderWith(contCol);
+                    textArea.w = listObj->getHeaderWith(contCol) - sepIco;
                     Traza::print("Ancho de columna",textArea.w, W_PARANOIC);
                     //comprobamos que el texto no salga de los limites de la tabla
                     int headerPixelSize = 0;
-                    TTF_SizeText(this->font, listObj->getCol(i,contCol)->getTexto().c_str(), &headerPixelSize, NULL );
-                    Traza::print("Tam. Texto Col", headerPixelSize, W_PARANOIC);
-
-                    if (x + sepGrupos + headerPixelSize > obj->getX() + obj->getW()){
-                        if (x + sepGrupos > obj->getX() + obj->getW())
-                            textArea.w = 0;
-                        else
-                            textArea.w = obj->getX() + obj->getW() - (x + sepGrupos);
-                    }
-
-                    Traza::print("Dibujando texto y triangulos", W_PARANOIC);
-                    if (listObj->getCol(i,contCol) != NULL){
-                        Traza::print("pintando la columna: " + listObj->getCol(i,contCol)->getTexto() , W_PARANOIC);
-                        drawTextInArea(listObj->getCol(i,contCol)->getTexto().c_str() , x + sepGrupos, centeredY + posObjY, colorText, &textArea);
+                    
+                    if (column != NULL){
+                        TTF_SizeText(this->font, column->getTexto().c_str(), &headerPixelSize, NULL );
+                        Traza::print("Tam. Texto Col", headerPixelSize, W_PARANOIC);
+                        
+                        if (x + sepGrupos + headerPixelSize > obj->getX() + obj->getW()){
+                            if (x + sepGrupos > obj->getX() + obj->getW())
+                                textArea.w = 0;
+                            else
+                                textArea.w = obj->getX() + obj->getW() - (x + sepGrupos);
+                        }
+                    
+                        Traza::print("pintando la columna: " + column->getTexto() , W_PARANOIC);
+                        drawTextInArea(column->getTexto().c_str() , x + sepGrupos + sepIco, centeredY + posObjY, colorText, &textArea);
 //                        //Se pinta el triangulo superior
 //                        if (listObj->getPosIniLista() > 0){
 //                            pintarTriangulo (listObj->getX() + listObj->getW() - 6, listObj->getY() + INPUTCONTENT + Constant::getMENUSPACE(), TRISCROLLBARTAM, TRISCROLLBARTAM, true, colorText);
@@ -2122,6 +2149,9 @@ void Ioutil::drawListGroupContent(Object *obj, int x, int y, int w, int h){
 //                        if (listObj->getPosFinLista() + 1 < (unsigned int)listObj->getSize()){
 //                            pintarTriangulo (listObj->getX() + listObj->getW() - 6, listObj->getY() + listObj->getH() - INPUTCONTENT, TRISCROLLBARTAM, TRISCROLLBARTAM, false, colorText);
 //                        }
+                        if (column->getIcono() >= 0){
+                            drawIco(column->getIcono(), x + sepGrupos, centeredY + posObjY);
+                        }
                     }
                     sepGrupos += listObj->getHeaderWith(contCol) + INPUTCONTENT;
                 }
@@ -3775,6 +3805,21 @@ void Ioutil::pintarDegradado(int x1, int y1, int x2, int y2, int lineas, int gra
         tempColor.g = tempColor.r;
         tempColor.b = tempColor.r;
         pintarLinea(x1, y1 + i, x2, y2 + i, tempColor);
+    }
+}
+/**
+* Dibuja varias lineas horizontales a partir de una posicion degrandando el gris progresivamente desde
+* el valor grayIni al valor grayFin
+*/
+void Ioutil::pintarDegradadoDesplazado(int x1, int y1, int x2, int y2, int lineas, int desplazamiento, int grayIni, int grayFin){
+    int inc = (grayFin - grayIni) / (lineas - 1);
+    t_color tempColor;
+
+    for (int i=0; i < lineas; i++){
+        tempColor.r = grayIni + i*inc;
+        tempColor.g = tempColor.r;
+        tempColor.b = tempColor.r;
+        pintarLinea(x1 + i*desplazamiento, y1 + i *desplazamiento, x2 + i*desplazamiento, y2 + i *desplazamiento, tempColor);
     }
 }
 

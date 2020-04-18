@@ -18,6 +18,9 @@
 #include "util/Progress.h"
 
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3.0
+#define MAX_FILE_BUFFER 5*1024*1024
+#define MIN_PROGRESS_CHUNK_OF_BYTES 512
+#define SECONDS_TO_ABORT_STUCK_DOWNLOAD 10
 
 class HttpUtil
 {
@@ -65,7 +68,7 @@ class HttpUtil
         int getTimeout(){return timeout;}
         void setTimeout(int var){timeout = var;}
         void abort(){aborted = true;}
-        void setMaxBytesDownload(std::ifstream::pos_type var){prog->maxBytesDownload = var;}
+        void setMaxBytesDownload(std::ifstream::pos_type var){prog->setMaxBytesDownload(var);}
         float getDownloadProgress(){return prog->getProgress();}
         double getDownloadSpeed(){return prog->getDlSpeed();}
         double getDownloadTotal(){return prog->getDlSizeBytes();}
@@ -75,6 +78,11 @@ class HttpUtil
         bool getSendContentLength(){return sendContentLength;}
         void setConnectionRetries(int connectionRetries);
         int getConnectionRetries() const;
+        void setCookies(curl_slist* cookies);
+        curl_slist* getCookies();
+        
+        
+        
     protected:
     private:
         void init(int posListThreads, int nThreads);
@@ -100,15 +108,18 @@ class HttpUtil
         
         void cleanChunkData();
         Progress *prog;
-
+        
         static std::string readBufferHeader;
         static size_t handleHeader(void *contents, size_t size, size_t nmemb, void *userp);
         static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp);
         static size_t read_callback(void *ptr, size_t size, size_t nmemb, FILE *stream);
+        static void checkWriteMemToFile(MemoryStruct *mem);
+        static int addDataToMem(void *contents, size_t realsize, MemoryStruct *mem);
+        
         bool writeToFile(const char *, char *, ifstream::pos_type, bool);
         bool sendHttp(string url, const char* data, size_t, size_t, map <string, string> *headers, long httpType);
         bool sendHttpWithRetries(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers, long httpType);
-
+        
         static int older_progress(void *p,
                           double dltotal, double dlnow,
                           double ultotal, double ulnow);
@@ -121,6 +132,7 @@ class HttpUtil
         long http_code;
         bool sendContentLength;
         GMutex mutex;
+        struct curl_slist *cookies;
 };
 
 #endif // HTTPUTIL_H

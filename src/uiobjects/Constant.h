@@ -36,6 +36,8 @@ using namespace std;
 #define MOUSE_BUTTON_RIGHT	3
 #define MOUSE_BUTTON_WHEELUP	4
 #define MOUSE_BUTTON_WHEELDOWN	5
+#define MOUSE_BUTTON_X1         6
+#define MOUSE_BUTTON_X2         7
 /* set this to any of 512,1024,2048,4096              */
 /* the lower it is, the more FPS shown and CPU needed */
 #define BUFFERSPECTRUMVIS 4096
@@ -213,7 +215,7 @@ static const int mapHeight = 256;
 
     typedef enum{W_FATAL = 0,W_ERROR,W_WARN,W_INFO,W_DEBUG,W_PARANOIC} enumTraza;
 
-    static const string USERAGENT = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14";
+    static const string USERAGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0";
     static const string OBJLISTABROWSER2 = "listaBrowser2";
     static const string BTNACEPTARBROWSER = "btnAceptarDir2";
     static const string BTNCANCELARBROWSER = "btnCancelarDir2";
@@ -289,7 +291,7 @@ static const int mapHeight = 256;
     static const unsigned long KEYDOWNSPEED = 50;
     static const unsigned long KEYRETRASO = 500;
     static const unsigned long MOUSEVISIBLE = 8000;
-    static const double ZOOMINCREMENT = 0.4; //Incremento de zoom que se aplicara a la imagen
+    static const double ZOOMINCREMENT = 0.1; //Incremento de zoom que se aplicara a la imagen
     static const int MOVEINCREMENT = 15; //Pixels que se desplazara la imagen con una pulsacion
     static const bool VIEWALPHA = false;
     static const float zoomText = 1;

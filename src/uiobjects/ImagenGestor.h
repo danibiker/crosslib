@@ -11,6 +11,11 @@
 #include <SDL/SDL_rotozoom.h>
 #include "common.h"
 
+#define MOVE_UP 0 
+#define MOVE_DOWN 1 
+#define MOVE_LEFT 2
+#define MOVE_RIGHT 3
+
 class ImagenGestor : public Fileio{
     public :
         ImagenGestor();
@@ -33,6 +38,8 @@ class ImagenGestor : public Fileio{
         bool isBestfit(){return bestfit;}
         bool isEnabledMoveImg(){return enabledMoveImg;}
         void setEnabledMoveImg(bool var){enabledMoveImg = var;}
+        bool isEnabledZoom(){return enabledZoom;}
+        
         bool isCentrado(){return centrado;}
         bool isCentradoX(){return centradoX;}
         bool isCentradoY(){return centradoY;}
@@ -47,6 +54,7 @@ class ImagenGestor : public Fileio{
         ImagenGestor* setLeftDif(int var){left = var;return this;}
         ImagenGestor* setCentradoX(bool in){centradoX = in; return this;}
         ImagenGestor* setCentradoY(bool in){centradoY = in; return this;}
+        ImagenGestor* setEnabledZoom(bool var){enabledZoom = var; return this;}
 
 
 
@@ -98,22 +106,16 @@ class ImagenGestor : public Fileio{
         bool loadImgFromMem(SDL_Surface **destino);
         bool loadImgFromMem(char *fileArray, int size, SDL_Surface **destino);
         bool updateImgScr(SDL_Surface * srcSurface, SDL_Surface * dstSurface);
-
-        int getScreenHeight(){return screenHeight;}
-        void setScreenHeight(int var){screenHeight = var;}
-        int getScreenWidth(){return screenWidth;}
-        void setScreenWidth(int var){screenWidth = var;}
+        bool updateImgScr(SDL_Surface * srcSurface, int dstW, int dstH, SDL_Surface **dstSurface, SDL_PixelFormat *format);
         float relacion(SDL_Surface *source, int alto, int ancho);
         void calcRectCent( SDL_Rect *rectCentrado, int srcW, int srcH, int dstW, int dstH);
-        bool redimension(SDL_Surface *srcSurface, SDL_Surface *dstSurface, SDL_Surface **destino);
+        bool redimension(SDL_Surface *srcSurface, int dstW, int dstH, SDL_Surface **destino);
         bool blitImage(SDL_Surface *src, SDL_Surface *dst, SDL_Rect *dstRect, bool freesrc);
         void makeMoveSurface(SDL_Surface *mySurface, int w, int h);
-        bool drawZoomImgMem(SDL_Surface *dst);
-        bool drawImgMem(SDL_Surface *dst);
+        SDL_Surface *getMoveSurface(){return moveSurface;}
         bool drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst);
         bool drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst, SDL_Rect *imgLocation);
         unsigned int getPosThumb(int mouse_x, int mouse_y, int destw, int desth, t_region regionPantalla);
-        bool drawImg(SDL_Surface *dst);
         int calcMaxX(int destw, int surfaceW);
         int calcMaxY(int desth,  int surfaceH);
         bool calcImgLocationFromIndex(int indice, int destw, int desth, t_region regionPantalla, SDL_Rect *imgLocation);
@@ -123,6 +125,8 @@ class ImagenGestor : public Fileio{
         void setFillBackgroundColour(bool var){fillBackgroundColour = var;}
         Uint32 getpixel(SDL_Surface *surface, const int x, const int y);
         void putpixel(SDL_Surface *surface, const int x, const int y, const Uint32 pixel);
+        bool centerAndBlit(SDL_Surface *srcSurface, SDL_Surface *dstSurface, SDL_Rect *dstRect);
+        void blitImgMoved(SDL_Surface * src, SDL_Surface * dst, int dirMove);
 
     private :
         char hash[4];
@@ -147,9 +151,9 @@ class ImagenGestor : public Fileio{
         int imgOrigWidth;
         int imgOrigHeight;
         bool enabledMoveImg;
+        bool enabledZoom;
         //Para las cargas de imagenes en memoria y redimensionado
         SDL_Surface * moveSurface;
-        int screenHeight, screenWidth;
         t_color colorBackground;
         bool fillBackgroundColour;
         

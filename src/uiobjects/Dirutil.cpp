@@ -90,7 +90,9 @@ unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> *
 
                         Traza::print("listarDirSinOrden. dir: " + propFile.dir, W_PARANOIC);
                         Traza::print("listarDirSinOrden. filename: " + propFile.filename, W_PARANOIC);
-
+                        
+                        setFileProperties(&propFile, concatDir);
+                        
                         if(isDir(concatDir)){
                             propFile.filetype = TIPODIRECTORIO;
                             propFile.ico = folder;
@@ -169,7 +171,9 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
                     if (strcmp(dirp->d_name,".") != 0){
                         propFile.dir = strdir;
                         propFile.filename = dirp->d_name;
-
+                        
+                        setFileProperties(&propFile, concatDir);
+                        
                         if(isDir(concatDir)){
                             propFile.filetype = TIPODIRECTORIO;
                             if (strcmp(dirp->d_name,"..") == 0){
@@ -589,9 +593,51 @@ bool Dirutil::existe(string ruta){
     }
 }
 
+bool Dirutil::setFileProperties(FileProps *propFile, string ruta){
+    boolean ret = true;
+    
+    struct stat info;
+    stat(ruta.c_str(), &info);
+    
+    if(S_ISDIR(info.st_mode)){
+        propFile->filetype = TIPODIRECTORIO;
+        propFile->extension = STR_DIR_EXT;
+    } else {
+        propFile->filetype = TIPOFICHERO;
+        propFile->fileSize = (size_t)info.st_size;
+        propFile->extension = getExtension(ruta);
+    }
+    char mbstr[36];
+    propFile->creationTime = formatdate(mbstr, info.st_ctime);
+    propFile->modificationTime = formatdate(mbstr, info.st_mtime);
+    propFile->iCreationTime = time(&info.st_ctime);
+    propFile->iModificationTime = time(&info.st_mtime);
+    
+//    struct tm * timeinfo = localtime(&info.st_ctime); // or gmtime() depending on what you want
+//    printf("File time and date: %s", asctime(timeinfo));
+    
+//    std::cout << formatdate(mbstr, info.st_ctime) << '\n';
+    
+    return ret;
+}
+
 /**
-*
-*/
+ * 
+ * @param str
+ * @param val
+ * @return 
+ */
+char* Dirutil::formatdate(char* str, time_t val){
+    int tam = 36;
+    strftime(str, tam, "%d/%m/%y %H:%M", localtime(&val));
+    return str;
+}
+
+/**
+ * 
+ * @param ruta
+ * @return 
+ */
 bool Dirutil::isDir(string ruta){
     struct stat info;
     stat(ruta.c_str(), &info);

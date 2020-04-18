@@ -22,6 +22,7 @@ protected:
         pthread_t hThread;
         pthread_attr_t attr;
         void *threadReturn;
+        
 private:
     uint32_t   threadID;     // thread id - 0 until started
     T*      object;          // the object which owns the method
@@ -30,16 +31,18 @@ private:
     //static volatile uint32_t status; //Para controlar el estado en UNIX
     volatile uint32_t status; //Para controlar el estado en UNIX
     GMutex *hSingleStart;
+    GMutex *hFinishRun;
     static uint32_t ret;
-// -----------------------------------------------------------------------------
-private:
+
     // This function gets executed by a concurrent thread.
     static void *run(void * thread_obj)
     {
         Thread<T>* thread = (Thread<T>*)thread_obj;
         ret = (thread->object->*thread->method) ();
+        thread->hFinishRun->Lock();
         thread->setStatus(THREAD_FINISHED);
 //        cout << "exiting thread now" << endl;
+        thread->hFinishRun->Unlock();
         pthread_exit(&ret);
         return &ret;
     }
@@ -56,8 +59,10 @@ public:
         this->object        = object;
         this->method        = method;
         this->threadID      = 0;
-        this->status = THREAD_NOT_INITIATED;
+        setStatus(THREAD_NOT_INITIATED);
+        
         hSingleStart = new GMutex();
+        hFinishRun = new GMutex();
     }
 // -----------------------------------------------------------------------------
     ~Thread(void){
@@ -76,7 +81,7 @@ public:
     /* Starts executing the objects method in a concurrent thread. True if the
     thread was started successfully; otherwise false. */
     bool start(){
-        if (this->status != THREAD_STILL_ACTIVE){
+        if (getStatus() != THREAD_STILL_ACTIVE){
             volatile int rc;
             hSingleStart->Lock();
             // Initialize and set thread joinable
@@ -88,7 +93,7 @@ public:
 //                std::cout << "Error:unable to create thread," << rc << std::endl;
                 return false;
             }
-            status = THREAD_STILL_ACTIVE;
+            setStatus(THREAD_STILL_ACTIVE);
             hSingleStart->Unlock();
             return true;
         } else {
@@ -106,7 +111,7 @@ public:
 //            std::cout << "Error:unable to join," << rc << std::endl;
             return -1;
         }
-        status = THREAD_FINISHED;
+        setStatus(THREAD_FINISHED);
         pthread_attr_destroy(&attr);
 //        std::cout << "join: completed thread";
 //        std::cout << "  exiting with threadReturn :" << threadReturn << std::endl;
@@ -135,7 +140,7 @@ public:
 //    }
 // -----------------------------------------------------------------------------
     inline volatile bool isRunning(){
-        return status == THREAD_STILL_ACTIVE;
+        return getStatus() == THREAD_STILL_ACTIVE;
     }
 // -----------------------------------------------------------------------------
     // Getter & Setter
@@ -155,8 +160,14 @@ public:
         return *((int*)(&threadReturn));
     }
 
+    uint32_t inline getStatus(){
+        return this->status;
+    }
+    
     inline void setStatus(uint32_t var){
+//        hFinishRun->Lock();
         this->status = var;
+//        hFinishRun->Unlock();
 //        std::cout << "status asignning: " << status << std::endl;
     }
 // -----------------------------------------------------------------------------

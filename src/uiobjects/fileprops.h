@@ -12,6 +12,20 @@ using namespace std;
             int filetype;
             string dir;
             int ico;
+            size_t fileSize;
+            string extension;
+            string creationTime;
+            string modificationTime;
+            int iCreationTime;
+            int iModificationTime;
+            
+            FileProps(){
+                filetype = TIPOFICHERO;
+                ico = page_white;
+                fileSize = 0;
+                iCreationTime = 0;
+                iModificationTime = 0;
+            }
             
             int comparar(const FileProps &c) const {
                 string str1 = filename;

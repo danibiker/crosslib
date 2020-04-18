@@ -16,10 +16,12 @@ class UIPicture : public Object
         void setCentrado(bool in){imgGestor->setCentrado(in);}
         void setBestfit(bool in){imgGestor->setBestfit(in);}
         void checkPos(tEvento evento);
-
+        void setSafeToDraw(bool safeToDraw);
+        bool isSafeToDraw() const;
 
     protected:
     private:
+        bool safeToDraw;
 
 
 };

@@ -28,6 +28,10 @@ class ListGroupCol
         void setIcono(int var){icono = var;}
         int getSortOrder(){return sortOrder;}
         void setSortOrder(int var){sortOrder = var;}
+        void setNumber(bool number);
+        bool isNumber() const;
+        
+        
 
     protected:
         string texto;
@@ -35,6 +39,7 @@ class ListGroupCol
         string destino;
         int icono;
         int sortOrder;
+        bool number;
     private:
 };
 

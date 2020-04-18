@@ -1460,6 +1460,7 @@
             <pElem>../src/httpcurl</pElem>
             <pElem>../src/rijndael</pElem>
             <pElem>../src/uiobjects</pElem>
+            <pElem>../../../Proyectos/Galera/src</pElem>
           </incDir>
           <commandLine>-fpermissive</commandLine>
           <preprocessorList>

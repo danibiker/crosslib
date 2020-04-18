@@ -6,19 +6,29 @@
 
 bool HttpUtil::aborted;
 std::string HttpUtil::readBufferHeader;
+
+
 /**
-*
-*/
+ * Constructor
+ */
 HttpUtil::HttpUtil(){
     init(0, 1);
 }
 
+/**
+ * Constructor
+ */
 HttpUtil::HttpUtil(int posListThreads, int nThreads){
     init(posListThreads, nThreads);
 }
 
+/**
+ * Initialization
+ * 
+ * @param posListThreads
+ * @param nThreads
+ */
 void HttpUtil::init(int posListThreads, int nThreads){
-    //cout << "HttpUtil: constructor" << endl;
     aborted = false;
     chunk.memory = NULL;
     chunk.filepath = NULL;
@@ -33,14 +43,14 @@ void HttpUtil::init(int posListThreads, int nThreads){
     this->setProxyPort(Constant::strToTipo<int>(Constant::getPROXYPORT()));
     this->setProxyUser(Constant::getPROXYUSER());
     this->setProxyPass(Constant::getPROXYPASS());
-    this->setTimeout(0);
+    this->setTimeout(SECONDS_TO_ABORT_STUCK_DOWNLOAD); //Timeout of 5 seconds
     this->setMaxBytesDownload(0);
-    this->setConnectionRetries(3);            
+    this->setConnectionRetries(1);            
     sendContentLength = true;
 }
 
 /**
-*
+* Destructor
 */
 HttpUtil::~HttpUtil(){
     cleanChunkData();
@@ -175,14 +185,13 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     CURLcode res;
     bool downState = false;
     FILE * hd_src = NULL;
-    struct stat file_info;
     aborted = false;
 
     mutex.Lock();
     //Traza::print("HttpUtil::sendHttp " + string(httpType == 0 ? "POST" : httpType == 1 ? "GET" : "PUT") + ", " +  url, W_INFO);
     cleanChunkData();
 
-    chunk.memory = (char *) malloc(1);  /* will be grown as needed by the realloc above */
+    chunk.memory = (char *) malloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1);  /* will be grown as needed by the realloc above */
     chunk.size = 0;
     chunk.filepath = NULL;
 
@@ -243,11 +252,13 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         /* some servers don't like requests that are made without a user-agent
          field, so we provide one */
         curl_easy_setopt(curl, CURLOPT_USERAGENT, USERAGENT.c_str());
+        /* ask libcurl to allocate a larger receive buffer */
+        curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, 512000L);
         
         char *buffer = NULL;
         size_t retcode = 0;
         
-        //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+//        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
         
         switch (httpType){
             case HTTP_POST:
@@ -307,15 +318,9 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                 }
                 
                 if (data != NULL){
-                    string resultado = data;
                     if (strcmp(data, "") != 0){
-                        chunk.filepath = (char *) malloc(strlen(data) + 1);  /* will be grown as needed by the realloc above */
+                        chunk.filepath = (char *) malloc(strlen(data) + 1);
                         strcpy(chunk.filepath, data);
-                        ofstream file;
-                        file.open(data, ios::out | ios::binary | ios::trunc);
-                        if (file.is_open()){
-                            file.close();
-                        }
                     }
                 }
             break;
@@ -335,8 +340,9 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         }
         
         if (prog != NULL){
-            prog->lastruntime = 0;
-            prog->lastBytesDownloaded = 0;
+            prog->setLastruntime(0);
+            prog->setLastBytesDownloaded(0);
+            prog->setTimeout(getTimeout());
             prog->curl = curl;
         }
         
@@ -371,18 +377,33 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         /* we get the headers response*/
         readBufferHeader.clear();
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, handleHeader);
-
+        
+//        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, ""); /* start cookie engine */
+//        char nline[5000] = {""};
+//        curl_easy_setopt(curl, CURLOPT_COOKIELIST, cookies); /* start cookie engine */
+//        char nline[256];
+//        snprintf(nline, sizeof(nline),
+//        "Set-Cookie: OLD_PREF=3d141414bf4209321; "
+//        "expires=Sun, 17-Jan-2038 19:14:07 GMT; path=/; domain=.example.com");
+//        curl_easy_setopt(curl, CURLOPT_COOKIELIST, nline);
+        
+        
         /* Perform the request, res will get the return code */
         res = curl_easy_perform(curl);
+        //Important to call this at the end to write the memory to the file if specified
+        checkWriteMemToFile(&chunk);
+        //Obtaining the response code
         http_code = 0;
         curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &http_code);
         /* Check for errors */
         if(res != CURLE_OK){
             Traza::print("curl_easy_perform() failed: " + string(curl_easy_strerror(res)) + ". Url: " + url, http_code, W_ERROR);
+//            cout << "curl_easy_perform() failed: " + string(curl_easy_strerror(res)) + ". Url: " + url << ":" << http_code << endl;
         } else {
             downState = true;
             parserCabeceras();
         }
+//        curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
 
         double speed_upload, total_time;
         curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD, &speed_upload);
@@ -399,8 +420,8 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
 }
 
 /**
-*
-*/
+ * Obtains the response headers and saves a map with its values
+ */
 void HttpUtil::parserCabeceras(){
     cabecerasResp.clear();
     size_t pos;
@@ -416,8 +437,13 @@ void HttpUtil::parserCabeceras(){
 }
 
 /**
-*
-*/
+ * 
+ * @param contents
+ * @param size
+ * @param nmemb
+ * @param userp
+ * @return 
+ */
 size_t HttpUtil::handleHeader(void *contents, size_t size, size_t nmemb, void *userp)
 {
     size_t realsize = size * nmemb;
@@ -426,8 +452,13 @@ size_t HttpUtil::handleHeader(void *contents, size_t size, size_t nmemb, void *u
 }
 
 /**
-* Se utiliza para enviar datos al servidor. Por ejemplo en el PUT
-*/
+ * Se utiliza para enviar datos al servidor. Por ejemplo en el PUT
+ * @param ptr
+ * @param size
+ * @param nmemb
+ * @param stream
+ * @return 
+ */
 size_t HttpUtil::read_callback(void *ptr, size_t size, size_t nmemb, FILE *stream){
     size_t retcode = 0;
     if (nmemb*size > 0){
@@ -440,74 +471,100 @@ size_t HttpUtil::read_callback(void *ptr, size_t size, size_t nmemb, FILE *strea
 }
 
 /**
-* Se utiliza para recibir los datos del servidor.
-* Dependiendo de si el campo userp --> MemoryStruct.filepath es nulo, cargara el contenido
-* de la descarga en memoria o en el disco duro
-*/
+ * Writes the received chunk of data to memory or a file in the disk
+ * @param contents
+ * @param size
+ * @param nmemb
+ * @param userp
+ * @return 
+ */
 size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp){
     size_t realsize = size * nmemb;
-    struct MemoryStruct *mem = (struct MemoryStruct *)userp;
-
-    
-    
+    MemoryStruct *mem = (MemoryStruct *)userp;
     size_t totalDown = 0;
-    if (mem->filepath == NULL){
-        totalDown = mem->size + realsize;
-    } else {
+    
+    //We start counting the total size of the buffered memory
+    totalDown = mem->size + realsize;
+    
+    //We add the total file size until now
+    if (mem->filepath != NULL) {
         ifstream file (mem->filepath, ios::in|ios::binary|ios::ate);
         if (file.is_open()){
-            totalDown = (size_t)file.tellg() + realsize;
+            totalDown += (size_t)file.tellg();
         } 
         file.close();
     }
     
-//    cout << "totalDown: " <<  totalDown << endl;
-    
     if (Constant::getCURL_DOWNLOAD_LIMIT() > 0 && totalDown > Constant::getCURL_DOWNLOAD_LIMIT()){
         Traza::print("CURL_DOWNLOAD_LIMIT. Size of download exceeded", totalDown, W_DEBUG);
-//        cout << "CURL_DOWNLOAD_LIMIT. Size of download exceeded: " << totalDown << endl;
         Constant::setCURL_DOWNLOAD_LIMIT(0); //We don't want to forget to set to 0 again
         return 0; 
     }
+    
+    //Adding the data to the buffer
+    if (!addDataToMem(contents, realsize, mem)){
+        return 0;
+    }
+    //Check if we must write the contentent of the buffer to disk
+    if (mem->filepath != NULL && mem->size + realsize > MAX_FILE_BUFFER){
+        checkWriteMemToFile(mem);
+    }
+    return realsize;
+}
 
-    if (mem->filepath == NULL){
-        //Escribimos el fichero descargado en la memoria
+/**
+ * Add the chunk of data to the memory buffer with a defined size of MAX_FILE_BUFFER 
+ * @param contents
+ * @param realsize
+ * @param mem
+ */
+int HttpUtil::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
+    if (mem->size + realsize > MAX_FILE_BUFFER || mem->filepath == NULL){
         mem->memory = (char *)realloc(mem->memory, mem->size + realsize + 1);
         if(mem->memory == NULL) {
             /* out of memory! */
             Traza::print("not enough memory (realloc returned NULL)", W_DEBUG);
             return 0;
         }
-        memcpy(&(mem->memory[mem->size]), contents, realsize);
-        mem->size = mem->size + realsize;
-        mem->memory[mem->size] = 0;
-    } else {
+    }
+    memcpy(&(mem->memory[mem->size]), contents, realsize);
+    mem->size = mem->size + realsize;
+    mem->memory[mem->size] = 0;
+    return 1;
+}
+
+/**
+ * Check if we must write the contents of the buffered memory to a file
+ * 
+ * @param mem
+ */
+void HttpUtil::checkWriteMemToFile(MemoryStruct *mem){
+    if (mem != NULL && mem->size != 0 && mem->filepath != NULL){
         //Escribimos el fichero descargado en un fichero del disco duro
         ofstream file;
         file.open(mem->filepath, ios::out | ios::binary | ios::app);
         if (file.is_open()){
-            char *contenido = new char[realsize];
-            memcpy(contenido, contents, realsize);
-            file.write(contenido, realsize);
-            delete [] contenido;
+            file.write(mem->memory, mem->size);
+            mem->size = 0;
             file.close();
         } else {
             file.close();//Cerramos el fichero
             Traza::print("HttpUtil: file: " +  string(mem->filepath) +  " not found or could not be opened", W_DEBUG);
         }
     }
-    return realsize;
 }
 
 /**
-*
-*/
+ * Writes all the memory buffer to disk
+ * @param path
+ * @return 
+ */
 bool HttpUtil::writeToFile(string path){
     return writeToFile(path.c_str(), chunk.memory, chunk.size, false);
 }
 
 /**
-* operaciones de escritura
+* Writes the specified amount of data of the memory buffer to disk
 *
 * ios::in	Open for input operations.
 * ios::out	Open for output operations.
@@ -555,11 +612,18 @@ int HttpUtil::older_progress(void *p,
                   (curl_off_t)ulnow);
 }
 
+
 /**
-* Funcion para controlar cuantos bytes descargar o para
-* abortar la descarga en cualquier momento
-* this is how the CURLOPT_XFERINFOFUNCTION callback works
-*/
+ * Funcion para controlar cuantos bytes descargar o para
+ * abortar la descarga en cualquier momento
+ * this is how the CURLOPT_XFERINFOFUNCTION callback works
+ * @param p
+ * @param dltotal
+ * @param dlnow
+ * @param ultotal
+ * @param ulnow
+ * @return 
+ */
 int HttpUtil::xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
                     curl_off_t ultotal, curl_off_t ulnow)
@@ -581,29 +645,49 @@ int HttpUtil::xferinfo(void *p,
   /* under certain circumstances it may be desirable for certain functionality
      to only run every N seconds, in order to do this the transaction time can
      be used */
-  if((curtime - myp->lastruntime) >= MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL) {
-    myp->lastruntime = curtime;
+  if((curtime - myp->getLastruntime()) >= MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL) {
+    myp->setLastruntime(curtime) ;
     //Traza::print("TOTAL TIME: " + Constant::TipoToStr(curtime), W_DEBUG);
   }
   
-  if ((curtime - myp->lastruntimeBytesDown) >= 1.0){
-      myp->lastruntimeBytesDown = curtime;
-      myp->setDlSpeed(dlnow - myp->lastBytesDownloaded);
-      myp->lastBytesDownloaded = dlnow;
+  if ((curtime - myp->getLastruntimeBytesDown()) >= 1.0){
+      myp->setLastruntimeBytesDown(curtime);
+      myp->setDlSpeed(dltotal > MIN_PROGRESS_CHUNK_OF_BYTES ? dlnow - myp->getLastBytesDownloaded() : 0.0);
+      myp->setLastBytesDownloaded(dlnow);
   }
-
-  myp->setDlSizeBytes(dltotal);
-  if (dltotal > 0.0){
+  
+  //We expect to download at least 512 bytes. this is to avoid errors in the progress count
+  if (dltotal > MIN_PROGRESS_CHUNK_OF_BYTES){ 
+        myp->setDlSizeBytes(dltotal);
         myp->setProgress(dltotal > 0.0 ? (dlnow / (float)dltotal * 100) : 0.0);
 //        Traza::print(" Progress " + Constant::TipoToStr(myp->getProgress()) + "%", W_DEBUG);
 //        Traza::print(Constant::TipoToStr(ulnow) + ";" + Constant::TipoToStr(ultotal) + ";" + Constant::TipoToStr(dlnow)
 //                     + ";" + Constant::TipoToStr(dltotal) + ";" + Constant::TipoToStr(myp->getProgress()), W_DEBUG);
   } else {
+      myp->setDlSizeBytes(0.0);
       myp->setProgress(0.0);
   }
   
-  if( (myp->maxBytesDownload > 0 && dlnow > myp->maxBytesDownload) || aborted)
-    return 1;
+  //Traza::print("dltotal: " + Constant::TipoToStr(dltotal) + ", Progress " + Constant::TipoToStr(myp->getProgress()) + ", last: " + Constant::TipoToStr(myp->getLastProgress()), W_DEBUG);
+  if (myp->getProgress() != myp->getLastProgress() || myp->getTimeNoProgress() == 0.0){
+      myp->setTimeNoProgress(curtime);
+      myp->setLastProgress(myp->getProgress());
+  } 
+  
+  if (curtime - myp->getTimeNoProgress() > myp->getTimeout() && myp->getTimeout() > 0){
+      Traza::print("Aborting download: " + Constant::TipoToStr(myp->getTimeout()) + " seconds with no activity. Curtime: " + Constant::TipoToStr(curtime), W_DEBUG);
+      return 1;
+  }
+  
+  if( (myp->getMaxBytesDownload() > 0 && dlnow > myp->getMaxBytesDownload())){
+      Traza::print("Aborting download: " + Constant::TipoToStr(myp->getMaxBytesDownload()) + " Max. bytes of download", W_DEBUG);
+      return 1;
+  }
+    
+  if(aborted){
+      Traza::print("Aborting download: ending all threads signal received", W_DEBUG);
+      return 1;
+  }
   
   
   return 0;
@@ -615,4 +699,12 @@ void HttpUtil::setConnectionRetries(int connectionRetries) {
 
 int HttpUtil::getConnectionRetries() const {
     return connectionRetries;
+}
+
+void HttpUtil::setCookies(curl_slist* cookies) {
+    this->cookies = cookies;
+}
+
+curl_slist* HttpUtil::getCookies() {
+    return cookies;
 }

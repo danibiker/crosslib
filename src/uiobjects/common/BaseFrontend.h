@@ -95,6 +95,7 @@ protected:
     void loadComboUnidades(string objName, string pantalla,  int types);
     int accionesListaExplorador(tEvento *);
     void showMenuEmergente(string menu, string objImagenFondo);
+    void iniciarExplorador(string lastDirOpened);
     string showExplorador(tEvento *);
     void setTextFromExplorador(tEvento *, UIInput *);
     UIPopupMenu * addPopup(string pantalla, string popupName, string callerName);

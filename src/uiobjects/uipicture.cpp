@@ -5,6 +5,7 @@
 UIPicture::UIPicture(){
     setObjectType(GUIPICTURE);
     alpha = -1;
+    safeToDraw = false;
 }
 
 UIPicture::~UIPicture(){
@@ -17,36 +18,30 @@ void UIPicture::action(tEvento *evento){
 
     if (evento->isKey && evento->key == SDLK_s){
         this->imgGestor->setResize(!this->imgGestor->isResize());
-        //this->imgGestor->isResize() ? setAutoMessage("Tamanyo automatico") : setAutoMessage("Tamanyo original");
         this->setImgDrawed(false);
     } else if (evento->isKey && evento->key == SDLK_f){
         this->imgGestor->setSmooth(!this->imgGestor->isSmooth());
-        //this->imgGestor->isSmooth() ? setAutoMessage("Filtro activado") : setAutoMessage("Filtro desactivado");
         this->setImgDrawed(false);
-    }  else if ((evento->isKey && evento->key == SDLK_KP_MINUS ) || (evento->isJoy && (evento->joy == JoyMapper::getJoyMapper(JOY_BUTTON_VOLDOWN)))){
+    }  else if ((evento->isKey && evento->key == SDLK_KP_MINUS ) || (evento->isJoy && (evento->joy == JoyMapper::getJoyMapper(JOY_BUTTON_VOLDOWN)))
+            || (evento->isMouse && evento->mouse == MOUSE_BUTTON_WHEELDOWN && evento->mouse_state == 1) ){
             this->imgGestor->decZoom();
             this->setImgDrawed(false);
-//                    drawZoomImgMem(imgGestor);
-    } else if ( (evento->isKey && evento->key == SDLK_KP_PLUS)  || (evento->isJoy && (evento->joy == JoyMapper::getJoyMapper(JOY_BUTTON_VOLUP)))){
+    } else if ( (evento->isKey && evento->key == SDLK_KP_PLUS)  || (evento->isJoy && (evento->joy == JoyMapper::getJoyMapper(JOY_BUTTON_VOLUP)))
+            || (evento->isMouse && evento->mouse == MOUSE_BUTTON_WHEELUP && evento->mouse_state == 1) ){
             this->imgGestor->incZoom();
             this->setImgDrawed(false);
-//                    drawZoomImgMem(imgGestor);
     } else if ( (evento->isKey && evento->key == SDLK_KP6)){
-            this->imgGestor->incLeftDif();
-            //this->setImgDrawed(false);
-//                    drawImgMoved(imgGestor);
+            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_RIGHT);
+            this->setImgDrawed(true);
     } else if ( (evento->isKey && evento->key == SDLK_KP4)){
-            this->imgGestor->decLeftDif();
-            //this->setImgDrawed(false);
-//                    drawImgMoved(imgGestor);
+            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_LEFT);
+            this->setImgDrawed(true);
     } else if ( (evento->isKey && evento->key == SDLK_KP8)){
-            this->imgGestor->decTopDif();
-            //this->setImgDrawed(false);
-//                    drawImgMoved(imgGestor);
+            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_UP);
+            this->setImgDrawed(true);
     } else if ( (evento->isKey && evento->key == SDLK_KP2)){
-            this->imgGestor->incTopDif();
-            //this->setImgDrawed(false);
-//                    drawImgMoved(imgGestor);
+            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_DOWN);
+            this->setImgDrawed(true);
     } else if (evento->isMouse && evento->mouse == MOUSE_BUTTON_LEFT && evento->mouse_state == SDL_PRESSED){
            Traza::print("UIPicture::action: Mouse Pressed: " + this->getName(), W_DEBUG);
            if (SDL_GetTicks() - lastClick < DBLCLICKSPEED){
@@ -55,7 +50,7 @@ void UIPicture::action(tEvento *evento){
                 lastClick = SDL_GetTicks();
             }
            checkPos(*evento);
-           this->setImgDrawed(false);
+           //this->setImgDrawed(false);
     } else {
         Object::action(evento);
     }
@@ -74,8 +69,15 @@ bool UIPicture::loadImgFromFile(string ruta){
     try{
         Dirutil dir;
         if (dir.existe(ruta)){
-            ret = imgGestor->loadFromFile(ruta);
-            setImgDrawed(false);
+            if (dir.isDir(ruta)){
+                Traza::print("UIPicture::loadImgFromFile. Es un directorio: " + ruta, W_DEBUG);
+                ret = true;
+            } else {
+                this->clearImg();
+                ret = imgGestor->loadFromFile(ruta);
+                setImgDrawed(false);
+            }
+            
         } else {
             Traza::print("UIPicture::loadImgFromFile. No existe la ruta: " + ruta, W_ERROR);
         }
@@ -129,5 +131,13 @@ void UIPicture::checkPos(tEvento evento){
             this->setChecked(true);
         }
     }
+}
+
+void UIPicture::setSafeToDraw(bool safeToDraw) {
+    this->safeToDraw = safeToDraw;
+}
+
+bool UIPicture::isSafeToDraw() const {
+    return safeToDraw;
 }
 

@@ -45,7 +45,7 @@ void BaseFrontend::initUIObjs(){
     tmenu_gestor_objects *obj  = createMenu(PANTALLABROWSER2);
     obj->add(uiimgFondo, GUIPICTURE, 0, Constant::getINPUTH(), 0, 0, uiimgFondo, true)->setEnabled(false);
     obj->getObjByName(uiimgFondo)->setAlpha(150);
-    obj->add(OBJLISTABROWSER2, GUILISTBOX, 0, 0, 0, 0, uilistadodir, false)->setVerContenedor(false)->setShadow(false);
+    obj->add(OBJLISTABROWSER2, GUILISTIMG, 0, 0, 0, 0, uilistadodir, false)->setVerContenedor(false)->setShadow(false);
     obj->add(BTNACEPTARBROWSER, GUIBUTTON, -(BUTTONW/2 + 5), 0, BUTTONW,BUTTONH, "Aceptar", true)->setIcon(tick);
     obj->add(BTNCANCELARBROWSER, GUIBUTTON, (BUTTONW/2 + 5), 0, BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
     obj->add(ARTDIRBROWSER, GUIARTSURFACE, 0, 0, INPUTW, Constant::getINPUTH(), "Direcci%C3%B3n Browser", false)->setEnabled(false);
@@ -348,6 +348,7 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
                         case GUITEXTELEMENTSAREA:
                         case GUITREELISTBOX:
                         case GUIPICTURE:
+                        case GUILISTIMG:
                             if (procesarBoton(object, objMenu)){ //Comprobamos si se ha pulsado el elemento
                                 function = getEvent(object->getName());
                                 if (function != NULL){ //Si hemos encontrado una funcion
@@ -692,7 +693,7 @@ bool BaseFrontend::casoPANTALLACONFIRMAR(string titulo, string txtDetalle){
     //Procesamos el menu antes de continuar para que obtengamos la captura
     //de pantalla que usaremos de fondo
     procesarControles(getMenu(menuInicial), &askEvento, NULL);
-    SDL_Rect iconRectFondo = {0, 0, this->getWidth(), this->getHeight()};
+    SDL_Rect iconRectFondo = {0, 0, (Uint16)this->getWidth(), (Uint16)this->getHeight()};
     SDL_Surface *mySurface = NULL;
     drawRectAlpha(iconRectFondo.x, iconRectFondo.y, iconRectFondo.w, iconRectFondo.h , cNegro, ALPHABACKGROUND);
     takeScreenShot(&mySurface, iconRectFondo);
@@ -781,6 +782,48 @@ void BaseFrontend::showMenuEmergente(string menu, string objImagenFondo){
 }
 
 /**
+ * 
+ * @param lastDirOpened
+ * @return 
+ */
+void BaseFrontend::iniciarExplorador(string lastDirOpened){
+    Dirutil dir;
+    this->setSelMenu(PANTALLABROWSER2);
+    tmenu_gestor_objects *objMenu = getMenu(PANTALLABROWSER2);
+    UIListGroup *obj = NULL;
+    
+    loadComboUnidades(uicomboBrowser, PANTALLABROWSER2, -1);
+    obj = (UIListGroup *)objMenu->getObjByName(OBJLISTABROWSER2);
+    obj->setFocus(true);
+    obj->setTag("");
+    obj->setPosActualLista(-1);
+    //Forzamos a que se actualicen todos los elementos
+    objMenu->resetElements();
+    //Seleccionamos a la lista que esta en primer lugar
+    //objMenu->findNextFocus();
+    getMenu(PANTALLABROWSER2)->setFocus(OBJLISTABROWSER2);
+    vector <ListGroupCol *> miCabecera;
+    miCabecera.push_back(new ListGroupCol("Filename", "")); //Cancion
+    miCabecera.push_back(new ListGroupCol("Date", ""));
+    miCabecera.push_back(new ListGroupCol("Type", "")); //Album
+    miCabecera.push_back(new ListGroupCol("Size", "")); //Duracion
+    obj->setHeaderLista(miCabecera);
+    obj->adjustToHeader(false);
+    obj->addHeaderWith(100);
+    obj->addHeaderWith(100);
+    obj->addHeaderWith(100);
+    obj->addHeaderWith(100);
+    obj->setColor(cBlanco);
+    obj->setTextColor(cNegro);
+
+    if (!lastDirOpened.empty()){
+        dir.changeDirAbsolute(dir.getFolder(lastDirOpened).c_str());
+    }
+    this->accionesListaExplorador(NULL);
+}
+
+
+/**
 *
 */
 string BaseFrontend::showExplorador(tEvento *evento){
@@ -791,7 +834,7 @@ string BaseFrontend::showExplorador(tEvento *evento){
     string menuInicio = this->getSelMenu();
     this->setSelMenu(PANTALLABROWSER2);
     tmenu_gestor_objects *objMenu = getMenu(PANTALLABROWSER2);
-    UIList *obj = NULL;
+    UIListGroup *obj = NULL;
     ignoreButtonRepeats = true;
     string fileUri = "";
     string fileTempSelec = "";
@@ -799,25 +842,12 @@ string BaseFrontend::showExplorador(tEvento *evento){
     static string lastDirOpened;
 
     try{
-        loadComboUnidades(uicomboBrowser, PANTALLABROWSER2, -1);
-        obj = (UIList *)objMenu->getObjByName(OBJLISTABROWSER2);
-        obj->setFocus(true);
-        obj->setTag("");
-        obj->setPosActualLista(-1);
-        //Forzamos a que se actualicen todos los elementos
-        objMenu->resetElements();
-        //Seleccionamos a la lista que esta en primer lugar
-        //objMenu->findNextFocus();
-        getMenu(PANTALLABROWSER2)->setFocus(OBJLISTABROWSER2);
-
-        if (!lastDirOpened.empty()){
-            dir.changeDirAbsolute(dir.getFolder(lastDirOpened).c_str());
-        }
-
+        iniciarExplorador(lastDirOpened);
+        
+        obj = (UIListGroup *)objMenu->getObjByName(OBJLISTABROWSER2);
         long delay = 0;
         unsigned long before = 0;
-        this->accionesListaExplorador(evento);
-
+        
         do{
             before = SDL_GetTicks();
             askEvento = WaitForKey();
@@ -825,7 +855,7 @@ string BaseFrontend::showExplorador(tEvento *evento){
             int pos = obj->getPosActualLista();
             //Carga de imagenes de fondo en la pantalla del explorador de ficheros
             if (pos >= 0){
-                fileTempSelec = obj->getListNames()->get(pos);
+                fileTempSelec = obj->getText(pos);
                 string ruta = dir.getDirActual() +  Constant::getFileSep() + fileTempSelec;
                 UIPicture *objPict = (UIPicture *)objMenu->getObjByName(uiimgFondo);
 
@@ -854,7 +884,8 @@ string BaseFrontend::showExplorador(tEvento *evento){
             salir = (askEvento.isJoy && askEvento.joy == JoyMapper::getJoyMapper(JOY_BUTTON_B)) ||
             ( ((askEvento.isKey && askEvento.key == SDLK_ESCAPE) || !obj->getTag().empty())
              || objMenu->getObjByName(BTNACEPTARBROWSER)->getTag().compare("selected") == 0
-             || objMenu->getObjByName(BTNCANCELARBROWSER)->getTag().compare("selected") == 0);
+             || objMenu->getObjByName(BTNCANCELARBROWSER)->getTag().compare("selected") == 0)
+             || askEvento.quit;
 
 
             delay = before - SDL_GetTicks() + TIMETOLIMITFRAME;
@@ -874,7 +905,7 @@ string BaseFrontend::showExplorador(tEvento *evento){
         if (objMenu->getObjByName(BTNACEPTARBROWSER)->getTag().compare("selected") == 0){
             int pos = obj->getPosActualLista();
             if (pos >= 0){
-                fileSelec = obj->getListNames()->get(pos);
+                fileSelec = obj->getText(pos);
                 bool tieneFileSep = diractual.substr(diractual.length()-1).compare(Constant::getFileSep()) == 0;
                 obj->setTag(diractual + (!tieneFileSep ? Constant::getFileSep() : "") + fileSelec);
             }
@@ -901,16 +932,15 @@ string BaseFrontend::showExplorador(tEvento *evento){
 }
 
 /**
-*
-*/
+ * 
+ * @param evento
+ * @return 
+ */
 int BaseFrontend::accionesListaExplorador(tEvento *evento){
-
-    string fileSelec = "";
-
     try{
         Traza::print("BaseFrontend::accionesListaExplorador", W_INFO);
         tmenu_gestor_objects *objMenu = getMenu(PANTALLABROWSER2);
-        UIList * obj = (UIList *)objMenu->getObjByName(OBJLISTABROWSER2);
+        UIListGroup * obj = (UIListGroup *)objMenu->getObjByName(OBJLISTABROWSER2);
         Dirutil dir;
         bool dirChanged = false;
         string diractual;
@@ -920,10 +950,10 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
             pos = 0;
             dirChanged = true;
         } else if (pos >= 0){
-            string fileSelec = obj->getListNames()->get(pos);
-            string valorSelec = obj->getListValues()->get(pos);
+            string fileSelec = obj->getText(pos);
+            string extSelect = obj->getCol(pos, 2)->getValor();
             Traza::print("cambiando al directorio: " + fileSelec, W_DEBUG);
-            if (Constant::strToTipo<int>(valorSelec) == TIPODIRECTORIO){
+            if (extSelect.compare(STR_DIR_EXT) == 0){
                 dirChanged = dir.changeDirRelative(fileSelec.c_str());
             } else {
                 diractual = dir.getDirActual();
@@ -950,13 +980,48 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
                 obj->resizeLista(numFiles);
                 //Recorremos la lista de ficheros y lo incluimos en el objeto de lista para mostrar los datos
                 for (unsigned int i = 0; i < numFiles; i++){
-                    obj->addElemLista(filelist->get(i).filename , Constant::TipoToStr(filelist->get(i).filetype), filelist->get(i).ico );
+                    //obj->addElemLista(filelist->get(i).filename , Constant::TipoToStr(filelist->get(i).filetype), filelist->get(i).ico );
+                    ListGroupElement *listGroupElement = new ListGroupElement();
+                    vector <ListGroupCol *> miFila;
+                    
+                    ListGroupCol *colFileName = new ListGroupCol(filelist->get(i).filename, filelist->get(i).filename);
+                    colFileName->setIcono(filelist->get(i).ico);
+                    miFila.push_back(colFileName);
+                    
+                    ListGroupCol *colFecha = new ListGroupCol(filelist->get(i).modificationTime, Constant::TipoToStr(filelist->get(i).iModificationTime));
+                    colFecha->setNumber(true);
+                    miFila.push_back(colFecha);
+                    
+                    miFila.push_back(new ListGroupCol(filelist->get(i).extension, filelist->get(i).extension));
+                    
+                    string strSize = Constant::printBytesSize(filelist->get(i).fileSize, 1);
+                    ListGroupCol *colSize = new ListGroupCol(strSize, Constant::TipoToStr(filelist->get(i).fileSize));
+                    colSize->setNumber(true);
+                    miFila.push_back(colSize);
+                    
+                    listGroupElement->SetListGroupCol(miFila);
+                    listGroupElement->SetUipicture(NULL);
+                    obj->addElemLista(listGroupElement);
                 }
             } else {
                obj->resizeLista(1);
-               obj->addElemLista(".." , Constant::TipoToStr(TIPODIRECTORIO), folder);
+                ListGroupElement *listGroupElement = new ListGroupElement();
+                vector <ListGroupCol *> miFila;
+                miFila.push_back(new ListGroupCol("..", ".."));
+                miFila.push_back(new ListGroupCol("", ""));
+                miFila.push_back(new ListGroupCol(STR_DIR_EXT, STR_DIR_EXT));
+                miFila.push_back(new ListGroupCol("0", "0"));
+                listGroupElement->SetListGroupCol(miFila);
+                listGroupElement->SetUipicture(NULL);
+                obj->addElemLista(listGroupElement);
             }
             delete filelist;
+            
+            //To refresh the images of the list
+            if (obj->getObjectType() == GUILISTIMG){
+                UIImgList * objImg = (UIImgList *)obj;
+                objImg->setReloadImages(true);
+            }
         }
 
 
@@ -965,12 +1030,15 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
     }
 
     getMenu(PANTALLABROWSER2)->setFocus(OBJLISTABROWSER2);
-    return true;
+    return 0;
 }
 
 /**
-*
-*/
+ * 
+ * @param objName
+ * @param pantalla
+ * @param types
+ */
 void BaseFrontend::loadComboUnidades(string objName, string pantalla, int types){
     Traza::print("BaseFrontend::loadComboUnidades", W_INFO);
     UIList *combo = (UIList *)getMenu(pantalla)->getObjByName(objName);
@@ -1222,7 +1290,7 @@ bool BaseFrontend::waitAceptCancel(string btnAceptar, string btnCancelar, string
     tEvento askEvento;
     clearEvento(&askEvento);
 
-    SDL_Rect iconRectFondo = {0, 0, this->getWidth(), this->getHeight()};
+    SDL_Rect iconRectFondo = {0, 0, (Uint16)this->getWidth(), (Uint16)this->getHeight()};
     SDL_Surface *mySurface = NULL;
     clearScr();
 

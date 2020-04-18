@@ -228,6 +228,14 @@ string UIListGroup::getValue(int row){
 }
 
 /**
+* Por defecto obtiene el valor de la primera columna de la fila que se le
+* indica por parametro
+*/
+string UIListGroup::getText(int row){
+    return getCol(row, 0)->getTexto();
+}
+
+/**
 * Por defecto obtiene el destino de la primera columna de la fila que se le
 * indica por parametro
 */
@@ -365,7 +373,7 @@ void UIListGroup::quickSort(vector <ListGroupElement *>& A, int p, int q, int co
 *
 */
 int UIListGroup::partition(vector <ListGroupElement *>& A, int p, int q, int col){
-    string x = A[p]->GetListGroupCol().at(col)->getTexto();
+    string x = A[p]->GetListGroupCol().at(col)->getValor();
     char temp[x.size()+1];//as 1 char space for null is also required
     strcpy(temp, x.c_str());
 
@@ -373,15 +381,19 @@ int UIListGroup::partition(vector <ListGroupElement *>& A, int p, int q, int col
     int j;
 
     int order = getHeaderCol(col)->getSortOrder();
-
+    ListGroupCol* column;
+    
     for(j=p+1; j<q; j++){
+        column = A[j]->GetListGroupCol().at(col);
         if (order == 0){
-            if (Constant::stricmp(A[j]->GetListGroupCol().at(col)->getTexto().c_str(), temp) < 0){
+            if ( (!column->isNumber() && Constant::stricmp(column->getValor().c_str(), temp) <= 0)
+                    || (column->isNumber() && Constant::strToTipo<size_t>(column->getValor()) <= Constant::strToTipo<size_t>(temp)) ){
                 i=i+1;
                 swap(A[i],A[j]);
             }
         } else {
-            if (Constant::stricmp(A[j]->GetListGroupCol().at(col)->getTexto().c_str(), temp) >= 0){
+            if ( (!column->isNumber() && Constant::stricmp(column->getValor().c_str(), temp) > 0)
+                    || (column->isNumber() && Constant::strToTipo<size_t>(column->getValor()) > Constant::strToTipo<size_t>(temp)) ){
                 i=i+1;
                 swap(A[i],A[j]);
             }
