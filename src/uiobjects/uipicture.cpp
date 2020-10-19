@@ -57,8 +57,10 @@ void UIPicture::action(tEvento *evento){
 }
 
 /**
-*
-*/
+ * 
+ * @param ruta
+ * @return 
+ */
 bool UIPicture::loadImgFromFile(string ruta){
     imgGestor->setRuta(ruta);
     imgGestor->setResize(true)->setZoom(0)
@@ -137,7 +139,34 @@ void UIPicture::setSafeToDraw(bool safeToDraw) {
     this->safeToDraw = safeToDraw;
 }
 
+/**
+ * 
+ * @return 
+ */
 bool UIPicture::isSafeToDraw() const {
     return safeToDraw;
+}
+
+/**
+ * 
+ * @param ruta
+ * @return 
+ */
+bool UIPicture::isValidImage(string ruta){
+    bool ret = false;
+    const int tam = sizeof(VALID_IMGS) / sizeof(VALID_IMGS[0]);
+    int i=0;
+    std::size_t found;
+    
+    string lowRuta = ruta;
+    Constant::lowerCase(&lowRuta);
+    do{
+        found = lowRuta.find(VALID_IMGS[i]);
+        if (found != std::string::npos){
+            ret = true;
+        }
+        i++;
+    } while (!ret && i < tam);
+    return ret;
 }
 

@@ -41,11 +41,12 @@ string SOUtils::iniciarSistema(char** argv){
         }
         
         if (!dir.existe(appDir) || pos == string::npos){
-            cerr << "El directorio: " << appDir << " no existe" << endl;
+            //cerr << "El directorio: " << appDir << " no existe" << endl;
             appDir = dir.getDirActual();
-        } else {
-            cout << "El directorio: " << appDir << " existe" << endl;
-        }
+        } 
+        //else {
+        //    cout << "El directorio: " << appDir << " existe" << endl;
+        //}
         Constant::setAppDir(appDir);
     //#endif // WIN
 
@@ -55,7 +56,7 @@ string SOUtils::iniciarSistema(char** argv){
 //    #endif // UNIX
     
     string rutaTraza = appDir + Constant::getFileSep() + "Traza.txt";
-    cout << "rutaTraza: " << rutaTraza << endl;
+    //cout << "rutaTraza: " << rutaTraza << endl;
     Traza *traza = new Traza(rutaTraza.c_str());
     loadConfig();
     return appDir;

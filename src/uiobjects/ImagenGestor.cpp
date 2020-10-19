@@ -192,6 +192,66 @@ unsigned long long ImagenGestor::guardarImgBin(string password, string rutaTemp,
     return tamImg;
 }
 
+/**
+ * 
+ * @param rutaTemp
+ * @param regionPantalla
+ * @param format
+ * @return 
+ */
+unsigned long long ImagenGestor::writeImg(string rutaTemp, t_region regionPantalla, SDL_PixelFormat *format){
+    Traza::print("writeImg.inicio:" + rutaTemp, W_DEBUG);
+    UIImageEncoder imgEncoder;
+    SDL_Surface *tmpSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, regionPantalla.selW, regionPantalla.selH, format->BitsPerPixel, rmask,
+                gmask,
+                bmask,
+                amask);
+    
+    int quality = 85;
+    setBordeBottom(0);
+    setBordeLeft(0);
+    setBordeRight(0);
+    setBordeTop(0);
+    drawImgMem(-1, regionPantalla.selW, regionPantalla.selH, regionPantalla, tmpSurface);
+    imgEncoder.IMG_SaveJPG(rutaTemp.c_str(), tmpSurface, quality);
+    SDL_FreeSurface(tmpSurface);
+    return 0;
+}
+
+/**
+ * 
+ * @param rutaTemp
+ * @param regionPantalla
+ * @param format
+ * @return 
+ */
+unsigned long long ImagenGestor::writeImg(string rutaTemp, SDL_Surface *surface){
+    Traza::print("writeImg.inicio:" + rutaTemp, W_DEBUG);
+    
+    if (surface == NULL)
+        return 1;
+    
+    if (surface->pixels == NULL || surface->w == 0 || surface->h == 0)
+        return 1;
+    
+    UIImageEncoder imgEncoder;
+    SDL_Surface *tmpSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w, surface->h, surface->format->BitsPerPixel, rmask,
+                gmask,
+                bmask,
+                amask);
+    
+    int quality = 85;
+    setBordeBottom(0);
+    setBordeLeft(0);
+    setBordeRight(0);
+    setBordeTop(0);
+    
+    SDL_BlitSurface(surface, NULL, tmpSurface, NULL);
+    imgEncoder.IMG_SaveJPG(rutaTemp.c_str(), tmpSurface, quality);
+    SDL_FreeSurface(tmpSurface);
+    return 0;
+}
+
 
 
 /**

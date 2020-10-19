@@ -47,16 +47,24 @@ void Dirutil::listarDirRecursivo(string dir,  vector <FileProps> * filelist, str
 }
 
 /**
-*
-*/
-unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> * tempFilelist
-                                        ,vector <FileProps> * filelistFinal, string filtro){
+ * 
+ * @param strdir
+ * @param tempFilelist
+ * @param filelistFinal
+ * @param filtro
+ * @param maxSearchFiles
+ * @param maxResults
+ * @return 
+ */
+unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <FileProps> * tempFilelist
+                                        ,vector <FileProps> * filelistFinal, string filtro, int maxSearchFiles, int maxResults){
     DIR *dp;
     struct dirent *dirp;
     char * concatDir = NULL;
     //const char  tempFileSep[2] = {FILE_SEPARATOR,'\0'};
     unsigned int lenDir = 0;
-    unsigned int lenFiles = 0;
+    int numSearchFiles = 0;
+    int numResults = 0;
 
     try{
         //Miramos a ver si el directorio a explorar tiene una / al final
@@ -75,7 +83,8 @@ unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> *
                 throw(Excepcion(EFIO));
             } else {
                 string extension;
-                while ((dirp = readdir(dp)) != NULL) {
+                while ((dirp = readdir(dp)) != NULL && (numSearchFiles < maxSearchFiles || maxSearchFiles == 0)
+                        && (numResults < maxResults || maxResults == 0)) {
                     concatDir = new char[dirlen+sizeof(dirp->d_name)+1];//Contamos +1 con el fin de cadena
                     strcpy(concatDir,strdir);
                     if (sepDir){
@@ -94,10 +103,12 @@ unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> *
                         setFileProperties(&propFile, concatDir);
                         
                         if(isDir(concatDir)){
-                            propFile.filetype = TIPODIRECTORIO;
-                            propFile.ico = folder;
-                            tempFilelist->push_back(propFile);
-                            lenDir++;
+                            if (tempFilelist != NULL){
+                                propFile.filetype = TIPODIRECTORIO;
+                                propFile.ico = folder;
+                                tempFilelist->push_back(propFile);
+                                lenDir++;
+                            }
                         } else {
                             extension = getExtension(propFile.filename);
                             Constant::lowerCase(&extension);
@@ -105,13 +116,14 @@ unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> *
                                 propFile.filetype = TIPOFICHERO;
                                 propFile.ico = page_white;
                                 filelistFinal->push_back(propFile);
-                                lenFiles++;
+                                numResults++;
                             }
                         }
                     }
                     delete concatDir;
+                    numSearchFiles++;
                 }
-                Traza::print("Se han encontrado " + Constant::TipoToStr(lenDir) + " directorios y " + Constant::TipoToStr(lenFiles) + " ficheros", W_DEBUG);
+                Traza::print("Se han encontrado " + Constant::TipoToStr(lenDir) + " directorios y " + Constant::TipoToStr(numResults) + " ficheros", W_DEBUG);
                 closedir(dp);
             }
         }
@@ -123,8 +135,25 @@ unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> *
 }
 
 /**
-*
-*/
+ * 
+ * @param strdir
+ * @param tempFilelist
+ * @param filelistFinal
+ * @param filtro
+ * @return 
+ */
+unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> * tempFilelist
+                                        ,vector <FileProps> * filelistFinal, string filtro){
+    return listarDirSinOrdenMaxFiles(strdir, tempFilelist, filelistFinal, filtro, 0, 0);
+}
+
+/**
+ * 
+ * @param strdir
+ * @param filelist
+ * @param filtro
+ * @return 
+ */
 unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * filelist, string filtro){
     DIR *dp;
     struct dirent *dirp;
@@ -251,7 +280,7 @@ unsigned int Dirutil::countDir(const char *strdir){
 /**
 * Lista los ficheros y directorios a partir de un directorio determinado
 * Devuelve en la posicion 0 de la variable nFiles el numero de directorios
-* y en la posicion 1 el n�mero de ficheros
+* y en la posicion 1 el nï¿½mero de ficheros
 */
 void Dirutil::countDir(const char *strdir, unsigned int *nFiles){
     DIR *dir;
@@ -577,7 +606,7 @@ bool Dirutil::borrarArchivo(string ruta){
 
 
 /**
-* Comprueba si existe el directorio o fichero pasado por par�metro
+* Comprueba si existe el directorio o fichero pasado por parï¿½metro
 */
 bool Dirutil::existe(string ruta){
     if(isDir(ruta)){

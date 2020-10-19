@@ -1871,8 +1871,8 @@ void Ioutil::drawUIThumbnailImgBox(Object *obj){
     Traza::print("newImagesToDraw", newImagesToDraw, W_DEBUG);
     if (newImagesToDraw > 0){
         if (listObj->isReloadImages()){
-            listObj->setReloadImages(false);
             startLoadingThumbs(listObj);
+            listObj->setReloadImages(false);
         }
         listObj->setImgDrawed(false);
     }
@@ -1897,8 +1897,10 @@ void Ioutil::drawAllThumbnailBackgrounds(UIListGroup *obj){
                 
                 if (pict != NULL){
                     pict->getImgGestor()->calcImgLocationFromIndex(imgIndex, pict->getW(), pict->getH()-1, regionPantalla, imgRect);
-                    posicion = pict->getImgGestor()->getImgLocationRelScreen();
-                    drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());
+                    if (!pict->getImgDrawed() || i == listObj->getPosActualLista()){
+                        posicion = pict->getImgGestor()->getImgLocationRelScreen();
+                        drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());
+                    }
                 } else {
                     listObj->getImgGestor()->calcImgLocationFromIndex(imgIndex, listObj->getPrevImgWidth(), listObj->getPrevImgHeight(), regionPantalla, imgRect);
                     drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());

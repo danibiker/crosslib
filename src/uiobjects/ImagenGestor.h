@@ -9,6 +9,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
+#include "../httpcurl/image/uiimgencoder.h"
 #include "common.h"
 
 #define MOVE_UP 0 
@@ -105,6 +106,9 @@ class ImagenGestor : public Fileio{
         bool loadImgFromFileZoom(const char *uri, SDL_Surface **destino, SDL_Rect *dstrect);
         bool loadImgFromMem(SDL_Surface **destino);
         bool loadImgFromMem(char *fileArray, int size, SDL_Surface **destino);
+        unsigned long long writeImg(string rutaTemp, t_region regionPantalla, SDL_PixelFormat *format);
+        unsigned long long writeImg(string rutaTemp, SDL_Surface *surface);
+        
         bool updateImgScr(SDL_Surface * srcSurface, SDL_Surface * dstSurface);
         bool updateImgScr(SDL_Surface * srcSurface, int dstW, int dstH, SDL_Surface **dstSurface, SDL_PixelFormat *format);
         float relacion(SDL_Surface *source, int alto, int ancho);

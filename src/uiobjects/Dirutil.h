@@ -53,6 +53,8 @@ class Dirutil{
         unsigned int listarDir(const char *, listaSimple<FileProps> * );
         unsigned int listarDir(const char *strdir, listaSimple<FileProps> * filelist, string filtro);
         unsigned int listarDirSinOrden(const char *, vector <FileProps> *, vector <FileProps> *, string filtro);
+        unsigned int listarDirSinOrdenMaxFiles(const char *strdir, vector <FileProps> * tempFilelist
+                                        ,vector <FileProps> * filelistFinal, string filtro, int maxSearchFiles, int maxResults);
         void countDir(const char *strdir, unsigned int *nFiles, vector<string> *files, string filtro);
         bool borrarArchivo(string);
         void borrarDir(string);

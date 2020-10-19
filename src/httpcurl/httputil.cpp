@@ -12,23 +12,13 @@ std::string HttpUtil::readBufferHeader;
  * Constructor
  */
 HttpUtil::HttpUtil(){
-    init(0, 1);
+    init();
 }
 
 /**
- * Constructor
- */
-HttpUtil::HttpUtil(int posListThreads, int nThreads){
-    init(posListThreads, nThreads);
-}
-
-/**
- * Initialization
  * 
- * @param posListThreads
- * @param nThreads
  */
-void HttpUtil::init(int posListThreads, int nThreads){
+void HttpUtil::init(){
     aborted = false;
     chunk.memory = NULL;
     chunk.filepath = NULL;
@@ -38,7 +28,7 @@ void HttpUtil::init(int posListThreads, int nThreads){
     header.filepath = NULL;
     header.size = 0;
     
-    prog = new Progress(posListThreads, nThreads);
+    prog = new Progress();
     this->setProxyIP(Constant::getPROXYIP());
     this->setProxyPort(Constant::strToTipo<int>(Constant::getPROXYPORT()));
     this->setProxyUser(Constant::getPROXYUSER());

@@ -20,13 +20,12 @@
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3.0
 #define MAX_FILE_BUFFER 5*1024*1024
 #define MIN_PROGRESS_CHUNK_OF_BYTES 512
-#define SECONDS_TO_ABORT_STUCK_DOWNLOAD 10
+#define SECONDS_TO_ABORT_STUCK_DOWNLOAD 60
 
 class HttpUtil
 {
     public:
         HttpUtil();
-        HttpUtil(int posListThreads, int nThreads);
         virtual ~HttpUtil();
 
         bool download(string);
@@ -85,7 +84,7 @@ class HttpUtil
         
     protected:
     private:
-        void init(int posListThreads, int nThreads);
+        void init();
         string proxyIP;
         unsigned short proxyPort;
         string proxyUser;
@@ -127,7 +126,7 @@ class HttpUtil
         static int xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
                     curl_off_t ultotal, curl_off_t ulnow);
-
+        //This aborts all the running threads
         static bool aborted;
         long http_code;
         bool sendContentLength;

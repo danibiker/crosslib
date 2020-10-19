@@ -945,10 +945,13 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
         bool dirChanged = false;
         string diractual;
         int pos = obj->getPosActualLista();
+        obj->setTag("");
 
         if (evento == NULL){
             pos = 0;
             dirChanged = true;
+            obj->setPosActualLista(0);
+            obj->calcularScrPos();
         } else if (pos >= 0){
             string fileSelec = obj->getText(pos);
             string extSelect = obj->getCol(pos, 2)->getValor();
@@ -961,20 +964,27 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
             }
         }
 
-        //Reseteamos la posicion del explorador para el siguiente directorio
-        obj->setPosActualLista(0);
-        obj->calcularScrPos();
-        //Actualizamos la barra principal con la ruta actual
-        diractual = dir.getDirActual();
-
-        ((UIArt *)objMenu->getObjByName(ARTDIRBROWSER))->setLabel(diractual);
-
         if (dirChanged || pos < 0){
+            ((UIArt *)objMenu->getObjByName(ARTDIRBROWSER))->setLabel(diractual);
+             //Reseteamos la posicion del explorador para el siguiente directorio
+            obj->setPosActualLista(0);
+            obj->calcularScrPos();
+            //Actualizamos la barra principal con la ruta actual
+            diractual = dir.getDirActual();
             //Obtenemos el directorio actual y sus elementos
             listaSimple<FileProps> *filelist = new listaSimple<FileProps>();
             unsigned int numFiles = dir.listarDir(diractual.c_str(), filelist);
             Traza::print("Ficheros: " + Constant::TipoToStr(numFiles), W_DEBUG);
-
+            
+            //To refresh the images of the list
+            if (obj->getObjectType() == GUILISTIMG){
+                UIImgList * objImg = (UIImgList *)obj;
+                objImg->setReloadImages(true);
+                objImg->clearPrevImageCache(true);
+                objImg->setLastIni(0);
+                objImg->setLastEnd(0);
+            }
+            
             if (filelist != NULL && numFiles > 0){
                 //Hacemos espacio en la lista para que la asignacion sea rapida
                 obj->resizeLista(numFiles);
@@ -1017,11 +1027,7 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
             }
             delete filelist;
             
-            //To refresh the images of the list
-            if (obj->getObjectType() == GUILISTIMG){
-                UIImgList * objImg = (UIImgList *)obj;
-                objImg->setReloadImages(true);
-            }
+            
         }
 
 

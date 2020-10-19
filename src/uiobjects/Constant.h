@@ -197,8 +197,9 @@ static const int mapHeight = 256;
         map_go,
         onedrive_png,
         new_window,
-        trackSeg,
-        map_add,
+//        trackSeg,
+//        map_add,
+        directory,
         totalIcons
     } enumIco;
 
@@ -448,6 +449,7 @@ static const int mapHeight = 256;
         static const char frecsEQStr[NBIQUADFILTERS][5] = {{"60"},{"170"},{"310"},{"600"},{"1K"},{"3K"},{"6K"},{"10K"},{"14K"}};
         static const double QFrecsEQ[NBIQUADFILTERS] = {1.0,1.0,1.0,2.0,5.0,5.0,5.0,5.0,5.0};
         static const std::string WHITESPACE = " \n\r\t";
+        static const string DIR_PREV = "thumbs";
 
 class Constant{
     private:

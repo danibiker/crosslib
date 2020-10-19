@@ -81,7 +81,7 @@ string HtmlParser::buscarElem(char *html, Tags *tag, string atributo, string val
 void HtmlParser::buscarElem2(char *html, Tags *tag1, string atributoElem1, string valAtributoElem1
                                , Tags *tag2, string atributoElem2) {
 
-    listUrlInfoSong.clear();
+    listAttrFound.clear();
     GumboNode* enlace = NULL;
     GumboOutput* output = gumbo_parse(html);
     vector <string> resultados;
@@ -110,8 +110,8 @@ GumboNode* HtmlParser::search_for_elem2(GumboNode* node, Tags *tag, string atrib
                     ){
 
                     if (string(attribute->name).compare(atributoElem2) == 0){
-                        //cout << attribute->name << ":2 " << attribute->value << endl;
-                        listUrlInfoSong.push_back(attribute->value);
+//                        cout << attribute->name << ":2 " << attribute->value << endl;
+                        listAttrFound.push_back(attribute->value);
                     }
 
                     GumboVector* children = &node->v.element.children;
@@ -129,14 +129,16 @@ GumboNode* HtmlParser::search_for_elem2(GumboNode* node, Tags *tag, string atrib
                     ){
 
                     if (string(attribute->name).compare(atributoElem2) == 0){
-                        listUrlInfoSong.push_back(attribute->value);
-                        //cout << attribute->name << ":1 " << attribute->value << endl;
+                        listAttrFound.push_back(attribute->value);
+//                        cout << attribute->name << ":1 " << attribute->value << endl;
                     }
 
                     GumboVector* children = &node->v.element.children;
                     for (int j=0; j < children->length; j++){
                         GumboNode* enlace = search_for_elem2(static_cast<GumboNode*>(children->data[j]), tag2, atributoElem2, "", tag2, atributoElem2);
-                        return enlace;
+                        if (enlace != NULL){
+                            return enlace;
+                        }
                     }
                 }
             }

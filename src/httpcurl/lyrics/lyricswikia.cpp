@@ -39,10 +39,10 @@ uint32_t LyricsWikia::trackLyrics(TrackInfo *trackinfo){
         //Afinamos los datos a buscar
         parser.buscarElem2(util.getData(), &tag, "class", "noprint song-badge", &tag2, "href");
 
-        for (int i=0; i < parser.getListUrlInfoSong()->size(); i++){
-//            cout << "****" << parser.getListUrlInfoSong()->at(i) << "****" << endl;
-            if (parser.getListUrlInfoSong()->at(i).find("wikipedia") != string::npos)
-                trackinfo->urlInfo = parser.getListUrlInfoSong()->at(i);
+        for (int i=0; i < parser.getListAttrFound()->size(); i++){
+//            cout << "****" << parser.getListAttrFound()->at(i) << "****" << endl;
+            if (parser.getListAttrFound()->at(i).find("wikipedia") != string::npos)
+                trackinfo->urlInfo = parser.getListAttrFound()->at(i);
         }
 //        cout << "****" << trackinfo->urlInfo << "****" << endl;
         return SINERROR;

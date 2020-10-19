@@ -4,6 +4,8 @@
 #include "object.h"
 
 
+static const char* VALID_IMGS[] = {"jpg","jpeg","bmp", "gif"};
+
 class UIPicture : public Object
 {
     public:
@@ -18,12 +20,11 @@ class UIPicture : public Object
         void checkPos(tEvento evento);
         void setSafeToDraw(bool safeToDraw);
         bool isSafeToDraw() const;
+        bool isValidImage(string ruta);
 
     protected:
     private:
         bool safeToDraw;
-
-
 };
 
 #endif // UIPICTURE_H

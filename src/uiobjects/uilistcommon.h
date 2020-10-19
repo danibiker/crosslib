@@ -40,8 +40,22 @@ class UIListCommon : public Object
         unsigned int getPosIniLista(){return posIniLista;}
         unsigned int getPosFinLista(){return posFinLista;}
         unsigned int getPosActualLista(){return posActualLista;}
-        void setPosIniLista(unsigned int var){posIniLista = var;setImgDrawed(false);}
-        void setPosFinLista(unsigned int var){posFinLista = var;setImgDrawed(false);}
+        void setPosIniLista(unsigned int var){
+            if (var < getSize()){
+                posIniLista = var;
+            } else {
+                posIniLista = 0;
+            }
+            setImgDrawed(false);
+        }
+        void setPosFinLista(unsigned int var){
+            if (var < getSize()){
+                posFinLista = var;
+            } else if (getSize() > 0){
+                posFinLista = getSize() - 1;
+            }
+            setImgDrawed(false);
+        }
         void setPosActualLista(unsigned int var){posActualLista = var;setImgDrawed(false);}
 
         unsigned int getLastSelectedPos(){return lastSelectedPos;}

@@ -24,19 +24,13 @@ class Progress {
  public:
         Progress();
         ~Progress();
-        
-        Progress(int posListThreads, int nThreads);
-        
+
         void setProgress(float progress) { 
                 this->progress = progress; 
         }
         
         float getProgress(){
-            if (this->progress != NULL){
                 return this->progress;
-            } else {
-                return 0.0;
-            }
         }
         
         void setDlSizeBytes(double bytes) { 
@@ -44,11 +38,7 @@ class Progress {
         }
         
         double getDlSizeBytes(){
-            if (this->bytesDown != NULL){
                 return this->bytesDown;
-            } else {
-                return 0.0;
-            }
         }
                 
         void setDlSpeed(double speed) { 
@@ -56,22 +46,9 @@ class Progress {
         }
         
         double getDlSpeed(){
-            if (this->speedDown != NULL){
                 return this->speedDown;
-            } else {
-                return 0.0;
-            }
         }
         CURL *curl;
-        
-        void setPosListThreads(int posListThreads){this->posListThreads = posListThreads;}
-        int getPosListThreads(){
-            return this->posListThreads;
-        }
-        void setNThreads(int nThreads){this->nThreads = nThreads;}
-        int getNThreads(){
-            return this->nThreads;
-        }
         void setMaxBytesDownload(std::ifstream::pos_type maxBytesDownload);
         std::ifstream::pos_type getMaxBytesDownload();
         void setLastBytesDownloaded(double lastBytesDownloaded);
@@ -94,8 +71,6 @@ class Progress {
     float progress;
     double bytesDown;
     double speedDown;
-    int nThreads;
-    int posListThreads;
     double lastruntime;
     double lastruntimeBytesDown;
     double lastBytesDownloaded;
@@ -103,7 +78,7 @@ class Progress {
     double lastProgress;
     int timeout;
     std::ifstream::pos_type maxBytesDownload;
-    void init(int posListThreads, int nThreads);
+    void init();
 };
 
 #endif /* PROGRESS_H */

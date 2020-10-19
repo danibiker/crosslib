@@ -14,25 +14,16 @@
 #include "Progress.h"
 
 Progress::Progress(){ 
-    init(0,1);
-}
-
-Progress::Progress(int posListThreads, int nThreads){ 
-    init(posListThreads, nThreads);
+    init();
 }
 
 Progress::~Progress(){
 }
 
-
 /**
  * 
- * @param posListThreads
- * @param nThreads
  */
-void Progress::init(int posListThreads, int nThreads){ 
-    this->posListThreads = posListThreads;
-    this->nThreads = nThreads;
+void Progress::init(){ 
     progress = 0.0;
     bytesDown = 0;
     speedDown = 0;
