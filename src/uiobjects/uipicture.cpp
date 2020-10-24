@@ -15,8 +15,20 @@ UIPicture::~UIPicture(){
 void UIPicture::action(tEvento *evento){
     //cout << "Evento de UIPicture: "  << getObjectType() << endl;
     static unsigned long lastClick = 0;
-
-    if (evento->isKey && evento->key == SDLK_s){
+    static unsigned long lastMoveRepaint = 0;
+    static int lastTop = 0;
+    static int lastLeft = 0;
+    
+    if (evento->isMouseMove && evento->isRegionSelected){
+        if (SDL_GetTicks() - lastMoveRepaint > 150){
+            this->imgGestor->setTopDif(lastTop - evento->region.selH);
+            this->imgGestor->setLeftDif(lastLeft - evento->region.selW);
+            this->setImgDrawed(false);
+            lastMoveRepaint = SDL_GetTicks() - 150;
+        } else {
+            lastMoveRepaint = SDL_GetTicks();
+        }
+    } else if (evento->isKey && evento->key == SDLK_s){
         this->imgGestor->setResize(!this->imgGestor->isResize());
         this->setImgDrawed(false);
     } else if (evento->isKey && evento->key == SDLK_f){
@@ -60,6 +72,9 @@ void UIPicture::action(tEvento *evento){
             this->setImgDrawed(false);
     } else if (evento->isMouse && evento->mouse == MOUSE_BUTTON_LEFT && evento->mouse_state == SDL_PRESSED){
            Traza::print("UIPicture::action: Mouse Pressed: " + this->getName(), W_DEBUG);
+           lastTop = this->imgGestor->getTopDif();
+           lastLeft = this->imgGestor->getLeftDif();
+           
            if (SDL_GetTicks() - lastClick < DBLCLICKSPEED){
                lastClick = SDL_GetTicks() - DBLCLICKSPEED;  //reseteo del dobleclick
             } else {

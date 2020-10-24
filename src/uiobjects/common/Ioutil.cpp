@@ -587,7 +587,8 @@ tEvento Ioutil::WaitForKey(){
     static unsigned long lastKeyDown = 0;
     static unsigned long retrasoTecla = KEYRETRASO;
     static unsigned long lastMouseMove = 0;
-
+    static t_region mouseRegion = {0,0,0,0};
+    
     clearEvento(&evento);
     SDL_Event event;
 #ifdef UNIX
@@ -697,7 +698,9 @@ tEvento Ioutil::WaitForKey(){
                 } else {
                     lastClick = SDL_GetTicks();
                 }
-
+                mouseRegion.selX = event.button.x;
+                mouseRegion.selY = event.button.y;
+                evento.region = mouseRegion;
                 break;
             case SDL_MOUSEBUTTONUP:
                 evento.mouse = event.button.button;
@@ -705,6 +708,7 @@ tEvento Ioutil::WaitForKey(){
                 evento.mouse_y = event.button.y;
                 evento.mouse_state = event.button.state;
                 evento.isMouse = true;
+                evento.isRegionSelected = false;
                 break;
             case SDL_MOUSEMOTION:
                 evento.mouse = event.button.button;
@@ -717,7 +721,23 @@ tEvento Ioutil::WaitForKey(){
                     && evento.mouse != MOUSE_BUTTON_LEFT){
                      setCursor(cursor_arrow);
                 }
-
+                
+                if (evento.mouse == MOUSE_BUTTON_LEFT){
+                    mouseRegion.selW = event.button.x - mouseRegion.selX;
+                    mouseRegion.selH = event.button.y - mouseRegion.selY;
+                    evento.isRegionSelected = true;
+                } else {
+                    mouseRegion.selW = 0;
+                    mouseRegion.selH = 0;
+                    evento.isRegionSelected = false;
+                }
+                evento.region = mouseRegion;
+//                Traza::print("mouse motion. selected: " + string(evento.isRegionSelected ? "S" : "N")
+//                + " mouse state: " + Constant::TipoToStr(evento.mouse_state)
+//                + " evt mouse: " + Constant::TipoToStr(evento.mouse) 
+//                + " selW: " + Constant::TipoToStr(mouseRegion.selW) 
+//                + " selH: " + Constant::TipoToStr(mouseRegion.selH), 
+//                        W_DEBUG);
                 break;
             case SDL_QUIT:
                 evento.quit = true;
@@ -1891,7 +1911,6 @@ void Ioutil::drawAllThumbnailBackgrounds(UIListGroup *obj){
         if (listObj->getMode() == IMGTHUMBMODE) {
             int imgIndex = 0;
             loadFont(11);
-            
             t_region regionPantalla = {obj->getX(), obj->getY(), obj->getW(), obj->getH()};
             SDL_Rect *imgRect = new SDL_Rect();
             for (unsigned int i=listObj->getPosIniLista(); i <= listObj->getPosFinLista(); i++ ){

@@ -32,19 +32,25 @@ ImagenGestor::ImagenGestor(){
 *
 */
 ImagenGestor::~ImagenGestor(){
+    clearImg();
+}
+
+void ImagenGestor::clearImg(){
+    this->clearFile();
+    
     if (offsets != NULL){
         delete offsets;
     }
-
+    
     if (this->surface != NULL){
         Traza::print("Eliminando Imagen", W_PARANOIC);
         SDL_FreeSurface(this->surface);
         this->surface = NULL;
     }
     
-    if (moveSurface != NULL){
-        SDL_FreeSurface(moveSurface);
-        moveSurface = NULL;
+    if (this->moveSurface != NULL){
+        SDL_FreeSurface(this->moveSurface);
+        this->moveSurface = NULL;
     }
 }
 
@@ -88,12 +94,12 @@ void ImagenGestor::cargarOffsets(){
         try{
             offsets->loadTipoFromFile(rutaInf);
         } catch (Excepcion &e){
-            Traza::print("El fichero .inf no existe" + rutaInf, W_DEBUG);
+            Traza::print("El fichero .inf no existe" + rutaInf, W_PARANOIC);
         }
 
     } else {
         //throw(Excepcion(EFIO));
-        Traza::print("El fichero .bin no existe" + rutaInf, W_DEBUG);
+        Traza::print("El fichero .bin no existe" + rutaInf, W_PARANOIC);
     }
 }
 
@@ -118,9 +124,9 @@ bool ImagenGestor::extraerImg(unsigned int pos){
             inicio = offsets->get(pos) - tam +1;
         }
 
-//        Traza::print("extraerImg.inicio:", inicio, W_DEBUG);
-//        Traza::print("extraerImg.tam:", tam, W_DEBUG);
-//        Traza::print("extraerImg.rutaImg:", rutaImg.c_str(), W_DEBUG);
+//        Traza::print("extraerImg.inicio:", inicio, W_PARANOIC);
+//        Traza::print("extraerImg.tam:", tam, W_PARANOIC);
+//        Traza::print("extraerImg.rutaImg:", rutaImg.c_str(), W_PARANOIC);
 
         ret = this->loadFromFile(rutaImg.c_str(), inicio, tam);
         cifrarXOR(this->getFile(),tam);
@@ -164,7 +170,7 @@ bool ImagenGestor::extraerImgBin(unsigned long long  offset, unsigned long long 
 * Carga el .bin y el .inf
 */
 unsigned long long ImagenGestor::abrirImgBin(string password){
-    Traza::print("abrirImgBin.inicio:", W_DEBUG);
+    Traza::print("abrirImgBin.inicio:", W_PARANOIC);
     unsigned long long sumaOffset = 0;
     //Se cargan los campos del .inf en la lista de offsets
     cargarOffsets();
@@ -183,7 +189,7 @@ unsigned long long ImagenGestor::abrirImgBin(string password){
 * Antes de llamar a este metodo se debe haber llamado a setRuta, abrirImgBin y extraerImgBin
 */
 unsigned long long ImagenGestor::guardarImgBin(string password, string rutaTemp, unsigned long long tempOffset){
-    Traza::print("guardarImgBin.inicio:" + rutaTemp, W_DEBUG);
+    Traza::print("guardarImgBin.inicio:" + rutaTemp, W_PARANOIC);
     unsigned long long tamImg = 0;
     //Se carga en memoria la imagen seleccionada
     this->loadFromFile(rutaTemp.c_str());
@@ -205,7 +211,7 @@ unsigned long long ImagenGestor::guardarImgBin(string password, string rutaTemp,
  * @return 
  */
 unsigned long long ImagenGestor::writeImg(string rutaTemp, t_region regionPantalla, SDL_PixelFormat *format){
-    Traza::print("writeImg.inicio:" + rutaTemp, W_DEBUG);
+    Traza::print("writeImg.inicio:" + rutaTemp, W_PARANOIC);
     UIImageEncoder imgEncoder;
     SDL_Surface *tmpSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, regionPantalla.selW, regionPantalla.selH, format->BitsPerPixel, rmask,
                 gmask,
@@ -231,7 +237,7 @@ unsigned long long ImagenGestor::writeImg(string rutaTemp, t_region regionPantal
  * @return 
  */
 unsigned long long ImagenGestor::writeImg(string rutaTemp, SDL_Surface *surface){
-    Traza::print("writeImg.inicio:" + rutaTemp, W_DEBUG);
+    Traza::print("writeImg.inicio:" + rutaTemp, W_PARANOIC);
     
     if (surface == NULL)
         return 1;
@@ -287,7 +293,7 @@ char * ImagenGestor::calculaPass(string password){
         return(hash);
     }
     catch(...){
-        Traza::print("calculaPass: Error en el calculo del password", W_DEBUG);
+        Traza::print("calculaPass: Error en el calculo del password", W_PARANOIC);
         return NULL;
     }
 }
@@ -541,7 +547,7 @@ void ImagenGestor::blitImgMoved(SDL_Surface *src, SDL_Surface *dst, int dirMove)
             Constant::TipoToStr(top) + ", " + 
             Constant::TipoToStr(dst->w) + ", " + 
             Constant::TipoToStr(dst->h);
-    Traza::print(log, W_DEBUG);
+    Traza::print(log, W_PARANOIC);
     
     if (isFillBackgroundColour()){
         SDL_FillRect( dst, NULL, SDL_MapRGB(dst->format, colorBackground.r, colorBackground.g, colorBackground.b) );
@@ -566,10 +572,6 @@ bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, SDL_Surface *dstSurfac
         return false;
 
     if (this->isResize()){
-        //Guardamos un temporal de la imagen sin recortar al zoom
-        if (isEnabledMoveImg() && zoomValue < 0.0 && moveSurface == NULL){
-            makeMoveSurface(srcSurface, srcSurface->w, srcSurface->h);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
-        }
         if (redimension(srcSurface, dstSurface->w, dstSurface->h, &bitmap)){
             salida = centerAndBlit(bitmap, dstSurface, &dstRect);
         } else {
@@ -603,12 +605,8 @@ bool ImagenGestor::updateImgScr(SDL_Surface *srcSurface, SDL_Surface **dstSurfac
     unsigned long before = SDL_GetTicks();
 
     if (this->isResize()){
-        //Guardamos un temporal de la imagen sin recortar al zoom
-        if (isEnabledMoveImg() && zoomValue < 0.0 && moveSurface == NULL){
-            makeMoveSurface(srcSurface, srcSurface->w, srcSurface->h);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
-        }
         if (redimension(srcSurface, dstW, dstH, &bitmap)){
-            Traza::print("redimension", SDL_GetTicks() - before, W_DEBUG);
+            Traza::print("redimension", SDL_GetTicks() - before, W_PARANOIC);
             before = SDL_GetTicks();
         }
     } 
@@ -628,18 +626,18 @@ bool ImagenGestor::updateImgScr(SDL_Surface *srcSurface, SDL_Surface **dstSurfac
                                                      srfPointer->format->Bmask,
                                                      srfPointer->format->Amask);
     
-    Traza::print("SDL_CreateRGBSurface", SDL_GetTicks() - before, W_DEBUG);
+    Traza::print("SDL_CreateRGBSurface", SDL_GetTicks() - before, W_PARANOIC);
     before = SDL_GetTicks();
     
     if (isFillBackgroundColour()){
         //Si se pinta la imagen en el recuadro que haya definido para ella, se pinta el fondo total
         //del recuadro del color del fondo de la imagen
         SDL_FillRect(*dstSurface, NULL, SDL_MapRGB(srfPointer->format, colorBackground.r, colorBackground.g, colorBackground.b) );
-        Traza::print("SDL_FillRect", SDL_GetTicks() - before, W_DEBUG);
+        Traza::print("SDL_FillRect", SDL_GetTicks() - before, W_PARANOIC);
         before = SDL_GetTicks();
     }
     salida = centerAndBlit(srfPointer, *dstSurface, &dstRect);
-    Traza::print("centerAndBlit", SDL_GetTicks() - before, W_DEBUG);
+    Traza::print("centerAndBlit", SDL_GetTicks() - before, W_PARANOIC);
     before = SDL_GetTicks();
     return salida;
 }
@@ -755,10 +753,10 @@ bool ImagenGestor::redimension(SDL_Surface *srcSurface, int dstW, int dstH, SDL_
     }
     
     
-    Traza::print("srcSurface->w",srcSurface->w, W_DEBUG);
-    Traza::print("srcSurface->h",srcSurface->h, W_DEBUG);
-    Traza::print("newW",newW, W_DEBUG);
-    Traza::print("newH",newH, W_DEBUG);
+    Traza::print("srcSurface->w",srcSurface->w, W_PARANOIC);
+    Traza::print("srcSurface->h",srcSurface->h, W_PARANOIC);
+    Traza::print("newW",newW, W_PARANOIC);
+    Traza::print("newH",newH, W_PARANOIC);
     
     
     SDL_Surface *tmpSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, 
@@ -779,9 +777,9 @@ bool ImagenGestor::redimension(SDL_Surface *srcSurface, int dstW, int dstH, SDL_
         setLeftDif((srcSurface->w - newW)/2);
     }
     
-    if ((srcSurface->h - newH)/2 < -getTopDif() && (srcSurface->h - newH)/2 > 0){
+    if ((srcSurface->h - newH)/2 < - getTopDif() && (srcSurface->h - newH)/2 > 0){
         setTopDif(-(srcSurface->h - newH)/2);
-        Traza::print("seting top1", W_DEBUG);
+        Traza::print("seting top1", W_PARANOIC);
     } else if ((srcSurface->h - newH)/2 < getTopDif() && (srcSurface->h - newH)/2 > 0){
         setTopDif((srcSurface->h - newH)/2);
     }
@@ -789,14 +787,12 @@ bool ImagenGestor::redimension(SDL_Surface *srcSurface, int dstW, int dstH, SDL_
         setTopDif(0);
     }
     
-
+    Traza::print("(srcSurface->h - newH)/2: ", (srcSurface->h - newH)/2, W_PARANOIC);
+    Traza::print("getLeftDif(): " + Constant::TipoToStr(getLeftDif()), W_PARANOIC);
+    Traza::print("getTopDif(): " + Constant::TipoToStr(getTopDif()), W_PARANOIC);
     
-    Traza::print("(srcSurface->h - newH)/2: ", (srcSurface->h - newH)/2, W_DEBUG);
-    Traza::print("getLeftDif(): " + Constant::TipoToStr(getLeftDif()), W_DEBUG);
-    Traza::print("getTopDif(): " + Constant::TipoToStr(getTopDif()), W_DEBUG);
-    
-//    posx = (srcSurface->w - newW)/2 + getLeftDif();
-//    posy = (srcSurface->h - newH)/2 + getTopDif();
+//    posx = (srcSurface->w - newW)/2;
+//    posy = (srcSurface->h - newH)/2;
     posx = (srcSurface->w - newW)/2 + getLeftDif();
     posy = (srcSurface->h - newH)/2 + getTopDif();
     
@@ -998,12 +994,12 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
             //Cargamos la imagen
             unsigned long before = SDL_GetTicks();
             ret = loadImgFromMem(&mySurface);
-            Traza::print("loadImgFromMem", SDL_GetTicks() - before, W_DEBUG);
+            Traza::print("loadImgFromMem", SDL_GetTicks() - before, W_PARANOIC);
             before = SDL_GetTicks();
             
             if (mySurface != NULL && ret) {
                 calcImgLocationFromIndex(indice, destw, desth, regionPantalla, imgLocation);
-                Traza::print("calcImgLocationFromIndex", SDL_GetTicks() - before, W_DEBUG);
+                Traza::print("calcImgLocationFromIndex", SDL_GetTicks() - before, W_PARANOIC);
                 before = SDL_GetTicks();
                 Traza::print("Imagen cargada de memoria: " + Constant::TipoToStr(mySurface->w) + "x" + Constant::TipoToStr(mySurface->h), W_PARANOIC);
                 //Creamos la imagen y la pintamos por pantalla
@@ -1012,7 +1008,7 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
                 desth = desth - getBordeTop() - getBordeBottom();
 
                 updateImgScr(mySurface, &thumbSurface, destw, desth);
-                Traza::print("updateImgScr", SDL_GetTicks() - before, W_DEBUG);
+                Traza::print("updateImgScr", SDL_GetTicks() - before, W_PARANOIC);
                 before = SDL_GetTicks();
                 
                 int xAntesCentrar = imgLocation->x;
@@ -1033,7 +1029,7 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
                 }
                 
                 SDL_BlitSurface(thumbSurface, NULL, dst, imgLocation);
-                Traza::print("SDL_BlitSurface", SDL_GetTicks() - before, W_DEBUG);
+                Traza::print("SDL_BlitSurface", SDL_GetTicks() - before, W_PARANOIC);
                 before = SDL_GetTicks();
                 //Guardamos el tamanyo y la posicion de la imagen respecto a la pantalla
                 imgLocationRelScreen.x = imgLocation->x - xAntesCentrar;

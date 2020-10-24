@@ -26,8 +26,6 @@ class ImagenGestor : public Fileio{
         bool extraerImg(unsigned int);
         //void extraerImgBin(string, string);
         bool extraerImgBin(unsigned long long , unsigned long long );
-        listaSimple<unsigned long long> *offsets;
-
         void catDiractualRuta(string);
         void setRuta(string);
         string getRuta(){return rutaImg;}
@@ -97,13 +95,7 @@ class ImagenGestor : public Fileio{
         void setImgOrigWidth(int var){imgOrigWidth = var;}
         void setImgOrigHeight(int var){imgOrigHeight = var;}
 
-        void clearImg(){
-            this->clearFile();
-            if (moveSurface != NULL){
-                SDL_FreeSurface(moveSurface);
-                moveSurface = NULL;
-            }
-        }
+        void clearImg();
 
         //Funciones para cargar las imagenes en memoria
         bool loadImgDisplay(const char *uri, SDL_Surface **destino);
@@ -138,6 +130,7 @@ class ImagenGestor : public Fileio{
         void blitImgMoved(SDL_Surface * src, SDL_Surface * dst, int dirMove);
 
     private :
+        listaSimple<unsigned long long> *offsets;
         char hash[4];
         string rutaImg;
         string rutaInf;
