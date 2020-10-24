@@ -1,6 +1,5 @@
 #include "ImagenGestor.h"
 
-
 /**
 *
 */
@@ -40,6 +39,12 @@ ImagenGestor::~ImagenGestor(){
     if (this->surface != NULL){
         Traza::print("Eliminando Imagen", W_PARANOIC);
         SDL_FreeSurface(this->surface);
+        this->surface = NULL;
+    }
+    
+    if (moveSurface != NULL){
+        SDL_FreeSurface(moveSurface);
+        moveSurface = NULL;
     }
 }
 
@@ -307,16 +312,20 @@ void ImagenGestor::cifrarXOR(char *finCifr, unsigned int tam){
 * decZoom
 */
 double ImagenGestor::decZoom(){
-    zoomValue += ZOOMINCREMENT;
-    return zoomValue;
+    if (zoomValue + ZOOMINCREMENT <= 0){
+        zoomValue += ZOOMINCREMENT;
+    } 
+    return zoomValue / (double)10;
 }
 
 /**
 * incZoom
 */
 double ImagenGestor::incZoom(){
-    zoomValue -= ZOOMINCREMENT;
-    return zoomValue;
+    if (zoomValue - ZOOMINCREMENT > -10){
+        zoomValue -= ZOOMINCREMENT;
+    }
+    return zoomValue / (double)10;
 }
 
 SDL_Surface * ImagenGestor::getSurface(){
@@ -330,12 +339,12 @@ void ImagenGestor::setSurface(SDL_Surface *srf){
     this->surface = srf;
 }
 
-
 /**
 * throws Excepcion
 */
 bool ImagenGestor::loadImgFromFile(const char *uri, SDL_Surface **destino){
     try{
+        clearImg();
         bool cargado = this->loadFromFile(uri); //Almacena el fichero en la memoria para cargarlo despues
         if (this->getFileSize() > 0 && cargado){
             loadImgFromMem(this->getFile(), this->getFileSize(), destino);
@@ -354,6 +363,7 @@ bool ImagenGestor::loadImgFromFile(const char *uri, SDL_Surface **destino){
 */
 bool ImagenGestor::loadImgDisplay(const char *uri, SDL_Surface **destino){
     try{
+        clearImg();
         bool cargado = this->loadFromFile(uri); //Almacena el fichero en la memoria para cargarlo despues
         if (this->getFileSize() > 0 && cargado){
             SDL_Surface *tmpImage;
@@ -380,6 +390,7 @@ bool ImagenGestor::loadImgDisplay(const char *uri, SDL_Surface **destino){
 */
 bool ImagenGestor::loadImgFromFileZoom(const char *uri, SDL_Surface **destino, SDL_Rect *dstrect){
     try{
+        clearImg();
         bool cargado = this->loadFromFile(uri); //Almacena el fichero en la memoria para cargarlo despues
         if (this->getFileSize() > 0 && cargado){
             loadImgFromMem(this->getFile(), this->getFileSize(), destino);
@@ -427,12 +438,11 @@ bool ImagenGestor::loadImgFromMem(char *fileArray, int size, SDL_Surface **desti
     freesrc - A non-zero value mean is will automatically close/free the src for you.
     */
     bool ret = false;
-
-    if (moveSurface != NULL){
-        SDL_FreeSurface(moveSurface);
-        moveSurface = NULL;
-    }
-    if (size > 0 && fileArray != NULL){
+    
+    if (this->isResize() && moveSurface != NULL && isEnabledMoveImg()){
+        *destino = SDL_ConvertSurface(moveSurface, moveSurface->format, moveSurface->flags);
+        ret = (*destino != NULL);
+    } else if (size > 0 && fileArray != NULL){
         SDL_RWops *tempSurfWop = SDL_RWFromMem(fileArray,size);
         if (tempSurfWop != NULL){
             if (VIEWALPHA){
@@ -446,12 +456,20 @@ bool ImagenGestor::loadImgFromMem(char *fileArray, int size, SDL_Surface **desti
                 ret = true;
             } else {
                 *destino = IMG_Load_RW(tempSurfWop,0);
-                if (destino == NULL) 
-                    throw Excepcion(EFIO);
-                ret = true;
+                if (*destino == NULL){
+                    ret = false;
+                } else {
+                    ret = true;
+                    if (this->isResize() && moveSurface == NULL && isEnabledMoveImg()){
+                        //Guardamos un temporal de la imagen sin recortar al zoom
+                        makeMoveSurface(*destino, (*destino)->w, (*destino)->h);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
+                    }
+                }
             }
         }
     }
+    
+    
     return ret;
 }
 
@@ -463,13 +481,13 @@ bool ImagenGestor::loadImgFromMem(char *fileArray, int size, SDL_Surface **desti
  */
 void ImagenGestor::makeMoveSurface(SDL_Surface *mySurface, int w, int h){
     if (mySurface != NULL) {
-        if (mySurface->w > w || mySurface->h > h){
+//        if (mySurface->w > w || mySurface->h > h){
             if (moveSurface != NULL){
                 SDL_FreeSurface(moveSurface);
                 moveSurface = NULL;
             }
             moveSurface = SDL_ConvertSurface(mySurface, mySurface->format, mySurface->flags);
-        }
+//        }
     }
 }
 
@@ -546,12 +564,13 @@ bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, SDL_Surface *dstSurfac
         return false;
     if (srcSurface->w <= 0 || srcSurface->h <= 0 || dstSurface->w <= 0 || dstSurface->h <= 0 ) 
         return false;
-    
+
     if (this->isResize()){
+        //Guardamos un temporal de la imagen sin recortar al zoom
+        if (isEnabledMoveImg() && zoomValue < 0.0 && moveSurface == NULL){
+            makeMoveSurface(srcSurface, srcSurface->w, srcSurface->h);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
+        }
         if (redimension(srcSurface, dstSurface->w, dstSurface->h, &bitmap)){
-            if (isEnabledMoveImg() && zoomValue < 0.0){
-                makeMoveSurface(bitmap, srcSurface->w, srcSurface->h);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
-            }
             salida = centerAndBlit(bitmap, dstSurface, &dstRect);
         } else {
             salida = centerAndBlit(srcSurface, dstSurface, &dstRect);
@@ -571,7 +590,7 @@ bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, SDL_Surface *dstSurfac
  * @param dstSurface
  * @return 
  */
-bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, int dstW, int dstH, SDL_Surface **dstSurface, SDL_PixelFormat *format){
+bool ImagenGestor::updateImgScr(SDL_Surface *srcSurface, SDL_Surface **dstSurface, int dstW, int dstH){
     SDL_Rect dstRect = { 0,0,0,0 };
     SDL_Surface *bitmap = NULL;
     bool salida = false;
@@ -581,25 +600,47 @@ bool ImagenGestor::updateImgScr(SDL_Surface * srcSurface, int dstW, int dstH, SD
     if (srcSurface->w <= 0 || srcSurface->h <= 0) 
         return false;
     
+    unsigned long before = SDL_GetTicks();
+
     if (this->isResize()){
+        //Guardamos un temporal de la imagen sin recortar al zoom
+        if (isEnabledMoveImg() && zoomValue < 0.0 && moveSurface == NULL){
+            makeMoveSurface(srcSurface, srcSurface->w, srcSurface->h);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
+        }
         if (redimension(srcSurface, dstW, dstH, &bitmap)){
-            if (isEnabledMoveImg() && zoomValue < 0.0){
-                makeMoveSurface(bitmap, srcSurface->w, srcSurface->h);    //Para que podamos movernos por la imagen si la estamos viendo a pantalla completa
-            }
+            Traza::print("redimension", SDL_GetTicks() - before, W_DEBUG);
+            before = SDL_GetTicks();
         }
     } 
+    
+    SDL_Surface *srfPointer = bitmap != NULL ? bitmap : srcSurface;
+    if (srfPointer == NULL){
+        Traza::print("Error de redimension", W_ERROR);    
+        return false;
+    }
         
-    *dstSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, bitmap != NULL ? bitmap->w : srcSurface->w, 
-                                                     bitmap != NULL ? bitmap->h : srcSurface->h, 
-                                                     format->BitsPerPixel,0,0,0,0);
+    
+    SDL_SetAlpha(srfPointer, 0, 0) ;
+    *dstSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, srfPointer->w, srfPointer->h, 
+                                                     srfPointer->format->BitsPerPixel,
+                                                     srfPointer->format->Rmask,
+                                                     srfPointer->format->Gmask,
+                                                     srfPointer->format->Bmask,
+                                                     srfPointer->format->Amask);
+    
+    Traza::print("SDL_CreateRGBSurface", SDL_GetTicks() - before, W_DEBUG);
+    before = SDL_GetTicks();
     
     if (isFillBackgroundColour()){
         //Si se pinta la imagen en el recuadro que haya definido para ella, se pinta el fondo total
         //del recuadro del color del fondo de la imagen
-        SDL_FillRect(*dstSurface, NULL, SDL_MapRGB(format, colorBackground.r, colorBackground.g, colorBackground.b) );
+        SDL_FillRect(*dstSurface, NULL, SDL_MapRGB(srfPointer->format, colorBackground.r, colorBackground.g, colorBackground.b) );
+        Traza::print("SDL_FillRect", SDL_GetTicks() - before, W_DEBUG);
+        before = SDL_GetTicks();
     }
-    salida = centerAndBlit(bitmap != NULL ? bitmap : srcSurface, *dstSurface, &dstRect);
-    
+    salida = centerAndBlit(srfPointer, *dstSurface, &dstRect);
+    Traza::print("centerAndBlit", SDL_GetTicks() - before, W_DEBUG);
+    before = SDL_GetTicks();
     return salida;
 }
 
@@ -637,8 +678,10 @@ void ImagenGestor::calcRectCent( SDL_Rect *rectCentrado, int srcW, int srcH, int
     rectCentrado->y=centroy;
     rectCentrado->w=dstW - this->getBordeRight();
     rectCentrado->h=dstH - this->getBordeBottom();
-    rectCentrado->x -= this->getLeftDif();
-    rectCentrado->y -= this->getTopDif();
+//    rectCentrado->x -= this->getLeftDif();
+//    rectCentrado->y -= this->getTopDif();
+    rectCentrado->x = 0;
+    rectCentrado->y = 0;
 
     if (srcW < dstW){
         //Si el ancho de la imagen cabe en pantalla no necesitamos moverla.
@@ -649,10 +692,10 @@ void ImagenGestor::calcRectCent( SDL_Rect *rectCentrado, int srcW, int srcH, int
         //Si la imagen no cabe, intentamos que no sobrepase los limites de la pantalla
         if (rectCentrado->x >= 0){
             rectCentrado->x = 0;
-            this->setLeftDif(centrox);
+//            this->setLeftDif(centrox);
         } else if (rectCentrado->x <= dstW - srcW){
             rectCentrado->x = dstW - srcW;
-            this->setLeftDif(centrox + (srcW - dstW) );
+//            this->setLeftDif(centrox + (srcW - dstW) );
         }
     }
 
@@ -665,10 +708,10 @@ void ImagenGestor::calcRectCent( SDL_Rect *rectCentrado, int srcW, int srcH, int
         //Si la imagen no cabe, intentamos que no sobrepase los limites de la pantalla
         if (rectCentrado->y >= 0){
             rectCentrado->y = 0;
-            this->setTopDif(centroy);
+//            this->setTopDif(centroy);
         } else if (rectCentrado->y <= dstH - srcH){
             rectCentrado->y = dstH - srcH;
-            this->setTopDif(centroy + (srcH - dstH) );
+//            this->setTopDif(centroy + (srcH - dstH) );
         }
     }
     
@@ -686,16 +729,98 @@ bool ImagenGestor::redimension(SDL_Surface *srcSurface, int dstW, int dstH, SDL_
     float i_relacion = 1;
     int h_destino = dstH;
     int w_destino = dstW;
+    
+    if (srcSurface == NULL)
+        return false;
+    
+    if (srcSurface->h <= 0 || dstH <= 0)
+        return false;
 
-    i_relacion = relacion(srcSurface,h_destino,w_destino);//Calcula cuanto hay que reducir la imagen para que quepa por pantalla
+    i_relacion = relacion(srcSurface, h_destino,w_destino);//Calcula cuanto hay que reducir la imagen para que quepa por pantalla
+    double ratioOrigen = srcSurface->w / (double)srcSurface->h;
+    double ratioPantalla = dstW / (double)dstH;
+    
+    int newW = srcSurface->w * (ratioOrigen < ratioPantalla ? 1.0 : 1.0+getZoom());
+    int newH = srcSurface->h * (ratioOrigen > ratioPantalla ? 1.0 : 1.0+getZoom());
+
+    double ratioDestino = newW / newH;
+    
+    if (srcSurface->h > 0 && newH > 0 && dstH > 0){
+        ratioDestino = newW / newH;
+        if (ratioOrigen > ratioPantalla && ratioDestino < ratioPantalla && newW < srcSurface->w){
+            newH = newW / ratioPantalla;
+        } else if (ratioOrigen < ratioPantalla && (newH * ratioPantalla) < srcSurface->w){
+            newW = newH * ratioPantalla;
+        }
+    }
+    
+    
+    Traza::print("srcSurface->w",srcSurface->w, W_DEBUG);
+    Traza::print("srcSurface->h",srcSurface->h, W_DEBUG);
+    Traza::print("newW",newW, W_DEBUG);
+    Traza::print("newH",newH, W_DEBUG);
+    
+    
+    SDL_Surface *tmpSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, 
+                newW, newH,
+                srcSurface->format->BitsPerPixel, 
+                srcSurface->format->Rmask,
+                srcSurface->format->Gmask,
+                srcSurface->format->Bmask,
+                srcSurface->format->Amask);
+    i_relacion = relacion(tmpSurface, h_destino, w_destino);//Calcula cuanto hay que reducir la imagen para que quepa por pantalla
+
+    
+    //Calculando los limites en los que se puede mover la imagen
+    int posx, posy;
+    if ((srcSurface->w - newW)/2 + getLeftDif() < 0){
+        setLeftDif(-(srcSurface->w - newW)/2);
+    } else if (getLeftDif() > (srcSurface->w - newW)/2){
+        setLeftDif((srcSurface->w - newW)/2);
+    }
+    
+    if ((srcSurface->h - newH)/2 < -getTopDif() && (srcSurface->h - newH)/2 > 0){
+        setTopDif(-(srcSurface->h - newH)/2);
+        Traza::print("seting top1", W_DEBUG);
+    } else if ((srcSurface->h - newH)/2 < getTopDif() && (srcSurface->h - newH)/2 > 0){
+        setTopDif((srcSurface->h - newH)/2);
+    }
+    else if ((srcSurface->h - newH)/2 <= 0){
+        setTopDif(0);
+    }
+    
+
+    
+    Traza::print("(srcSurface->h - newH)/2: ", (srcSurface->h - newH)/2, W_DEBUG);
+    Traza::print("getLeftDif(): " + Constant::TipoToStr(getLeftDif()), W_DEBUG);
+    Traza::print("getTopDif(): " + Constant::TipoToStr(getTopDif()), W_DEBUG);
+    
+//    posx = (srcSurface->w - newW)/2 + getLeftDif();
+//    posy = (srcSurface->h - newH)/2 + getTopDif();
+    posx = (srcSurface->w - newW)/2 + getLeftDif();
+    posy = (srcSurface->h - newH)/2 + getTopDif();
+    
+    //Calculamos el recuadro para cortar la imagen
+    SDL_Rect srcRect = { ratioDestino != ratioPantalla ? posx : 0, 
+                         ratioDestino != ratioOrigen ? posy : 0, 
+                         newW, newH};
+    
+    
+    SDL_SetAlpha(srcSurface, 0, 0) ;
+    SDL_BlitSurface(srcSurface, &srcRect, tmpSurface, NULL);   
+    
 
     if (i_relacion != 1. && i_relacion != 0.){
         if (this->isBestfit()){
-            *destino = rotozoomSurfaceXY(srcSurface, 0., 1/this->getZoomX(), 1/this->getZoomY(), this->isSmooth());
+            *destino = rotozoomSurfaceXY(tmpSurface, 0., 1/this->getZoomX(), 1/this->getZoomY(), this->isSmooth());
         } else {
-            *destino = rotozoomSurface(srcSurface, 0., 1/i_relacion, this->isSmooth());
+            *destino = rotozoomSurface(tmpSurface, 0., 1/i_relacion, this->isSmooth());
+            //*destino = zoomSurface(srcSurface, 1/i_relacion, 1/i_relacion, this->isSmooth());
         }
+        Traza::print("destino", (*destino)->w, W_PARANOIC);
         SDL_FreeSurface(srcSurface);
+        srcSurface = NULL;
+        SDL_FreeSurface(tmpSurface);
 
         if (destino == NULL){
             this->setZoom(0);
@@ -729,14 +854,14 @@ float ImagenGestor::relacion(SDL_Surface *source, int alto, int ancho)
       nPercent = this->getZoomX();
 
    Traza::print("nPercent",(int)nPercent, W_PARANOIC);
-   Traza::print("zoom",(int)this->getZoom(), W_PARANOIC);
+   Traza::print("zoom" + Constant::TipoToStr(this->getZoom()), W_PARANOIC);
 
-   if (nPercent + this->getZoom() < 0.5){
-        this->setZoom(0.5 - nPercent);
-        nPercent = 0.5; //No podemos pasar del doble del tamanyo de la imagen
-   } else {
-        nPercent += this->getZoom();
-   }
+//   if (nPercent + this->getZoom() < 0.5){
+//        this->setZoom(0.5 - nPercent);
+//        nPercent = 0.5; //No podemos pasar del doble del tamanyo de la imagen
+//   } else {
+//        nPercent += this->getZoom();
+//   }
 
    if (!this->isBestfit() && nPercent < 1. && this->getZoom() == 0) nPercent = 1.;
 
@@ -833,9 +958,25 @@ bool ImagenGestor::calcImgLocationFromIndex(int indice, int destw, int desth, t_
  * @return 
  */
 bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionPantalla, SDL_Surface *dst){
-    SDL_Rect *imgLocation = new SDL_Rect();
-    drawImgMem(indice, destw, desth, regionPantalla, dst, imgLocation);
-    delete imgLocation;
+    SDL_Rect imgLocation;
+    bool ret = false;
+    ret = drawImgMem(indice, destw, desth, regionPantalla, dst, &imgLocation);
+//    SDL_Surface *mySurface = NULL;
+//    ret = loadImgFromMem(&mySurface);
+//    
+//    SDL_SetAlpha(mySurface, 0, 0) ;
+//    SDL_Surface *dstSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, mySurface->w, mySurface->h,
+//                                                     mySurface->format->BitsPerPixel,
+//                                                     mySurface->format->Rmask,
+//                                                     mySurface->format->Gmask,
+//                                                     mySurface->format->Bmask,
+//                                                     mySurface->format->Amask);
+//    
+//    SDL_BlitSurface(mySurface, NULL, dstSurface, NULL);
+//    SDL_BlitSurface(dstSurface, NULL, dst, NULL);
+//    SDL_FreeSurface(mySurface);
+//    SDL_FreeSurface(dstSurface);
+    return ret;
 }
 
 
@@ -855,17 +996,24 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
         try{
             SDL_Surface *mySurface = NULL;
             //Cargamos la imagen
+            unsigned long before = SDL_GetTicks();
             ret = loadImgFromMem(&mySurface);
+            Traza::print("loadImgFromMem", SDL_GetTicks() - before, W_DEBUG);
+            before = SDL_GetTicks();
             
             if (mySurface != NULL && ret) {
                 calcImgLocationFromIndex(indice, destw, desth, regionPantalla, imgLocation);
+                Traza::print("calcImgLocationFromIndex", SDL_GetTicks() - before, W_DEBUG);
+                before = SDL_GetTicks();
                 Traza::print("Imagen cargada de memoria: " + Constant::TipoToStr(mySurface->w) + "x" + Constant::TipoToStr(mySurface->h), W_PARANOIC);
                 //Creamos la imagen y la pintamos por pantalla
                 SDL_Surface *thumbSurface = NULL;
                 destw = destw - getBordeLeft() - getBordeRight();
                 desth = desth - getBordeTop() - getBordeBottom();
 
-                updateImgScr(mySurface, destw, desth, &thumbSurface, dst->format);
+                updateImgScr(mySurface, &thumbSurface, destw, desth);
+                Traza::print("updateImgScr", SDL_GetTicks() - before, W_DEBUG);
+                before = SDL_GetTicks();
                 
                 int xAntesCentrar = imgLocation->x;
                 int yAntesCentrar = imgLocation->y;
@@ -885,6 +1033,8 @@ bool ImagenGestor::drawImgMem(int indice, int destw, int desth, t_region regionP
                 }
                 
                 SDL_BlitSurface(thumbSurface, NULL, dst, imgLocation);
+                Traza::print("SDL_BlitSurface", SDL_GetTicks() - before, W_DEBUG);
+                before = SDL_GetTicks();
                 //Guardamos el tamanyo y la posicion de la imagen respecto a la pantalla
                 imgLocationRelScreen.x = imgLocation->x - xAntesCentrar;
                 imgLocationRelScreen.y = imgLocation->y - yAntesCentrar;

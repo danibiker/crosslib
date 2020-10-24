@@ -4,7 +4,7 @@
 #include "object.h"
 
 
-static const char* VALID_IMGS[] = {"jpg","jpeg","bmp", "gif"};
+static const char* VALID_IMGS[] = {".jpg",".jpeg",".bmp", ".gif", ".png"};
 
 class UIPicture : public Object
 {

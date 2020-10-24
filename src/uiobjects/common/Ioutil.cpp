@@ -1178,6 +1178,10 @@ bool Ioutil::drawImgObj(Object *obj){
     bool salida = false;
     int bordeAdd = 0;
     
+    if (!obj->isVisible()){
+        return false;
+    }
+    
     if (obj->getImgGestor()->isFillBackgroundColour() && obj->isVerContenedor() && obj->getObjectType() == GUIPICTURE){
         bordeAdd = 0;
     } else if (obj->isVerContenedor()){
@@ -1803,7 +1807,7 @@ void Ioutil::drawUIListGroupBox(Object *obj){
         } else if (!listObj->getImgDrawed()){
             int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
             listObj->setBgLetraPopup(false);
-            Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
+            Traza::print("Repintando lista: " + listObj->getLabel(), W_DEBUG);
             Traza::print("Alto de la lista: ", h, W_PARANOIC);
             pintarContenedor(x,y,w,h,listObj->isFocus() && listObj->isEnabled() && listObj->isVerContenedor(), obj, obj->getColor());
             x += INPUTCONTENT;
@@ -1823,10 +1827,9 @@ void Ioutil::drawUIListGroupBox(Object *obj){
             }
             cachearObjeto(listObj);
         } else {
-            Traza::print("Alto de la lista: ", h, W_PARANOIC);
+            //Traza::print("Alto de la lista: ", h, W_DEBUG);
             cachearObjeto(listObj);
         }
-        
         drawAllThumbnailBackgrounds(listObj);
     }
 }
@@ -1858,7 +1861,6 @@ void Ioutil::drawUIThumbnailImgBox(Object *obj){
                     pict->getImgGestor()->calcImgLocationFromIndex(imgIndex, pict->getW(), pict->getH()-1, regionPantalla, imgRect);
                     pict->setX(imgRect->x + pict->getImgGestor()->getImgLocationRelScreen().x);
                     pict->setY(imgRect->y + pict->getImgGestor()->getImgLocationRelScreen().y);
-//                    drawThumbnailText(obj, i);
                     cachearObjeto(pict);
                 }
             } else {
@@ -1888,6 +1890,7 @@ void Ioutil::drawAllThumbnailBackgrounds(UIListGroup *obj){
         UIImgList *listObj = (UIImgList *)obj;
         if (listObj->getMode() == IMGTHUMBMODE) {
             int imgIndex = 0;
+            loadFont(11);
             
             t_region regionPantalla = {obj->getX(), obj->getY(), obj->getW(), obj->getH()};
             SDL_Rect *imgRect = new SDL_Rect();
@@ -1897,20 +1900,19 @@ void Ioutil::drawAllThumbnailBackgrounds(UIListGroup *obj){
                 
                 if (pict != NULL){
                     pict->getImgGestor()->calcImgLocationFromIndex(imgIndex, pict->getW(), pict->getH()-1, regionPantalla, imgRect);
-                    if (!pict->getImgDrawed() || i == listObj->getPosActualLista()){
-                        posicion = pict->getImgGestor()->getImgLocationRelScreen();
+                    posicion = pict->getImgGestor()->getImgLocationRelScreen();
+                    if ((imgRect != NULL && posicion.w > 0 && posicion.h > 0) || i == listObj->getPosActualLista()){
                         drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());
                     }
                 } else {
                     listObj->getImgGestor()->calcImgLocationFromIndex(imgIndex, listObj->getPrevImgWidth(), listObj->getPrevImgHeight(), regionPantalla, imgRect);
                     drawThumbnailSelected(posicion, imgRect, i == listObj->getPosActualLista());
                 }
-//                if (i == listObj->getPosActualLista()){
-                    drawThumbnailText(listObj, i, imgRect);
-//                }
+                drawThumbnailText(listObj, i, imgRect);
                 imgIndex++;
             }
             delete imgRect;
+            loadFont(FONTSIZE);
         }
     }
 }
@@ -1990,7 +1992,6 @@ void Ioutil::drawThumbnailText(UIImgList *listObj, int i, SDL_Rect *imgRect){
     
     UIPicture* pict = listObj->getRow(i)->GetUipicture();
     string text = listObj->getRow(i)->GetListGroupCol().at(0)->getTexto();
-    loadFont(11);
     int posX = 0, posY = 0, posW = 0;
     int textW = fontStrLen(text);
     
@@ -2015,8 +2016,6 @@ void Ioutil::drawThumbnailText(UIImgList *listObj, int i, SDL_Rect *imgRect){
             posY,
             listObj->isEnabled() ? cNegro : cGris,
             &textArea);
-    
-    loadFont(FONTSIZE);
 }
 
 /**

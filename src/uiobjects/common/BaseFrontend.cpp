@@ -50,6 +50,7 @@ void BaseFrontend::initUIObjs(){
     obj->add(BTNCANCELARBROWSER, GUIBUTTON, (BUTTONW/2 + 5), 0, BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
     obj->add(ARTDIRBROWSER, GUIARTSURFACE, 0, 0, INPUTW, Constant::getINPUTH(), "Direcci%C3%B3n Browser", false)->setEnabled(false);
     obj->add(uicomboBrowser, GUICOMBOBOX, 0, 0, 0, 0, "", false);
+    getMenu(PANTALLABROWSER2)->getObjByName("uiimgFondo")->setVisible(false);
     
     obj = createMenu(PANTALLAPREGUNTA);
     obj->add(uivalor, GUIINPUTWIDE, 0, -20 * zoomText, INPUTW, Constant::getINPUTH(), "Dato:", true);

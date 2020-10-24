@@ -31,17 +31,33 @@ void UIPicture::action(tEvento *evento){
             this->imgGestor->incZoom();
             this->setImgDrawed(false);
     } else if ( (evento->isKey && evento->key == SDLK_KP6)){
-            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_RIGHT);
-            this->setImgDrawed(true);
+            //this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_RIGHT);
+            if (imgGestor->getMoveSurface() != NULL){
+                this->imgGestor->incLeftDif();
+                this->setImgDrawed(false);
+            }
     } else if ( (evento->isKey && evento->key == SDLK_KP4)){
-            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_LEFT);
-            this->setImgDrawed(true);
+            this->imgGestor->decLeftDif();
+            //this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_LEFT);
+            if (imgGestor->getMoveSurface() != NULL){
+                this->imgGestor->decLeftDif();
+                this->setImgDrawed(false);
+            }
+
     } else if ( (evento->isKey && evento->key == SDLK_KP8)){
-            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_UP);
-            this->setImgDrawed(true);
+//            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_UP);
+            if (imgGestor->getMoveSurface() != NULL){
+                this->imgGestor->decTopDif();
+                this->setImgDrawed(false);
+            }
+            this->setImgDrawed(false);
     } else if ( (evento->isKey && evento->key == SDLK_KP2)){
-            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_DOWN);
-            this->setImgDrawed(true);
+//            this->imgGestor->blitImgMoved(imgGestor->getMoveSurface(), this->surfaceCache, MOVE_DOWN);
+            if (imgGestor->getMoveSurface() != NULL){
+                this->imgGestor->incTopDif();
+                this->setImgDrawed(false);
+            }
+            this->setImgDrawed(false);
     } else if (evento->isMouse && evento->mouse == MOUSE_BUTTON_LEFT && evento->mouse_state == SDL_PRESSED){
            Traza::print("UIPicture::action: Mouse Pressed: " + this->getName(), W_DEBUG);
            if (SDL_GetTicks() - lastClick < DBLCLICKSPEED){

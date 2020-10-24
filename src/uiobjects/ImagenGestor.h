@@ -33,7 +33,7 @@ class ImagenGestor : public Fileio{
         string getRuta(){return rutaImg;}
         double incZoom();
         double decZoom();
-        double getZoom(){return zoomValue;}
+        double getZoom(){return zoomValue / (double)10;}
         bool isSmooth(){return smooth;}
         bool isResize(){return resize;}
         bool isBestfit(){return bestfit;}
@@ -96,9 +96,14 @@ class ImagenGestor : public Fileio{
         int getImgOrigHeight(){return imgOrigHeight;}
         void setImgOrigWidth(int var){imgOrigWidth = var;}
         void setImgOrigHeight(int var){imgOrigHeight = var;}
-        
 
-        void clearImg(){this->clearFile();}
+        void clearImg(){
+            this->clearFile();
+            if (moveSurface != NULL){
+                SDL_FreeSurface(moveSurface);
+                moveSurface = NULL;
+            }
+        }
 
         //Funciones para cargar las imagenes en memoria
         bool loadImgDisplay(const char *uri, SDL_Surface **destino);
@@ -110,7 +115,7 @@ class ImagenGestor : public Fileio{
         unsigned long long writeImg(string rutaTemp, SDL_Surface *surface);
         
         bool updateImgScr(SDL_Surface * srcSurface, SDL_Surface * dstSurface);
-        bool updateImgScr(SDL_Surface * srcSurface, int dstW, int dstH, SDL_Surface **dstSurface, SDL_PixelFormat *format);
+        bool updateImgScr(SDL_Surface * srcSurface, SDL_Surface **dstSurface, int dstW, int dstH);
         float relacion(SDL_Surface *source, int alto, int ancho);
         void calcRectCent( SDL_Rect *rectCentrado, int srcW, int srcH, int dstW, int dstH);
         bool redimension(SDL_Surface *srcSurface, int dstW, int dstH, SDL_Surface **destino);
@@ -137,7 +142,7 @@ class ImagenGestor : public Fileio{
         string rutaImg;
         string rutaInf;
         void cifrarXOR(char *, unsigned int);
-        double zoomValue;
+        int zoomValue;
         bool resize; //Especifica si se debe redimensionar la imagen o dejarla a su tamanyo real
         bool bestfit; //Especifica si se debe redimensionar la imagen para encajar al m�ximo en la pantalla
         bool smooth;
