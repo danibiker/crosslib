@@ -1,6 +1,7 @@
 #ifndef Dirutil_H
 #define Dirutil_H
 
+
 #include "fileprops.h"
 #include <dirent.h>
 #include <sys/stat.h>
@@ -9,14 +10,7 @@
 #include "Traza.h"
 #include "ListaSimple.h"
 #include <stdio.h>
-
-#ifdef WIN
-    #include <windows.h>
-#else 
-    #define MAX_PATH 255
-    #define DRIVE_FIXED 0 
-    #define DRIVE_CDROM 1
-#endif // WIN
+#include <vector>
 
 #ifndef lint
 /* Prevent over-aggressive optimizers from eliminating ID string */
@@ -52,6 +46,9 @@ class Dirutil{
         void listarDirRecursivo(string dir,  vector <FileProps> * filelist, string filtro);
         unsigned int listarDir(const char *, listaSimple<FileProps> * );
         unsigned int listarDir(const char *strdir, listaSimple<FileProps> * filelist, string filtro);
+        unsigned int listarFilesFast(const char *strdir, vector<FileProps> *filelist, string filtro);
+        unsigned int listarFilesSuperFast(const char *strdir, vector<FileProps> *filelist, string filtro, bool order, bool properties);
+        unsigned int listarDirFast(const char *strdir, vector<FileProps> * filelist, string filtro);
         unsigned int listarDirSinOrden(const char *, vector <FileProps> *, vector <FileProps> *, string filtro);
         unsigned int listarDirSinOrdenMaxFiles(const char *strdir, vector <FileProps> * tempFilelist
                                         ,vector <FileProps> * filelistFinal, string filtro, int maxSearchFiles, int maxResults);

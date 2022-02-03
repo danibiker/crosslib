@@ -19,6 +19,9 @@
 #ifndef Biquad_h
 #define Biquad_h
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 enum {
     bq_type_lowpass = 0,
     bq_type_highpass,

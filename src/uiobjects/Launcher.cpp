@@ -1,3 +1,12 @@
+#ifdef WIN
+    #include <winsock2.h>
+    #include <windows.h>
+#else
+    #define MAX_PATH 255
+    #define DRIVE_FIXED 0 
+    #define DRIVE_CDROM 1
+#endif // WIN
+
 #include "Launcher.h"
 
 #define LEER		0
@@ -219,7 +228,11 @@ bool Launcher::lanzarProgramaUNIXFork(FileLaunch *emulInfo){
 bool Launcher::createProcess(Executable execCMD){
 
     Dirutil dir;
-    string parm = execCMD.filenameinparms ? execCMD.param : execCMD.param + " " + execCMD.filerompath;
+    string parm = execCMD.param;
+    if (!execCMD.filenameinparms && !execCMD.filerompath.empty()){
+        parm += " " + execCMD.filerompath;
+    }
+    
     string command = dir.getFileNameNoExt(execCMD.ejecutable) + " " +  parm;
 
     char *AppName = new char[execCMD.ejecutable.length() + 1];

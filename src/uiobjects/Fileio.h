@@ -23,7 +23,7 @@ class Fileio{
         bool loadFromFile(string);
         bool loadFromFile(const char *, ifstream::pos_type , ifstream::pos_type);
         bool loadFromMem(const unsigned char *, size_t tam);
-        void writeToFile(const char *, char * ,ifstream::pos_type, bool append);
+        int writeToFile(const char *, char * ,ifstream::pos_type, bool append);
         bool clearFile();
         char * getFile() {return memblock;}
         ifstream::pos_type getFileSize(const char *);

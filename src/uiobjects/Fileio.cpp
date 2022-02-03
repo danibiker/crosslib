@@ -132,10 +132,11 @@ bool Fileio::loadFromFile(const char *uri, ifstream::pos_type ini, ifstream::pos
 * ios::app	All output operations are performed at the end of the file, appending the content to the current content of the file. This flag can only be used in streams open for output-only operations.
 * ios::trunc	If the file opened for output operations already existed before, its previous content is deleted and replaced by the new one.
 */
-void Fileio::writeToFile(const char *uri, char * memblocktowrite, ifstream::pos_type tam, bool append){
+int Fileio::writeToFile(const char *uri, char * memblocktowrite, ifstream::pos_type tam, bool append){
 
-    Traza::print("writeToFile:" + string(uri), W_DEBUG);
+    Traza::print("writeToFile:" + string(uri), W_PARANOIC);
     ofstream file;
+    int ret = 0;
 
     if (append){
         file.open(uri,ios::out | ios::binary | ios::app);
@@ -146,7 +147,8 @@ void Fileio::writeToFile(const char *uri, char * memblocktowrite, ifstream::pos_
     if (file.is_open()){
         file.write(memblocktowrite, tam);
         file.close();
-        Traza::print("writeToFile::Fichero escrito correctamente", W_DEBUG);
+        ret = 1;
+        Traza::print("writeToFile::Fichero escrito correctamente", W_PARANOIC);
     } else {
         Traza::print("writeToFile::Unable to write file", W_ERROR);
         file.close();//Cerramos el fichero
@@ -155,5 +157,6 @@ void Fileio::writeToFile(const char *uri, char * memblocktowrite, ifstream::pos_
     #ifdef GP2X
         sync();
     #endif
+    return ret;
 }
 

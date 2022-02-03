@@ -13,12 +13,12 @@
 #include <cctype>
 #include <iomanip>
 
-#ifdef WIN
-    #include <winsock2.h>
-    #include <windows.h>
-#endif // WIN
-
 using namespace std;
+
+    #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL 3.0
+    #define MAX_FILE_BUFFER 5*1024*1024
+    #define MIN_PROGRESS_CHUNK_OF_BYTES 512
+    #define SECONDS_TO_ABORT_STUCK_DOWNLOAD 60
 
 static const char* DIAS[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
 static const char* MESES[] = {"Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec" };

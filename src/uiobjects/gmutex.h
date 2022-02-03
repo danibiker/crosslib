@@ -1,11 +1,7 @@
 #ifndef _GMutex_h_
 #define _GMutex_h_
-#ifdef WIN
-    //#include <windows.h>
-    #include <pthread.h>
-#else
-    #include <pthread.h>
-#endif
+
+#include <pthread.h>
 
 class GMutex{
     public:

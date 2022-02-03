@@ -56,6 +56,8 @@
       <logicalFolder name="util" displayName="util" projectFiles="true">
         <itemPath>../src/httpcurl/util/ConstantHttp.cpp</itemPath>
         <itemPath>../src/httpcurl/util/ConstantHttp.h</itemPath>
+        <itemPath>../src/httpcurl/util/JsonParser.cpp</itemPath>
+        <itemPath>../src/httpcurl/util/JsonParser.h</itemPath>
         <itemPath>../src/httpcurl/util/Progress.cpp</itemPath>
         <itemPath>../src/httpcurl/util/Progress.h</itemPath>
       </logicalFolder>
@@ -63,6 +65,8 @@
       <itemPath>../src/httpcurl/htmlparser.h</itemPath>
       <itemPath>../src/httpcurl/httputil.cpp</itemPath>
       <itemPath>../src/httpcurl/httputil.h</itemPath>
+      <itemPath>../src/httpcurl/httputil2.cpp</itemPath>
+      <itemPath>../src/httpcurl/httputil2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -87,8 +91,25 @@
         <itemPath>../src/uiobjects/beans/listgroupcol.cpp</itemPath>
         <itemPath>../src/uiobjects/beans/listgroupcol.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="common" displayName="common" projectFiles="true">
+        <itemPath>../src/uiobjects/common/BaseDefines.h</itemPath>
+        <itemPath>../src/uiobjects/common/BaseFrontend.cpp</itemPath>
+        <itemPath>../src/uiobjects/common/BaseFrontend.h</itemPath>
+        <itemPath>../src/uiobjects/common/Icogestor.cpp</itemPath>
+        <itemPath>../src/uiobjects/common/Icogestor.h</itemPath>
+        <itemPath>../src/uiobjects/common/Ioutil.cpp</itemPath>
+        <itemPath>../src/uiobjects/common/Ioutil.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="font" displayName="font" projectFiles="true">
         <itemPath>../src/uiobjects/font/Arimo_Regular.ttf.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="image" displayName="image" projectFiles="true">
+        <itemPath>../src/uiobjects/image/ImageLoader.cpp</itemPath>
+        <itemPath>../src/uiobjects/image/ImageLoader.h</itemPath>
+        <itemPath>../src/uiobjects/image/ThreadImgLoader.cpp</itemPath>
+        <itemPath>../src/uiobjects/image/ThreadImgLoader.h</itemPath>
+        <itemPath>../src/uiobjects/image/ThreadImgWorker.cpp</itemPath>
+        <itemPath>../src/uiobjects/image/ThreadImgWorker.h</itemPath>
       </logicalFolder>
       <logicalFolder name="soutils" displayName="soutils" projectFiles="true">
         <itemPath>../src/uiobjects/soutils/SOUtils.cpp</itemPath>
@@ -110,7 +131,6 @@
       <itemPath>../src/uiobjects/Fileio.cpp</itemPath>
       <itemPath>../src/uiobjects/Fileio.h</itemPath>
       <itemPath>../src/uiobjects/ImagenGestor.cpp</itemPath>
-      <itemPath>../src/uiobjects/ImagenGestor.h</itemPath>
       <itemPath>../src/uiobjects/Launcher.cpp</itemPath>
       <itemPath>../src/uiobjects/Launcher.h</itemPath>
       <itemPath>../src/uiobjects/ListaSimple.cpp</itemPath>
@@ -144,6 +164,8 @@
       <itemPath>../src/uiobjects/uicheck.h</itemPath>
       <itemPath>../src/uiobjects/uicombobox.cpp</itemPath>
       <itemPath>../src/uiobjects/uicombobox.h</itemPath>
+      <itemPath>../src/uiobjects/uiimglist.cpp</itemPath>
+      <itemPath>../src/uiobjects/uiimglist.h</itemPath>
       <itemPath>../src/uiobjects/uiinput.cpp</itemPath>
       <itemPath>../src/uiobjects/uiinput.h</itemPath>
       <itemPath>../src/uiobjects/uilabel.cpp</itemPath>
@@ -159,7 +181,6 @@
       <itemPath>../src/uiobjects/uipanelborder.cpp</itemPath>
       <itemPath>../src/uiobjects/uipanelborder.h</itemPath>
       <itemPath>../src/uiobjects/uipicture.cpp</itemPath>
-      <itemPath>../src/uiobjects/uipicture.h</itemPath>
       <itemPath>../src/uiobjects/uipopupmenu.cpp</itemPath>
       <itemPath>../src/uiobjects/uipopupmenu.h</itemPath>
       <itemPath>../src/uiobjects/uiprogressbar.cpp</itemPath>
@@ -303,6 +324,10 @@
       </item>
       <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/httpcurl/httputil2.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/httpcurl/image/uiimgdownloader.cpp"
             ex="false"
             tool="1"
@@ -405,6 +430,13 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/util/JsonParser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/JsonParser.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
@@ -442,8 +474,6 @@
       <item path="../src/uiobjects/Fileio.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/ImagenGestor.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/Launcher.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -491,6 +521,35 @@
       </item>
       <item path="../src/uiobjects/common.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/common/BaseDefines.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/uiobjects/cursor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/cursor.h" ex="false" tool="3" flavor2="0">
@@ -507,6 +566,36 @@
             flavor2="0">
       </item>
       <item path="../src/uiobjects/gmutex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/uiobjects/joymapper.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -547,6 +636,10 @@
       </item>
       <item path="../src/uiobjects/uicombobox.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/uiimglist.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiimglist.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/uiobjects/uiinput.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/uiinput.h" ex="false" tool="3" flavor2="0">
@@ -576,8 +669,6 @@
       <item path="../src/uiobjects/uipanelborder.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uipicture.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/uipopupmenu.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -631,19 +722,24 @@
             <pElem>../src/rijndael</pElem>
             <pElem>../src/uiobjects</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
+            <Elem>SKIP_PEER_VERIFICATION</Elem>
+            <Elem>WIN</Elem>
+          </preprocessorList>
         </cTool>
         <ccTool>
           <incDir>
             <pElem>../src/httpcurl</pElem>
             <pElem>../src/rijndael</pElem>
             <pElem>../src/uiobjects</pElem>
+            <pElem>../../../../msys2/mingw64/include/SDL</pElem>
           </incDir>
           <commandLine>-fpermissive</commandLine>
           <preprocessorList>
             <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
             <Elem>SKIP_PEER_VERIFICATION</Elem>
             <Elem>WIN</Elem>
-            <Elem>WIN32</Elem>
           </preprocessorList>
         </ccTool>
         <archiverTool>
@@ -710,6 +806,10 @@
       <item path="../src/httpcurl/httputil.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/image/uiimgdownloader.cpp"
             ex="false"
@@ -813,6 +913,13 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/util/JsonParser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/JsonParser.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
@@ -849,9 +956,7 @@
       </item>
       <item path="../src/uiobjects/Fileio.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/ImagenGestor.h" ex="false" tool="3" flavor2="0">
+      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/Launcher.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -899,6 +1004,35 @@
       </item>
       <item path="../src/uiobjects/common.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/common/BaseDefines.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/uiobjects/cursor.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/cursor.h" ex="false" tool="3" flavor2="0">
@@ -915,6 +1049,36 @@
             flavor2="0">
       </item>
       <item path="../src/uiobjects/gmutex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/uiobjects/joymapper.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -955,416 +1119,9 @@
       </item>
       <item path="../src/uiobjects/uicombobox.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/uiobjects/uiinput.cpp" ex="false" tool="1" flavor2="9">
+      <item path="../src/uiobjects/uiimglist.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../src/uiobjects/uiinput.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uilabel.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uilabel.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uilist.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uilist.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uilistcommon.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uilistcommon.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uilistgroup.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uilistgroup.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uipanel.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uipanel.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uipanelborder.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uipanelborder.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uipicture.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uipopupmenu.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uipopupmenu.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uiprogressbar.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uiprogressbar.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uislider.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uislider.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uispectrum.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uispectrum.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uitextelementsarea.cpp"
-            ex="false"
-            tool="1"
-            flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uitextelementsarea.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/uiobjects/unzip/GZipHelper.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/uiobjects/unzip/unziptool.cpp"
-            ex="false"
-            tool="1"
-            flavor2="9">
-      </item>
-      <item path="../src/uiobjects/unzip/unziptool.h" ex="false" tool="3" flavor2="0">
-      </item>
-    </conf>
-    <conf name="Debug32" type="3">
-      <toolsSet>
-        <compilerSet>MinGW32|MinGW</compilerSet>
-        <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
-      </toolsSet>
-      <compileType>
-        <cTool>
-          <incDir>
-            <pElem>../src/httpcurl</pElem>
-            <pElem>../src/rijndael</pElem>
-            <pElem>../src/uiobjects</pElem>
-          </incDir>
-          <warningLevel>0</warningLevel>
-        </cTool>
-        <ccTool>
-          <incDir>
-            <pElem>../src/httpcurl</pElem>
-            <pElem>../src/rijndael</pElem>
-            <pElem>../src/uiobjects</pElem>
-            <pElem>../../../Proyectos/Galera/src</pElem>
-          </incDir>
-          <commandLine>-fpermissive</commandLine>
-          <preprocessorList>
-            <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
-            <Elem>SKIP_PEER_VERIFICATION</Elem>
-            <Elem>WIN</Elem>
-            <Elem>WIN32</Elem>
-          </preprocessorList>
-          <warningLevel>0</warningLevel>
-        </ccTool>
-        <archiverTool>
-        </archiverTool>
-      </compileType>
-      <item path="../src/audioplayer/audiocd/AudioCD_Helpers.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audiocd/AudioCD_Helpers.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audiocd/CAudioCD.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audiocd/CAudioCD.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audiocd/CBuf.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audiocd/SimpleAudioCD - Example.txt"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audiocd/SimpleAudioCD.txt"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audioplayer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/audioplayer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/biquad.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/biquad.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/fft/Complex.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/fft/Fft.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/fft/Fft.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/main.cpp.bak" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/audioplayer/main2.cpp.bak" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/cddb/freedb.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/cddb/freedb.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/htmlparser.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/htmlparser.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/httputil.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/image/uiimgdownloader.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/image/uiimgdownloader.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/image/uiimgencoder.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/image/uiimgencoder.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/MusixMatch.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/MusixMatch.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/darklyrics.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/darklyrics.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/lyricsbase.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/lyricsbase.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/lyricswikia.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/lyrics/lyricswikia.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/allmyvideos.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/dropbox.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/googledrive.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/ioauth2.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/onedrive.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/streamcloud.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/util/ConstantHttp.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/util/ConstantHttp.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/rijndael/filecipher.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/rijndael/rijndael.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/rijndael/rijndael.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/rijndael/sha256.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/rijndael/sha256.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Colorutil.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Colorutil.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Constant.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Constant.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Dirutil.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Dirutil.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Excepcion.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Excepcion.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Fileio.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Fileio.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/ImagenGestor.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Launcher.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Launcher.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/ListaSimple.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/SHA1.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/Traza.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/Traza.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/UITreeListBox.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/beans/listGroupElement.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/uiobjects/beans/listGroupElement.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/uiobjects/beans/listgroupcol.cpp"
-            ex="false"
-            tool="1"
-            flavor2="9">
-      </item>
-      <item path="../src/uiobjects/beans/listgroupcol.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/uiobjects/common.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/cursor.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/cursor.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/filelaunch.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/filelaunch.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/fileprops.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/font/Arimo_Regular.ttf.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../src/uiobjects/gmutex.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/joymapper.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/joymapper.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/listaIni.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/object.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/object.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/registry.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/registry.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/soutils/SOUtils.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../src/uiobjects/soutils/SOUtils.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/thread.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uiart.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uiart.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uibutton.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uibutton.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uicheck.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uicheck.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/uiobjects/uicombobox.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uicombobox.h" ex="false" tool="3" flavor2="0">
+      <item path="../src/uiobjects/uiimglist.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/uiobjects/uiinput.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1394,9 +1151,7 @@
       </item>
       <item path="../src/uiobjects/uipanelborder.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uipicture.h" ex="false" tool="3" flavor2="0">
+      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/uipopupmenu.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1467,7 +1222,6 @@
             <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
             <Elem>SKIP_PEER_VERIFICATION</Elem>
             <Elem>WIN</Elem>
-            <Elem>WIN32</Elem>
           </preprocessorList>
         </ccTool>
         <archiverTool>
@@ -1534,6 +1288,10 @@
       <item path="../src/httpcurl/httputil.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/httpcurl/image/uiimgdownloader.cpp"
             ex="false"
@@ -1637,6 +1395,13 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/util/JsonParser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/JsonParser.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
@@ -1673,9 +1438,7 @@
       </item>
       <item path="../src/uiobjects/Fileio.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/ImagenGestor.h" ex="false" tool="3" flavor2="0">
+      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/Launcher.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1723,6 +1486,35 @@
       </item>
       <item path="../src/uiobjects/common.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/common/BaseDefines.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/uiobjects/cursor.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/cursor.h" ex="false" tool="3" flavor2="0">
@@ -1739,6 +1531,36 @@
             flavor2="0">
       </item>
       <item path="../src/uiobjects/gmutex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/uiobjects/joymapper.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1779,6 +1601,10 @@
       </item>
       <item path="../src/uiobjects/uicombobox.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/uiimglist.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiimglist.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/uiobjects/uiinput.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/uiinput.h" ex="false" tool="3" flavor2="0">
@@ -1807,9 +1633,7 @@
       </item>
       <item path="../src/uiobjects/uipanelborder.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/uipicture.h" ex="false" tool="3" flavor2="0">
+      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/uipopupmenu.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1863,6 +1687,7 @@
             <pElem>../src/httpcurl</pElem>
             <pElem>../src/rijndael</pElem>
             <pElem>../src/uiobjects</pElem>
+            <pElem>../../../../msys2/mingw64/include/SDL</pElem>
           </incDir>
         </cTool>
         <ccTool>
@@ -1871,6 +1696,7 @@
             <pElem>../src/httpcurl</pElem>
             <pElem>../src/rijndael</pElem>
             <pElem>../src/uiobjects</pElem>
+            <pElem>../../../../msys2/mingw64/include/SDL</pElem>
           </incDir>
           <commandLine>-fpermissive</commandLine>
           <preprocessorList>
@@ -1945,6 +1771,10 @@
       </item>
       <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/httpcurl/httputil2.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/httpcurl/image/uiimgdownloader.cpp"
             ex="false"
             tool="1"
@@ -2047,6 +1877,13 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/util/JsonParser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/JsonParser.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
@@ -2083,9 +1920,7 @@
       </item>
       <item path="../src/uiobjects/Fileio.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="../src/uiobjects/ImagenGestor.h" ex="false" tool="3" flavor2="0">
+      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/Launcher.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -2133,6 +1968,35 @@
       </item>
       <item path="../src/uiobjects/common.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/common/BaseDefines.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/uiobjects/cursor.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/cursor.h" ex="false" tool="3" flavor2="0">
@@ -2149,6 +2013,36 @@
             flavor2="0">
       </item>
       <item path="../src/uiobjects/gmutex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../src/uiobjects/joymapper.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -2189,6 +2083,10 @@
       </item>
       <item path="../src/uiobjects/uicombobox.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/uiobjects/uiimglist.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiimglist.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/uiobjects/uiinput.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/uiobjects/uiinput.h" ex="false" tool="3" flavor2="0">
@@ -2217,9 +2115,492 @@
       </item>
       <item path="../src/uiobjects/uipanelborder.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="9">
+      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../src/uiobjects/uipicture.h" ex="false" tool="3" flavor2="0">
+      <item path="../src/uiobjects/uipopupmenu.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uipopupmenu.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiprogressbar.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uiprogressbar.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uislider.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uislider.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uispectrum.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uispectrum.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uitextelementsarea.cpp"
+            ex="false"
+            tool="1"
+            flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uitextelementsarea.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/unzip/GZipHelper.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/unzip/unziptool.cpp"
+            ex="false"
+            tool="1"
+            flavor2="9">
+      </item>
+      <item path="../src/uiobjects/unzip/unziptool.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Debug32" type="3">
+      <toolsSet>
+        <compilerSet>MinGW32|MinGW</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <standard>10</standard>
+          <incDir>
+            <pElem>../src/httpcurl</pElem>
+            <pElem>../src/rijndael</pElem>
+            <pElem>../src/uiobjects</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
+            <Elem>SKIP_PEER_VERIFICATION</Elem>
+            <Elem>WIN</Elem>
+          </preprocessorList>
+        </cTool>
+        <ccTool>
+          <standard>11</standard>
+          <incDir>
+            <pElem>../src/httpcurl</pElem>
+            <pElem>../src/rijndael</pElem>
+            <pElem>../src/uiobjects</pElem>
+            <pElem>../../../../msys2/mingw64/include/SDL</pElem>
+          </incDir>
+          <commandLine>-fpermissive</commandLine>
+          <preprocessorList>
+            <Elem>SKIP_HOSTNAME_VERIFICATION</Elem>
+            <Elem>SKIP_PEER_VERIFICATION</Elem>
+            <Elem>WIN</Elem>
+          </preprocessorList>
+        </ccTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="../src/audioplayer/audiocd/AudioCD_Helpers.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audiocd/AudioCD_Helpers.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audiocd/CAudioCD.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audiocd/CAudioCD.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audiocd/CBuf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audiocd/SimpleAudioCD - Example.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audiocd/SimpleAudioCD.txt"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audioplayer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/audioplayer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/biquad.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/biquad.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/fft/Complex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/fft/Fft.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/fft/Fft.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/main.cpp.bak" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/audioplayer/main2.cpp.bak" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/cddb/freedb.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/cddb/freedb.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/htmlparser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/htmlparser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/httputil2.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgdownloader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgdownloader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgencoder.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/image/uiimgencoder.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/MusixMatch.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/MusixMatch.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/darklyrics.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/darklyrics.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricsbase.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricsbase.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricswikia.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/lyricswikia.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/allmyvideos.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/dropbox.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/googledrive.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/ioauth2.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/onedrive.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/streamcloud.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/servers/vk.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/ConstantHttp.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/ConstantHttp.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/JsonParser.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/JsonParser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/rijndael/filecipher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/rijndael/rijndael.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/rijndael/rijndael.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/rijndael/sha256.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/rijndael/sha256.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Colorutil.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/Colorutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Constant.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/Constant.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Dirutil.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/Dirutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Excepcion.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/Excepcion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Fileio.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/Fileio.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/ImagenGestor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Launcher.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/Launcher.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/ListaSimple.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/ListaSimple.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Menuobject.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/SHA1.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/SHA1.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/Traza.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/Traza.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/UITreeListBox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/bbdd/Database.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/bbdd/Database.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listGroupElement.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/beans/listgroupcol.cpp"
+            ex="false"
+            tool="1"
+            flavor2="9">
+      </item>
+      <item path="../src/uiobjects/beans/listgroupcol.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseDefines.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/BaseFrontend.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Icogestor.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/common/Ioutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/cursor.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/cursor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/filelaunch.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/filelaunch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/fileprops.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/font/Arimo_Regular.ttf.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/gmutex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ImageLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgLoader.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/image/ThreadImgWorker.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/joymapper.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/joymapper.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/listaIni.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/object.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/object.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/registry.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/registry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/soutils/SOUtils.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/uiobjects/soutils/SOUtils.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/thread.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiart.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uiart.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uibutton.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uibutton.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uicheck.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uicheck.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uicombobox.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uicombobox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiimglist.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiimglist.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uiinput.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uiinput.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilabel.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uilabel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilist.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uilist.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilistcommon.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uilistcommon.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uilistgroup.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uilistgroup.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipanel.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uipanel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipanelborder.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="../src/uiobjects/uipanelborder.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/uiobjects/uipicture.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/uiobjects/uipopupmenu.cpp" ex="false" tool="1" flavor2="9">
       </item>

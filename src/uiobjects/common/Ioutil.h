@@ -26,7 +26,7 @@
     #include "listaIni.h"
     #include "Colorutil.h"
     #include "UITreeListBox.h"
-    #include "image/ThreadImgLoader.h"
+    #include "../image/ThreadImgLoader.h"
 
     struct tInput{
         int cursorX;

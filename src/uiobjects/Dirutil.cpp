@@ -1,3 +1,12 @@
+#ifdef WIN
+    #include <winsock2.h>
+    #include <windows.h>
+#else
+    #define MAX_PATH 255
+    #define DRIVE_FIXED 0 
+    #define DRIVE_CDROM 1
+#endif // WIN
+
 #include "Dirutil.h"
 
 /**
@@ -26,9 +35,12 @@ void Dirutil::listarDirRecursivo(string dir,  vector <FileProps> * filelist){
 void Dirutil::listarDirRecursivo(string dir,  vector <FileProps> * filelist, string filtro){
     vector <FileProps> *tempfilelist = new vector <FileProps>();
     unsigned int numDirs = 0;
+    
+    if (!existe(dir))
+        return;
 
     try{
-        Traza::print("Escaneando: " + dir, W_DEBUG);
+        Traza::print("Escaneando: " + dir, W_PARANOIC);
         numDirs = listarDirSinOrden(dir.c_str(), tempfilelist, filelist, filtro);
         string tempDir = "";
 
@@ -65,6 +77,9 @@ unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <File
     unsigned int lenDir = 0;
     int numSearchFiles = 0;
     int numResults = 0;
+    
+    if (!existe(strdir))
+        return 0;
 
     try{
         //Miramos a ver si el directorio a explorar tiene una / al final
@@ -123,7 +138,7 @@ unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <File
                     delete concatDir;
                     numSearchFiles++;
                 }
-                Traza::print("Se han encontrado " + Constant::TipoToStr(lenDir) + " directorios y " + Constant::TipoToStr(numResults) + " ficheros", W_DEBUG);
+                Traza::print("Se han encontrado " + Constant::TipoToStr(lenDir) + " directorios y " + Constant::TipoToStr(numResults) + " ficheros", W_PARANOIC);
                 closedir(dp);
             }
         }
@@ -164,7 +179,10 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
     unsigned int totalFiles = 0;
     listaSimple<FileProps> * listaFicheros = new listaSimple<FileProps>();
     listaSimple<FileProps> * listaDirectorios = new listaSimple<FileProps>();
-    Traza::print("listarDir: " + Constant::TipoToStr(strdir), W_DEBUG);
+    Traza::print("listarDir: " + Constant::TipoToStr(strdir), W_PARANOIC);
+    
+    if (!existe(strdir))
+        return 0;
 
     try{
         //Miramos a ver si el directorio a explorar tiene una / al final
@@ -179,7 +197,7 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
             }
 
             countDir(strdir, nFiles);
-            Traza::print("Reservando " + Constant::TipoToStr(nFiles[0]) + " directorios y " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_DEBUG);
+            Traza::print("Reservando " + Constant::TipoToStr(nFiles[0]) + " directorios y " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_PARANOIC);
             listaDirectorios->reservar(nFiles[0]);
             listaFicheros->reservar(nFiles[1]);
             string extension;
@@ -188,7 +206,7 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
                 Traza::print("Error al listar el directorio: " + string(strdir), W_ERROR);
                 throw(Excepcion(EFIO));
             } else {
-                Traza::print("Recorriendo directorios", W_DEBUG);
+                Traza::print("Recorriendo directorios", W_PARANOIC);
                 while ((dirp = readdir(dp)) != NULL) {
                     concatDir = new char[dirlen+sizeof(dirp->d_name)+1];//Contamos +1 con el fin de cadena
                     strcpy(concatDir,strdir);
@@ -254,6 +272,184 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
 }
 
 /**
+ * 
+ * @param strdir
+ * @param filelist
+ * @param filtro
+ * @return 
+ */
+unsigned int Dirutil::listarDirFast(const char *strdir, vector<FileProps> * filelist, string filtro){
+    DIR *dp;
+    struct dirent *dirp;
+    char * concatDir = NULL;
+//    const char  tempFileSep[2] = {FILE_SEPARATOR,'\0'};
+    FileProps propFile;
+    unsigned int nFiles [2] = {0,0};
+    unsigned int totalFiles = 0;
+    Traza::print("listarDirFast: " + Constant::TipoToStr(strdir), W_PARANOIC);
+
+    if (!existe(strdir))
+        return 0;
+    
+    try{
+        //Miramos a ver si el directorio a explorar tiene una / al final
+        if (strdir != NULL){
+            int dirlen = sizeof(strdir);
+            bool sepDir = false;
+            if (dirlen > 0){
+                if (strdir[dirlen-1] != FILE_SEPARATOR){
+                    dirlen++;
+                    sepDir = true;
+                }
+            }
+
+            countDir(strdir, nFiles);
+            Traza::print("Reservando " + Constant::TipoToStr(nFiles[0]) + " directorios y " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_PARANOIC);
+            filelist->reserve(nFiles[0]);
+            string extension;
+
+            if((dp  = opendir(strdir)) == NULL) {
+                Traza::print("Error al listar el directorio: " + string(strdir), W_ERROR);
+                throw(Excepcion(EFIO));
+            } else {
+                Traza::print("Recorriendo directorios", W_PARANOIC);
+                while ((dirp = readdir(dp)) != NULL) {
+                    concatDir = new char[dirlen+sizeof(dirp->d_name)+1];//Contamos +1 con el fin de cadena
+                    strcpy(concatDir,strdir);
+                    if (sepDir){
+                        strcat(concatDir,tempFileSep);
+                    }
+                    strcat(concatDir,dirp->d_name);
+
+                    if (strcmp(dirp->d_name,".") != 0){
+                        propFile.dir = strdir;
+                        propFile.filename = dirp->d_name;
+                        
+                        setFileProperties(&propFile, concatDir);
+                        
+                        if(isDir(concatDir)){
+                            propFile.filetype = TIPODIRECTORIO;
+                            if (strcmp(dirp->d_name,"..") == 0){
+                                propFile.ico = bullet_go;
+                            } else {
+                                propFile.ico = folder;
+                            }
+                            filelist->push_back(propFile);
+                        } 
+                    }
+                    delete concatDir;
+                }
+                closedir(dp);
+                totalFiles = filelist->size();
+                //Mostramos los ficheros de forma ordenada
+                std::sort (filelist->begin(), filelist->end(), FileProps::sortByText);
+                //Reservamos espacio en el objeto que almacena los directorios
+                Traza::print("Ficheros anyadidos", W_PARANOIC);
+            }
+        }
+
+    } catch(Excepcion &e) {
+        Traza::print("Error Dirutil::listarDirFast - " + string(e.getMessage()), W_ERROR);
+        throw(e);
+    }
+    return totalFiles;
+}
+
+/**
+ * 
+ * @param strdir
+ * @param filelist
+ * @param filtro
+ * @param superfast
+ * @return 
+ */
+unsigned int Dirutil::listarFilesSuperFast(const char *strdir, vector<FileProps> *filelist, string filtro, bool order, bool properties){
+    DIR *dp;
+    struct dirent *dirp;
+    char * concatDir = NULL;
+    FileProps propFile;
+    unsigned int nFiles [2] = {0,0};
+    unsigned int totalFiles = 0;
+    Traza::print("listarFilesSuperFast: " + Constant::TipoToStr(strdir), W_PARANOIC);
+    
+    if (!existe(strdir))
+        return 0;
+
+    try{
+        //Miramos a ver si el directorio a explorar tiene una / al final
+        if (strdir != NULL){
+            int dirlen = sizeof(strdir);
+            bool sepDir = false;
+            if (dirlen > 0){
+                if (strdir[dirlen-1] != FILE_SEPARATOR){
+                    dirlen++;
+                    sepDir = true;
+                }
+            }
+
+//            countDir(strdir, nFiles);
+//            Traza::print("Reservando " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_PARANOIC);
+//            filelist->reserve(nFiles[1]);
+            string extension;
+
+            if((dp  = opendir(strdir)) == NULL) {
+                Traza::print("Error al listar el directorio: " + string(strdir), W_ERROR);
+                throw(Excepcion(EFIO));
+            } else {
+                Traza::print("Recorriendo ficheros", W_PARANOIC);
+                while ((dirp = readdir(dp)) != NULL) {
+                    concatDir = new char[dirlen+sizeof(dirp->d_name)+1];//Contamos +1 con el fin de cadena
+                    strcpy(concatDir,strdir);
+                    if (sepDir){
+                        strcat(concatDir,tempFileSep);
+                    }
+                    strcat(concatDir,dirp->d_name);
+
+                    if (!isDir(concatDir)){
+                        propFile.dir = strdir;
+                        propFile.filename = dirp->d_name;
+                        extension = getExtension(propFile.filename);
+                        
+                        if (filtro.empty() || filtro.find(extension) != string::npos){
+                            if (properties){
+                                setFileProperties(&propFile, concatDir);
+                                propFile.ico = findIcon(dirp->d_name);
+                                propFile.filetype = TIPOFICHERO;
+                            }
+                            filelist->push_back(propFile);
+                        }
+                    }
+                    delete concatDir;
+                }
+                closedir(dp);
+                totalFiles = filelist->size();
+                if (order) {
+                    Traza::print("Ordenando " + Constant::TipoToStr(totalFiles) + " ficheros", W_PARANOIC);
+                    std::sort (filelist->begin(), filelist->end(), FileProps::sortByText);
+                    Traza::print("Ficheros ordenados", W_PARANOIC);
+                }
+            }
+        }
+
+    } catch(Excepcion &e) {
+        Traza::print("Error Dirutil::listarFilesSuperFast - " + string(e.getMessage()), W_ERROR);
+        throw(e);
+    }
+    return totalFiles;
+}
+
+/**
+ * 
+ * @param strdir
+ * @param filelist
+ * @param filtro
+ * @return 
+ */
+unsigned int Dirutil::listarFilesFast(const char *strdir, vector<FileProps> *filelist, string filtro){
+    return listarFilesSuperFast(strdir, filelist, filtro, true, true);
+}
+
+/**
 * El directorio deberia venir siempre con una / al final
 */
 unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * filelist){
@@ -265,14 +461,17 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
 unsigned int Dirutil::countDir(const char *strdir){
     unsigned int nFiles = 0;
     DIR *dir;
+    struct dirent *dirp;
+    
 
     if ((dir = opendir(strdir)) != NULL){
-        while (readdir(dir) != NULL) {
-            nFiles++;
+        while ((dirp = readdir(dir)) != NULL) {
+            if (strcmp(dirp->d_name,".") != 0 && strcmp(dirp->d_name,"..") != 0)
+                nFiles++;
         }
         closedir(dir);
     }
-    Traza::print("countDir. nFiles: " + Constant::TipoToStr(nFiles), W_DEBUG);
+    Traza::print("countDir. nFiles: " + Constant::TipoToStr(nFiles), W_PARANOIC);
     return nFiles;
 }
 
@@ -297,7 +496,7 @@ void Dirutil::countDir(const char *strdir, unsigned int *nFiles){
         }
         closedir(dir);
     }
-    Traza::print("countDir: Hay " + Constant::TipoToStr(nFiles[0]) + " directorios y " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_DEBUG);
+    Traza::print("countDir: Hay " + Constant::TipoToStr(nFiles[0]) + " directorios y " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_PARANOIC);
 }
 
 void Dirutil::countDir(const char *strdir, unsigned int *nFiles, vector<string> *files, string filtro){
@@ -322,7 +521,7 @@ void Dirutil::countDir(const char *strdir, unsigned int *nFiles, vector<string> 
         }
         closedir(dir);
     }
-    Traza::print("countDir: Hay " + Constant::TipoToStr(nFiles[0]) + " directorios y " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_DEBUG);
+    Traza::print("countDir: Hay " + Constant::TipoToStr(nFiles[0]) + " directorios y " + Constant::TipoToStr(nFiles[1]) + " ficheros", W_PARANOIC);
 }
 
 /**
@@ -481,17 +680,13 @@ string Dirutil::getFileNameNoExt(string file){
 */
 string Dirutil::getExtension(string file){
     string ext = "";
-    if (!file.empty()){
-         if(!isDir(file)){
-            size_t found;
-            found = file.find_last_of(".");
-            if (found > 0 && found < file.length()){
-                ext = file.substr(found);
-            }
+    if (!file.empty() && !isDir(file)){
+        size_t found = file.find_last_of(".");
+        if (found > 0 && found < file.length()){
+            ext = file.substr(found);
+            Constant::lowerCase(&ext);
         }
-        Constant::lowerCase(&ext);
     }
-
     return ext;
 }
 

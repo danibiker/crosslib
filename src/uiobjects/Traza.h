@@ -3,16 +3,15 @@
 #ifndef TRAZA_H
 #define TRAZA_H
 
-using namespace std;
-
+#include "Constant.h"
 #include <stdio.h>
 #include <time.h>
 #include <string>
 #include <limits.h>
 #include <iostream>
 #include <fstream>
-#include "Constant.h"
 
+using namespace std;
 
 /*
  * Clase para generar trazas

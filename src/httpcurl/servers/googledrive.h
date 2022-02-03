@@ -2,6 +2,7 @@
 #define GOOGLEDRIVE_H
 
 #include "ioauth2.h"
+#include "httputil2.h"
 
 static const int GOOGLECHUNK = 262144;
 static const string GOOGLEACCESSTOKENSTR = "googleaccesstoken";
@@ -36,9 +37,7 @@ class GoogleDrive : public IOauth2
         bool resumableChunckedUpload(string filesystemPath, string url, size_t pos, size_t tam, string accessToken);
         string getJSONList(string fileid, string accessToken, string nextPageToken);
         uint32_t checkOauthErrors(string data, Json::Value *root);
-
-
-
+        Httputil2 util2;
     private:
 };
 

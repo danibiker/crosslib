@@ -9,8 +9,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>
-#include "../httpcurl/image/uiimgencoder.h"
 #include "common.h"
+#include "../httpcurl/image/uiimgencoder.h"
 
 #define MOVE_UP 0 
 #define MOVE_DOWN 1 

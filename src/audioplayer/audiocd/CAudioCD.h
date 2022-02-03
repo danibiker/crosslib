@@ -7,15 +7,12 @@
 #ifndef CAUDIOCD_INCLUDED
 #define CAUDIOCD_INCLUDED
 
-#include <vector>
-#include "CBuf.h"
-#include <math.h>
-#include <stdio.h>
-#include "Traza.h"
-
 #ifdef WIN
+    #ifndef WINVER
+        #define WINVER 0x0501
+    #endif
+    #include <winsock2.h>
     #include <windows.h>
-//    #include <string.h>
     #include <string>
     #include <winioctl.h>
 #else 
@@ -25,7 +22,14 @@
     typedef unsigned long HANDLE;
     #define FALSE false;
     #define TRUE true;
-#endif 
+#endif
+    
+
+#include <vector>
+#include "CBuf.h"
+#include <math.h>
+#include <stdio.h>
+//#include "Traza.h"
 
 // Structure to hold the basic information for a cd-track
 struct CDTRACK

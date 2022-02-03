@@ -2,6 +2,7 @@
 #define IOAUTH2_H
 
 #include "Constant.h"
+#include "httputil2.h"
 #include "httputil.h"
 #include "Dirutil.h"
 #include "util/ConstantHttp.h"
@@ -9,6 +10,7 @@
 #include "listaIni.h"
 #include "Launcher.h"
 #include "filelaunch.h"
+#include "../util/JsonParser.h"
 
 
 

@@ -950,7 +950,7 @@ int Constant::contarPalabrasIguales(string str1, string str2){
 */
 
 int Constant::getHostname(string hostname, t_hostname *structHostname){
-#ifdef win
+#ifdef WIN
     DWORD dwError;
     char **pAlias;
     int i = 0;
@@ -1085,6 +1085,22 @@ std::string Constant::cutToLength(const std::string& s, int cutLen){
 
 /**
  * 
+ * @param s
+ * @param cutLen
+ * @return 
+ */
+std::string Constant::cutLeftToLength(const std::string& s, int cutLen){
+    string ret = s;
+    if (!s.empty()){
+        if (s.length() > cutLen - 1){
+            ret = s.substr(s.length() - cutLen, cutLen);
+        }
+    }
+    return ret;
+}
+
+/**
+ * 
  * @param bytes
  * @param precision
  * @return 
@@ -1122,3 +1138,4 @@ void Constant::setBACKGROUNDCOLOR(t_color BACKGROUNDCOLOR) {
 t_color Constant::getBACKGROUNDCOLOR() {
     return BACKGROUNDCOLOR;
 }
+

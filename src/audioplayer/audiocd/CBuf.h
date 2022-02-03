@@ -1,6 +1,10 @@
 #pragma once
 
-#ifdef win
+#ifdef WIN
+    #ifndef WINVER
+        #define WINVER 0x0501
+    #endif
+    #include <winsock2.h>
     #include <windows.h>
 #else 
     #include <string.h>

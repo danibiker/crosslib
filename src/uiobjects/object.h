@@ -8,8 +8,8 @@ using namespace std;
 #include <stdio.h>
 #include <iostream>
 #include <string>
-#include "ImagenGestor.h"
 #include "joymapper.h"
+#include "ImagenGestor.h"
 
 class Object{
     public:

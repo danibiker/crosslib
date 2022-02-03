@@ -2,7 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>3</activeConfTypeElem>
-        <activeConfIndexElem>2</activeConfIndexElem>
+        <activeConfIndexElem>4</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
         <file>
@@ -15,6 +15,13 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/F:/develop/Github/ExternalLibs/crosslib/src/httpcurl/httputil2.h</file>
+            <file>file:/F:/develop/Github/ExternalLibs/crosslib/src/httpcurl/servers/dropbox.cpp</file>
+            <file>file:/F:/develop/Github/ExternalLibs/crosslib/src/httpcurl/httputil.cpp</file>
+            <file>file:/F:/develop/Github/ExternalLibs/crosslib/src/httpcurl/servers/googledrive.h</file>
+            <file>file:/F:/develop/Github/ExternalLibs/crosslib/src/httpcurl/servers/googledrive.cpp</file>
+            <file>file:/F:/develop/Github/ExternalLibs/crosslib/src/httpcurl/httputil2.cpp</file>
+        </group>
     </open-files>
 </project-private>

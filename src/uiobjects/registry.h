@@ -9,6 +9,22 @@
     #define KEY_WOW64_32KEY 0x0200
 #endif // KEY_WOW64_32KEY
 
+#ifdef WIN
+    //  global compilation flag configuring windows sdk headers
+    //  preventing inclusion of min and max macros clashing with <limits>
+    #define NOMINMAX 1
+
+    //  override byte to prevent clashes with <cstddef>
+    #define byte win_byte_override
+
+    #ifndef WINVER
+        #define WINVER 0x0501
+    #endif
+    #include <winsock2.h>
+    // ...includes for other windows header that may use byte..
+    #include <windows.h>
+#endif
+
 class Registry
 {
     public:

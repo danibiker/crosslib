@@ -53,7 +53,7 @@ class TreeNode{
             text=vtext;
             value=vvalue;
             ico=vico;
-            dest=vdest;
+            dest=Constant::TipoToStr(vdest);
             show=vshow;
             realPos = -1;
             estado = vestado;
@@ -73,7 +73,7 @@ class TreeNode{
             text=vtext;
             value=vvalue;
             ico=vico;
-            dest=vdest;
+            dest=Constant::TipoToStr(vdest);
             show=vshow;
             realPos = -1;
             estado = -1;

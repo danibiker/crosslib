@@ -215,7 +215,7 @@ int CAudioCD::ExtractTrack( ULONG TrackNr,const char *Path )
 		return CloseHandle( hFile ) == true ? 0 : 5;
 
 	WriteFile( hFile, Buf, Info.SectorCount*RAW_SECTOR_SIZE, &Dummy, NULL );
-        Traza::print("Cerrando fichero extraido: " + string(Path), W_DEBUG);
+        //Traza::print("Cerrando fichero extraido: " + string(Path), W_DEBUG);
 	return CloseHandle( hFile ) == true ? 0 : 6;
 #else
         return 1;

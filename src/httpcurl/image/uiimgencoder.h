@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>             // Must appear before jpeglib, as that uses FILE without including this!
 #include <setjmp.h>
+
 #include <jpeglib.h>
 #include <jerror.h>            // Gets us the various ERREXIT macros
 #include "SDL_imagesave/IMG_saveend.h"

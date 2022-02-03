@@ -1,5 +1,6 @@
 #include "htmlparser.h"
 
+
 HtmlParser::HtmlParser() {
     obtainContentTag = false;
 }
@@ -82,11 +83,25 @@ void HtmlParser::buscarElem2(char *html, Tags *tag1, string atributoElem1, strin
                                , Tags *tag2, string atributoElem2) {
 
     listAttrFound.clear();
-    GumboNode* enlace = NULL;
     GumboOutput* output = gumbo_parse(html);
-    vector <string> resultados;
-    GumboNode* ret = search_for_elem2(output->root, tag1, atributoElem1, valAtributoElem1, tag2, atributoElem2);
+    search_for_elem2(output->root, tag1, atributoElem1, valAtributoElem1, tag2, atributoElem2);
     gumbo_destroy_output(&kGumboDefaultOptions, output);
+}
+
+/**
+*
+*/
+void HtmlParser::buscarElem2TagValue(char *html, Tags *tag1, string atributoElem1, string valAtributoElem1
+                               , Tags *tag2, string atributoElem2) {
+
+    mapKeyValueFound.clear();
+    GumboOutput* output = gumbo_parse(html);
+    search_for_elem_key_value(output->root, tag1, atributoElem1, valAtributoElem1, tag2, atributoElem2);
+    gumbo_destroy_output(&kGumboDefaultOptions, output);
+}
+
+map<string, string> HtmlParser::GetMapKeyValueFound() const {
+    return mapKeyValueFound;
 }
 
 /**
@@ -99,7 +114,6 @@ GumboNode* HtmlParser::search_for_elem2(GumboNode* node, Tags *tag, string atrib
     if (node->type != GUMBO_NODE_ELEMENT) {
         return NULL;
     }
-
 
     GumboAttribute* attribute;
     if (node->v.element.tag == tag->htmlTag){
@@ -130,7 +144,7 @@ GumboNode* HtmlParser::search_for_elem2(GumboNode* node, Tags *tag, string atrib
 
                     if (string(attribute->name).compare(atributoElem2) == 0){
                         listAttrFound.push_back(attribute->value);
-//                        cout << attribute->name << ":1 " << attribute->value << endl;
+//                        cout << attribute->name << ":1 " << attribute->value << " :2 " << cleantext(static_cast<GumboNode*>(node->v.element.children.data[0])) << endl ;
                     }
 
                     GumboVector* children = &node->v.element.children;
@@ -148,6 +162,77 @@ GumboNode* HtmlParser::search_for_elem2(GumboNode* node, Tags *tag, string atrib
     GumboVector* children = &node->v.element.children;
     for (unsigned int i = 0; i < children->length; ++i) {
         GumboNode* ret = search_for_elem2(static_cast<GumboNode*>(children->data[i]), tag, atributo, valAtributo, tag2, atributoElem2);
+        if (ret != NULL){
+            return ret;
+        }
+    }
+
+    return NULL;
+}
+
+/**
+*
+*/
+GumboNode* HtmlParser::search_for_elem_key_value(GumboNode* node, Tags *tag, string atributo, string valAtributo,
+                                        Tags *tag2, string atributoElem2)
+    {
+
+    if (node->type != GUMBO_NODE_ELEMENT) {
+        return NULL;
+    }
+
+    GumboAttribute* attribute;
+    if (node->v.element.tag == tag->htmlTag){
+        map<string, string> attrElement;
+        if ((attribute = gumbo_get_attribute(&node->v.element.attributes, tag->attr.c_str()))) {
+            if (string(attribute->value).compare(valAtributo) == 0 &&
+                 (string(attribute->name).compare(atributo) == 0 || valAtributo.empty())
+                    ){
+                    
+                    GumboVector* children = &node->v.element.children;
+                    if (string(attribute->name).compare(atributoElem2) == 0){
+                        string text = children->length > 0 ? cleantext(static_cast<GumboNode*>(children->data[0])) : string("");
+//                        cout << attribute->name << ":2 " << attribute->value << " text: " << text << endl;
+                        mapKeyValueFound.insert(std::pair<string,string>(attribute->value, text));
+                    }
+
+                    
+                    for (int j=0; j < children->length; j++){
+                        GumboNode* enlace = search_for_elem_key_value(static_cast<GumboNode*>(children->data[j]), tag2, atributoElem2, "", tag2, atributoElem2);
+                        return enlace;
+                    }
+            }
+        } else {
+            //Recogemos el resto de atributos y los incluimos en la variable tag
+            for (unsigned int i=0; i<node->v.element.attributes.length; i++){
+                attribute = ((GumboAttribute *)node->v.element.attributes.data[i]);
+                if (string(attribute->name).compare(atributo) == 0 &&
+                     (string(attribute->value).compare(valAtributo) == 0 || valAtributo.empty())
+                    ){
+                    
+                    GumboVector* children = &node->v.element.children;
+                    
+                    if (string(attribute->name).compare(atributoElem2) == 0){
+                        string text = children->length > 0 ? cleantext(static_cast<GumboNode*>(node->v.element.children.data[0])) : "";
+//                        cout << attribute->name << ":1 " << attribute->value << " text: " << text << endl;
+                        mapKeyValueFound.insert(std::pair<string,string>(attribute->value, text));
+                    }
+
+                    
+                    for (int j=0; j < children->length; j++){
+                        GumboNode* enlace = search_for_elem_key_value(static_cast<GumboNode*>(children->data[j]), tag2, atributoElem2, "", tag2, atributoElem2);
+                        if (enlace != NULL){
+                            return enlace;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    GumboVector* children = &node->v.element.children;
+    for (unsigned int i = 0; i < children->length; ++i) {
+        GumboNode* ret = search_for_elem_key_value(static_cast<GumboNode*>(children->data[i]), tag, atributo, valAtributo, tag2, atributoElem2);
         if (ret != NULL){
             return ret;
         }

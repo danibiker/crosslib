@@ -2,14 +2,26 @@
 #define CONSTANT_H_INCLUDED
 
 #ifdef WIN
+//  global compilation flag configuring windows sdk headers
+    //  preventing inclusion of min and max macros clashing with <limits>
+    #define NOMINMAX 1
+
+    //  override byte to prevent clashes with <cstddef>
+    #define byte win_byte_override
+
     #ifndef WINVER
-        #define WINVER 0x0502
+        #define WINVER 0x0501
     #endif
+    
     #include <winsock2.h>
     #include <windows.h>
+    //  Undefine byte macros so it won't collide with <cstddef> header content.
+    #undef byte
 #else 
     #include <unistd.h>
 #endif
+
+
 
 #include <fstream>
 #include <sstream>
@@ -23,10 +35,9 @@
 #include <algorithm>  //transform
 #include <cctype>
 #include <iomanip>
-#include <cstddef>
+//#include <cstddef>
 #include <stdint.h>
 #include <math.h>
-
 
 using namespace std;
 
@@ -206,6 +217,10 @@ static const int mapHeight = 256;
     typedef enum{ TIPODIRECTORIO,
             TIPOFICHERO
     } enumFileAttr;
+    
+     typedef enum{ COMPAREWHOLEWORD,
+             COMPAREBEGINNING
+    } enumFileCompare;
 
     static const std::string base64_chars =
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -278,7 +293,7 @@ static const int mapHeight = 256;
     static const bool TRAZA_ENABLED = true;
     static const unsigned int INILIST = 30; //Numero de elementos que se crearan inicialmente para las listas
     static const char FONT_TYPE[] = {"Arimo-Regular.ttf"}; //Fuente de los textos
-    static const char ARRAYLETRAS[] = {" abcdefghijklmnÃ¯Â¿Â½opqrstuvwxyz0123456789-+*/,;.:-_[]{}'?Ã¯Â¿Â½!Ã¯Â¿Â½|@#$%&()"};
+    static const char ARRAYLETRAS[] = {" abcdefghijklmnÃƒÂ¯Ã‚Â¿Ã‚Â½opqrstuvwxyz0123456789-+*/,;.:-_[]{}'?ÃƒÂ¯Ã‚Â¿Ã‚Â½!ÃƒÂ¯Ã‚Â¿Ã‚Â½|@#$%&()"};
     static const char FILEBBDD[] = {"romgestor.sqlite"};
     static const bool SHOWFPS = false;   //Muestra los frames actuales
     static const bool LIMITFPS = true; //Especifica si se realiza una limitacion maxima de frames
@@ -585,9 +600,11 @@ class Constant{
         static std::string TrimRight(const std::string& s);
         static std::string Trim(const std::string& s);
         static std::string cutToLength(const std::string& s, int cutLen);
+        static std::string cutLeftToLength(const std::string& s, int cutLen);
         static std::string printBytesSize(double bytes, int precision);
         static void setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT);
         static size_t getCURL_DOWNLOAD_LIMIT();
+        
 
 };
 

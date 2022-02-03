@@ -1,6 +1,7 @@
 #ifndef AUDIOPLAYER_H
 #define AUDIOPLAYER_H
 
+#include "Constant.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
@@ -10,7 +11,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include "SDL/SDL_ttf.h"
-#include "Constant.h"
 #include "math.h"
 #include "Traza.h"
 #include "gmutex.h"
@@ -104,9 +104,9 @@ class AudioPlayer
         bool isSongDownloaded(){return songDownloaded;}
         void setObjectsMenu(tmenu_gestor_objects *var){ObjectsMenu = var;}
         bool isEqualizerOn(){return equalizerOn;}
-        bool setEqualizerOn(bool var){equalizerOn = var;}
+        void setEqualizerOn(bool var){equalizerOn = var;}
         bool isEqualizerVisible(){return equalizerVisible;}
-        bool setEqualizerVisible(bool var){equalizerVisible = var;}
+        void setEqualizerVisible(bool var){equalizerVisible = var;}
         void setFilter(int nFilter, double gain);
 
     protected:

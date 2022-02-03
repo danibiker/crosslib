@@ -1,5 +1,4 @@
 #include "Ioutil.h"
-#include "9001.png.h"
 #include "font/Arimo_Regular.ttf.h"
 #include "uiimglist.h"
 
@@ -223,11 +222,7 @@ void Ioutil::initSDL(bool calcFS){
         exit (1);
     }
 
-    ImagenGestor imgGestor;
-    SDL_Surface* icon;
-    unsigned long tam = sizeof(png_9001)/sizeof(char);
-    imgGestor.loadImgFromMem((char *)png_9001, tam, &icon);
-    SDL_WM_SetIcon(icon, NULL);
+    
 
 	Traza::print("FIN initSDL", W_DEBUG);
 }

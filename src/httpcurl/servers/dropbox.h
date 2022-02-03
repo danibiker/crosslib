@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "httputil.h"
+#include "httputil2.h"
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
@@ -50,6 +51,7 @@ class Dropbox : public IOauth2
         string getJSONListDropbox(string filesystemPath, string accessToken);
         string getJSONListContinueDropbox(string cursor, string accessToken);
         int putFile(string filesystemPath, string dropboxPath, string accessToken);
+        Httputil2 util2;
 };
 
 

@@ -71,8 +71,6 @@ uint32_t Onedrive::authenticate(){
 
             //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
             Json::Value root;   // will contains the root value after parsing.
-//            Json::Reader reader;
-            
             string ret = util.getData();
             Traza::print(ret, W_DEBUG);
             
@@ -108,13 +106,14 @@ uint32_t Onedrive::authenticate(){
  */
 void Onedrive::launchAuthorize(string clientid){
     
-    string tmpUrl = ONEDRIVEURLAUTH
+    string tmpUrl = "\"" + ONEDRIVEURLAUTH
                     + "?client_id=" + Constant::url_encode(clientid)
                     + "&scope=" + Constant::url_encode("files.readwrite offline_access User.Read openid")
                     + "&response_type=code"
                     //+ "&redirect_uri=" + Constant::url_encode("urn:ietf:wg:oauth:2.0:oob")
                     + "&redirect_uri=" + Constant::url_encode("https://login.live.com/oauth20_desktop.srf")
 //                    + "&redirect_uri=" + Constant::url_encode("https://login.microsoftonline.com/common/oauth2/nativeclient")
+                    + "\""
                     ;
     //string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
     //system(cmd.c_str());
@@ -183,7 +182,6 @@ string Onedrive::launchAccessToken(string clientid, string secret, string codeOr
  */
 bool Onedrive::deleteFiles(string fileid, string accessToken){
     map<string, string> cabeceras;
-    string postData = "";
     string AuthOauth2 = "Bearer " + accessToken;
     string url = "";
     
@@ -308,7 +306,6 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
 bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken){
     map<string, string> cabeceras;
     string AuthOauth2 = "Bearer " + accessToken;
-    Dirutil dir;
     size_t chunkFileSize = 0;
 
     chunkFileSize = ONEDRIVECHUNK;
@@ -363,20 +360,22 @@ string Onedrive::storeAccessToken(string clientid, string secret, string codeOrR
 
     string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
     string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
+    
+    if (!this->getAccessToken().empty()){
+        ListaIni<Data> *config = new ListaIni<Data>();
+        try{
+            Dirutil dir;
+            if (dir.existe(rutaIni)){
+                config->loadFromFile(rutaIni);
+                config->sort();
+            }
+            this->addToken(ONEDRIVEACCESSTOKENSTR, accessTokenCipherB64, config);
+            this->addToken(ONEDRIVEFRESHTOKENSTR, refreshTokenCipherB64, config);
+            config->writeToFile(rutaIni);
 
-    ListaIni<Data> *config = new ListaIni<Data>();
-    try{
-        Dirutil dir;
-        if (dir.existe(rutaIni)){
-            config->loadFromFile(rutaIni);
-            config->sort();
+        } catch (Excepcion &e){
+            Traza::print("Onedrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
         }
-        this->addToken(ONEDRIVEACCESSTOKENSTR, accessTokenCipherB64, config);
-        this->addToken(ONEDRIVEFRESHTOKENSTR, refreshTokenCipherB64, config);
-        config->writeToFile(rutaIni);
-
-    } catch (Excepcion &e){
-        Traza::print("Onedrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
     }
 
     return this->getAccessToken();
@@ -391,7 +390,6 @@ string Onedrive::storeAccessToken(string clientid, string secret, string codeOrR
  */
 string Onedrive::getJSONList(string fileid, string accessToken, string nextPageToken){
     map<string, string> cabeceras;
-    string postData;
     string responseMetadata;
     string url = "";
     string AuthOauth2 = "Bearer " + accessToken;
@@ -414,7 +412,7 @@ string Onedrive::getJSONList(string fileid, string accessToken, string nextPageT
             url = nextPageToken;
         }
         util.get(url, &cabeceras);
-        return util.getData();
+        responseMetadata = util.getData();
     }
     return responseMetadata;
 }
@@ -699,7 +697,6 @@ bool Onedrive::isOneDriveId(string path){
  */
 string Onedrive::getJSONListSharepoint(string fileid, string accessToken){
     map<string, string> cabeceras;
-    string postData;
     string responseMetadata;
     string url = "";
     string AuthOauth2 = "Bearer " + accessToken;
@@ -713,15 +710,8 @@ string Onedrive::getJSONListSharepoint(string fileid, string accessToken){
         cabeceras.insert( make_pair("Content-Type", "text/plain"));
         
         url = "https://graph.microsoft.com/v1.0/shares/"  + fileid;
-        //url = "https://graph.microsoft.com/v1.0/sites/miumh-my.sharepoint.com:/personal/daniel_mazuela_miumh_umh_es";
-        //url = "https://graph.microsoft.com/v1.0/me?$select=mySite";
-        //url = "https://miumh-my.sharepoint.com/personal/daniel_mazuela_miumh_umh_es/_api/v2.0/drive/oneDrive.sharedWithMe";
-//        url = "https://graph.microsoft.com/beta/sites/root";
-        //url = "https://graph.microsoft.com/v1.0/sites/lists/535d701d%2D4b68%2D4a70%2D8f65%2D1682177ffba4";
         util.get(url, &cabeceras);
-        
-        
-        return util.getData();
+        responseMetadata = util.getData();
     }
     return responseMetadata;
 }

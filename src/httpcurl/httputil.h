@@ -17,6 +17,7 @@
 #include <gmutex.h>
 #include "util/Progress.h"
 
+
 #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3.0
 #define MAX_FILE_BUFFER 5*1024*1024
 #define MIN_PROGRESS_CHUNK_OF_BYTES 512
@@ -112,7 +113,7 @@ class HttpUtil
         static size_t handleHeader(void *contents, size_t size, size_t nmemb, void *userp);
         static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp);
         static size_t read_callback(void *ptr, size_t size, size_t nmemb, FILE *stream);
-        static void checkWriteMemToFile(MemoryStruct *mem);
+        static void checkWriteMemToFile(void *contents, size_t sizeToWrite, char *filepath);
         static int addDataToMem(void *contents, size_t realsize, MemoryStruct *mem);
         
         bool writeToFile(const char *, char *, ifstream::pos_type, bool);
@@ -132,6 +133,12 @@ class HttpUtil
         bool sendContentLength;
         GMutex mutex;
         struct curl_slist *cookies;
+        
+        static void decodeError(int r){
+            char buff[100];
+            strerror_s(buff, 100, r);
+            printf("str_trim_left.error: %d %s\n", r, buff);
+        }
 };
 
 #endif // HTTPUTIL_H

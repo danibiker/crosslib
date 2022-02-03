@@ -1,6 +1,7 @@
 #ifndef FILECIPHER_H
 #define FILECIPHER_H
 
+#include "Constant.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
@@ -10,7 +11,7 @@
 #include <sstream>
 #include <iostream>
 #include <cstdlib>
-#include "Constant.h"
+
 
 #define vLength(x) (sizeof(x)/sizeof(x[0]))
 

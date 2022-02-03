@@ -2,12 +2,16 @@
 #define AUDIOCD_HELPERS_INCLUDED
 
 #ifdef WIN
-#include <windows.h>
+    #ifndef WINVER
+        #define WINVER 0x0501
+    #endif
+    #include <winsock2.h>
+    #include <windows.h>
 #else
-typedef unsigned char UCHAR;
-typedef unsigned long ULONG;
-typedef unsigned short USHORT;
-typedef long long LARGE_INTEGER;
+    typedef unsigned char UCHAR;
+    typedef unsigned long ULONG;
+    typedef unsigned short USHORT;
+    typedef long long LARGE_INTEGER;
 #endif
 
 #define RAW_SECTOR_SIZE			2352

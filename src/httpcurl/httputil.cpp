@@ -50,11 +50,11 @@ HttpUtil::~HttpUtil(){
 }
 
 void HttpUtil::cleanChunkData(){
-    if(chunk.memory != NULL){
+    if(chunk.memory != NULL && chunk.size > 0){
         free(chunk.memory);
         chunk.memory = NULL;
     }
-    if(header.memory != NULL){
+    if(header.memory != NULL && header.size > 0){
         free(header.memory);
         header.memory = NULL;
     }
@@ -62,6 +62,8 @@ void HttpUtil::cleanChunkData(){
         free(chunk.filepath);
         chunk.filepath = NULL;
     }
+    chunk.size = 0;
+    chunk.filepath = NULL;
 }
 
 /**
@@ -178,16 +180,20 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     aborted = false;
 
     mutex.Lock();
-    //Traza::print("HttpUtil::sendHttp " + string(httpType == 0 ? "POST" : httpType == 1 ? "GET" : "PUT") + ", " +  url, W_INFO);
     cleanChunkData();
-
     chunk.memory = (char *) malloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1);  /* will be grown as needed by the realloc above */
-    chunk.size = 0;
-    chunk.filepath = NULL;
-
+    
+    if (chunk.memory == NULL || data == NULL){
+        printf("sendHttp: Could not allocate memory\n");
+        return 0;
+    }
+    
+    readBufferHeader.clear();
     header.memory = (char *) malloc(1);  /* will be grown as needed by the realloc above */
     header.size = 0;
     header.filepath = NULL;
+    
+    
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
@@ -235,7 +241,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
             curl_easy_setopt(curl, CURLOPT_SSLVERSION, 3L); // Force SSLv3 to fix Unknown SSL Protocol error
         #endif
         
-            /*Especificamos la url a la que conectarse*/
+        /*Especificamos la url a la que conectarse*/
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         /*Sigue las redirecciones de los sitios*/
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
@@ -243,51 +249,51 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
          field, so we provide one */
         curl_easy_setopt(curl, CURLOPT_USERAGENT, USERAGENT.c_str());
         /* ask libcurl to allocate a larger receive buffer */
-        curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, 512000L);
+        curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, CURL_MAX_WRITE_SIZE);
         
         char *buffer = NULL;
         size_t retcode = 0;
-        
+        errno_t err;
 //        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
         
         switch (httpType){
             case HTTP_POST:
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
-                /* Now specify the POST data */
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
                 break;
-            case HTTP_POST2: //To upload files. Needed by dropbox
-//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+            case HTTP_POST2: 
+                //To upload files. Needed by dropbox
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
-                hd_src = fopen(data, "rb");
-                fseek ( hd_src, offset, SEEK_SET);
-                buffer = new char[tam];
-                retcode = fread(buffer, 1, tam, hd_src);
-                /* Now specify the POST data */
-                curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buffer);
-                curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
+                err = fopen_s(&hd_src, data, "rb");
+                if (err == 0 && hd_src != NULL && tam > 0) {
+                    fseek(hd_src, offset, SEEK_SET);
+                    if ((buffer = (char*) calloc(tam, 1)) != NULL) {
+                        retcode = fread(buffer, 1, tam, hd_src);
+                        /* Now specify the POST data */
+                        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buffer);
+                        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
+                    } else 
+                        cerr << "error al crear memoria en HTTP_POST2" << endl;
+                } else {
+                    cerr << "HTTP_POST2: file: " << data << "not found or could not be opened" << endl;
+                    decodeError(err);
+                }
                 break;
             case HTTP_PUT:
-//                /* enable verbose for easier tracing */
-//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-                /* enable uploading */
                 curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-                /* HTTP PUT please */
                 curl_easy_setopt(curl, CURLOPT_PUT, 1L);
-                /* get a FILE * of the same file, could also be made with
-                 fdopen() from the previous descriptor, but hey this is just
-                 an example! */
-                hd_src = fopen(data, "rb");
-                fseek ( hd_src, offset, SEEK_SET);
-                /* we want to use our own read function */
-                curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
-                /* now specify which file to upload */
-                curl_easy_setopt(curl, CURLOPT_READDATA, hd_src);
-                /* provide the size of the upload, we specicially typecast the value
-                to curl_off_t since we must be sure to use the correct data size */
-                if (sendContentLength)
-                    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE,(curl_off_t)tam);
+                err = fopen_s(&hd_src, data, "rb");
+                if (err == 0 && hd_src != NULL) {
+                    fseek(hd_src, offset, SEEK_SET);
+                    curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+                    curl_easy_setopt(curl, CURLOPT_READDATA, hd_src);
+                    if (sendContentLength)
+                        curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)tam);
+                } else {
+                    cerr << "HTTP_PUT: file: " << data << "not found or could not be opened" << endl;
+                    decodeError(err);
+                }
                 break;
             case HTTP_DELETE:
                 curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -296,11 +302,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                 break;
             default:
                 if (httpType == HTTP_POST3){
-                    //To download files by post and without need to wait to finish
-                    //Needed by dropbox
-//                    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
                     curl_easy_setopt(curl, CURLOPT_POST, 1L);
-                    /* Now specify the POST data */
                     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, ""); //no need to pass postData
                     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, 0);
                 } else if (httpType == HTTP_GET){
@@ -308,9 +310,14 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                 }
                 
                 if (data != NULL){
-                    if (strcmp(data, "") != 0){
-                        chunk.filepath = (char *) malloc(strlen(data) + 1);
-                        strcpy(chunk.filepath, data);
+                    size_t len = strlen(data) + 1;
+                    if (len > 1){
+                        chunk.filepath = (char *) calloc(len, 1);
+                        if (chunk.filepath != NULL){
+                            strcpy_s(chunk.filepath, len, data);
+                        } else {
+                            cerr << "No se pudo crear memoria para inicializar chunk->filepath" << endl;
+                        }
                     }
                 }
             break;
@@ -365,7 +372,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         /* we pass our 'postResult' struct to the callback function */
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
         /* we get the headers response*/
-        readBufferHeader.clear();
+        
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, handleHeader);
         
 //        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, ""); /* start cookie engine */
@@ -377,11 +384,9 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
 //        "expires=Sun, 17-Jan-2038 19:14:07 GMT; path=/; domain=.example.com");
 //        curl_easy_setopt(curl, CURLOPT_COOKIELIST, nline);
         
-        
         /* Perform the request, res will get the return code */
         res = curl_easy_perform(curl);
-        //Important to call this at the end to write the memory to the file if specified
-        checkWriteMemToFile(&chunk);
+
         //Obtaining the response code
         http_code = 0;
         curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -403,7 +408,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         /* always cleanup */
         curl_easy_cleanup(curl);
         if (hd_src != NULL) fclose(hd_src); /* close the local file */
-        if (buffer != NULL) delete [] buffer;
+        if (buffer != NULL) free(buffer);
     }
     curl_global_cleanup();
     return downState;
@@ -455,7 +460,7 @@ size_t HttpUtil::read_callback(void *ptr, size_t size, size_t nmemb, FILE *strea
         char *buffer = new char[nmemb*size];
         retcode = fread(buffer, size, nmemb, stream);
         memcpy(ptr, buffer, nmemb*size);
-        delete [] buffer;
+        free(buffer);
     }
     return retcode;
 }
@@ -492,12 +497,22 @@ size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, 
     }
     
     //Adding the data to the buffer
-    if (!addDataToMem(contents, realsize, mem)){
-        return 0;
-    }
-    //Check if we must write the contentent of the buffer to disk
-    if (mem->filepath != NULL && mem->size + realsize > MAX_FILE_BUFFER){
-        checkWriteMemToFile(mem);
+    if (mem->filepath == NULL){
+        if (!addDataToMem(contents, realsize, mem)){
+            return 0;
+        }
+    } else if (realsize > 0){
+        //Check if we must write the contentent of the buffer to disk
+        //cerr << "downloading file: " << size << " - " <<  nmemb << endl;
+        if (addDataToMem(contents, realsize, mem)){
+            if (mem->size > MAX_FILE_BUFFER || realsize < CURL_MAX_WRITE_SIZE ){
+                //cerr << "writing file with size: " << mem->size << " | " << realsize << endl;
+                checkWriteMemToFile(mem->memory, mem->size, mem->filepath);
+                mem->size = 0;
+                free(mem->memory);
+                mem->memory = NULL;
+            }
+        }
     }
     return realsize;
 }
@@ -509,17 +524,32 @@ size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, 
  * @param mem
  */
 int HttpUtil::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
-    if (mem->size + realsize > MAX_FILE_BUFFER || mem->filepath == NULL){
-        mem->memory = (char *)realloc(mem->memory, mem->size + realsize + 1);
-        if(mem->memory == NULL) {
+    
+    if (contents == NULL){
+        cerr << "addDataToMem data is null" << endl;
+        return 0;
+    }
+    
+    if (mem->size == 0 && mem->memory == NULL){
+        mem->memory = (char *)calloc(mem->size + realsize + 1, 1);
+        if (mem->memory == NULL){
+            cerr << "addDataToMem not enough memory (calloc returned NULL)" << endl;
+            return 0;
+        }
+    } else {
+        char* tmp = (char *)realloc(mem->memory, mem->size + realsize + 1);
+        if (tmp != NULL) {
+            mem->memory = tmp;
+        } else {
             /* out of memory! */
-            Traza::print("not enough memory (realloc returned NULL)", W_DEBUG);
+            cerr << "addDataToMem not enough memory (realloc returned NULL)" << endl;
             return 0;
         }
     }
-    memcpy(&(mem->memory[mem->size]), contents, realsize);
+    memcpy(&(mem->memory[mem->size]), (char *)contents, realsize);
     mem->size = mem->size + realsize;
     mem->memory[mem->size] = 0;
+    //printf("Adding data to memory %d\n", mem->size);
     return 1;
 }
 
@@ -528,18 +558,18 @@ int HttpUtil::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
  * 
  * @param mem
  */
-void HttpUtil::checkWriteMemToFile(MemoryStruct *mem){
-    if (mem != NULL && mem->size != 0 && mem->filepath != NULL){
+void HttpUtil::checkWriteMemToFile(void *contents, size_t sizeToWrite, char *filepath){
+    if (contents != NULL && sizeToWrite != 0 && filepath != NULL){
         //Escribimos el fichero descargado en un fichero del disco duro
-        ofstream file;
-        file.open(mem->filepath, ios::out | ios::binary | ios::app);
-        if (file.is_open()){
-            file.write(mem->memory, mem->size);
-            mem->size = 0;
-            file.close();
+        errno_t err;
+        FILE* file = NULL;
+        err = fopen_s(&file, filepath, "ab");
+        if (err == 0 && file != NULL){
+            fwrite((char *)contents, 1, sizeToWrite, file);
+            fclose(file);
         } else {
-            file.close();//Cerramos el fichero
-            Traza::print("HttpUtil: file: " +  string(mem->filepath) +  " not found or could not be opened", W_DEBUG);
+            printf("HttpUtil::checkWriteMemToFile file: %s not found or could not be opened", filepath);
+            decodeError(err);
         }
     }
 }

@@ -25,15 +25,15 @@
                     <type>3</type>
                 </confElem>
                 <confElem>
-                    <name>Debug32</name>
-                    <type>3</type>
-                </confElem>
-                <confElem>
                     <name>Release32</name>
                     <type>3</type>
                 </confElem>
                 <confElem>
                     <name>Release64</name>
+                    <type>3</type>
+                </confElem>
+                <confElem>
+                    <name>Debug32</name>
                     <type>3</type>
                 </confElem>
             </confList>

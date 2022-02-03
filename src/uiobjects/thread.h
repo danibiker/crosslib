@@ -38,8 +38,8 @@ private:
     static void *run(void * thread_obj)
     {
         Thread<T>* thread = (Thread<T>*)thread_obj;
-        ret = (thread->object->*thread->method) ();
         thread->hFinishRun->Lock();
+        ret = (thread->object->*thread->method) ();
         thread->setStatus(THREAD_FINISHED);
 //        cout << "exiting thread now" << endl;
         thread->hFinishRun->Unlock();
