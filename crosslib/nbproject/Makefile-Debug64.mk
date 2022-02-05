@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/3400367a/uiimgdownloader.o \
 	${OBJECTDIR}/_ext/3400367a/uiimgencoder.o \
 	${OBJECTDIR}/_ext/51d5feb5/MusixMatch.o \
+	${OBJECTDIR}/_ext/51d5feb5/chartLyrics.o \
 	${OBJECTDIR}/_ext/51d5feb5/darklyrics.o \
 	${OBJECTDIR}/_ext/51d5feb5/lyricsbase.o \
 	${OBJECTDIR}/_ext/51d5feb5/lyricswikia.o \
@@ -60,6 +61,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/64cbc303/ConstantHttp.o \
 	${OBJECTDIR}/_ext/64cbc303/JsonParser.o \
 	${OBJECTDIR}/_ext/64cbc303/Progress.o \
+	${OBJECTDIR}/_ext/64cbc303/XmlParser.o \
 	${OBJECTDIR}/_ext/a8c489d9/filecipher.o \
 	${OBJECTDIR}/_ext/a8c489d9/rijndael.o \
 	${OBJECTDIR}/_ext/a8c489d9/sha256.o \
@@ -197,6 +199,11 @@ ${OBJECTDIR}/_ext/51d5feb5/MusixMatch.o: ../src/httpcurl/lyrics/MusixMatch.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -I../src/httpcurl -I../src/rijndael -I../src/uiobjects -I../../../../msys2/mingw64/include/SDL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/MusixMatch.o ../src/httpcurl/lyrics/MusixMatch.cpp
 
+${OBJECTDIR}/_ext/51d5feb5/chartLyrics.o: ../src/httpcurl/lyrics/chartLyrics.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/51d5feb5
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -I../src/httpcurl -I../src/rijndael -I../src/uiobjects -I../../../../msys2/mingw64/include/SDL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/51d5feb5/chartLyrics.o ../src/httpcurl/lyrics/chartLyrics.cpp
+
 ${OBJECTDIR}/_ext/51d5feb5/darklyrics.o: ../src/httpcurl/lyrics/darklyrics.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/51d5feb5
 	${RM} "$@.d"
@@ -261,6 +268,11 @@ ${OBJECTDIR}/_ext/64cbc303/Progress.o: ../src/httpcurl/util/Progress.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/64cbc303
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -I../src/httpcurl -I../src/rijndael -I../src/uiobjects -I../../../../msys2/mingw64/include/SDL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/64cbc303/Progress.o ../src/httpcurl/util/Progress.cpp
+
+${OBJECTDIR}/_ext/64cbc303/XmlParser.o: ../src/httpcurl/util/XmlParser.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/64cbc303
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DSKIP_HOSTNAME_VERIFICATION -DSKIP_PEER_VERIFICATION -DWIN -I../src/httpcurl -I../src/rijndael -I../src/uiobjects -I../../../../msys2/mingw64/include/SDL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/64cbc303/XmlParser.o ../src/httpcurl/util/XmlParser.cpp
 
 ${OBJECTDIR}/_ext/a8c489d9/filecipher.o: ../src/rijndael/filecipher.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/a8c489d9

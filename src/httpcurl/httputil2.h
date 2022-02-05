@@ -24,6 +24,7 @@
 #include "../uiobjects/Fileio.h"
 #include "util/ConstantHttp.h"
 #include "../uiobjects/unzip/GZipHelper.h"
+#include <gmutex.h>
 
 typedef struct ConnectionProps{
     char* proxyIP;
@@ -123,6 +124,8 @@ private:
         strerror_s(buff, 100, r);
         printf("str_trim_left.error: %d %s\n", r, buff);
     }
+    
+    GMutex mutex;
     
 };
 

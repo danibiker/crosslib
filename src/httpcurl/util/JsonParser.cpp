@@ -43,6 +43,14 @@ bool JsonParser::parseJson(Json::Value *root, std::string raw_json, std::string 
     return ret;
 }
 
+std::string JsonParser::getStr(Json::Value value, std::string field){
+    std::string ret;
+    if (value.get(field,"").isString()){
+        ret = value.get(field,"").toStyledString();
+    }
+    return ret;
+}
+
 /**
  * 
  * @param root

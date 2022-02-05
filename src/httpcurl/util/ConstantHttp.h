@@ -67,6 +67,8 @@ class TrackInfo{
     public:
         TrackInfo(){
         }
+        ~TrackInfo(){
+        }
         string album_name;
         string trackId;
         string album_coverart_100x100;

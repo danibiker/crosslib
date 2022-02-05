@@ -377,13 +377,14 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
     if (chunk == NULL)
         return 0;
     
+    mutex.Lock();
     // SDL_LockMutex(conn_mutex);
     //Traza::print("HttpUtil::sendHttp " + string(httpType == 0 ? "POST" : httpType == 1 ? "GET" : "PUT") + ", " +  url, W_INFO);
     cleanChunkData(chunk);
     chunk->memory = (char *) calloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1, 1);  /* will be grown as needed by the realloc above */
     
     
-    if (chunk->memory == NULL || data == NULL){
+    if (chunk->memory == NULL){
         printf("sendHttp: Could not allocate memory\n");
         return 0;
     }
@@ -393,6 +394,7 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
     /* get a curl handle */
     
     curl = curl_easy_init();
+    mutex.Unlock();
     // SDL_UnlockMutex(conn_mutex);
     char *auth = NULL;
 
@@ -521,7 +523,6 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
                 if (httpType == HTTP_POST3){
                     //To download files by post and without need to wait to finish
                     //Needed by dropbox
-//                    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
                     curl_easy_setopt(curl, CURLOPT_POST, 1L);
                     /* Now specify the POST data */
                     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, ""); //no need to pass postData
@@ -543,9 +544,7 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
                 }
             break;
         }
-
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-        
+      
         if (headers != NULL){
             struct curl_slist *curlheaders=NULL;
             map<string, string>::const_iterator itr;

@@ -183,7 +183,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     cleanChunkData();
     chunk.memory = (char *) malloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1);  /* will be grown as needed by the realloc above */
     
-    if (chunk.memory == NULL || data == NULL){
+    if (chunk.memory == NULL){
         printf("sendHttp: Could not allocate memory\n");
         return 0;
     }

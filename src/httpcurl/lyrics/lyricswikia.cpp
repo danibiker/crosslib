@@ -53,7 +53,7 @@ uint32_t LyricsWikia::trackLyrics(TrackInfo *trackinfo){
 /**
 *
 */
-uint32_t LyricsWikia::trackSearch(string track, string artist, vector <TrackInfo *> *info){
+uint32_t LyricsWikia::trackSearch(string track, string artist, vector <unique_ptr<TrackInfo>> *info){
     uint32_t retorno = SINERROR;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
     if (info != NULL){
@@ -73,20 +73,20 @@ uint32_t LyricsWikia::trackSearch(string track, string artist, vector <TrackInfo
         util.get(url, &cabeceras);
 
         Json::Value root;   // will contains the root value after parsing.
-        Json::Reader reader;
-
         string respuesta = util.getData();
-//        cout << respuesta << endl;
-        bool parsingSuccessful = reader.parse(respuesta, root );
+        //Traza::print("LyricsWikia::trackSearch: response: " + respuesta, W_DEBUG);
+        string err;
+        bool parsingSuccessful = JsonParser::parseJson(&root, respuesta, &err);
+        
         if ( !parsingSuccessful ){
              // report to the user the failure and their locations in the document.
-            Traza::print("LyricsWikia::trackSearch: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+            Traza::print("LyricsWikia::trackSearch: Failed to parse configuration. " + err, W_ERROR);
             retorno = ERRORCONNECT;
         } else {
             Json::Value url = root["url"];
-            TrackInfo *trackElem = new TrackInfo();
+            auto trackElem = make_unique<TrackInfo>();
             trackElem->url = root.get("url","").asString();
-            info->push_back(trackElem);
+            info->push_back(std::move(trackElem));
             if (trackElem->url.empty()){
                 retorno = NOTFOUND;
             }

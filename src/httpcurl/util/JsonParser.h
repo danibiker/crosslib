@@ -22,6 +22,7 @@ public:
     static bool parseJson(Json::Value *root, std::string raw_json, std::string *err);
     static bool parseJson(Json::Value *root, std::string raw_json);
     static bool parseJsonToString(std::string *raw_json, Json::Value value);
+    static std::string getStr(Json::Value value, std::string field);
 private:
 
 };

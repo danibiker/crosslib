@@ -26,36 +26,12 @@ Onedrive::~Onedrive() {
 uint32_t Onedrive::authenticate(){
     string strAccessToken;
     string strRefreshToken;
-    filecipher cifrador;
-    string accessTokenCipher;
-    string refreshTokenCipher;
-    Dirutil dir;
     string display_name, email;
     uint32_t retorno = SINERROR;
 
     try{
         Traza::print("Onedrive::authenticate. rutaini: " + rutaIni, W_DEBUG);
-        if (dir.existe(rutaIni)){
-            //Obtenemos el access token almacenado en el fichero de configuracion
-            ListaIni<Data> *config = new ListaIni<Data>();
-            config->loadFromFile(rutaIni);
-            config->sort();
-            
-            Data elem;
-            int pos = config->find(ONEDRIVEACCESSTOKENSTR);
-            if (pos >= 0){
-                elem = config->get(pos);
-                accessTokenCipher = elem.getValue();
-                strAccessToken = cifrador.decodeEasy(accessTokenCipher, passwordAT);
-            }
-            
-            if (pos >= 0){
-                pos = config->find(ONEDRIVEFRESHTOKENSTR);
-                elem = config->get(pos);
-                refreshTokenCipher = elem.getValue();
-                strRefreshToken = cifrador.decodeEasy(refreshTokenCipher, passwordAT);
-            }
-
+        if (decodeTokens(strAccessToken, strRefreshToken, ONEDRIVEACCESSTOKENSTR, ONEDRIVEFRESHTOKENSTR) == SINERROR){
             string url = "https://graph.microsoft.com/v1.0/me";
             string AuthOauth2 = "Bearer " + strAccessToken;
             map<string, string> cabeceras;
@@ -63,19 +39,19 @@ uint32_t Onedrive::authenticate(){
             cabeceras.clear();
             cabeceras.insert( make_pair("Authorization", AuthOauth2));
             cabeceras.insert( make_pair("Accept", "*/*"));
-//            cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
-//            cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-            //cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
             cabeceras.insert( make_pair("Content-Type", "application/json"));
-            util.get(url, &cabeceras);
+            
+            MemoryStruct *chunk = util.initDownload();
+            util.httpGet(url, &cabeceras, chunk);
+            string ret = util.getData(chunk);
+            util.endDownload(&chunk);
 
             //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
             Json::Value root;   // will contains the root value after parsing.
-            string ret = util.getData();
             Traza::print(ret, W_DEBUG);
             
             if (!ret.empty()){
-                retorno = checkOauthErrors(util.getData(), &root);
+                retorno = checkOauthErrors(ret, &root);
             }
             if(retorno == SINERROR){
                 display_name = root.get("displayName","").asString();
@@ -90,7 +66,7 @@ uint32_t Onedrive::authenticate(){
         }
 
     } catch (Excepcion &e){
-        Traza::print("GoogleDrive::authenticate. Error al cargar la configuracion", W_ERROR);
+        Traza::print("OneDrive::authenticate. Error al cargar la configuracion", W_ERROR);
         retorno = ERRORACCESSTOKEN;
     }
 
@@ -153,15 +129,20 @@ string Onedrive::launchAccessToken(string clientid, string secret, string codeOr
     }
 
     Traza::print(postData, W_DEBUG);
-    util.post(ONEDRIVEURLTOKEN, postData.c_str(),postData.length(), &cabeceras);
+    
+    MemoryStruct *chunk = util.initDownload();
+    util.httpPost(ONEDRIVEURLTOKEN, postData.c_str(),postData.length(), &cabeceras, chunk);
+    string respuesta = util.getData(chunk);
+    util.endDownload(&chunk);
+    
     Json::Value root;   // will contains the root value after parsing.
-    Json::Reader reader;
-    Traza::print(util.getData(), W_DEBUG);
+    string err;
+    bool parsingSuccessful = JsonParser::parseJson(&root, respuesta, &err);
+    Traza::print(respuesta, W_DEBUG);
 
-    bool parsingSuccessful = reader.parse( util.getData(), root );
     if ( !parsingSuccessful ){
          // report to the user the failure and their locations in the document.
-        Traza::print("GoogleDrive::launchAccessToken: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+        Traza::print("OneDrive::launchAccessToken: Failed to parse configuration. " + err, W_ERROR);
     } else {
         //En el caso del refresh, no se devuelve el mismo token
         if (!refresh) refreshToken = root.get("refresh_token","").asString();
@@ -196,11 +177,13 @@ bool Onedrive::deleteFiles(string fileid, string accessToken){
     cabeceras.insert( make_pair("Accept", "*/*"));
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-
-    util.del(url, &cabeceras);
-    Traza::print( "code", util.getHttp_code(), W_DEBUG);
     
-    return util.getHttp_code() == 204;
+    MemoryStruct *chunk = util.initDownload();
+    util.httpDel(url, &cabeceras, chunk);
+    long httpCode = util.getHttp_code(chunk);
+    util.endDownload(&chunk);
+    Traza::print( "code", httpCode, W_DEBUG);
+    return httpCode == 204;
 }
 
 /**
@@ -232,8 +215,7 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
     parmItem["name"] = dir.getFileName(filesystemPath);
     postArg["item"] = parmItem;
 
-    Json::FastWriter fastWriter;
-    postData = fastWriter.write(postArg);
+    JsonParser::parseJsonToString(&postData, postArg);
 
     size_t tam = 0;
     unsigned long iteraciones = 0;
@@ -250,14 +232,19 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "application/json; charset=UTF-8"));
-
-    util.post(url, postData.c_str(), postData.length(), &cabeceras);
-    Traza::print( "code", util.getHttp_code(), W_DEBUG);
+    
+    MemoryStruct *chunk = util.initDownload();
+    util.httpPost(url, postData.c_str(), postData.length(), &cabeceras, chunk);
+    string resp = util.getData(chunk);
+    long httpCode = util.getHttp_code(chunk);
+    util.endDownload(&chunk);
+    
+    Traza::print( "code", httpCode, W_DEBUG);
 
     //Control error de token caducado de OAUTH2
-    if (util.getHttp_code() != 200){
+    if (httpCode != 200){
         Json::Value root;   // will contains the root value after parsing.
-        uint32_t oauthOut = checkOauthErrors(util.getData(), &root);
+        uint32_t oauthOut = checkOauthErrors(resp, &root);
         if (oauthOut == ERRORREFRESHTOKEN){
             this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
             //Utilizando recursividad
@@ -265,16 +252,16 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
         }
     }
     //Control error de token caducado de OAUTH2
-    string resp = util.getData();
     string location;
-    
     Json::Value root;   // will contains the root value after parsing.
-    Json::Reader reader;
     Traza::print(resp, W_DEBUG);
-    bool parsingSuccessful = reader.parse( resp, root );
+    
+    string err;
+    bool parsingSuccessful = JsonParser::parseJson(&root, resp, &err);
+    
     if ( !parsingSuccessful ){
          // report to the user the failure and their locations in the document.
-        Traza::print("Onedrive::chunckedUpload: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+        Traza::print("Onedrive::chunckedUpload: Failed to parse configuration. " + err, W_ERROR);
     } else {
         // Get the value of the member of root named 'hash', return '' if there is no
         // such member.
@@ -327,13 +314,19 @@ bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     //util.setSendContentLength(false);
     //Realizamos el put
-    util.put(url, filesystemPath.c_str(), chunkFileSize, offset, &cabeceras);
-    Traza::print("Codigo", util.getHttp_code(), W_DEBUG);
-    Traza::print(util.getData(), W_DEBUG);
+    
+    MemoryStruct *chunk = util.initDownload();
+    util.httpPut(url, filesystemPath.c_str(), chunkFileSize, offset, &cabeceras, chunk);
+    string resp = util.getData(chunk);
+    long httpCode = util.getHttp_code(chunk);
+    util.endDownload(&chunk);
+    
+    Traza::print("Codigo", httpCode, W_DEBUG);
+    Traza::print(resp, W_DEBUG);
 
     //Control error de token caducado de OAUTH2
     Json::Value root;   // will contains the root value after parsing.
-    uint32_t oauthOut = checkOauthErrors(util.getData(), &root);
+    uint32_t oauthOut = checkOauthErrors(resp, &root);
     //Control error de token caducado de OAUTH2
     if (oauthOut == ERRORREFRESHTOKEN){
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
@@ -342,7 +335,7 @@ bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t
     }
     
     //HTTP/1.1 100 Continue, HTTP/1.1 202 Accepted
-    return (util.getHttp_code() == 100 || util.getHttp_code() == 202);
+    return (httpCode == 100 || httpCode == 202);
 }
 
 /**
@@ -411,8 +404,12 @@ string Onedrive::getJSONList(string fileid, string accessToken, string nextPageT
         } else {
             url = nextPageToken;
         }
-        util.get(url, &cabeceras);
-        responseMetadata = util.getData();
+        
+        MemoryStruct *chunk = util.initDownload();
+        util.httpGet(url, &cabeceras, chunk);
+        responseMetadata = util.getData(chunk);
+        long httpCode = util.getHttp_code(chunk);
+        util.endDownload(&chunk);
     }
     return responseMetadata;
 }
@@ -426,7 +423,6 @@ string Onedrive::getJSONList(string fileid, string accessToken, string nextPageT
  */
 bool Onedrive::listFiles(string filesystemPath, string accessToken, CloudFiles *files){
     Json::Value root;   // will contains the root value after parsing.
-    Json::Reader reader;
     string nextPageToken;
     string resp;
     int controlBucle = 0;
@@ -446,7 +442,7 @@ bool Onedrive::listFiles(string filesystemPath, string accessToken, CloudFiles *
 
         if ( !parsingSuccessful ){
              // report to the user the failure and their locations in the document.
-            Traza::print("GoogleDrive::listFiles: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+            Traza::print("OneDrive::listFiles: Failed to parse configuration", W_ERROR);
         } else {
             //En el caso del refresh, no se devuelve el mismo token
             const Json::Value arrFiles = root["value"];
@@ -484,15 +480,19 @@ int Onedrive::getFile(string filesystemPath, string cloudIdPath, string accessTo
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
-    util.download(url, filesystemPath, &cabeceras);
-    Traza::print("Onedrive::getFile. Code", util.getHttp_code(), W_DEBUG);
-    Traza::print(util.getData(), W_DEBUG);
     
-    if (util.getHttp_code() == 401){
+    MemoryStruct *chunk = util.initDownload();
+    util.downloadToDiskHeaders(url, filesystemPath, &cabeceras, chunk);
+    long httpCode = util.getHttp_code(chunk);
+    util.endDownload(&chunk);
+    
+    Traza::print("Onedrive::getFile. Code", httpCode, W_DEBUG);
+    
+    if (httpCode == 401){
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
         //Utilizando recursividad
         return getFile(filesystemPath, cloudIdPath, this->getAccessToken());
-    } if (util.getHttp_code() != 200){
+    } if (httpCode != 200){
         Traza::print(string("Error descargando ") + cloudIdPath + " en " + filesystemPath, W_ERROR);
         return -1;
     }
@@ -505,14 +505,15 @@ int Onedrive::getFile(string filesystemPath, string cloudIdPath, string accessTo
 uint32_t Onedrive::checkOauthErrors(string data, Json::Value *root){
     uint32_t retorno = SINERROR;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
-    Json::Reader reader;
+    
     if (!data.empty()){
-        bool parsingSuccessful = reader.parse( data, *root);
+        string err;
+        bool parsingSuccessful = JsonParser::parseJson(root, data, &err);
         string errorText;
 
         if ( !parsingSuccessful ){
              // report to the user the failure and their locations in the document.
-            Traza::print("GoogleDrive::checkOauthErrors: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+            Traza::print("OneDrive::checkOauthErrors: Failed to parse configuration", W_ERROR);
             retorno = ERRORACCESSTOKEN;
         } else {
             Json::Value error = (*root)["error"];
@@ -528,7 +529,7 @@ uint32_t Onedrive::checkOauthErrors(string data, Json::Value *root){
         //Comprobamos que el access token funciona
         //Si hemos detectado error lanzamos el proceso de autorizacion
         if (retorno != SINERROR){
-            Traza::print("GoogleDrive::checkOauthErrors: " + data, W_ERROR);
+            Traza::print("OneDrive::checkOauthErrors: " + data, W_ERROR);
             if (errorText.find("OAuth 2 \"Authorization\" header is not well-formed") != string::npos
                 || errorText.find("Invalid OAuth2 token") != string::npos)
             {
@@ -536,7 +537,7 @@ uint32_t Onedrive::checkOauthErrors(string data, Json::Value *root){
             }
         }
     } else {
-        Traza::print("GoogleDrive::checkOauthErrors: Empty data", W_DEBUG);
+        Traza::print("OneDrive::checkOauthErrors: Empty data", W_DEBUG);
     }
 
     return retorno;
@@ -572,14 +573,17 @@ string Onedrive::mkdir(string dirname, string parentid, string accessToken){
     cabeceras.insert( make_pair("Content-Type", "application/json; charset=UTF-8"));
 
     Traza::print(postData, W_DEBUG);
-    util.post(url, postData.c_str(), postData.length(), &cabeceras);
-    Traza::print("code", util.getHttp_code(), W_DEBUG);
+    
+    MemoryStruct *chunk = util.initDownload();
+    util.httpPost(url, postData.c_str(), postData.length(), &cabeceras, chunk);
+    string resp = util.getData(chunk);
+    long httpCode = util.getHttp_code(chunk);
+    util.endDownload(&chunk);
+    
+    Traza::print("code", httpCode, W_DEBUG);
 
     Json::Value root;
-    Json::Reader reader;
-
     //Control error de token caducado de OAUTH2
-    string resp = util.getData();
     Traza::print(resp, W_DEBUG);
     
     uint32_t oauthOut = checkOauthErrors(resp, &root);
@@ -594,7 +598,7 @@ string Onedrive::mkdir(string dirname, string parentid, string accessToken){
 
     if ( !parsingSuccessful ){
          // report to the user the failure and their locations in the document.
-        Traza::print("Onedrive::mkdir: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+        Traza::print("Onedrive::mkdir: Failed to parse configuration", W_ERROR);
     } else {
         //En el caso del refresh, no se devuelve el mismo token
         id = root.get("id","").asString();
@@ -612,7 +616,6 @@ string Onedrive::mkdir(string dirname, string parentid, string accessToken){
 string Onedrive::fileExist(string filename, string parentid, string accessToken){
     string resp = getJSONList(parentid, accessToken, "");
     Json::Value root;   // will contains the root value after parsing.
-    Json::Reader reader;
     string retorno;
     bool encontrado = false;
 
@@ -629,7 +632,7 @@ string Onedrive::fileExist(string filename, string parentid, string accessToken)
 
     if ( !parsingSuccessful ){
          // report to the user the failure and their locations in the document.
-        Traza::print("Onedrive::listFiles: Failed to parse configuration. " + reader.getFormattedErrorMessages(), W_ERROR);
+        Traza::print("Onedrive::listFiles: Failed to parse configuration", W_ERROR);
     } else {
         //En el caso del refresh, no se devuelve el mismo token
         const Json::Value arrFiles = root["value"];
@@ -657,17 +660,21 @@ int Onedrive::getShared(string accessToken){
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
+
+    MemoryStruct *chunk = util.initDownload();
+    util.httpGet(url, &cabeceras, chunk);
+    string resp = util.getData(chunk);
+    long httpCode = util.getHttp_code(chunk);
+    util.endDownload(&chunk);
     
-    util.get(url, &cabeceras);
+    Traza::print("Onedrive::getShared. Code", httpCode, W_DEBUG);
+    Traza::print(resp, W_DEBUG);
     
-    Traza::print("Onedrive::getShared. Code", util.getHttp_code(), W_DEBUG);
-    Traza::print(util.getData(), W_DEBUG);
-    
-    if (util.getHttp_code() == 401){
+    if (httpCode == 401){
         this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
         //Utilizando recursividad
         return getShared(this->getAccessToken());
-    } if (util.getHttp_code() != 200){
+    } if (httpCode != 200){
         Traza::print("Error getShared ", W_ERROR);
         return -1;
     }
@@ -710,8 +717,11 @@ string Onedrive::getJSONListSharepoint(string fileid, string accessToken){
         cabeceras.insert( make_pair("Content-Type", "text/plain"));
         
         url = "https://graph.microsoft.com/v1.0/shares/"  + fileid;
-        util.get(url, &cabeceras);
-        responseMetadata = util.getData();
+        
+        MemoryStruct *chunk = util.initDownload();
+        util.httpGet(url, &cabeceras, chunk);
+        responseMetadata = util.getData(chunk);
+        util.endDownload(&chunk);
     }
     return responseMetadata;
 }

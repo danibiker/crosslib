@@ -5,8 +5,6 @@
 #include "util/ConstantHttp.h"
 #include <vector>
 #include <map>
-#include "httputil.h"
-#include "httputil2.h"
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
@@ -18,9 +16,11 @@
 #include "ioauth2.h"
 #include "listaIni.h"
 
+
 using namespace std;
 
-static const string DROPBOXACCESSTOKENSTR = "accesstoken";
+static const string DROPBOXACCESSTOKENSTR = "dropboxaccesstoken";
+static const string DROPBOXREFRESHTOKENSTR = "dropboxrefreshtoken";
 
 class Dropbox : public IOauth2
 {
@@ -51,7 +51,6 @@ class Dropbox : public IOauth2
         string getJSONListDropbox(string filesystemPath, string accessToken);
         string getJSONListContinueDropbox(string cursor, string accessToken);
         int putFile(string filesystemPath, string dropboxPath, string accessToken);
-        Httputil2 util2;
 };
 
 

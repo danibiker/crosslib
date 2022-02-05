@@ -3,7 +3,6 @@
 
 #include "Constant.h"
 #include "httputil2.h"
-#include "httputil.h"
 #include "Dirutil.h"
 #include "util/ConstantHttp.h"
 #include "json/json.h"
@@ -11,6 +10,7 @@
 #include "Launcher.h"
 #include "filelaunch.h"
 #include "../util/JsonParser.h"
+#include "filecipher.h"
 
 
 
@@ -58,7 +58,7 @@ class IOauth2
         void openExplorer(string);
 
     protected:
-        HttpUtil util;
+        Httputil2 util;
         string rutaIni;
         string clientid;
         string accessToken;
@@ -67,6 +67,8 @@ class IOauth2
         string expiresIn;
         string secret;
         uint32_t oauthStatus;
+        
+        uint32_t decodeTokens(string &accessToken, string &refreshToken, string configAccessTokenName, string configRefreshTokenName);
 
     private:
 };

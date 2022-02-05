@@ -53,7 +53,7 @@ bool IOauth2::deleteFiles(string fileid, string accessToken){
 *
 */
 void IOauth2::abortDownload(){
-    util.abort();
+    util.abortDownload();
 }
 
 /**
@@ -110,6 +110,52 @@ void IOauth2::addToken(string parmName, string parmValue, ListaIni<Data> *config
         dato.setKeyValue(parmName, parmValue);
         config->add(dato);
     }
+}
+
+/**
+ * 
+ * @param accessToken
+ * @param refreshToken
+ * @param configAccessTokenName
+ * @param configRefreshTokenName
+ * @return 
+ */
+uint32_t IOauth2::decodeTokens(string &accessToken, string &refreshToken, string configAccessTokenName, string configRefreshTokenName){
+    
+    uint32_t ret = ERRORACCESSTOKEN;
+    filecipher cifrador;
+    string accessTokenCipher;
+    string refreshTokenCipher;
+    Dirutil dir;
+    
+    if (dir.existe(rutaIni)){
+        //Obtenemos el access token almacenado en el fichero de configuracion
+        ListaIni<Data> *config = new ListaIni<Data>();
+        config->loadFromFile(rutaIni);
+        config->sort();
+
+        int pos = config->find(configAccessTokenName);
+        Data elem = config->get(pos);
+        accessTokenCipher = elem.getValue();
+        accessToken = cifrador.decodeEasy(accessTokenCipher, passwordAT);
+
+        pos = config->find(configRefreshTokenName);
+        if (pos >= 0){
+            elem = config->get(pos);
+            refreshTokenCipher = elem.getValue();
+            refreshToken = cifrador.decodeEasy(refreshTokenCipher, passwordAT);
+        }
+
+        if (accessToken.empty() || refreshToken.empty()){
+            Traza::print("Dropbox::authenticate. No se lanza autorizacion porque no se ha encontrado token almacenado", W_ERROR);
+            ret = ERRORACCESSTOKEN;
+            setOauthStatus(ERRORACCESSTOKEN);
+        } else {
+            ret = SINERROR;
+        }
+        delete config;
+    }
+    return ret;
 }
 
 /**

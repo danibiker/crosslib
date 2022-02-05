@@ -10,7 +10,7 @@ class Darklyrics : public LyricsBase
         Darklyrics();
         virtual ~Darklyrics();
 
-        uint32_t trackSearch(string track, string artist, vector <TrackInfo *> *info);
+        uint32_t trackSearch(string track, string artist, vector <unique_ptr<TrackInfo>> *info);
         uint32_t trackLyrics(TrackInfo *trackinfo);
         string search_for_elem(GumboNode* node, Tags *tag, string atributo, string valAtributo) ;
 

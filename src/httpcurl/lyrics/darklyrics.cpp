@@ -43,7 +43,7 @@ uint32_t Darklyrics::trackLyrics(TrackInfo *trackinfo){
 /**
 *
 */
-uint32_t Darklyrics::trackSearch(string track, string artist, vector <TrackInfo *> *info){
+uint32_t Darklyrics::trackSearch(string track, string artist, vector <unique_ptr<TrackInfo>> *info){
     uint32_t retorno = ERRORCONNECT;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
     if (info != NULL){
@@ -62,15 +62,14 @@ uint32_t Darklyrics::trackSearch(string track, string artist, vector <TrackInfo 
         cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
         util.get(url, &cabeceras);
 
-        string respuesta = util.getData();
-//        cout << respuesta << endl;
-//        cout << "Respuesta" << endl;
+        char* respuesta = util.getData();
+        Traza::print("Darklyrics::trackSearch: response: " + string(respuesta), W_DEBUG);
 
         HtmlParser parser;
         parser.setObtainContentTag(true);
         Tags tag;
         tag.htmlTag = GUMBO_TAG_A;
-        parser.buscarElementos(util.getData(), &tag);
+        parser.buscarElementos(respuesta, &tag);
         string href, content;
         map<string, string> *v;
         map<string, string> elements;
@@ -93,9 +92,9 @@ uint32_t Darklyrics::trackSearch(string track, string artist, vector <TrackInfo 
         if (posEnlace != -1){
             v = &tag.tagElement.at(posEnlace).attrList;
             href = (v->find("href") !=  v->end()) ? v->find("href")->second : "";
-            TrackInfo *trackElem = new TrackInfo();
+            auto trackElem = make_unique<TrackInfo>();
             trackElem->url = "http://www.darklyrics.com/" + href;
-            info->push_back(trackElem);
+            info->push_back(std::move(trackElem));
             retorno = SINERROR;
         } else {
             retorno = NOTFOUND;

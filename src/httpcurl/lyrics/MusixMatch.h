@@ -4,16 +4,18 @@
 #include "httputil.h"
 #include "json/json.h"
 #include "util/ConstantHttp.h"
+#include "../util/JsonParser.h"
+#include "lyricsbase.h"
 
 static const string APIKEY = "47a903c05793baee56e17dc4b14c6b19";
 
-class MusixMatch
+class MusixMatch : public LyricsBase
 {
     public:
         MusixMatch();
         virtual ~MusixMatch();
         uint32_t trackLyrics(TrackInfo *trackinfo);
-        uint32_t trackSearch(string track, string artist, vector <TrackInfo *> *info);
+        uint32_t trackSearch(string track, string artist, vector <unique_ptr<TrackInfo>> *info);
 
     protected:
 

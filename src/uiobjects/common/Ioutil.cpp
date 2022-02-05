@@ -1822,7 +1822,7 @@ void Ioutil::drawUIListGroupBox(Object *obj){
         } else if (!listObj->getImgDrawed()){
             int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
             listObj->setBgLetraPopup(false);
-            Traza::print("Repintando lista: " + listObj->getLabel(), W_DEBUG);
+            Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
             Traza::print("Alto de la lista: ", h, W_PARANOIC);
             pintarContenedor(x,y,w,h,listObj->isFocus() && listObj->isEnabled() && listObj->isVerContenedor(), obj, obj->getColor());
             x += INPUTCONTENT;

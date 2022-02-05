@@ -53,14 +53,27 @@ class HttpUtil
         char * getRawData(){return chunk.memory;}
 
         char * getData(){
-            CGZIP2A a((unsigned char *)chunk.memory, chunk.size);
-            if(chunk.memory)
-                free(chunk.memory);
+            size_t tamData = 0;
+            if (chunk.size > 0 && chunk.memory != NULL){
+                CGZIP2A a((unsigned char *)chunk.memory, chunk.size);
+                tamData = strlen(a.psz);
 
-            chunk.memory = (char *) malloc(strlen(a.psz));  /* will be grown as needed by the realloc above */
-            chunk.size = strlen(a.psz);
-
-            memcpy(chunk.memory, a.psz, strlen(a.psz));
+                if (tamData > 0){
+                    if(chunk.memory){
+                        free(chunk.memory);
+                        chunk.memory = NULL;
+                    }
+                    chunk.memory = (char *) calloc(tamData, 1);  /* will be grown as needed by the realloc above */
+                    if (chunk.memory != NULL){
+                        memcpy(chunk.memory, a.psz, tamData);
+                    } else {
+                        cerr << "No se pudo crear la memoria con tamanyo " << tamData <<endl;
+                    }
+                } else {
+                    cerr << "No se ha podido descomprimir los datos" <<endl;
+                }
+            }   
+            chunk.size = tamData;
             return chunk.memory;
         }
 

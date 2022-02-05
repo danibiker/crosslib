@@ -14,7 +14,7 @@ class LyricsBase
         /** Default destructor */
         virtual ~LyricsBase();
 
-        virtual uint32_t trackSearch(string track, string artist, vector <TrackInfo *> *info);
+        virtual uint32_t trackSearch(string track, string artist, vector <unique_ptr<TrackInfo>> *info);
         virtual uint32_t trackLyrics(TrackInfo *trackinfo);
         void setTrack(string var){track = var;}
         void setArtist(string var){artist = var;}

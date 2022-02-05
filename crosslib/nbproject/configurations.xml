@@ -37,6 +37,8 @@
       <logicalFolder name="lyrics" displayName="lyrics" projectFiles="true">
         <itemPath>../src/httpcurl/lyrics/MusixMatch.cpp</itemPath>
         <itemPath>../src/httpcurl/lyrics/MusixMatch.h</itemPath>
+        <itemPath>../src/httpcurl/lyrics/chartLyrics.cpp</itemPath>
+        <itemPath>../src/httpcurl/lyrics/chartLyrics.h</itemPath>
         <itemPath>../src/httpcurl/lyrics/darklyrics.cpp</itemPath>
         <itemPath>../src/httpcurl/lyrics/darklyrics.h</itemPath>
         <itemPath>../src/httpcurl/lyrics/lyricsbase.cpp</itemPath>
@@ -60,6 +62,8 @@
         <itemPath>../src/httpcurl/util/JsonParser.h</itemPath>
         <itemPath>../src/httpcurl/util/Progress.cpp</itemPath>
         <itemPath>../src/httpcurl/util/Progress.h</itemPath>
+        <itemPath>../src/httpcurl/util/XmlParser.cpp</itemPath>
+        <itemPath>../src/httpcurl/util/XmlParser.h</itemPath>
       </logicalFolder>
       <itemPath>../src/httpcurl/htmlparser.cpp</itemPath>
       <itemPath>../src/httpcurl/htmlparser.h</itemPath>
@@ -358,6 +362,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/lyrics/darklyrics.cpp"
             ex="false"
             tool="1"
@@ -440,6 +454,10 @@
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -841,6 +859,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/lyrics/darklyrics.cpp"
             ex="false"
             tool="1"
@@ -923,6 +951,10 @@
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1323,6 +1355,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/lyrics/darklyrics.cpp"
             ex="false"
             tool="1"
@@ -1405,6 +1447,10 @@
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -1805,6 +1851,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/lyrics/darklyrics.cpp"
             ex="false"
             tool="1"
@@ -1887,6 +1943,10 @@
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -2290,6 +2350,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../src/httpcurl/lyrics/chartLyrics.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../src/httpcurl/lyrics/darklyrics.cpp"
             ex="false"
             tool="1"
@@ -2372,6 +2442,10 @@
       <item path="../src/httpcurl/util/Progress.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/httpcurl/util/Progress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/httpcurl/util/XmlParser.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/rijndael/filecipher.cpp" ex="false" tool="1" flavor2="9">
       </item>
