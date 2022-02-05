@@ -25,6 +25,7 @@
 #include "util/ConstantHttp.h"
 #include "../uiobjects/unzip/GZipHelper.h"
 #include <gmutex.h>
+//#include <mutex>          // std::mutex
 
 typedef struct ConnectionProps{
     char* proxyIP;
@@ -115,6 +116,7 @@ public:
     int writeMemToFile(char* path, MemoryStruct *chunk);
     char * getRawData(MemoryStruct *chunk);
     char * getData(MemoryStruct *chunk);
+    void writeChunkToDisk(MemoryStruct *chunk);
 
     
 private:
@@ -125,6 +127,7 @@ private:
         printf("str_trim_left.error: %d %s\n", r, buff);
     }
     
+    //std::mutex mutex;
     GMutex mutex;
     
 };

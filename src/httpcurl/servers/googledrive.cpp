@@ -105,35 +105,40 @@ uint32_t GoogleDrive::checkOauthErrors(string data, Json::Value *root){
     return retorno;
 }
 
+string GoogleDrive::storeAccessToken(string codeOrRefreshToken, bool refresh){
+    return storeToken(GOOGLEACCESSTOKENSTR, GOOGLEREFRESHTOKENSTR, codeOrRefreshToken, refresh);
+}
+
+
 /**
 *
 */
-string GoogleDrive::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
-    Traza::print("GoogleDrive::storeAccessToken. Negociando access token...", W_DEBUG);
-    filecipher cifrador;
-    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
-    
-    if (!this->getAccessToken().empty()){
-        string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
-        string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
-
-        ListaIni<Data> *config = new ListaIni<Data>();
-        try{
-            Dirutil dir;
-            if (dir.existe(rutaIni)){
-                config->loadFromFile(rutaIni);
-                config->sort();
-            }
-            this->addToken(GOOGLEACCESSTOKENSTR, accessTokenCipherB64, config);
-            this->addToken(GOOGLEREFRESHTOKENSTR, refreshTokenCipherB64, config);
-            config->writeToFile(rutaIni);
-
-        } catch (Excepcion &e){
-            Traza::print("GoogleDrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
-        }
-    }
-    return this->getAccessToken();
-}
+//string GoogleDrive::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
+//    Traza::print("GoogleDrive::storeAccessToken. Negociando access token...", W_DEBUG);
+//    filecipher cifrador;
+//    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
+//    
+//    if (!this->getAccessToken().empty()){
+//        string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
+//        string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
+//
+//        ListaIni<Data> *config = new ListaIni<Data>();
+//        try{
+//            Dirutil dir;
+//            if (dir.existe(rutaIni)){
+//                config->loadFromFile(rutaIni);
+//                config->sort();
+//            }
+//            this->addToken(GOOGLEACCESSTOKENSTR, accessTokenCipherB64, config);
+//            this->addToken(GOOGLEREFRESHTOKENSTR, refreshTokenCipherB64, config);
+//            config->writeToFile(rutaIni);
+//
+//        } catch (Excepcion &e){
+//            Traza::print("GoogleDrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
+//        }
+//    }
+//    return this->getAccessToken();
+//}
 
 /**
 * lanza la autorizacion desde el explorador para obtener un code
@@ -249,7 +254,7 @@ bool GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, stri
         Json::Value root;   // will contains the root value after parsing.
         uint32_t oauthOut = checkOauthErrors(str, &root);
         if (oauthOut == ERRORREFRESHTOKEN){
-            this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+            this->storeAccessToken("", true);
             util.endDownload(&chunk);
             //Utilizando recursividad
             return chunckedUpload(filesystemPath, cloudIdPath, this->getAccessToken());
@@ -315,7 +320,7 @@ bool GoogleDrive::resumableChunckedUpload(string filesystemPath, string url, siz
     Json::Value root;   // will contains the root value after parsing.
     uint32_t oauthOut = checkOauthErrors(str, &root);
     if (oauthOut == ERRORREFRESHTOKEN){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return resumableChunckedUpload(filesystemPath, url, offset, tam, this->getAccessToken());
     }
@@ -360,7 +365,7 @@ string GoogleDrive::mkdir(string dirname, string parentid, string accessToken){
     //Control error de token caducado de OAUTH2
     uint32_t oauthOut = checkOauthErrors(str, &root);
     if (oauthOut == ERRORREFRESHTOKEN){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return mkdir(dirname, parentid, this->getAccessToken());
     }
@@ -435,7 +440,7 @@ bool GoogleDrive::listFiles(string fileid, string accessToken, CloudFiles *files
         //Obtenemos el id del directorio de musica
         uint32_t oauthOut = checkOauthErrors(resp, &root);
         if (oauthOut == ERRORREFRESHTOKEN){
-            this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+            this->storeAccessToken("", true);
             //Utilizando recursividad
             return listFiles(fileid, this->getAccessToken(), files);
         }
@@ -476,7 +481,7 @@ string GoogleDrive::fileExist(string filename, string parentid, string accessTok
     //Obtenemos el id del directorio de musica
     uint32_t oauthOut = checkOauthErrors(resp, &root);
     if (oauthOut == ERRORREFRESHTOKEN){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return fileExist(filename, parentid, this->getAccessToken());
     }
@@ -519,7 +524,7 @@ int GoogleDrive::getFile(string filesystemPath, string cloudIdPath, string acces
     
     Traza::print("GoogleDrive::getFile. Code", httpCode, W_DEBUG);
     if (httpCode == 401){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return getFile(filesystemPath, cloudIdPath, this->getAccessToken());
     } else if (httpCode != 200){
@@ -550,7 +555,7 @@ bool GoogleDrive::deleteFiles(string fileid, string accessToken){
     long httpCode = util.getHttp_code(chunk);
 
     if (httpCode == 401){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return deleteFiles(fileid, this->getAccessToken());
     }

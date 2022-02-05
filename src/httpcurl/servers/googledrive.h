@@ -23,7 +23,8 @@ class GoogleDrive : public IOauth2
         void launchAuthorize(string clientid);
         string launchAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
         bool deleteFiles(string fileid, string accessToken);
-        string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
+//        string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
+        string storeAccessToken(string codeOrRefreshToken, bool refresh);
         bool chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
         bool listFiles(string fileid, string accessToken, CloudFiles *files);
         int getFile(string filesystemPath, string cloudIdPath, string accessToken);

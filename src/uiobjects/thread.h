@@ -3,12 +3,13 @@
 #define __THREAD_H__
 // #############################################################################
 #include <pthread.h>
-#define THREAD_STILL_ACTIVE 0x103
-#define THREAD_NOT_INITIATED 0x102
-#define THREAD_FINISHED 0x101
+#define THREAD_STILL_ACTIVE 2
+#define THREAD_NOT_INITIATED 1
+#define THREAD_FINISHED 0
 
 #include "Constant.h"
-#include "gmutex.h"
+//#include "gmutex.h"
+#include <mutex>
 
 
 // =============================================================================
@@ -23,28 +24,29 @@ protected:
         pthread_attr_t attr;
         void *threadReturn;
         
+        
 private:
-    uint32_t   threadID;     // thread id - 0 until started
-    T*      object;          // the object which owns the method
-    Method  method;          // the method of the object
+    uint32_t    threadID;     // thread id - 0 until started
+    T*          object;          // the object which owns the method
+    Method      method;          // the method of the object
 
     //static volatile uint32_t status; //Para controlar el estado en UNIX
-    volatile uint32_t status; //Para controlar el estado en UNIX
-    GMutex *hSingleStart;
-    GMutex *hFinishRun;
-    static uint32_t ret;
+    uint32_t status;            //Para controlar el estado en UNIX
+//    pthread_mutex_t hSingleStart;
+    std::mutex hSingleStart;
+    std::mutex hSingleRun;
+    uint32_t ret;
+    
 
     // This function gets executed by a concurrent thread.
     static void *run(void * thread_obj)
     {
         Thread<T>* thread = (Thread<T>*)thread_obj;
-        thread->hFinishRun->Lock();
-        ret = (thread->object->*thread->method) ();
-        thread->setStatus(THREAD_FINISHED);
-//        cout << "exiting thread now" << endl;
-        thread->hFinishRun->Unlock();
-        pthread_exit(&ret);
-        return &ret;
+//        const std::lock_guard<std::mutex> lock(thread->hSingleRun);
+        thread->ret = (thread->object->*thread->method) ();
+        pthread_attr_destroy(&thread->attr);
+        pthread_exit((void*)thread->ret);
+        return (void*)thread->ret;
     }
     // Prevent copying of threads: No sensible implementation!
     Thread(const Thread<T>& other) {}
@@ -60,15 +62,13 @@ public:
         this->method        = method;
         this->threadID      = 0;
         setStatus(THREAD_NOT_INITIATED);
-        
-        hSingleStart = new GMutex();
-        hFinishRun = new GMutex();
+//        pthread_mutex_init(&hSingleStart, 0);
     }
 // -----------------------------------------------------------------------------
     ~Thread(void){
         //std::cout << "Thread::Destructor"<<std::endl;
-        pthread_attr_destroy(&attr);
-        delete hSingleStart;
+        //pthread_mutex_destroy(&hSingleStart);
+        
     }
 // -----------------------------------------------------------------------------
     T* getObject(){
@@ -81,25 +81,21 @@ public:
     /* Starts executing the objects method in a concurrent thread. True if the
     thread was started successfully; otherwise false. */
     bool start(){
+        bool ret = false;
         if (getStatus() != THREAD_STILL_ACTIVE){
-            volatile int rc;
-            hSingleStart->Lock();
-            // Initialize and set thread joinable
+            uint32_t rc;
+            const std::lock_guard<std::mutex> lock(hSingleStart);
+            setStatus(THREAD_STILL_ACTIVE);
             pthread_attr_init(&attr);
             pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-            //El cuarto parametro le pasa argumentos a la funcion que llamamos
-            rc = pthread_create(&hThread, &attr, Thread<T>::run, this);
-            if (rc != 0){
-//                std::cout << "Error:unable to create thread," << rc << std::endl;
-                return false;
-            }
-            setStatus(THREAD_STILL_ACTIVE);
-            hSingleStart->Unlock();
-            return true;
-        } else {
+            //El cuarto parametro es esta propia clase para poder acceder a las propiedades
+            //desde el metodo run estatico
+            rc = pthread_create(&hThread, &attr, Thread<T>::run, (void *)this);
+            ret = (rc == 0);
+//        } else {
 //            std::cout << "Error:Thread already running" << std::endl;
-            return false;
         }
+        return ret;
     }
 // -----------------------------------------------------------------------------
     // Blocks the calling thread until this thread has stopped.
@@ -112,34 +108,13 @@ public:
             return -1;
         }
         setStatus(THREAD_FINISHED);
-        pthread_attr_destroy(&attr);
 //        std::cout << "join: completed thread";
 //        std::cout << "  exiting with threadReturn :" << threadReturn << std::endl;
         return *((int*)(&threadReturn));
     }
     
-//    // -----------------------------------------------------------------------------
-//    /* Asks the thread to exit nicely. Thread function must implement checks.
-//    return value indicates if the interrupt could be placed not if the thread
-//    reacts on the interrupt. true indicates success, false an error. */
-//    inline bool interrupt()
-//    {
-//        return false;
-//    }
-//// -----------------------------------------------------------------------------
-//    /* True if an interrupt request was set, otherwise false. */
-//    inline bool isInterrupted()
-//    {
-//        return false;
-//    }
-//// -----------------------------------------------------------------------------
-//    /* True if an interrupt request was set, otherwise false. Waits for millisec
-//    milliseconds for the interrupt to take place. */
-//    inline bool isInterrupted(uint32_t millisec){
-//        return false;
-//    }
 // -----------------------------------------------------------------------------
-    inline volatile bool isRunning(){
+    inline bool isRunning(){
         return getStatus() == THREAD_STILL_ACTIVE;
     }
 // -----------------------------------------------------------------------------
@@ -151,7 +126,6 @@ public:
 // -----------------------------------------------------------------------------
     inline uint32_t getThreadID(){   
         pthread_t ptid = pthread_self();
-//        uint32_t threadId = 0;
         memcpy(&this->threadID, &ptid, std::min(sizeof(this->threadID), sizeof(ptid)));
         return this->threadID;
     }
@@ -165,16 +139,14 @@ public:
     }
     
     inline void setStatus(uint32_t var){
-//        hFinishRun->Lock();
         this->status = var;
-//        hFinishRun->Unlock();
 //        std::cout << "status asignning: " << status << std::endl;
     }
 // -----------------------------------------------------------------------------
 };
 
 //template <class T> volatile uint32_t Thread<T>::status;
-template <class T> uint32_t Thread<T>::ret;
+//template <class T> uint32_t Thread<T>::ret;
 // #############################################################################
 
 #endif // __THREAD_H__

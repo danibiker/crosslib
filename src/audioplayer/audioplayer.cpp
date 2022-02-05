@@ -246,9 +246,11 @@ void AudioPlayer::pause(){
 *
 */
 void AudioPlayer::stop(){
+    if (musicplaying == 0){
+        status = STOPED;
+    }
     musicplaying = 0;
     posicionInicial = 0;
-    status = STOPED;
 }
 
 /**
@@ -362,13 +364,12 @@ void AudioPlayer::initAudio(){
 * Carga un fichero de musica y empieza a reproducirlo
 */
 int AudioPlayer::loadFile(string filename){
-    mutex.Lock();
+//    mutex.Lock();
     musicplaying = 1;
     this->status = PLAYING;
     this->avance = 0;
     this->actualPlayTime = 0;
     this->initialPlayTime = SDL_GetTicks();
-    SDL_Event e;
 
     Traza::print("AudioPlayer::loadFile: " + filename, W_DEBUG);
 
@@ -400,15 +401,18 @@ int AudioPlayer::loadFile(string filename){
             SDL_Delay(1);
         }
     }
-    
+
     Traza::print("Closing resources in function loadFile", W_DEBUG);
     Mix_PauseMusic();
     Mix_HaltMusic();
     Mix_UnregisterEffect(MIX_CHANNEL_POST, &musicLengthCallback);
     SDL_RWclose(rw2); /* Automatically does an fclose(fp) in this case */
     musica.music = NULL; // so we know we freed it...
-    mutex.Unlock();
+//    mutex.Unlock();
     Traza::print("Exiting audio player in function loadFile", W_DEBUG);
+    if (musicplaying == 0){
+        status = STOPED;
+    }
     return 0;
 }
 
@@ -478,12 +482,12 @@ int AudioPlayer::reloadSong(){
     * Temas para el dibujado del audio por el espectrografo
     */
     int audio_rate_obtained,audio_channels_obtained;
-	Uint16 audio_format_obtained;
+    Uint16 audio_format_obtained;
     /* print out some info on the audio device and stream */
-	Mix_QuerySpec(&audio_rate_obtained, &audio_format_obtained, &audio_channels_obtained);
-	bits=audio_format_obtained&0xFF;
-	sample_size=bits/8+audio_channels_obtained;
-	rate=audio_rate_obtained;
+    Mix_QuerySpec(&audio_rate_obtained, &audio_format_obtained, &audio_channels_obtained);
+    bits=audio_format_obtained&0xFF;
+    sample_size=bits/8+audio_channels_obtained;
+    rate=audio_rate_obtained;
     //Iniciamos la reproduccion
     resumeMusic(&musica);
     //Cuando termine, actualiza el estado del reproductor a parado

@@ -1,12 +1,8 @@
-#include <mutex>
-
 #include "httputil.h"
 #include "util/ConstantHttp.h"
 #include "Constant.h"
 
-bool HttpUtil::aborted;
-std::string HttpUtil::readBufferHeader;
-
+bool HttpUtil::aborted; 
 
 /**
  * Constructor
@@ -24,10 +20,6 @@ void HttpUtil::init(){
     chunk.filepath = NULL;
     chunk.size = 0;
 
-    header.memory = NULL;
-    header.filepath = NULL;
-    header.size = 0;
-    
     prog = new Progress();
     this->setProxyIP(Constant::getPROXYIP());
     this->setProxyPort(Constant::strToTipo<int>(Constant::getPROXYPORT()));
@@ -54,16 +46,13 @@ void HttpUtil::cleanChunkData(){
         free(chunk.memory);
         chunk.memory = NULL;
     }
-    if(header.memory != NULL && header.size > 0){
-        free(header.memory);
-        header.memory = NULL;
-    }
     if(chunk.filepath != NULL){
         free(chunk.filepath);
         chunk.filepath = NULL;
     }
     chunk.size = 0;
     chunk.filepath = NULL;
+    cabecerasResp.clear();
 }
 
 /**
@@ -178,28 +167,22 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     bool downState = false;
     FILE * hd_src = NULL;
     aborted = false;
-
-    mutex.Lock();
-    cleanChunkData();
-    chunk.memory = (char *) malloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1);  /* will be grown as needed by the realloc above */
     
+    mtx.lock();
+    cleanChunkData();
+    chunk.memory = (char *) calloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1, 1);
     if (chunk.memory == NULL){
         printf("sendHttp: Could not allocate memory\n");
         return 0;
     }
-    
     readBufferHeader.clear();
-    header.memory = (char *) malloc(1);  /* will be grown as needed by the realloc above */
-    header.size = 0;
-    header.filepath = NULL;
     
     
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
-    
     curl = curl_easy_init();
-    mutex.Unlock();
+    mtx.unlock();
     
     /* specify proxy*/
     if (!proxyIP.empty()){
@@ -337,8 +320,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         }
         
         if (prog != NULL){
-            prog->setLastruntime(0);
-            prog->setLastBytesDownloaded(0);
+            prog->init();
             prog->setTimeout(getTimeout());
             prog->curl = curl;
         }
@@ -355,10 +337,10 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
            New libcurls will prefer the new callback and instead use that one even
            if both callbacks are set. */
 
-        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, HttpUtil::xferinfo);
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, xferinfo);
         /* pass the struct pointer into the xferinfo function, note that this is
            an alias to CURLOPT_PROGRESSDATA */
-        curl_easy_setopt(curl, CURLOPT_XFERINFODATA, this->prog);
+        curl_easy_setopt(curl, CURLOPT_XFERINFODATA, this);
         #else
         /*Funcion para el progreso de la descarga o para abortarla*/
             curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, prog);
@@ -367,13 +349,15 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
         /*Funcion para escribir en memoria o en el disco*/
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
-        /*pasamos la informacion de las cabeceras*/
-        curl_easy_setopt(curl, CURLOPT_WRITEHEADER, (void *)&header);
         /* we pass our 'postResult' struct to the callback function */
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
         /* we get the headers response*/
-        
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, handleHeader);
+        /*pasamos la informacion de las cabeceras*/
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, this);        
+        //curl_easy_setopt(curl, CURLOPT_WRITEHEADER, (void *)&header);
+
+        
         
 //        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, ""); /* start cookie engine */
 //        char nline[5000] = {""};
@@ -397,6 +381,12 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         } else {
             downState = true;
             parserCabeceras();
+            if (chunk.memory != NULL && chunk.filepath != NULL){
+                checkWriteMemToFile(chunk.memory, chunk.size, chunk.filepath);
+                chunk.size = 0;
+                free(chunk.memory);
+                chunk.memory = NULL;
+            }
         }
 //        curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
 
@@ -439,10 +429,11 @@ void HttpUtil::parserCabeceras(){
  * @param userp
  * @return 
  */
-size_t HttpUtil::handleHeader(void *contents, size_t size, size_t nmemb, void *userp)
-{
+size_t HttpUtil::handleHeader(void *contents, size_t size, size_t nmemb, void *f){
+    
+    // Call non-static member function.
     size_t realsize = size * nmemb;
-    readBufferHeader.append((char *)contents, realsize);
+    static_cast<HttpUtil*>(f)->getReadBufferHeader()->append((char *)contents, realsize);
     return realsize;
 }
 
@@ -460,7 +451,7 @@ size_t HttpUtil::read_callback(void *ptr, size_t size, size_t nmemb, FILE *strea
         char *buffer = new char[nmemb*size];
         retcode = fread(buffer, size, nmemb, stream);
         memcpy(ptr, buffer, nmemb*size);
-        free(buffer);
+        delete [] buffer;
     }
     return retcode;
 }
@@ -473,9 +464,10 @@ size_t HttpUtil::read_callback(void *ptr, size_t size, size_t nmemb, FILE *strea
  * @param userp
  * @return 
  */
-size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp){
+size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *f){
     size_t realsize = size * nmemb;
-    MemoryStruct *mem = (MemoryStruct *)userp;
+    
+    MemoryStruct *mem = static_cast<HttpUtil*>(f)->getChunk();
     size_t totalDown = 0;
     
     //We start counting the total size of the buffered memory
@@ -498,16 +490,16 @@ size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, 
     
     //Adding the data to the buffer
     if (mem->filepath == NULL){
-        if (!addDataToMem(contents, realsize, mem)){
+        if (!static_cast<HttpUtil*>(f)->addDataToMem(contents, realsize, mem)){
             return 0;
         }
     } else if (realsize > 0){
         //Check if we must write the contentent of the buffer to disk
         //cerr << "downloading file: " << size << " - " <<  nmemb << endl;
-        if (addDataToMem(contents, realsize, mem)){
-            if (mem->size > MAX_FILE_BUFFER || realsize < CURL_MAX_WRITE_SIZE ){
+        if (static_cast<HttpUtil*>(f)->addDataToMem(contents, realsize, mem)){
+            if (mem->size > MAX_FILE_BUFFER){
                 //cerr << "writing file with size: " << mem->size << " | " << realsize << endl;
-                checkWriteMemToFile(mem->memory, mem->size, mem->filepath);
+                static_cast<HttpUtil*>(f)->checkWriteMemToFile(mem->memory, mem->size, mem->filepath);
                 mem->size = 0;
                 free(mem->memory);
                 mem->memory = NULL;
@@ -649,8 +641,9 @@ int HttpUtil::xferinfo(void *p,
                     curl_off_t ultotal, curl_off_t ulnow)
 {
   //struct myprogress *myp = (struct myprogress *)p;
-  Progress *myp = (Progress *)p;
+  //Progress *myp = (Progress *)p;
   //auto myp = static_cast<Progress *>(p);
+  Progress *myp = static_cast<HttpUtil*>(p)->getProgress();  
   
   if (myp == NULL)
       return 0;

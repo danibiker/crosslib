@@ -24,7 +24,9 @@ class Progress {
  public:
         Progress();
         ~Progress();
-
+        
+        void init();
+        
         void setProgress(float progress) { 
                 this->progress = progress; 
         }
@@ -64,9 +66,6 @@ class Progress {
         void setTimeout(int timeout);
         int getTimeout();
         
-        
-        
-        
  private:
     float progress;
     double bytesDown;
@@ -78,7 +77,7 @@ class Progress {
     double lastProgress;
     int timeout;
     std::ifstream::pos_type maxBytesDownload;
-    void init();
+    
 };
 
 #endif /* PROGRESS_H */

@@ -113,39 +113,43 @@ uint32_t Dropbox::authenticate(){
     return retorno;
 }
 
+string Dropbox::storeAccessToken(string codeOrRefreshToken, bool refresh){
+    return storeToken(DROPBOXACCESSTOKENSTR, DROPBOXREFRESHTOKENSTR, codeOrRefreshToken, refresh);
+}
+
 /**
 *
 */
-string Dropbox::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
-    filecipher cifrador;
-    Traza::print("Negociando access token...", W_DEBUG);
-    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
-    
-    if (!this->accessToken.empty()){
-        string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
-        string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
-        
-        ListaIni<Data> *config = new ListaIni<Data>();
-        try{
-            Dirutil dir;
-            if (dir.existe(rutaIni)){
-                config->loadFromFile(rutaIni);
-                config->sort();
-            }
-            if (!this->getAccessToken().empty()){
-                this->addToken(DROPBOXACCESSTOKENSTR, accessTokenCipherB64, config);
-            }
-            if (!this->getRefreshToken().empty()){
-                this->addToken(DROPBOXREFRESHTOKENSTR, refreshTokenCipherB64, config);
-            }
-            config->writeToFile(rutaIni);
-
-        } catch (Excepcion &e){
-            Traza::print("GoogleDrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
-        }
-    }
-    return this->getAccessToken();
-}
+//string Dropbox::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
+//    filecipher cifrador;
+//    Traza::print("Negociando access token...", W_DEBUG);
+//    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
+//    
+//    if (!this->accessToken.empty()){
+//        string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
+//        string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
+//        
+//        ListaIni<Data> *config = new ListaIni<Data>();
+//        try{
+//            Dirutil dir;
+//            if (dir.existe(rutaIni)){
+//                config->loadFromFile(rutaIni);
+//                config->sort();
+//            }
+//            if (!this->getAccessToken().empty()){
+//                this->addToken(DROPBOXACCESSTOKENSTR, accessTokenCipherB64, config);
+//            }
+//            if (!this->getRefreshToken().empty()){
+//                this->addToken(DROPBOXREFRESHTOKENSTR, refreshTokenCipherB64, config);
+//            }
+//            config->writeToFile(rutaIni);
+//
+//        } catch (Excepcion &e){
+//            Traza::print("GoogleDrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
+//        }
+//    }
+//    return this->getAccessToken();
+//}
 
 /**
 * lanza la autorizacion desde el explorador para obtener un code

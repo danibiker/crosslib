@@ -66,8 +66,43 @@ bool IOauth2::chunckedUpload(string filesystemPath, string cloudIdPath, string a
 /**
 *
 */
-string IOauth2::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
+//string IOauth2::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
+//    return "";
+//}
+
+string IOauth2::storeAccessToken(string codeOrRefreshToken, bool refresh){
     return "";
+}
+
+string IOauth2::storeToken(string configParmAccessToken, string configParmRefreshtoken, string codeOrRefreshToken, bool refresh){
+    filecipher cifrador;
+    Traza::print("Negociando access token...", W_DEBUG);
+    launchAccessToken(this->getClientid(), this->getSecret(), (refresh) ? this->getRefreshToken() : codeOrRefreshToken, refresh);
+    
+    if (!this->accessToken.empty()){
+        string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
+        string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
+        
+        ListaIni<Data> *config = new ListaIni<Data>();
+        try{
+            Dirutil dir;
+            if (dir.existe(rutaIni)){
+                config->loadFromFile(rutaIni);
+                config->sort();
+            }
+            if (!this->getAccessToken().empty()){
+                this->addToken(configParmAccessToken, accessTokenCipherB64, config);
+            }
+            if (!this->getRefreshToken().empty()){
+                this->addToken(configParmRefreshtoken, refreshTokenCipherB64, config);
+            }
+            config->writeToFile(rutaIni);
+
+        } catch (Excepcion &e){
+            Traza::print("IOauth2::storeToken. Error al cargar la configuracion", W_ERROR);
+        }
+    }
+    return this->getAccessToken();
 }
 
 /**

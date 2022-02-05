@@ -48,7 +48,8 @@ public:
     string launchAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
     bool deleteFiles(string fileid, string accessToken);
     bool chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
-    string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
+//    string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
+    string storeAccessToken(string codeOrRefreshToken, bool refresh);
     bool listFiles(string filesystemPath, string accessToken, CloudFiles *files);
     int getFile(string filesystemPath, string cloudIdPath, string accessToken);
     string fileExist(string filename, string parentid, string accessToken);

@@ -31,7 +31,8 @@ class IOauth2
         virtual void launchAuthorize(string clientid);
         virtual string launchAccessToken(string clientid, string secret, string code, bool refresh);
         virtual bool deleteFiles(string fileid, string accessToken);
-        virtual string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
+//        virtual string storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh);
+        virtual string storeAccessToken(string codeOrRefreshToken, bool refresh);
         virtual bool chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken);
         virtual bool listFiles(string fileid, string accessToken, CloudFiles *files);
         virtual int getFile(string filesystemPath, string cloudIdPath, string accessToken);
@@ -42,6 +43,7 @@ class IOauth2
         void abortDownload();
         void setProperties(IOauth2 *var);
         void addToken(string parmName, string parmValue, ListaIni<Data> *config);
+        string storeToken(string configParmAccessToken, string configParmRefreshtoken, string codeOrRefreshToken, bool refresh);
 
 
         void setClientid(string clientid) { this->clientid = clientid; }

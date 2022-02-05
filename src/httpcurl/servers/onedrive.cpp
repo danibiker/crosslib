@@ -246,7 +246,7 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
         Json::Value root;   // will contains the root value after parsing.
         uint32_t oauthOut = checkOauthErrors(resp, &root);
         if (oauthOut == ERRORREFRESHTOKEN){
-            this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+            this->storeAccessToken("", true);
             //Utilizando recursividad
             return chunckedUpload(filesystemPath, cloudIdPath, this->getAccessToken());
         }
@@ -329,13 +329,17 @@ bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t
     uint32_t oauthOut = checkOauthErrors(resp, &root);
     //Control error de token caducado de OAUTH2
     if (oauthOut == ERRORREFRESHTOKEN){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return resumableChunckedUpload(filesystemPath, url, offset, tam, this->getAccessToken());
     }
     
     //HTTP/1.1 100 Continue, HTTP/1.1 202 Accepted
     return (httpCode == 100 || httpCode == 202);
+}
+
+string Onedrive::storeAccessToken(string codeOrRefreshToken, bool refresh){
+    return storeToken(ONEDRIVEACCESSTOKENSTR, ONEDRIVEFRESHTOKENSTR, codeOrRefreshToken, refresh);
 }
 
 /**
@@ -346,33 +350,33 @@ bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t
  * @param refresh
  * @return 
  */
-string Onedrive::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
-    Traza::print("Onedrive::storeAccessToken. Negociando access token...", W_DEBUG);
-    filecipher cifrador;
-    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
-
-    string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
-    string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
-    
-    if (!this->getAccessToken().empty()){
-        ListaIni<Data> *config = new ListaIni<Data>();
-        try{
-            Dirutil dir;
-            if (dir.existe(rutaIni)){
-                config->loadFromFile(rutaIni);
-                config->sort();
-            }
-            this->addToken(ONEDRIVEACCESSTOKENSTR, accessTokenCipherB64, config);
-            this->addToken(ONEDRIVEFRESHTOKENSTR, refreshTokenCipherB64, config);
-            config->writeToFile(rutaIni);
-
-        } catch (Excepcion &e){
-            Traza::print("Onedrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
-        }
-    }
-
-    return this->getAccessToken();
-}
+//string Onedrive::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
+//    Traza::print("Onedrive::storeAccessToken. Negociando access token...", W_DEBUG);
+//    filecipher cifrador;
+//    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
+//
+//    string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
+//    string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
+//    
+//    if (!this->getAccessToken().empty()){
+//        ListaIni<Data> *config = new ListaIni<Data>();
+//        try{
+//            Dirutil dir;
+//            if (dir.existe(rutaIni)){
+//                config->loadFromFile(rutaIni);
+//                config->sort();
+//            }
+//            this->addToken(ONEDRIVEACCESSTOKENSTR, accessTokenCipherB64, config);
+//            this->addToken(ONEDRIVEFRESHTOKENSTR, refreshTokenCipherB64, config);
+//            config->writeToFile(rutaIni);
+//
+//        } catch (Excepcion &e){
+//            Traza::print("Onedrive::storeAccessToken. Error al cargar la configuracion", W_ERROR);
+//        }
+//    }
+//
+//    return this->getAccessToken();
+//}
 
 /**
  * 
@@ -434,7 +438,7 @@ bool Onedrive::listFiles(string filesystemPath, string accessToken, CloudFiles *
         //Obtenemos el id del directorio de musica
         uint32_t oauthOut = checkOauthErrors(resp, &root);
         if (oauthOut == ERRORREFRESHTOKEN){
-            this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+            this->storeAccessToken("", true);
             //Utilizando recursividad
             return listFiles(filesystemPath, this->getAccessToken(), files);
         }
@@ -489,7 +493,7 @@ int Onedrive::getFile(string filesystemPath, string cloudIdPath, string accessTo
     Traza::print("Onedrive::getFile. Code", httpCode, W_DEBUG);
     
     if (httpCode == 401){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return getFile(filesystemPath, cloudIdPath, this->getAccessToken());
     } if (httpCode != 200){
@@ -588,7 +592,7 @@ string Onedrive::mkdir(string dirname, string parentid, string accessToken){
     
     uint32_t oauthOut = checkOauthErrors(resp, &root);
     if (oauthOut == ERRORREFRESHTOKEN){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return mkdir(dirname, parentid, this->getAccessToken());
     }
@@ -624,7 +628,7 @@ string Onedrive::fileExist(string filename, string parentid, string accessToken)
 
     uint32_t oauthOut = checkOauthErrors(resp, &root);
     if (oauthOut == ERRORREFRESHTOKEN){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return fileExist(filename, parentid, this->getAccessToken());
     }
@@ -671,7 +675,7 @@ int Onedrive::getShared(string accessToken){
     Traza::print(resp, W_DEBUG);
     
     if (httpCode == 401){
-        this->storeAccessToken(this->getClientid(), this->getSecret(), this->getRefreshToken(), true);
+        this->storeAccessToken("", true);
         //Utilizando recursividad
         return getShared(this->getAccessToken());
     } if (httpCode != 200){

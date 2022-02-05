@@ -214,7 +214,7 @@ size_t Httputil2::writeMemoryCallback(void *contents, size_t size, size_t nmemb,
         //Check if we must write the contentent of the buffer to disk
         //cerr << "downloading file: " << size << " - " <<  nmemb << endl;
         if (addDataToMem(contents, realsize, mem)){
-            if (mem->size > MAX_FILE_BUFFER || realsize < CURL_MAX_WRITE_SIZE ){
+            if (mem->size > MAX_FILE_BUFFER){
                 //cerr << "writing file with size: " << mem->size << " | " << realsize << endl;
                 checkWriteMemToFile(mem->memory, mem->size, mem->filepath);
                 mem->size = 0;
@@ -377,13 +377,13 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
     if (chunk == NULL)
         return 0;
     
-    mutex.Lock();
+
     // SDL_LockMutex(conn_mutex);
     //Traza::print("HttpUtil::sendHttp " + string(httpType == 0 ? "POST" : httpType == 1 ? "GET" : "PUT") + ", " +  url, W_INFO);
+    mutex.Lock();
     cleanChunkData(chunk);
     chunk->memory = (char *) calloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1, 1);  /* will be grown as needed by the realloc above */
-    
-    
+
     if (chunk->memory == NULL){
         printf("sendHttp: Could not allocate memory\n");
         return 0;
@@ -611,6 +611,7 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
         } else {
             downState = 1;
             parserCabeceras(chunk);
+            writeChunkToDisk(chunk);            
         }
 //        curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
 
@@ -627,6 +628,15 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
     }
     curl_global_cleanup();
     return downState;
+}
+
+void Httputil2::writeChunkToDisk(MemoryStruct *chunk){
+    if (chunk->memory != NULL && chunk->filepath != NULL){
+        checkWriteMemToFile(chunk->memory, chunk->size, chunk->filepath);
+        chunk->size = 0;
+        free(chunk->memory);
+        chunk->memory = NULL;
+    }
 }
 
 /**

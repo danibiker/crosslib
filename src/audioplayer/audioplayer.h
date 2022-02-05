@@ -18,6 +18,8 @@
 #include "Menuobject.h"
 #include "biquad.h"
 #include "fft/Fft.h"
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
