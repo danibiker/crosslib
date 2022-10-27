@@ -4,15 +4,17 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   ImageLoader.cpp
  * Author: Ryuk
- * 
+ *
  * Created on 6 de abril de 2020, 17:24
  */
 
 #include "ImageLoader.h"
 #include "common/Icogestor.h"
+
+GMutex ImageLoader::mutex;
 
 ImageLoader::ImageLoader() {
     listImages = NULL;
@@ -49,8 +51,8 @@ int ImageLoader::getEstado() const {
     return estado;
 }
 /**
- * 
- * @return 
+ *
+ * @return
  */
 uint32_t ImageLoader::loadVisible(){
 //    mutex.Lock();
@@ -68,14 +70,14 @@ uint32_t ImageLoader::loadVisible(){
 }
 
 /**
- * 
+ *
  * @param pos
- * @return 
+ * @return
  */
 bool ImageLoader::loadFromFileToCache(int pos){
     int ret = 0;
     Dirutil dir;
-    
+
     if (listImages == NULL)
         return false;
     if (listImages->getRow(pos) == NULL){
@@ -90,7 +92,7 @@ bool ImageLoader::loadFromFileToCache(int pos){
     string ruta = listImages->getValue(pos);
     bool loaded = false;
 //    Traza::print("ThreadImgLoader: " + col->getValor(), W_PARANOIC);
-    
+
     if (pict == NULL && !ruta.empty()){
         pict = new UIPicture();
         pict->getImgGestor()->setResize(true);
@@ -106,7 +108,7 @@ bool ImageLoader::loadFromFileToCache(int pos){
         pict->setW(listImages->getPrevImgWidth());
         pict->setH(listImages->getPrevImgHeight());
         Traza::print("Cargando imagen: " + ruta, W_PARANOIC);
-        
+
         if (pict->isValidImage(ruta)){
             if (dir.existe(DIR_PREV + tempFileSep + ruta)){
                 loaded = pict->loadImgFromFile(DIR_PREV + tempFileSep + ruta);
@@ -117,7 +119,7 @@ bool ImageLoader::loadFromFileToCache(int pos){
         } else {
             createIconPrev(ruta, pict);
         }
-        
+
         if (loaded){
             Traza::print("Cargada ok", W_PARANOIC);
             SDL_Surface *tmp = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, pict->getW(), pict->getH(), screen->format->BitsPerPixel,
@@ -128,7 +130,7 @@ bool ImageLoader::loadFromFileToCache(int pos){
             t_region regionPantalla = {pict->getX(), pict->getY(), pict->getW(), pict->getH()};
             SDL_Rect *imgLocation = new SDL_Rect();
             bool surfaceOk = pict->getImgGestor()->drawImgMem(-1,pict->getW(), pict->getH(), regionPantalla, tmp, imgLocation);
-            
+
             if (surfaceOk){
                 pict->surfaceCache = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, imgLocation->w, imgLocation->h, screen->format->BitsPerPixel,
                                                                                                              screen->format->Rmask,
@@ -149,19 +151,19 @@ bool ImageLoader::loadFromFileToCache(int pos){
             pict->setSafeToDraw(true);
             pict->getImgGestor()->clearFile();
             SDL_FreeSurface(tmp);
-        } 
+        }
         listImages->getRow(pos)->SetUipicture(pict);
     }
     return loaded;
 }
 
 /**
- * 
+ *
  * @param ruta
  * @param pict
  */
 void ImageLoader::createIconPrev(string ruta, UIPicture *pict){
-    
+
     Traza::print(ruta + " --> no es una imagen", W_PARANOIC);
     t_color fondo = listImages->getColor();
     pict->surfaceCache = SDL_CreateRGBSurface(SDL_SWSURFACE, pict->getW(), pict->getH(), screen->format->BitsPerPixel, rmask,
@@ -175,20 +177,20 @@ void ImageLoader::createIconPrev(string ruta, UIPicture *pict){
     Dirutil dir;
     if (!dir.isDir(ruta)){
         tipoPic = dir.findIcon(ruta.c_str());
-    } 
+    }
     gestorIconos->drawIcono(tipoPic, pict->surfaceCache, 0, 5, 5, pict->getW() - 10, pict->getH() - 30);
-    
+
     if (tipoPic == directory) {
         previsualizeContentInDir(ruta, pict);
     }
-    
+
     pict->setImgDrawed(true);
     pict->setSafeToDraw(true);
     listImages->setImgDrawed(false);
 }
 
 /**
- * 
+ *
  * @param ruta
  * @param pict
  */
@@ -199,10 +201,10 @@ void ImageLoader::previsualizeContentInDir(string ruta, UIPicture *pict){
     bool thumbFound = false;
     string imgToPrev;
     const string thumbFilename = "thumbs.jpg";
-     
+
     if (ruta.compare(".") == 0 || ruta.compare("..") == 0)
          return;
-    
+
     if (!dirutil.existe(ruta + tempFileSep + thumbFilename)){
         Traza::print("listando: " + ruta, W_PARANOIC);
         dirutil.listarDirSinOrdenMaxFiles(ruta.c_str(), NULL, filelist, ".jpg,.jpeg,.gif,.bmp", 100, 1);
@@ -223,7 +225,7 @@ void ImageLoader::previsualizeContentInDir(string ruta, UIPicture *pict){
         found = true;
         thumbFound = true;
     }
-     
+
     //Traza::print("la imagen para previsualizar es: " + imgToPrev, W_PARANOIC);
     if (found){
         UIPicture *pictPrev = new UIPicture();
@@ -242,14 +244,14 @@ void ImageLoader::previsualizeContentInDir(string ruta, UIPicture *pict){
         //Traza::print("Cargando imagen: " + ruta, W_PARANOIC);
         bool loaded = pictPrev->loadImgFromFile(ruta + tempFileSep + imgToPrev);
         if (loaded){
-            t_region regionPantalla = {pict->getX() + pict->getW() - pictPrev->getW(), 
-                                       pict->getY() + pict->getH() - pictPrev->getH(), 
+            t_region regionPantalla = {pict->getX() + pict->getW() - pictPrev->getW(),
+                                       pict->getY() + pict->getH() - pictPrev->getH(),
                                        pict->getW(), pict->getH()};
             SDL_Rect *imgLocation = new SDL_Rect();
 
-            bool surfaceOk = pictPrev->getImgGestor()->drawImgMem(-1, pictPrev->getW(), pictPrev->getH(), 
+            bool surfaceOk = pictPrev->getImgGestor()->drawImgMem(-1, pictPrev->getW(), pictPrev->getH(),
                     regionPantalla, pict->surfaceCache, imgLocation);
-            
+
             if (imgToPrev.compare(thumbFilename) != 0){
                 t_region regionPantalla2 = {0,0, imgLocation->w, imgLocation->h};
                 pictPrev->getImgGestor()->writeImg(ruta + tempFileSep + thumbFilename, regionPantalla2, pict->surfaceCache->format);

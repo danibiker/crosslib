@@ -11,17 +11,17 @@ Streamcloud::~Streamcloud()
 }
 
 /**
-//*********************************************************************************************************
-//      Hay que buscar estos elementos en streamcloud
-//*********************************************************************************************************
-//    <input type="hidden" name="op" value="download1">
-//    <input type="hidden" name="usr_login" value="">
-//    <input type="hidden" name="id" value="512zjmlchbr7">
-//    <input type="hidden" name="fname" value="bre501es.avi">
-//    <input type="hidden" name="referer" value="">
-//    <input type="hidden" name="hash" value="">
-//    <input type="submit" name="imhuman" id="btn_download" class="button gray" value="Watch video now">
-//*********************************************************************************************************
+*********************************************************************************************************
+      Hay que buscar estos elementos en streamcloud
+*********************************************************************************************************
+    <input type="hidden" name="op" value="download1">
+    <input type="hidden" name="usr_login" value="">
+    <input type="hidden" name="id" value="512zjmlchbr7">
+    <input type="hidden" name="fname" value="bre501es.avi">
+    <input type="hidden" name="referer" value="">
+    <input type="hidden" name="hash" value="">
+    <input type="submit" name="imhuman" id="btn_download" class="button gray" value="Watch video now">
+*********************************************************************************************************
 */
 string Streamcloud::download(string url){
     HttpUtil util;

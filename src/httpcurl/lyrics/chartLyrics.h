@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   ChartLyrics.h
  * Author: Dani
  *
@@ -22,7 +22,7 @@
 #include "util/XmlParser.h"
 
 #define TIXML_USE_STL
-#include <tinyxml/tinyxml.h>
+#include <tinyxml.h>
 
 
 class ChartLyrics : public LyricsBase{
@@ -30,10 +30,10 @@ public:
     ChartLyrics();
     ChartLyrics(const ChartLyrics& orig);
     virtual ~ChartLyrics();
-    
+
     uint32_t trackLyrics(TrackInfo *trackinfo);
     uint32_t trackSearch(string track, string artist, vector <unique_ptr<TrackInfo>> *info);
-        
+
 private:
     std::string getTagName(const char* data);
     std::string getNodeInfo(GumboNode* node, unique_ptr<TrackInfo> *elemInfo);

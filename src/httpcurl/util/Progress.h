@@ -17,8 +17,8 @@
 using namespace std;
 
 #include <curl/curl.h>
-#include <gmutex.h>
 #include <fstream>
+#include <uiobjects/gmutex.h>
 
 class Progress {
  public:
@@ -28,11 +28,11 @@ class Progress {
         void init();
         
         void setProgress(float progress) { 
-                this->progress = progress; 
+            this->progress = progress; 
         }
         
         float getProgress(){
-                return this->progress;
+			return this->progress;
         }
         
         void setDlSizeBytes(double bytes) { 

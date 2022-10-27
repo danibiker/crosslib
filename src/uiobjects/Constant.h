@@ -12,12 +12,12 @@
     #ifndef WINVER
         #define WINVER 0x0501
     #endif
-    
+
     #include <winsock2.h>
     #include <windows.h>
     //  Undefine byte macros so it won't collide with <cstddef> header content.
     #undef byte
-#else 
+#else
     #include <unistd.h>
 #endif
 
@@ -208,7 +208,7 @@ static const int mapHeight = 256;
         map_go,
         onedrive_png,
         new_window,
-//        trackSeg,
+        trackSeg,
 //        map_add,
         directory,
         totalIcons
@@ -217,7 +217,7 @@ static const int mapHeight = 256;
     typedef enum{ TIPODIRECTORIO,
             TIPOFICHERO
     } enumFileAttr;
-    
+
      typedef enum{ COMPAREWHOLEWORD,
              COMPAREBEGINNING
     } enumFileCompare;
@@ -295,7 +295,7 @@ static const int mapHeight = 256;
     static const char FONT_TYPE[] = {"Arimo-Regular.ttf"}; //Fuente de los textos
     static const char ARRAYLETRAS[] = {" abcdefghijklmnÃƒÂ¯Ã‚Â¿Ã‚Â½opqrstuvwxyz0123456789-+*/,;.:-_[]{}'?ÃƒÂ¯Ã‚Â¿Ã‚Â½!ÃƒÂ¯Ã‚Â¿Ã‚Â½|@#$%&()"};
     static const char FILEBBDD[] = {"romgestor.sqlite"};
-    static const bool SHOWFPS = false;   //Muestra los frames actuales
+    static const bool SHOWFPS = true;   //Muestra los frames actuales
     static const bool LIMITFPS = true; //Especifica si se realiza una limitacion maxima de frames
     static const unsigned long FRAMELIMIT = 30; //Limite de frames
     static const unsigned long FRAMEPERIOD = 1000; //Periodo en el que se comprobara la velocidad de frames. en ms
@@ -487,7 +487,7 @@ class Constant{
         static uint8_t c1;  // Last character buffer
         static size_t CURL_DOWNLOAD_LIMIT;
         static t_color BACKGROUNDCOLOR;
-        
+
 
     public:
 
@@ -604,7 +604,7 @@ class Constant{
         static std::string printBytesSize(double bytes, int precision);
         static void setCURL_DOWNLOAD_LIMIT(size_t CURL_DOWNLOAD_LIMIT);
         static size_t getCURL_DOWNLOAD_LIMIT();
-        
+
 
 };
 

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   ImageLoader.h
  * Author: Ryuk
  *
@@ -32,7 +32,7 @@ public:
     void setScreen(SDL_Surface **var){
         screen = *var;
     }
-    
+
     void setGestorIconos(IcoGestor **var){
         gestorIconos = *var;
     }
@@ -41,17 +41,17 @@ public:
     int getImagetoload() const;
     int getEstado() const;
     int estado;
-    
+
 private:
     UIImgList *listImages;
     SDL_Surface *screen;
     int imagetoload;
     bool loadFromFileToCache(int pos);
-    GMutex mutex;
+    static GMutex mutex;
     IcoGestor *gestorIconos;
     void createIconPrev(string ruta, UIPicture *pict);
     void previsualizeContentInDir(string ruta, UIPicture *pict);
-    
+
 };
 
 #endif /* IMAGELOADER_H */

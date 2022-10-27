@@ -144,9 +144,9 @@ class HttpUtil
         void abort(){aborted = true;}
         void setMaxBytesDownload(std::ifstream::pos_type var){prog->setMaxBytesDownload(var);}
         Progress * getProgress(){return prog;}
-        float getDownloadProgress(){return prog->getProgress();}
-        double getDownloadSpeed(){return prog->getDlSpeed();}
-        double getDownloadTotal(){return prog->getDlSizeBytes();}
+        float getDownloadProgress(){return prog == NULL ? 0 : prog->getProgress();}
+        double getDownloadSpeed(){return prog == NULL ? 0 : prog->getDlSpeed();}
+        double getDownloadTotal(){return prog == NULL ? 0 : prog->getDlSizeBytes();}
         long getHttp_code(){return http_code;}
         map<string, string> *getResponseHeaders(){return &this->cabecerasResp;}
         void setSendContentLength(bool var){sendContentLength = var;}

@@ -5,6 +5,8 @@
 #include <Constant.h>
 #include "httputil.h"
 #include "htmlparser.h"
+#include <vector>
+#include <memory>
 
 class LyricsBase
 {

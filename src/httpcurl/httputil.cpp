@@ -38,6 +38,7 @@ HttpUtil::~HttpUtil(){
     cleanChunkData();
     if (prog != NULL){
        delete prog;
+       prog = NULL;
     }
 }
 

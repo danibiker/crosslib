@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="crosslibCB" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/crosslib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/crosslibCB" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-DWIN" />
+			<Add directory="src" />
+			<Add directory="src/audioplayer" />
+			<Add directory="src/httpcurl" />
+			<Add directory="src/rijndael" />
+			<Add directory="src/uiobjects" />
+			<Add directory="../../../msys2/mingw64/include/SDL" />
+		</Compiler>
+		<Linker>
+			<Add option="-lmingw32" />
+			<Add option="-lSDLmain" />
+			<Add option="-lSDL" />
+			<Add option="-lSDL_image" />
+			<Add option="-lSDL_ttf" />
+			<Add option="-lSDL_gfx" />
+			<Add option="-lcurl" />
+			<Add option="-lws2_32" />
+			<Add option="-lz" />
+			<Add option="-lxml2" />
+			<Add option="-ljpeg" />
+			<Add option="-lavutil" />
+			<Add option="-lavformat" />
+			<Add option="-lavcodec" />
+			<Add option="-lswscale" />
+			<Add option="-lswresample" />
+			<Add option="-lgif" />
+			<Add option="-lexpat" />
+		</Linker>
+		<Unit filename="src/audioplayer/audiocd/AudioCD_Helpers.cpp" />
+		<Unit filename="src/audioplayer/audiocd/AudioCD_Helpers.h" />
+		<Unit filename="src/audioplayer/audiocd/CAudioCD.cpp" />
+		<Unit filename="src/audioplayer/audiocd/CAudioCD.h" />
+		<Unit filename="src/audioplayer/audiocd/CBuf.h" />
+		<Unit filename="src/audioplayer/audioplayer.cpp" />
+		<Unit filename="src/audioplayer/audioplayer.h" />
+		<Unit filename="src/audioplayer/biquad.cpp" />
+		<Unit filename="src/audioplayer/biquad.h" />
+		<Unit filename="src/audioplayer/fft/Complex.h" />
+		<Unit filename="src/audioplayer/fft/Fft.cpp" />
+		<Unit filename="src/audioplayer/fft/Fft.h" />
+		<Unit filename="src/httpcurl/cddb/freedb.cpp" />
+		<Unit filename="src/httpcurl/cddb/freedb.h" />
+		<Unit filename="src/httpcurl/htmlparser.cpp" />
+		<Unit filename="src/httpcurl/htmlparser.h" />
+		<Unit filename="src/httpcurl/httputil.cpp" />
+		<Unit filename="src/httpcurl/httputil.h" />
+		<Unit filename="src/httpcurl/httputil2.cpp" />
+		<Unit filename="src/httpcurl/httputil2.h" />
+		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_save.h" />
+		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_saveend.h" />
+		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_savejpg.h" />
+		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_savepng.h" />
+		<Unit filename="src/httpcurl/image/uiimgdownloader.cpp" />
+		<Unit filename="src/httpcurl/image/uiimgdownloader.h" />
+		<Unit filename="src/httpcurl/image/uiimgencoder.cpp" />
+		<Unit filename="src/httpcurl/image/uiimgencoder.h" />
+		<Unit filename="src/httpcurl/lyrics/MusixMatch.cpp" />
+		<Unit filename="src/httpcurl/lyrics/MusixMatch.h" />
+		<Unit filename="src/httpcurl/lyrics/chartLyrics.cpp" />
+		<Unit filename="src/httpcurl/lyrics/chartLyrics.h" />
+		<Unit filename="src/httpcurl/lyrics/darklyrics.cpp" />
+		<Unit filename="src/httpcurl/lyrics/darklyrics.h" />
+		<Unit filename="src/httpcurl/lyrics/lyricsbase.cpp" />
+		<Unit filename="src/httpcurl/lyrics/lyricsbase.h" />
+		<Unit filename="src/httpcurl/lyrics/lyricswikia.cpp" />
+		<Unit filename="src/httpcurl/lyrics/lyricswikia.h" />
+		<Unit filename="src/httpcurl/servers/allmyvideos.cpp" />
+		<Unit filename="src/httpcurl/servers/allmyvideos.h" />
+		<Unit filename="src/httpcurl/servers/dropbox.cpp" />
+		<Unit filename="src/httpcurl/servers/dropbox.h" />
+		<Unit filename="src/httpcurl/servers/googledrive.cpp" />
+		<Unit filename="src/httpcurl/servers/googledrive.h" />
+		<Unit filename="src/httpcurl/servers/ioauth2.cpp" />
+		<Unit filename="src/httpcurl/servers/ioauth2.h" />
+		<Unit filename="src/httpcurl/servers/onedrive.cpp" />
+		<Unit filename="src/httpcurl/servers/onedrive.h" />
+		<Unit filename="src/httpcurl/servers/streamcloud.cpp" />
+		<Unit filename="src/httpcurl/servers/streamcloud.h" />
+		<Unit filename="src/httpcurl/servers/vk.cpp" />
+		<Unit filename="src/httpcurl/servers/vk.h" />
+		<Unit filename="src/httpcurl/util/ConstantHttp.cpp" />
+		<Unit filename="src/httpcurl/util/ConstantHttp.h" />
+		<Unit filename="src/httpcurl/util/JsonParser.cpp" />
+		<Unit filename="src/httpcurl/util/JsonParser.h" />
+		<Unit filename="src/httpcurl/util/Progress.cpp" />
+		<Unit filename="src/httpcurl/util/Progress.h" />
+		<Unit filename="src/httpcurl/util/XmlParser.cpp" />
+		<Unit filename="src/httpcurl/util/XmlParser.h" />
+		<Unit filename="src/rijndael/filecipher.cpp" />
+		<Unit filename="src/rijndael/filecipher.h" />
+		<Unit filename="src/rijndael/rijndael.cpp" />
+		<Unit filename="src/rijndael/rijndael.h" />
+		<Unit filename="src/rijndael/sha256.cpp" />
+		<Unit filename="src/rijndael/sha256.h" />
+		<Unit filename="src/uiobjects/Colorutil.cpp" />
+		<Unit filename="src/uiobjects/Colorutil.h" />
+		<Unit filename="src/uiobjects/Constant.cpp" />
+		<Unit filename="src/uiobjects/Constant.h" />
+		<Unit filename="src/uiobjects/Dirutil.cpp" />
+		<Unit filename="src/uiobjects/Dirutil.h" />
+		<Unit filename="src/uiobjects/Excepcion.cpp" />
+		<Unit filename="src/uiobjects/Excepcion.h" />
+		<Unit filename="src/uiobjects/Fileio.cpp" />
+		<Unit filename="src/uiobjects/Fileio.h" />
+		<Unit filename="src/uiobjects/ImagenGestor.cpp" />
+		<Unit filename="src/uiobjects/ImagenGestor.h" />
+		<Unit filename="src/uiobjects/Launcher.cpp" />
+		<Unit filename="src/uiobjects/Launcher.h" />
+		<Unit filename="src/uiobjects/ListaSimple.cpp" />
+		<Unit filename="src/uiobjects/ListaSimple.h" />
+		<Unit filename="src/uiobjects/Menuobject.cpp" />
+		<Unit filename="src/uiobjects/Menuobject.h" />
+		<Unit filename="src/uiobjects/SHA1.cpp" />
+		<Unit filename="src/uiobjects/SHA1.h" />
+		<Unit filename="src/uiobjects/Traza.cpp" />
+		<Unit filename="src/uiobjects/Traza.h" />
+		<Unit filename="src/uiobjects/UITreeListBox.cpp" />
+		<Unit filename="src/uiobjects/UITreeListBox.h" />
+		<Unit filename="src/uiobjects/bbdd/Database.cpp" />
+		<Unit filename="src/uiobjects/bbdd/Database.h" />
+		<Unit filename="src/uiobjects/beans/listGroupElement.cpp" />
+		<Unit filename="src/uiobjects/beans/listGroupElement.h" />
+		<Unit filename="src/uiobjects/beans/listgroupcol.cpp" />
+		<Unit filename="src/uiobjects/beans/listgroupcol.h" />
+		<Unit filename="src/uiobjects/common.h" />
+		<Unit filename="src/uiobjects/common/BaseDefines.h" />
+		<Unit filename="src/uiobjects/common/BaseFrontend.cpp" />
+		<Unit filename="src/uiobjects/common/BaseFrontend.h" />
+		<Unit filename="src/uiobjects/common/Icogestor.cpp" />
+		<Unit filename="src/uiobjects/common/Icogestor.h" />
+		<Unit filename="src/uiobjects/common/Ioutil.cpp" />
+		<Unit filename="src/uiobjects/common/Ioutil.h" />
+		<Unit filename="src/uiobjects/cursor.cpp" />
+		<Unit filename="src/uiobjects/cursor.h" />
+		<Unit filename="src/uiobjects/filelaunch.cpp" />
+		<Unit filename="src/uiobjects/filelaunch.h" />
+		<Unit filename="src/uiobjects/fileprops.h" />
+		<Unit filename="src/uiobjects/font/Arimo_Regular.ttf.h" />
+		<Unit filename="src/uiobjects/gmutex.h" />
+		<Unit filename="src/uiobjects/image/ImageLoader.cpp" />
+		<Unit filename="src/uiobjects/image/ImageLoader.h" />
+		<Unit filename="src/uiobjects/image/ThreadImgLoader.cpp" />
+		<Unit filename="src/uiobjects/image/ThreadImgLoader.h" />
+		<Unit filename="src/uiobjects/image/ThreadImgWorker.cpp" />
+		<Unit filename="src/uiobjects/image/ThreadImgWorker.h" />
+		<Unit filename="src/uiobjects/joymapper.cpp" />
+		<Unit filename="src/uiobjects/joymapper.h" />
+		<Unit filename="src/uiobjects/listaIni.h" />
+		<Unit filename="src/uiobjects/object.cpp" />
+		<Unit filename="src/uiobjects/object.h" />
+		<Unit filename="src/uiobjects/registry.cpp" />
+		<Unit filename="src/uiobjects/registry.h" />
+		<Unit filename="src/uiobjects/soutils/SOUtils.cpp" />
+		<Unit filename="src/uiobjects/soutils/SOUtils.h" />
+		<Unit filename="src/uiobjects/thread.h" />
+		<Unit filename="src/uiobjects/tinyxml/tinystr.h" />
+		<Unit filename="src/uiobjects/tinyxml/tinyxml.h" />
+		<Unit filename="src/uiobjects/uiart.cpp" />
+		<Unit filename="src/uiobjects/uiart.h" />
+		<Unit filename="src/uiobjects/uibutton.cpp" />
+		<Unit filename="src/uiobjects/uibutton.h" />
+		<Unit filename="src/uiobjects/uicheck.cpp" />
+		<Unit filename="src/uiobjects/uicheck.h" />
+		<Unit filename="src/uiobjects/uicombobox.cpp" />
+		<Unit filename="src/uiobjects/uicombobox.h" />
+		<Unit filename="src/uiobjects/uiimglist.cpp" />
+		<Unit filename="src/uiobjects/uiimglist.h" />
+		<Unit filename="src/uiobjects/uiinput.cpp" />
+		<Unit filename="src/uiobjects/uiinput.h" />
+		<Unit filename="src/uiobjects/uilabel.cpp" />
+		<Unit filename="src/uiobjects/uilabel.h" />
+		<Unit filename="src/uiobjects/uilist.cpp" />
+		<Unit filename="src/uiobjects/uilist.h" />
+		<Unit filename="src/uiobjects/uilistcommon.cpp" />
+		<Unit filename="src/uiobjects/uilistcommon.h" />
+		<Unit filename="src/uiobjects/uilistgroup.cpp" />
+		<Unit filename="src/uiobjects/uilistgroup.h" />
+		<Unit filename="src/uiobjects/uipanel.cpp" />
+		<Unit filename="src/uiobjects/uipanel.h" />
+		<Unit filename="src/uiobjects/uipanelborder.cpp" />
+		<Unit filename="src/uiobjects/uipanelborder.h" />
+		<Unit filename="src/uiobjects/uipicture.cpp" />
+		<Unit filename="src/uiobjects/uipicture.h" />
+		<Unit filename="src/uiobjects/uipopupmenu.cpp" />
+		<Unit filename="src/uiobjects/uipopupmenu.h" />
+		<Unit filename="src/uiobjects/uiprogressbar.cpp" />
+		<Unit filename="src/uiobjects/uiprogressbar.h" />
+		<Unit filename="src/uiobjects/uislider.cpp" />
+		<Unit filename="src/uiobjects/uislider.h" />
+		<Unit filename="src/uiobjects/uispectrum.cpp" />
+		<Unit filename="src/uiobjects/uispectrum.h" />
+		<Unit filename="src/uiobjects/uitextelementsarea.cpp" />
+		<Unit filename="src/uiobjects/uitextelementsarea.h" />
+		<Unit filename="src/uiobjects/unzip/GZipHelper.h" />
+		<Unit filename="src/uiobjects/unzip/unziptool.cpp" />
+		<Unit filename="src/uiobjects/unzip/unziptool.h" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
