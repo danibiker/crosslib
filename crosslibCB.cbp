@@ -33,6 +33,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DWIN" />
+			<Add option="-D_WIN32" />
+			<Add option="-DSKIP_HOSTNAME_VERIFICATION" />
+			<Add option="-DSKIP_PEER_VERIFICATION" />
 			<Add directory="src" />
 			<Add directory="src/audioplayer" />
 			<Add directory="src/httpcurl" />
