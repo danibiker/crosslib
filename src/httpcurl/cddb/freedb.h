@@ -1,7 +1,7 @@
 #ifndef FREEDB_H
 #define FREEDB_H
 
-#include "util/ConstantHttp.h"
+#include "httpcurl/util/ConstantHttp.h"
 #include "../httputil.h"
 #include "../htmlparser.h"
 

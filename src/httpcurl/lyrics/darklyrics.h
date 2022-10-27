@@ -1,7 +1,7 @@
 #ifndef DARKLYRICS_H
 #define DARKLYRICS_H
 
-#include "htmlparser.h"
+#include "httpcurl/htmlparser.h"
 #include "lyricsbase.h"
 
 class Darklyrics : public LyricsBase

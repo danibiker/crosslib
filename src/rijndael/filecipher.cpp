@@ -76,9 +76,9 @@ ifstream::pos_type filecipher::cifrar(const char *rutaOrig, const char *rutaDest
             }
             else cout << "Unable to open file" << endl;
 
-        } catch (ifstream::failure e) {
+        } catch (ifstream::failure const &e) {
             cout << "Exception opening/reading file";
-        } catch (exception ex) {
+        } catch (exception const &ex) {
             cout << "Excepcion no contemplada";
         }
         myFile.close();

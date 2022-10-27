@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   onedrive.cpp
  * Author: Timonet
- * 
+ *
  * Created on 28 de octubre de 2017, 14:43
  */
 
@@ -20,8 +20,8 @@ Onedrive::~Onedrive() {
 }
 
 /**
- * 
- * @return 
+ *
+ * @return
  */
 uint32_t Onedrive::authenticate(){
     string strAccessToken;
@@ -40,7 +40,7 @@ uint32_t Onedrive::authenticate(){
             cabeceras.insert( make_pair("Authorization", AuthOauth2));
             cabeceras.insert( make_pair("Accept", "*/*"));
             cabeceras.insert( make_pair("Content-Type", "application/json"));
-            
+
             MemoryStruct *chunk = util.initDownload();
             util.httpGet(url, &cabeceras, chunk);
             string ret = util.getData(chunk);
@@ -49,7 +49,7 @@ uint32_t Onedrive::authenticate(){
             //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
             Json::Value root;   // will contains the root value after parsing.
             Traza::print(ret, W_DEBUG);
-            
+
             if (!ret.empty()){
                 retorno = checkOauthErrors(ret, &root);
             }
@@ -77,11 +77,11 @@ uint32_t Onedrive::authenticate(){
 }
 
 /**
- * 
+ *
  * @param clientid
  */
 void Onedrive::launchAuthorize(string clientid){
-    
+
     string tmpUrl = "\"" + ONEDRIVEURLAUTH
                     + "?client_id=" + Constant::url_encode(clientid)
                     + "&scope=" + Constant::url_encode("files.readwrite offline_access User.Read openid")
@@ -93,17 +93,17 @@ void Onedrive::launchAuthorize(string clientid){
                     ;
     //string cmd = CMD_LAUNCH_BROWSER + " \"" + tmpUrl + "\"";
     //system(cmd.c_str());
-    
+
     openExplorer(tmpUrl);
 }
 
 /**
- * 
+ *
  * @param clientid
  * @param secret
  * @param code
  * @param refresh
- * @return 
+ * @return
  */
 string Onedrive::launchAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
     map<string, string> cabeceras;
@@ -129,12 +129,12 @@ string Onedrive::launchAccessToken(string clientid, string secret, string codeOr
     }
 
     Traza::print(postData, W_DEBUG);
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpPost(ONEDRIVEURLTOKEN, postData.c_str(),postData.length(), &cabeceras, chunk);
     string respuesta = util.getData(chunk);
     util.endDownload(&chunk);
-    
+
     Json::Value root;   // will contains the root value after parsing.
     string err;
     bool parsingSuccessful = JsonParser::parseJson(&root, respuesta, &err);
@@ -156,28 +156,28 @@ string Onedrive::launchAccessToken(string clientid, string secret, string codeOr
 }
 
 /**
- * 
+ *
  * @param fileid
  * @param accessToken
- * @return 
+ * @return
  */
 bool Onedrive::deleteFiles(string fileid, string accessToken){
     map<string, string> cabeceras;
     string AuthOauth2 = "Bearer " + accessToken;
     string url = "";
-    
+
     if ( isOneDriveId(fileid) ) {
         url = ONEDRIVEURLDELETE + Constant::url_encode(fileid) ;
     } else {
         return false;
     }
-    
+
     cabeceras.clear();
     cabeceras.insert( make_pair("Authorization", AuthOauth2));
     cabeceras.insert( make_pair("Accept", "*/*"));
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpDel(url, &cabeceras, chunk);
     long httpCode = util.getHttp_code(chunk);
@@ -187,11 +187,11 @@ bool Onedrive::deleteFiles(string fileid, string accessToken){
 }
 
 /**
- * 
+ *
  * @param filesystemPath
  * @param cloudIdPath
  * @param accessToken
- * @return 
+ * @return
  */
 bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string accessToken){
     map<string, string> cabeceras;
@@ -199,15 +199,15 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
     string AuthOauth2 = "Bearer " + accessToken;
     string url = "";
     bool ret = false;
-    
+
     if (isOneDriveId(cloudIdPath)) {
         url = ONEDRIVEURLPUT + "/items/" + Constant::url_encode(cloudIdPath) + "/createUploadSession";
     } else {
         url = ONEDRIVEURLPUT + "root:/" + Constant::url_encode(cloudIdPath) + ":/createUploadSession";
     }
-    
+
     Traza::print( "url: " + url, W_DEBUG);
-    
+
     Dirutil dir;
     Json::Value postArg;
     Json::Value parmItem;
@@ -218,11 +218,11 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
     JsonParser::parseJsonToString(&postData, postArg);
 
     size_t tam = 0;
-    unsigned long iteraciones = 0;
+//    unsigned long iteraciones = 0;
     ifstream file (filesystemPath.c_str(), ios::in|ios::binary|ios::ate);
     if (file.is_open()){
         tam = file.tellg();
-        iteraciones = tam / ONEDRIVECHUNK;
+//        iteraciones = tam / ONEDRIVECHUNK;
     }
     file.close();
 
@@ -232,13 +232,13 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "application/json; charset=UTF-8"));
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpPost(url, postData.c_str(), postData.length(), &cabeceras, chunk);
     string resp = util.getData(chunk);
     long httpCode = util.getHttp_code(chunk);
     util.endDownload(&chunk);
-    
+
     Traza::print( "code", httpCode, W_DEBUG);
 
     //Control error de token caducado de OAUTH2
@@ -255,10 +255,10 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
     string location;
     Json::Value root;   // will contains the root value after parsing.
     Traza::print(resp, W_DEBUG);
-    
+
     string err;
     bool parsingSuccessful = JsonParser::parseJson(&root, resp, &err);
-    
+
     if ( !parsingSuccessful ){
          // report to the user the failure and their locations in the document.
         Traza::print("Onedrive::chunckedUpload: Failed to parse configuration. " + err, W_ERROR);
@@ -267,11 +267,11 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
         // such member.
         location = root.get("uploadUrl","").asString();
     }
-    
+
     if (!location.empty()){
         Traza::print("Enviando al location:'" + location, W_DEBUG);
         size_t pos = 0;
-        bool resp = true; 
+        bool resp = true;
         while (pos < tam && resp){
             resp = resumableChunckedUpload(filesystemPath, location, pos, tam, accessToken);
             pos += ONEDRIVECHUNK;
@@ -282,13 +282,13 @@ bool Onedrive::chunckedUpload(string filesystemPath, string cloudIdPath, string 
 }
 
 /**
- * 
+ *
  * @param filesystemPath
  * @param url
  * @param offset
  * @param tam
  * @param accessToken
- * @return 
+ * @return
  */
 bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t offset, size_t tam, string accessToken){
     map<string, string> cabeceras;
@@ -314,13 +314,13 @@ bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     //util.setSendContentLength(false);
     //Realizamos el put
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpPut(url, filesystemPath.c_str(), chunkFileSize, offset, &cabeceras, chunk);
     string resp = util.getData(chunk);
     long httpCode = util.getHttp_code(chunk);
     util.endDownload(&chunk);
-    
+
     Traza::print("Codigo", httpCode, W_DEBUG);
     Traza::print(resp, W_DEBUG);
 
@@ -333,7 +333,7 @@ bool Onedrive::resumableChunckedUpload(string filesystemPath, string url, size_t
         //Utilizando recursividad
         return resumableChunckedUpload(filesystemPath, url, offset, tam, this->getAccessToken());
     }
-    
+
     //HTTP/1.1 100 Continue, HTTP/1.1 202 Accepted
     return (httpCode == 100 || httpCode == 202);
 }
@@ -343,12 +343,12 @@ string Onedrive::storeAccessToken(string codeOrRefreshToken, bool refresh){
 }
 
 /**
- * 
+ *
  * @param clientid
  * @param secret
  * @param codeOrRefreshToken
  * @param refresh
- * @return 
+ * @return
  */
 //string Onedrive::storeAccessToken(string clientid, string secret, string codeOrRefreshToken, bool refresh){
 //    Traza::print("Onedrive::storeAccessToken. Negociando access token...", W_DEBUG);
@@ -357,7 +357,7 @@ string Onedrive::storeAccessToken(string codeOrRefreshToken, bool refresh){
 //
 //    string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
 //    string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
-//    
+//
 //    if (!this->getAccessToken().empty()){
 //        ListaIni<Data> *config = new ListaIni<Data>();
 //        try{
@@ -379,11 +379,11 @@ string Onedrive::storeAccessToken(string codeOrRefreshToken, bool refresh){
 //}
 
 /**
- * 
+ *
  * @param fileid
  * @param accessToken
  * @param nextPageToken
- * @return 
+ * @return
  */
 string Onedrive::getJSONList(string fileid, string accessToken, string nextPageToken){
     map<string, string> cabeceras;
@@ -398,7 +398,7 @@ string Onedrive::getJSONList(string fileid, string accessToken, string nextPageT
         cabeceras.insert( make_pair("Accept-Encoding", "gzip,deflate"));
         cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
         cabeceras.insert( make_pair("Content-Type", "text/plain"));
-        
+
         if (fileid.empty()){
             url = ONEDRIVEURLLIST;
         } else if (nextPageToken.empty() && isOneDriveId(fileid)) {
@@ -408,29 +408,29 @@ string Onedrive::getJSONList(string fileid, string accessToken, string nextPageT
         } else {
             url = nextPageToken;
         }
-        
+
         MemoryStruct *chunk = util.initDownload();
         util.httpGet(url, &cabeceras, chunk);
         responseMetadata = util.getData(chunk);
-        long httpCode = util.getHttp_code(chunk);
+//        util.getHttp_code(chunk);
         util.endDownload(&chunk);
     }
     return responseMetadata;
 }
 
 /**
- * 
+ *
  * @param filesystemPath
  * @param accessToken
  * @param files
- * @return 
+ * @return
  */
 bool Onedrive::listFiles(string filesystemPath, string accessToken, CloudFiles *files){
     Json::Value root;   // will contains the root value after parsing.
     string nextPageToken;
     string resp;
     int controlBucle = 0;
-    
+
     do{
         resp = getJSONList(filesystemPath, accessToken, nextPageToken);
         nextPageToken = "";
@@ -450,7 +450,7 @@ bool Onedrive::listFiles(string filesystemPath, string accessToken, CloudFiles *
         } else {
             //En el caso del refresh, no se devuelve el mismo token
             const Json::Value arrFiles = root["value"];
-            for ( int index = 0; index < arrFiles.size(); index++ ){
+            for (unsigned int index = 0; index < arrFiles.size(); index++ ){
                 CloudFiles *childFile = new CloudFiles();
                 childFile->strHash = arrFiles[index].get("id","").asString();
                 childFile->path = arrFiles[index].get("name","").asString();
@@ -466,32 +466,32 @@ bool Onedrive::listFiles(string filesystemPath, string accessToken, CloudFiles *
 }
 
 /**
- * 
+ *
  * @param filesystemPath
  * @param cloudIdPath
  * @param accessToken
- * @return 
+ * @return
  */
 int Onedrive::getFile(string filesystemPath, string cloudIdPath, string accessToken){
     map<string, string> cabeceras;
     string url = ONEDRIVEURLGET + Constant::uencodeUTF8(cloudIdPath) + "/content";
     string AuthOauth2 = "Bearer " + accessToken;
     Traza::print(url, W_DEBUG);
-    
+
     cabeceras.clear();
     cabeceras.insert( make_pair("Authorization", AuthOauth2));
     cabeceras.insert( make_pair("Accept", "*/*"));
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.downloadToDiskHeaders(url, filesystemPath, &cabeceras, chunk);
     long httpCode = util.getHttp_code(chunk);
     util.endDownload(&chunk);
-    
+
     Traza::print("Onedrive::getFile. Code", httpCode, W_DEBUG);
-    
+
     if (httpCode == 401){
         this->storeAccessToken("", true);
         //Utilizando recursividad
@@ -509,7 +509,7 @@ int Onedrive::getFile(string filesystemPath, string cloudIdPath, string accessTo
 uint32_t Onedrive::checkOauthErrors(string data, Json::Value *root){
     uint32_t retorno = SINERROR;
     //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
-    
+
     if (!data.empty()){
         string err;
         bool parsingSuccessful = JsonParser::parseJson(root, data, &err);
@@ -556,14 +556,14 @@ string Onedrive::mkdir(string dirname, string parentid, string accessToken){
     //string url = ONEDRIVEMKDIR + Constant::uencodeUTF8(parentid) + "/children";
     string url;
     string id;
-    
+
     if ( parentid.compare("/") == 0) {
         url = url = ONEDRIVEMKDIR + "root/" + "/children";
     } else {
         url = ONEDRIVEMKDIR + "items/" + Constant::uencodeUTF8(parentid) + "/children";
     }
     Traza::print("url: " + url, W_DEBUG);
- 
+
     string postData = "{\"name\": \"" + dirname + "\""
                + "," + "\"folder\": { }"
                + ",\"@microsoft.graph.conflictBehavior\": \"replace\"" //fail, replace, or rename
@@ -577,19 +577,19 @@ string Onedrive::mkdir(string dirname, string parentid, string accessToken){
     cabeceras.insert( make_pair("Content-Type", "application/json; charset=UTF-8"));
 
     Traza::print(postData, W_DEBUG);
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpPost(url, postData.c_str(), postData.length(), &cabeceras, chunk);
     string resp = util.getData(chunk);
     long httpCode = util.getHttp_code(chunk);
     util.endDownload(&chunk);
-    
+
     Traza::print("code", httpCode, W_DEBUG);
 
     Json::Value root;
     //Control error de token caducado de OAUTH2
     Traza::print(resp, W_DEBUG);
-    
+
     uint32_t oauthOut = checkOauthErrors(resp, &root);
     if (oauthOut == ERRORREFRESHTOKEN){
         this->storeAccessToken("", true);
@@ -611,11 +611,11 @@ string Onedrive::mkdir(string dirname, string parentid, string accessToken){
 }
 
 /**
- * 
+ *
  * @param filename
  * @param parentid
  * @param accessToken
- * @return 
+ * @return
  */
 string Onedrive::fileExist(string filename, string parentid, string accessToken){
     string resp = getJSONList(parentid, accessToken, "");
@@ -641,7 +641,7 @@ string Onedrive::fileExist(string filename, string parentid, string accessToken)
         //En el caso del refresh, no se devuelve el mismo token
         const Json::Value arrFiles = root["value"];
         string tmpFileName;
-        for ( int index = 0; index < arrFiles.size() && encontrado == false; index++){
+        for (unsigned int index = 0; index < arrFiles.size() && encontrado == false; index++){
             tmpFileName = arrFiles[index].get("name","").asString();
             if (tmpFileName.compare(filename) == 0){
                 retorno = arrFiles[index].get("id","").asString();
@@ -657,7 +657,7 @@ int Onedrive::getShared(string accessToken){
     string url = "https://graph.microsoft.com/v1.0/me/drive/sharedWithMe";
     string AuthOauth2 = "Bearer " + accessToken;
     Traza::print(url, W_DEBUG);
-    
+
     cabeceras.clear();
     cabeceras.insert( make_pair("Authorization", AuthOauth2));
     cabeceras.insert( make_pair("Accept", "*/*"));
@@ -670,10 +670,10 @@ int Onedrive::getShared(string accessToken){
     string resp = util.getData(chunk);
     long httpCode = util.getHttp_code(chunk);
     util.endDownload(&chunk);
-    
+
     Traza::print("Onedrive::getShared. Code", httpCode, W_DEBUG);
     Traza::print(resp, W_DEBUG);
-    
+
     if (httpCode == 401){
         this->storeAccessToken("", true);
         //Utilizando recursividad
@@ -687,7 +687,7 @@ int Onedrive::getShared(string accessToken){
 
 bool Onedrive::isOneDriveId(string path){
     bool strOk = true;
-    for (int i=0; i < path.length() && strOk; i++){
+    for (unsigned int i=0; i < path.length() && strOk; i++){
         if  (!(((int)path[i] >= 48 && (int)path[i] <= 57)
                 || ((int)path[i] >= 65 && (int)path[i] <= 70)
                 || path[i] == '!')){
@@ -700,11 +700,11 @@ bool Onedrive::isOneDriveId(string path){
 
 
 /**
- * 
+ *
  * @param fileid
  * @param accessToken
  * @param nextPageToken
- * @return 
+ * @return
  */
 string Onedrive::getJSONListSharepoint(string fileid, string accessToken){
     map<string, string> cabeceras;
@@ -719,9 +719,9 @@ string Onedrive::getJSONListSharepoint(string fileid, string accessToken){
         cabeceras.insert( make_pair("Accept-Encoding", "gzip,deflate"));
         cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
         cabeceras.insert( make_pair("Content-Type", "text/plain"));
-        
+
         url = "https://graph.microsoft.com/v1.0/shares/"  + fileid;
-        
+
         MemoryStruct *chunk = util.initDownload();
         util.httpGet(url, &cabeceras, chunk);
         responseMetadata = util.getData(chunk);

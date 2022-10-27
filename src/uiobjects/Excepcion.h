@@ -3,8 +3,8 @@
 
     #include <iostream>
     #include <cmath>
-    #include "Traza.h"
-    #include "Constant.h"
+    #include "uiobjects/Traza.h"
+    #include "uiobjects/Constant.h"
 
     using namespace std;
 

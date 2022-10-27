@@ -1,7 +1,7 @@
 #ifndef REGISTRY_H
 #define REGISTRY_H
 
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #ifndef KEY_WOW64_64KEY
     #define KEY_WOW64_64KEY 0x0100
 #endif // KEY_WOW64_64KEY

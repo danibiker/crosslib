@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   SOUtils.cpp
  * Author: Ryuk
- * 
+ *
  * Created on 23 de marzo de 2020, 18:34
  */
 
@@ -20,7 +20,7 @@ SOUtils::~SOUtils() {
 }
 
 /**
- * 
+ *
  * @param argv
  */
 string SOUtils::iniciarSistema(char** argv){
@@ -29,7 +29,7 @@ string SOUtils::iniciarSistema(char** argv){
 
     //#ifdef WIN
         string appDir = argv[0];
-        int pos = appDir.rfind(Constant::getFileSep());
+        size_t pos = appDir.rfind(Constant::getFileSep());
         if (pos == string::npos){
             FILE_SEPARATOR = FILE_SEPARATOR_UNIX;
             pos = appDir.rfind(FILE_SEPARATOR);
@@ -39,11 +39,11 @@ string SOUtils::iniciarSistema(char** argv){
         if (appDir[appDir.length()-1] == '.'){
             appDir.substr(0, appDir.rfind(Constant::getFileSep()));
         }
-        
+
         if (!dir.existe(appDir) || pos == string::npos){
             //cerr << "El directorio: " << appDir << " no existe" << endl;
             appDir = dir.getDirActual();
-        } 
+        }
         //else {
         //    cout << "El directorio: " << appDir << " existe" << endl;
         //}
@@ -54,17 +54,17 @@ string SOUtils::iniciarSistema(char** argv){
 //        Dirutil dir;
 //        Constant::setAppDir(dir.getDirActual());
 //    #endif // UNIX
-    
+
     string rutaTraza = appDir + Constant::getFileSep() + "Traza.txt";
     //cout << "rutaTraza: " << rutaTraza << endl;
-    Traza *traza = new Traza(rutaTraza.c_str());
+    new Traza(rutaTraza.c_str());
     loadConfig();
     return appDir;
 }
 
 /**
- * 
- * @return 
+ *
+ * @return
  */
 bool SOUtils::loadConfig(){
     try{
@@ -73,12 +73,12 @@ bool SOUtils::loadConfig(){
         Traza::print("Cargando configuracion", W_DEBUG);
         config->loadFromFile(configIniFile);
         config->sort();
-        
+
         int trazaLevel = Constant::strToTipo<int>(config->get(config->find("loglevel")).getValue());
         if ( trazaLevel > W_PARANOIC || trazaLevel < 0){
             trazaLevel = W_DEBUG;
         }
-        
+
         Constant::setTrazaLevel(trazaLevel);
         string pip = config->find("proxyip") >= 0 ? config->get(config->find("proxyip")).getValue() : "";
         string ppt = config->find("proxyport") >= 0 ? config->get(config->find("proxyport")).getValue() : "";
@@ -97,8 +97,8 @@ bool SOUtils::loadConfig(){
 }
 
 /**
- * 
- * @return 
+ *
+ * @return
  */
 std::string SOUtils::GetClipboardText(){
   std::string text = "";
@@ -137,7 +137,7 @@ std::string SOUtils::GetClipboardText(){
   Display *display = XOpenDisplay(NULL);
   unsigned long color = BlackPixel(display, DefaultScreen(display));
   Window window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0,0, 1,1, 0, color, color);
-  
+
   Atom bufid = XInternAtom(display, bufname, False),
        fmtid = XInternAtom(display, fmtname, False),
        propid = XInternAtom(display, "XSEL_DATA", False),
@@ -163,11 +163,11 @@ std::string SOUtils::GetClipboardText(){
   }
   else // request failed, e.g. owner can't convert to the target format
     printf("Request failed.\n");
-  
+
   XDestroyWindow(display, window);
   XCloseDisplay(display);
 
-#endif  
+#endif
   return text;
 }
 

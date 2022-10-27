@@ -1,16 +1,16 @@
 #ifndef IOAUTH2_H
 #define IOAUTH2_H
 
-#include "Constant.h"
-#include "httputil2.h"
-#include "Dirutil.h"
-#include "util/ConstantHttp.h"
+#include "uiobjects/Constant.h"
+#include "httpcurl/httputil2.h"
+#include "uiobjects/Dirutil.h"
+#include "httpcurl/util/ConstantHttp.h"
 #include "json/json.h"
-#include "listaIni.h"
-#include "Launcher.h"
-#include "filelaunch.h"
+#include "uiobjects/listaIni.h"
+#include "uiobjects/Launcher.h"
+#include "uiobjects/filelaunch.h"
 #include "../util/JsonParser.h"
-#include "filecipher.h"
+#include "rijndael/filecipher.h"
 
 
 
@@ -37,7 +37,7 @@ class IOauth2
         virtual bool listFiles(string fileid, string accessToken, CloudFiles *files);
         virtual int getFile(string filesystemPath, string cloudIdPath, string accessToken);
         virtual string fileExist(string filename, string parentid, string accessToken);
-        
+
 
         /**Metodos comunes que todos heredan*/
         void abortDownload();
@@ -69,7 +69,7 @@ class IOauth2
         string expiresIn;
         string secret;
         uint32_t oauthStatus;
-        
+
         uint32_t decodeTokens(string &accessToken, string &refreshToken, string configAccessTokenName, string configRefreshTokenName);
 
     private:

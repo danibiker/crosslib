@@ -15,14 +15,14 @@
 
 using namespace std;
 
-    #define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL 3.0
-    #define MAX_FILE_BUFFER 5*1024*1024
-    #define MIN_PROGRESS_CHUNK_OF_BYTES 512
-    #define SECONDS_TO_ABORT_STUCK_DOWNLOAD 60
+#define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL 3.0
+#define MAX_FILE_BUFFER 5*1024*1024
+#define MIN_PROGRESS_CHUNK_OF_BYTES 512
+#define SECONDS_TO_ABORT_STUCK_DOWNLOAD 60
 
-static const char* DIAS[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-static const char* MESES[] = {"Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec" };
-static const char* METACHARS[] = {" ", "*", "?", "[", "]", "'","\"" ,"$", ";", "&", "(", ")", "|", "^", "<", ">"};
+//static const char* DIAS[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+//static const char* MESES[] = {"Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec" };
+//static const char* METACHARS[] = {" ", "*", "?", "[", "]", "'","\"" ,"$", ";", "&", "(", ")", "|", "^", "<", ">"};
 
 static const string DROPBOXACCOUNTINFO = "https://api.dropboxapi.com/2/users/get_current_account";
 static const string DROPBOXURLAUTH = "https://www.dropbox.com/oauth2/authorize";
@@ -88,31 +88,29 @@ typedef enum { SINERROR,
 } erroresConnect;
 
 class CloudFiles{
-    public:
-        CloudFiles(){
-            bytes = 0;
-            isDir = false;
-        }
+public:
+    CloudFiles(){
+        bytes = 0;
+        isDir = false;
+    }
 
-        void clear(){
-            strHash = "";
-            bytes = 0;
-            path = "";
-            isDir = false;
-            root = "";
-            revision = "";
-            fileList.clear();
-        }
+    void clear(){
+        strHash = "";
+        bytes = 0;
+        path = "";
+        isDir = false;
+        root = "";
+        revision = "";
+        fileList.clear();
+    }
 
-        string strHash;
-        size_t bytes;
-        string path;
-        bool isDir;
-        string root;
-        string revision;
-        vector<CloudFiles *> fileList;
-
-
+    string strHash;
+    size_t bytes;
+    string path;
+    bool isDir;
+    string root;
+    string revision;
+    vector<CloudFiles *> fileList;
 };
 
 #endif // CONSTANT_HTTP_H_INCLUDED

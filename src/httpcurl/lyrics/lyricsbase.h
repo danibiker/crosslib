@@ -1,10 +1,10 @@
 #ifndef LYRICSBASE_H
 #define LYRICSBASE_H
 
-#include "util/ConstantHttp.h"
-#include <Constant.h>
-#include "httputil.h"
-#include "htmlparser.h"
+#include "httpcurl/util/ConstantHttp.h"
+#include "uiobjects/Constant.h"
+#include "httpcurl/httputil.h"
+#include "httpcurl/htmlparser.h"
 #include <vector>
 #include <memory>
 

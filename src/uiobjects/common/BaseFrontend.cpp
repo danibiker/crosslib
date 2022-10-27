@@ -4,17 +4,17 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   BaseFrontend.cpp
  * Author: Ryuk
- * 
+ *
  * Created on 29 de marzo de 2020, 12:40
  */
 
 #include "BaseFrontend.h"
 
 /**
- * 
+ *
  */
 BaseFrontend::BaseFrontend() {
     Traza::print("Iniciando BaseFrontend", W_INFO);
@@ -22,24 +22,25 @@ BaseFrontend::BaseFrontend() {
 }
 
 /**
- * 
+ *
  */
 BaseFrontend::~BaseFrontend() {
     Traza::print("Destructor de BaseFrontend", W_INFO);
     //  A los objetos no los podemos eliminar porque no fueron creados dinamicamente
     Traza::print("Eliminando objetos de cada Menu", W_INFO);
     // Create a map iterator and point to beginning of map
-    std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
+    //std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
     // Iterate over the map using Iterator till end.
-    for(it; it != objectsMenu.end(); it++){
+    //for(it; it != objectsMenu.end(); it++){
+    for (auto it = objectsMenu.begin(); it != objectsMenu.end(); ++it){
         delete it->second;
     }
-    
+
     Traza::print("Fin Destructor de BaseFrontend", W_INFO);
 }
 
 /**
- * 
+ *
  */
 void BaseFrontend::initUIObjs(){
     tmenu_gestor_objects *obj  = createMenu(PANTALLABROWSER2);
@@ -51,14 +52,14 @@ void BaseFrontend::initUIObjs(){
     obj->add(ARTDIRBROWSER, GUIARTSURFACE, 0, 0, INPUTW, Constant::getINPUTH(), "Direcci%C3%B3n Browser", false)->setEnabled(false);
     obj->add(uicomboBrowser, GUICOMBOBOX, 0, 0, 0, 0, "", false);
     getMenu(PANTALLABROWSER2)->getObjByName("uiimgFondo")->setVisible(false);
-    
+
     obj = createMenu(PANTALLAPREGUNTA);
     obj->add(uivalor, GUIINPUTWIDE, 0, -20 * zoomText, INPUTW, Constant::getINPUTH(), "Dato:", true);
     obj->add(btnAceptarPregunta, GUIBUTTON, -(BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Aceptar", true)->setIcon(tick);
     obj->add(btnCancelarPregunta, GUIBUTTON, (BUTTONW/2 + 5), 30,BUTTONW,BUTTONH, "Cancelar", true)->setIcon(cross);
     obj->add(uiborde, GUIPANELBORDER,0,0,0,0, "Introduzca el dato", false);
     obj->getObjByName(uivalor)->setColor(cBlanco);
-    
+
     obj = createMenu(PANTALLACONFIRMAR);
     obj->add(uiborde, GUIPANELBORDER,0,0,0,0, "Seleccione una opci%C3%B3n", false);
     obj->add(uitextosBox, GUITEXTELEMENTSAREA, 0, -50 * zoomText, getWidth()-50, 120, "", true)->setVerContenedor(false);
@@ -72,7 +73,7 @@ void BaseFrontend::initUIObjs(){
     infoTextRom->addField(&detalleElement);
     infoTextRom->setTextColor(cBlanco);
     infoTextRom->setColor(cNegro);
-    
+
     //Botones para la pantalla de los directorios
     addEvent(BTNACEPTARBROWSER, &BaseFrontend::marcarBotonSeleccionado);
     addEvent(BTNCANCELARBROWSER, &BaseFrontend::marcarBotonSeleccionado);
@@ -86,9 +87,9 @@ void BaseFrontend::initUIObjs(){
 }
 
 /**
- * 
+ *
  * @param menuName
- * @return 
+ * @return
  */
 tmenu_gestor_objects *BaseFrontend::createMenu(string menuName){
     tmenu_gestor_objects *menuObj = new tmenu_gestor_objects(this->getWidth(), this->getHeight());
@@ -97,9 +98,9 @@ tmenu_gestor_objects *BaseFrontend::createMenu(string menuName){
 }
 
 /**
- * 
+ *
  * @param menuName
- * @return 
+ * @return
  */
 tmenu_gestor_objects * BaseFrontend::getMenu(string menuName){
     std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.find(menuName);
@@ -112,19 +113,19 @@ tmenu_gestor_objects * BaseFrontend::getMenu(string menuName){
 }
 
 /**
- * 
+ *
  * @param var
  */
 void BaseFrontend::setSelMenu(string var){
-    comprobarUnicode(var); 
+    comprobarUnicode(var);
     selMenu = var;
 }
 
 /**
- * 
- * @return 
+ *
+ * @return
  */
-string BaseFrontend::getSelMenu(){ 
+string BaseFrontend::getSelMenu(){
     return selMenu;
 }
 
@@ -135,8 +136,9 @@ void BaseFrontend::setDinamicSizeObjects(){
     try{
         //Calculamos el tamanyo del titulo de los elementos que lo tengan, y redimensionamos el elemento
         //lista que tenga ese menu con el total de la ventana que queda
-        std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
-        for(it; it != objectsMenu.end(); it++){
+//        std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
+//        for(it; it != objectsMenu.end(); it++){
+        for (auto it = objectsMenu.begin(); it != objectsMenu.end(); ++it){
             try{
                 Object *posibleObj = NULL;
                 posibleObj = it->second->getObjByName(TITLESCREEN);
@@ -164,7 +166,7 @@ void BaseFrontend::setDinamicSizeObjects(){
                 }
             } catch (Excepcion &e){}
         }
-        
+
         //Redimension para el browser de directorios2
         getMenu(PANTALLABROWSER2)->getObjByName(OBJLISTABROWSER2)->setTam(0, Constant::getINPUTH() + COMBOHEIGHT + 4,this->getWidth(), this->getHeight() - BUTTONH - Constant::getINPUTH() - COMBOHEIGHT - 10 - 4);
         getMenu(PANTALLABROWSER2)->getObjByName(uicomboBrowser)->setTam(1, Constant::getINPUTH() + 4, 160, 100);
@@ -210,16 +212,16 @@ void BaseFrontend::setEvent(string nombre, typept2Func funcion, string parms){
 }
 
 /**
- * 
+ *
  * @param eventName
- * @return 
+ * @return
  */
 BaseFrontend::tprops * BaseFrontend::getEvent(string eventName){
     std::map<string, BaseFrontend::tprops *>::iterator it;
     it = propertiesPt2Func.find(eventName);
     if (it != propertiesPt2Func.end()){
         return it->second;
-    } else 
+    } else
         return NULL;
 }
 
@@ -284,7 +286,7 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
         procesarMenuActual(objMenu, evento);
     }
 
-    int posBoton = 0;
+//    int posBoton = 0;
     bool salir = false;
     bool botonPulsado = false;
     int estado = 0;
@@ -292,10 +294,10 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
     int cursorPrincipal = -1;
     bool updateCursor = false;
     tprops *function;
-    
+
     //Recorremos todos los objetos para dibujarlos por pantalla
     try{
-        
+
 
         //PINTAMOS ANTES DE PROCESAR LAS ACCIONES. NO SE SI ESTO ES BUENA IDEA
         for (int i=0;i<objMenu->getSize();i++){
@@ -316,7 +318,7 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
             drawObject(obj, evento);
         }
         objPostProcesado.clear();
-        
+
         //Procesamos las acciones
         for (int i=0;i<objMenu->getSize();i++){
             object = objMenu->getObjByPos(i);
@@ -395,19 +397,19 @@ bool BaseFrontend::procesarControles(tmenu_gestor_objects *objMenu, tEvento *eve
 }
 
 /**
- * 
+ *
  * @param objMenu
  * @param evento
- * @return 
+ * @return
  */
 bool BaseFrontend::procesarMenuActual(tmenu_gestor_objects *objMenu, tEvento *evento){
     return true;
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::accionesMenu(tEvento *evento){
      bool salir = false;
@@ -494,8 +496,7 @@ int BaseFrontend::accionesMenu(tEvento *evento){
 * Con el menu pasado por parametro lo dibujamos entero
 */
 void BaseFrontend::resizeMenu(){
-    std::map<std::string, tmenu_gestor_objects *>::iterator it = objectsMenu.begin();
-    for(it; it != objectsMenu.end(); it++){
+    for (auto it = objectsMenu.begin(); it != objectsMenu.end(); ++it){
         it->second->setAreaObjMenu(getWidth(),getHeight());
     }
     setDinamicSizeObjects();
@@ -527,7 +528,7 @@ bool BaseFrontend::procesarBoton(Object * obj, tmenu_gestor_objects *gestorMenu)
 }
 
 /**
- * 
+ *
  * @param obj
  * @param evento
  */
@@ -580,13 +581,13 @@ void BaseFrontend::comprobarUnicode(string menu){
         }
         Traza::print("comprobarUnicode: " + Constant::TipoToStr(menu) + ((found == true) ? " UNICODE=S":" UNICODE=N"), W_PARANOIC);
         SDL_EnableUNICODE(found);
-    }    
+    }
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::accionesGotoPantalla(tEvento *evento){
     return !gotoPantalla(evento).empty();
@@ -596,10 +597,10 @@ string BaseFrontend::gotoPantalla(tEvento *evento){
     tmenu_gestor_objects *objsMenu = getMenu(this->getSelMenu());
     if (objsMenu == NULL)
         return "";
-    
+
     Object *object = objsMenu->getObjByPos(objsMenu->getFocus());
     tprops * event = getEvent(object->getName());
-    
+
     if (event != NULL){ //Si hemos encontrado una funcion
         string menuToLoad = event->parms;
         if (!menuToLoad.empty()){
@@ -664,9 +665,9 @@ string BaseFrontend::casoPANTALLAPREGUNTA(string titulo, string label){
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::accionesCargaPantalla(tEvento *evento){
     string posMenu = gotoPantalla(evento);
@@ -783,16 +784,16 @@ void BaseFrontend::showMenuEmergente(string menu, string objImagenFondo){
 }
 
 /**
- * 
+ *
  * @param lastDirOpened
- * @return 
+ * @return
  */
 void BaseFrontend::iniciarExplorador(string lastDirOpened){
     Dirutil dir;
     this->setSelMenu(PANTALLABROWSER2);
     tmenu_gestor_objects *objMenu = getMenu(PANTALLABROWSER2);
     UIListGroup *obj = NULL;
-    
+
     loadComboUnidades(uicomboBrowser, PANTALLABROWSER2, -1);
     obj = (UIListGroup *)objMenu->getObjByName(OBJLISTABROWSER2);
     obj->setFocus(true);
@@ -844,11 +845,11 @@ string BaseFrontend::showExplorador(tEvento *evento){
 
     try{
         iniciarExplorador(lastDirOpened);
-        
+
         obj = (UIListGroup *)objMenu->getObjByName(OBJLISTABROWSER2);
         long delay = 0;
         unsigned long before = 0;
-        
+
         do{
             before = SDL_GetTicks();
             askEvento = WaitForKey();
@@ -933,9 +934,9 @@ string BaseFrontend::showExplorador(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::accionesListaExplorador(tEvento *evento){
     try{
@@ -976,7 +977,7 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
             listaSimple<FileProps> *filelist = new listaSimple<FileProps>();
             unsigned int numFiles = dir.listarDir(diractual.c_str(), filelist);
             Traza::print("Ficheros: " + Constant::TipoToStr(numFiles), W_DEBUG);
-            
+
             //To refresh the images of the list
             if (obj->getObjectType() == GUILISTIMG){
                 UIImgList * objImg = (UIImgList *)obj;
@@ -985,7 +986,7 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
                 objImg->setLastIni(0);
                 objImg->setLastEnd(0);
             }
-            
+
             if (filelist != NULL && numFiles > 0){
                 //Hacemos espacio en la lista para que la asignacion sea rapida
                 obj->resizeLista(numFiles);
@@ -994,22 +995,22 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
                     //obj->addElemLista(filelist->get(i).filename , Constant::TipoToStr(filelist->get(i).filetype), filelist->get(i).ico );
                     ListGroupElement *listGroupElement = new ListGroupElement();
                     vector <ListGroupCol *> miFila;
-                    
+
                     ListGroupCol *colFileName = new ListGroupCol(filelist->get(i).filename, filelist->get(i).filename);
                     colFileName->setIcono(filelist->get(i).ico);
                     miFila.push_back(colFileName);
-                    
+
                     ListGroupCol *colFecha = new ListGroupCol(filelist->get(i).modificationTime, Constant::TipoToStr(filelist->get(i).iModificationTime));
                     colFecha->setNumber(true);
                     miFila.push_back(colFecha);
-                    
+
                     miFila.push_back(new ListGroupCol(filelist->get(i).extension, filelist->get(i).extension));
-                    
+
                     string strSize = Constant::printBytesSize(filelist->get(i).fileSize, 1);
                     ListGroupCol *colSize = new ListGroupCol(strSize, Constant::TipoToStr(filelist->get(i).fileSize));
                     colSize->setNumber(true);
                     miFila.push_back(colSize);
-                    
+
                     listGroupElement->SetListGroupCol(miFila);
                     listGroupElement->SetUipicture(NULL);
                     obj->addElemLista(listGroupElement);
@@ -1027,8 +1028,8 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
                 obj->addElemLista(listGroupElement);
             }
             delete filelist;
-            
-            
+
+
         }
 
 
@@ -1041,7 +1042,7 @@ int BaseFrontend::accionesListaExplorador(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param objName
  * @param pantalla
  * @param types
@@ -1058,7 +1059,7 @@ void BaseFrontend::loadComboUnidades(string objName, string pantalla, int types)
     int actualDrive = 0;
     string actualDir = dir.getDirActual();
 
-    for (int i=0; i < drives.size(); i++){
+    for (unsigned int i=0; i < drives.size(); i++){
         if (types == -1 || types == drives.at(i)->driveType){
             combo->addElemLista(drives.at(i)->drive.substr(0,2)
                                 + " (" + drives.at(i)->driveTypeString + ") "
@@ -1073,9 +1074,9 @@ void BaseFrontend::loadComboUnidades(string objName, string pantalla, int types)
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::accionCombo(tEvento *evento){
     Traza::print("BaseFrontend::accionCombo", W_INFO);
@@ -1126,7 +1127,7 @@ int BaseFrontend::loadDirFromExplorer(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param evento
  * @param objCampoEdit
  */
@@ -1156,10 +1157,10 @@ void BaseFrontend::setTextFromExplorador(tEvento *evento, UIInput *objCampoEdit)
 }
 
 /**
- * 
+ *
  * @param objMenu
  * @param evento
- * @return 
+ * @return
  */
 bool BaseFrontend::procesarPopups(tmenu_gestor_objects *objMenu, tEvento *evento){
         Object *object = objMenu->getObjByPos(objMenu->getFocus());
@@ -1207,11 +1208,11 @@ bool BaseFrontend::procesarPopups(tmenu_gestor_objects *objMenu, tEvento *evento
 }
 
 /**
- * 
+ *
  * @param pantalla
  * @param popupName
  * @param callerName
- * @return 
+ * @return
  */
 UIPopupMenu * BaseFrontend::addPopup(string pantalla, string popupName, string callerName){
     UIPopupMenu * popup1 = NULL;
@@ -1231,9 +1232,9 @@ UIPopupMenu * BaseFrontend::addPopup(string pantalla, string popupName, string c
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 string BaseFrontend::casoJOYBUTTONS(tEvento *evento){
     ignoreButtonRepeats = true;
@@ -1242,9 +1243,9 @@ string BaseFrontend::casoJOYBUTTONS(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::simularIntro(tEvento *evento){
     evento->isKey = true;
@@ -1256,9 +1257,9 @@ int BaseFrontend::simularIntro(tEvento *evento){
 
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::simularEscape(tEvento *evento){
     evento->isKey = true;
@@ -1269,9 +1270,9 @@ int BaseFrontend::simularEscape(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param evento
- * @return 
+ * @return
  */
 int BaseFrontend::marcarBotonSeleccionado(tEvento *evento){
     tmenu_gestor_objects *objMenu = getMenu(getSelMenu());
@@ -1286,11 +1287,11 @@ int BaseFrontend::marcarBotonSeleccionado(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param btnAceptar
  * @param btnCancelar
  * @param pantalla
- * @return 
+ * @return
  */
 bool BaseFrontend::waitAceptCancel(string btnAceptar, string btnCancelar, string pantalla){
     string menuInicial = getSelMenu();

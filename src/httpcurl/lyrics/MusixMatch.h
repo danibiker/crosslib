@@ -1,9 +1,9 @@
 #ifndef MUSIXMATCH_H
 #define MUSIXMATCH_H
 
-#include "httputil.h"
+#include "httpcurl/httputil.h"
 #include "json/json.h"
-#include "util/ConstantHttp.h"
+#include "httpcurl/util/ConstantHttp.h"
 #include "../util/JsonParser.h"
 #include "lyricsbase.h"
 

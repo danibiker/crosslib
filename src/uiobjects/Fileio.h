@@ -8,7 +8,7 @@
 #include <vector>       // std::vector
 #include <iterator>     // istream_iterator
 #include "Excepcion.h"
-#include "Traza.h"
+#include "uiobjects/Traza.h"
 
 
 // template<typename T, size_t SIZE>

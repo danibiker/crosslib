@@ -1,6 +1,6 @@
 #include "uipicture.h"
 
-
+static const char* VALID_IMGS[] = {".jpg",".jpeg",".bmp", ".gif", ".png"};
 
 UIPicture::UIPicture(){
     setObjectType(GUIPICTURE);
@@ -18,7 +18,7 @@ void UIPicture::action(tEvento *evento){
     static unsigned long lastMoveRepaint = 0;
     static int lastTop = 0;
     static int lastLeft = 0;
-    
+
     if (evento->isMouseMove && evento->isRegionSelected){
         if (SDL_GetTicks() - lastMoveRepaint > 150){
             this->imgGestor->setTopDif(lastTop - evento->region.selH);
@@ -74,7 +74,7 @@ void UIPicture::action(tEvento *evento){
            Traza::print("UIPicture::action: Mouse Pressed: " + this->getName(), W_DEBUG);
            lastTop = this->imgGestor->getTopDif();
            lastLeft = this->imgGestor->getLeftDif();
-           
+
            if (SDL_GetTicks() - lastClick < DBLCLICKSPEED){
                lastClick = SDL_GetTicks() - DBLCLICKSPEED;  //reseteo del dobleclick
             } else {
@@ -88,17 +88,17 @@ void UIPicture::action(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param ruta
- * @return 
+ * @return
  */
 bool UIPicture::loadImgFromFile(string ruta){
     imgGestor->setRuta(ruta);
     imgGestor->setResize(true)->setZoom(0)
             ->setTopDif(0)->setLeftDif(0);
-    
+
     bool ret = false;
-    
+
     try{
         Dirutil dir;
         if (dir.existe(ruta)){
@@ -110,7 +110,7 @@ bool UIPicture::loadImgFromFile(string ruta){
                 ret = imgGestor->loadFromFile(ruta);
                 setImgDrawed(false);
             }
-            
+
         } else {
             Traza::print("UIPicture::loadImgFromFile. No existe la ruta: " + ruta, W_ERROR);
         }
@@ -122,7 +122,7 @@ bool UIPicture::loadImgFromFile(string ruta){
 
 
 /**
- * 
+ *
  * @param ruta
  * @param password
  * @param offset
@@ -134,14 +134,14 @@ bool UIPicture::loadImgFromBin(const char* ruta, const char *password, unsigned 
     imgGestor->setBestfit(false)->setResize(true)->setZoom(0)
             ->setTopDif(0)->setLeftDif(0);
     bool ret = false;
-    
+
      try{
         ret = imgGestor->extraerImgBin(offset, offsetAnt);
         setImgDrawed(false);
      } catch (Excepcion &e) {
          Traza::print("Excepcion loadImgFromFile" + string(e.getMessage()), W_ERROR);
      }
-    
+
     return ret;
 }
 
@@ -171,24 +171,24 @@ void UIPicture::setSafeToDraw(bool safeToDraw) {
 }
 
 /**
- * 
- * @return 
+ *
+ * @return
  */
 bool UIPicture::isSafeToDraw() const {
     return safeToDraw;
 }
 
 /**
- * 
+ *
  * @param ruta
- * @return 
+ * @return
  */
 bool UIPicture::isValidImage(string ruta){
     bool ret = false;
     const int tam = sizeof(VALID_IMGS) / sizeof(VALID_IMGS[0]);
     int i=0;
     std::size_t found;
-    
+
     string lowRuta = ruta;
     Constant::lowerCase(&lowRuta);
     do{

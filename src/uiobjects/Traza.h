@@ -3,7 +3,7 @@
 #ifndef TRAZA_H
 #define TRAZA_H
 
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #include <stdio.h>
 #include <time.h>
 #include <string>

@@ -3,7 +3,7 @@
     #include <windows.h>
 #else
     #define MAX_PATH 255
-    #define DRIVE_FIXED 0 
+    #define DRIVE_FIXED 0
     #define DRIVE_CDROM 1
 #endif // WIN
 
@@ -35,7 +35,7 @@ void Dirutil::listarDirRecursivo(string dir,  vector <FileProps> * filelist){
 void Dirutil::listarDirRecursivo(string dir,  vector <FileProps> * filelist, string filtro){
     vector <FileProps> *tempfilelist = new vector <FileProps>();
     unsigned int numDirs = 0;
-    
+
     if (!existe(dir))
         return;
 
@@ -59,14 +59,14 @@ void Dirutil::listarDirRecursivo(string dir,  vector <FileProps> * filelist, str
 }
 
 /**
- * 
+ *
  * @param strdir
  * @param tempFilelist
  * @param filelistFinal
  * @param filtro
  * @param maxSearchFiles
  * @param maxResults
- * @return 
+ * @return
  */
 unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <FileProps> * tempFilelist
                                         ,vector <FileProps> * filelistFinal, string filtro, int maxSearchFiles, int maxResults){
@@ -77,7 +77,7 @@ unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <File
     unsigned int lenDir = 0;
     int numSearchFiles = 0;
     int numResults = 0;
-    
+
     if (!existe(strdir))
         return 0;
 
@@ -114,9 +114,9 @@ unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <File
 
                         Traza::print("listarDirSinOrden. dir: " + propFile.dir, W_PARANOIC);
                         Traza::print("listarDirSinOrden. filename: " + propFile.filename, W_PARANOIC);
-                        
+
                         setFileProperties(&propFile, concatDir);
-                        
+
                         if(isDir(concatDir)){
                             if (tempFilelist != NULL){
                                 propFile.filetype = TIPODIRECTORIO;
@@ -135,7 +135,7 @@ unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <File
                             }
                         }
                     }
-                    delete concatDir;
+                    delete[] concatDir;
                     numSearchFiles++;
                 }
                 Traza::print("Se han encontrado " + Constant::TipoToStr(lenDir) + " directorios y " + Constant::TipoToStr(numResults) + " ficheros", W_PARANOIC);
@@ -150,12 +150,12 @@ unsigned int Dirutil::listarDirSinOrdenMaxFiles(const char *strdir, vector <File
 }
 
 /**
- * 
+ *
  * @param strdir
  * @param tempFilelist
  * @param filelistFinal
  * @param filtro
- * @return 
+ * @return
  */
 unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> * tempFilelist
                                         ,vector <FileProps> * filelistFinal, string filtro){
@@ -163,11 +163,11 @@ unsigned int Dirutil::listarDirSinOrden(const char *strdir, vector <FileProps> *
 }
 
 /**
- * 
+ *
  * @param strdir
  * @param filelist
  * @param filtro
- * @return 
+ * @return
  */
 unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * filelist, string filtro){
     DIR *dp;
@@ -180,7 +180,7 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
     listaSimple<FileProps> * listaFicheros = new listaSimple<FileProps>();
     listaSimple<FileProps> * listaDirectorios = new listaSimple<FileProps>();
     Traza::print("listarDir: " + Constant::TipoToStr(strdir), W_PARANOIC);
-    
+
     if (!existe(strdir))
         return 0;
 
@@ -218,9 +218,9 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
                     if (strcmp(dirp->d_name,".") != 0){
                         propFile.dir = strdir;
                         propFile.filename = dirp->d_name;
-                        
+
                         setFileProperties(&propFile, concatDir);
-                        
+
                         if(isDir(concatDir)){
                             propFile.filetype = TIPODIRECTORIO;
                             if (strcmp(dirp->d_name,"..") == 0){
@@ -240,7 +240,7 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
                             }
                         }
                     }
-                    delete concatDir;
+                    delete [] concatDir;
                 }
                 closedir(dp);
                 totalFiles = listaDirectorios->getSize() + listaFicheros->getSize();
@@ -272,11 +272,11 @@ unsigned int Dirutil::listarDir(const char *strdir, listaSimple<FileProps> * fil
 }
 
 /**
- * 
+ *
  * @param strdir
  * @param filelist
  * @param filtro
- * @return 
+ * @return
  */
 unsigned int Dirutil::listarDirFast(const char *strdir, vector<FileProps> * filelist, string filtro){
     DIR *dp;
@@ -290,7 +290,7 @@ unsigned int Dirutil::listarDirFast(const char *strdir, vector<FileProps> * file
 
     if (!existe(strdir))
         return 0;
-    
+
     try{
         //Miramos a ver si el directorio a explorar tiene una / al final
         if (strdir != NULL){
@@ -324,9 +324,9 @@ unsigned int Dirutil::listarDirFast(const char *strdir, vector<FileProps> * file
                     if (strcmp(dirp->d_name,".") != 0){
                         propFile.dir = strdir;
                         propFile.filename = dirp->d_name;
-                        
+
                         setFileProperties(&propFile, concatDir);
-                        
+
                         if(isDir(concatDir)){
                             propFile.filetype = TIPODIRECTORIO;
                             if (strcmp(dirp->d_name,"..") == 0){
@@ -335,9 +335,9 @@ unsigned int Dirutil::listarDirFast(const char *strdir, vector<FileProps> * file
                                 propFile.ico = folder;
                             }
                             filelist->push_back(propFile);
-                        } 
+                        }
                     }
-                    delete concatDir;
+                    delete [] concatDir;
                 }
                 closedir(dp);
                 totalFiles = filelist->size();
@@ -356,22 +356,22 @@ unsigned int Dirutil::listarDirFast(const char *strdir, vector<FileProps> * file
 }
 
 /**
- * 
+ *
  * @param strdir
  * @param filelist
  * @param filtro
  * @param superfast
- * @return 
+ * @return
  */
 unsigned int Dirutil::listarFilesSuperFast(const char *strdir, vector<FileProps> *filelist, string filtro, bool order, bool properties){
     DIR *dp;
     struct dirent *dirp;
     char * concatDir = NULL;
     FileProps propFile;
-    unsigned int nFiles [2] = {0,0};
+//    unsigned int nFiles [2] = {0,0};
     unsigned int totalFiles = 0;
     Traza::print("listarFilesSuperFast: " + Constant::TipoToStr(strdir), W_PARANOIC);
-    
+
     if (!existe(strdir))
         return 0;
 
@@ -409,7 +409,7 @@ unsigned int Dirutil::listarFilesSuperFast(const char *strdir, vector<FileProps>
                         propFile.dir = strdir;
                         propFile.filename = dirp->d_name;
                         extension = getExtension(propFile.filename);
-                        
+
                         if (filtro.empty() || filtro.find(extension) != string::npos){
                             if (properties){
                                 setFileProperties(&propFile, concatDir);
@@ -419,7 +419,7 @@ unsigned int Dirutil::listarFilesSuperFast(const char *strdir, vector<FileProps>
                             filelist->push_back(propFile);
                         }
                     }
-                    delete concatDir;
+                    delete [] concatDir;
                 }
                 closedir(dp);
                 totalFiles = filelist->size();
@@ -439,11 +439,11 @@ unsigned int Dirutil::listarFilesSuperFast(const char *strdir, vector<FileProps>
 }
 
 /**
- * 
+ *
  * @param strdir
  * @param filelist
  * @param filtro
- * @return 
+ * @return
  */
 unsigned int Dirutil::listarFilesFast(const char *strdir, vector<FileProps> *filelist, string filtro){
     return listarFilesSuperFast(strdir, filelist, filtro, true, true);
@@ -462,7 +462,7 @@ unsigned int Dirutil::countDir(const char *strdir){
     unsigned int nFiles = 0;
     DIR *dir;
     struct dirent *dirp;
-    
+
 
     if ((dir = opendir(strdir)) != NULL){
         while ((dirp = readdir(dir)) != NULL) {
@@ -819,10 +819,10 @@ bool Dirutil::existe(string ruta){
 
 bool Dirutil::setFileProperties(FileProps *propFile, string ruta){
     boolean ret = true;
-    
+
     struct stat info;
     stat(ruta.c_str(), &info);
-    
+
     if(S_ISDIR(info.st_mode)){
         propFile->filetype = TIPODIRECTORIO;
         propFile->extension = STR_DIR_EXT;
@@ -836,20 +836,20 @@ bool Dirutil::setFileProperties(FileProps *propFile, string ruta){
     propFile->modificationTime = formatdate(mbstr, info.st_mtime);
     propFile->iCreationTime = time(&info.st_ctime);
     propFile->iModificationTime = time(&info.st_mtime);
-    
+
 //    struct tm * timeinfo = localtime(&info.st_ctime); // or gmtime() depending on what you want
 //    printf("File time and date: %s", asctime(timeinfo));
-    
+
 //    std::cout << formatdate(mbstr, info.st_ctime) << '\n';
-    
+
     return ret;
 }
 
 /**
- * 
+ *
  * @param str
  * @param val
- * @return 
+ * @return
  */
 char* Dirutil::formatdate(char* str, time_t val){
     int tam = 36;
@@ -858,9 +858,9 @@ char* Dirutil::formatdate(char* str, time_t val){
 }
 
 /**
- * 
+ *
  * @param ruta
- * @return 
+ * @return
  */
 bool Dirutil::isDir(string ruta){
     struct stat info;
@@ -965,7 +965,7 @@ int Dirutil::mkpath(const char *path, mode_t mode)
     }
     if (status == 0)
         status = do_mkdir(path, mode);
-    delete copypath;
+    delete [] copypath;
     return (status);
 }
 
@@ -1003,7 +1003,7 @@ void Dirutil::getDrives(vector<t_drive *> *myvector){
             myDrive->driveType = GetDriveType(driveStr.c_str());
 
             char Label[MAX_PATH];
-            uint32_t dwDontNeedThis;
+
             if ( !GetVolumeInformation ( myDrive->drive.c_str(),
                                          Label,
                                          sizeof ( Label ),
@@ -1058,7 +1058,7 @@ void Dirutil::getDrives(vector<t_drive *> *myvector){
      myDrive->label = "Root";
      myDrive->drive = "/";
      myDrive->driveType = DRIVE_FIXED;
-     
+
      myvector->push_back(myDrive);
 #endif
 }

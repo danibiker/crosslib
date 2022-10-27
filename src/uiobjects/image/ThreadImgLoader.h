@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   ThreadImgLoader.h
  * Author: Ryuk
  *
@@ -14,9 +14,9 @@
 #ifndef THREADIMGLOADER_H
 #define THREADIMGLOADER_H
 
-#include "uiimglist.h"
-#include "image/ThreadImgWorker.h"
-#include "thread.h"
+#include "uiobjects/uiimglist.h"
+#include "uiobjects/image/ThreadImgWorker.h"
+#include "uiobjects/thread.h"
 
 class ThreadImgLoader {
 public:

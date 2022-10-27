@@ -2,9 +2,7 @@
 #define HTMLPARSER_H
 
 
-
-
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #include <gumbo.h>
 #include <iostream>
 #include <string>
@@ -64,12 +62,12 @@ class HtmlParser
         void buscarElem2(char *html, Tags *tag1, string atributoElem1, string valAtributoElem1, Tags *tag2, string atributoElem2);
         GumboNode* search_for_elem2(GumboNode* node, Tags *tag, string atributo, string valAtributo,Tags *tag2, string atributoElem2);
         vector <string> *getListAttrFound(){return &listAttrFound;}
-        
+
         void buscarElem2TagValue(char *html, Tags *tag1, string atributoElem1, string valAtributoElem1
                                , Tags *tag2, string atributoElem2);
-        
+
         map<string, string> GetMapKeyValueFound() const;
-        
+
 
     protected:
     private:
@@ -79,7 +77,7 @@ class HtmlParser
         bool obtainContentTag;
         vector <string> listAttrFound;
         map<string, string> mapKeyValueFound;
-        
+
         GumboNode* search_for_elem_key_value(GumboNode* node, Tags *tag, string atributo, string valAtributo,
                                         Tags *tag2, string atributoElem2);
 

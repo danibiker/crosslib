@@ -14,12 +14,12 @@
 #ifndef CHARTLYRICS_H
 #define CHARTLYRICS_H
 
-#include "httputil.h"
-#include "httputil2.h"
-#include "util/ConstantHttp.h"
+#include "httpcurl/httputil.h"
+#include "httpcurl/httputil2.h"
+#include "httpcurl/util/ConstantHttp.h"
 #include "lyricsbase.h"
 #include <gumbo.h>
-#include "util/XmlParser.h"
+#include "httpcurl/util/XmlParser.h"
 
 #define TIXML_USE_STL
 #include <tinyxml.h>

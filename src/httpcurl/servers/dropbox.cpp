@@ -39,33 +39,33 @@ uint32_t Dropbox::authenticate(){
             cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
             cabeceras.insert( make_pair("Content-Type", "application/json"));
             //DROPBOXAPIV2
-            
-            
+
+
             Traza::print("Dropbox intentando autenticar", W_DEBUG);
             MemoryStruct *chunk = util.initDownload();
             Json::Value postMsg; //Necesario para enviar algun dato a null en el post en formato json
             string postData = postMsg.toStyledString();
-            
+
             util.httpPostStrlen(DROPBOXACCOUNTINFO, postData.c_str(), &cabeceras, chunk);
             string str = util.getData(chunk);
             long httpCode = util.getHttp_code(chunk);
             util.endDownload(&chunk);
-            
+
             Traza::print("Dropbox httpCode", httpCode, W_DEBUG);
             Traza::print("Dropbox respuesta: " + str, W_DEBUG);
-            
+
             //DROPBOXAPIV2
             Json::Value root;   // will contains the root value after parsing.
             bool parsingSuccessful = false;
             string errorJson;
-            
+
             if (httpCode == 200 || httpCode == 401){
                 parsingSuccessful = JsonParser::parseJson(&root, str, &errorJson);
             } else {
                 error = true;
                 retorno = ERRORCONNECT;
             }
-            
+
             if ( !parsingSuccessful ){
                  // report to the user the failure and their locations in the document.
                 Traza::print("Dropbox::authenticate: Failed to parse configuration. " + errorJson, W_ERROR);
@@ -124,11 +124,11 @@ string Dropbox::storeAccessToken(string codeOrRefreshToken, bool refresh){
 //    filecipher cifrador;
 //    Traza::print("Negociando access token...", W_DEBUG);
 //    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
-//    
+//
 //    if (!this->accessToken.empty()){
 //        string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
 //        string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
-//        
+//
 //        ListaIni<Data> *config = new ListaIni<Data>();
 //        try{
 //            Dirutil dir;
@@ -178,14 +178,14 @@ string Dropbox::launchAccessToken(string clientid, string secret, string code, b
         Traza::print("Dropbox::launchAccessToken: obtaining token", W_DEBUG);
         postData="code=" + code + "&grant_type=authorization_code";
     }
-    
+
     cabeceras.clear();
     cabeceras.insert( make_pair("Authorization", authenticationBasic));
     cabeceras.insert( make_pair("Accept", "*/*"));
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpPost(url, postData.c_str(), postData.length(), &cabeceras, chunk);
     string datos = util.getData(chunk);
@@ -195,7 +195,7 @@ string Dropbox::launchAccessToken(string clientid, string secret, string code, b
     string errorJson;
     bool parsingSuccessful = JsonParser::parseJson(&root, datos, &errorJson);
     Traza::print("Dropbox::launchAccessToken: received" + datos, W_DEBUG);
-    
+
     if ( !parsingSuccessful ){
          // report to the user the failure and their locations in the document.
         Traza::print("Dropbox::launchAccessToken: Failed to parse configuration. " + errorJson, W_ERROR);
@@ -251,7 +251,7 @@ int Dropbox::putFile(string filesystemPath, string dropboxPath, string accessTok
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
     cabeceras.insert( make_pair("overwrite", "true"));
-    
+
     if (tam > 0){
         MemoryStruct *chunk = util.initDownload();
         util.httpPost(url, memblock, tam, &cabeceras, chunk);
@@ -274,43 +274,41 @@ bool Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string a
     Json::Value root;   // will contains the root value after parsing.
     bool ret = false;
 
-    int iteraciones = 0;
     size_t chunkFileSize = 0;
-    
+
     static const size_t DROPBOXCHUNK = 150 * 1024 * 1024; //500KB
 
     if (!accessToken.empty()){
         ifstream file (filesystemPath.c_str(), ios::in|ios::binary|ios::ate);
         if (file.is_open()){
             tam = file.tellg();
-            iteraciones = tam / DROPBOXCHUNK;
         } else {
             Traza::print("Dropbox::chunckedUpload. No se ha podido abrir el fichero: " + filesystemPath, W_ERROR);
             return false;
         }
         file.close();
-        
+
         cabeceras.clear();
         cabeceras.insert( make_pair("Authorization", AuthOauth2));
         //DROPBOXAPIV2
         cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
-        
+
 //        Json::Value postArg;
 //        postArg["close"] = false;
 //        Json::FastWriter fastWriter;
 //        std::string startoutput = fastWriter.write(postArg);
 //        Traza::print(startoutput, W_DEBUG);
-//        cabeceras.insert( make_pair("Dropbox-API-Arg", startoutput));      
+//        cabeceras.insert( make_pair("Dropbox-API-Arg", startoutput));
         //util.post(DROPBOXURLPUTSTART, "", &cabeceras);
-        
-        offsetForDropbox = 0;   
-        
+
+        offsetForDropbox = 0;
+
         MemoryStruct *chunk = util.initDownload();
         util.httpPostWithOffset(DROPBOXURLPUTSTART, filesystemPath.c_str(), (tam < DROPBOXCHUNK) ? tam : DROPBOXCHUNK, offsetForDropbox, &cabeceras, chunk);
         string resp = util.getData(chunk);
         long httpCode = util.getHttp_code(chunk);
         util.endDownload(&chunk);
-        
+
         string errorJson;
         bool parsingSuccessful = JsonParser::parseJson(&root, resp, &errorJson);
         if ( !parsingSuccessful ){
@@ -323,10 +321,10 @@ bool Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string a
         }
         //DROPBOXAPIV2
 
-        offsetForDropbox += (tam < DROPBOXCHUNK) ? tam : DROPBOXCHUNK;     
+        offsetForDropbox += (tam < DROPBOXCHUNK) ? tam : DROPBOXCHUNK;
         while (offsetForDropbox < tam){
             Traza::print("Subiendo %" , (offsetForDropbox / (float) tam) *100, W_DEBUG);
-            Traza::print("Offset: " + Constant::TipoToStr(offsetForDropbox) 
+            Traza::print("Offset: " + Constant::TipoToStr(offsetForDropbox)
                          + " tam: " + Constant::TipoToStr(chunkFileSize), W_DEBUG);
 
             cabeceras.clear();
@@ -348,10 +346,10 @@ bool Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string a
             //std::string output = fastWriter.write(postArg);
             std::string output;
             JsonParser::parseJsonToString(&output, postArg);
-            
+
             Traza::print(output, W_DEBUG);
             cabeceras.insert( make_pair("Dropbox-API-Arg", output));
-            
+
             MemoryStruct *chunk = util.initDownload();
             util.httpPostWithOffset(DROPBOXURLPUTCHUNKED, filesystemPath.c_str(), chunkFileSize, offsetForDropbox, &cabeceras, chunk);
             httpCode = util.getHttp_code(chunk);
@@ -363,12 +361,12 @@ bool Dropbox::chunckedUpload(string filesystemPath, string cloudIdPath, string a
             util.endDownload(&chunk);
             offsetForDropbox += DROPBOXCHUNK;
         }
-        
+
         if (httpCode == 200) {
             chunkFileSize = tam - offsetForDropbox;
-            Traza::print("FINAL. Offset: " + Constant::TipoToStr(offsetForDropbox) 
+            Traza::print("FINAL. Offset: " + Constant::TipoToStr(offsetForDropbox)
                              + " tam: " + Constant::TipoToStr(chunkFileSize), W_DEBUG);
-            
+
             ret = commitChunkedUpload(filesystemPath, cloudIdPath, accessToken, upId, offsetForDropbox, chunkFileSize);
         }
     } else {
@@ -386,7 +384,7 @@ bool Dropbox::commitChunkedUpload(string filesystemPath, string dropboxPath, str
     cabeceras.clear();
     cabeceras.insert( make_pair("Authorization", AuthOauth2));
     cabeceras.insert( make_pair("Content-Type", "application/octet-stream"));
-    
+
     Json::Value postArg;
     Json::Value parmCursor;
     Json::Value partCommit;
@@ -395,10 +393,10 @@ bool Dropbox::commitChunkedUpload(string filesystemPath, string dropboxPath, str
     partCommit["path"] = dropboxPath;
     partCommit["mode"] = "add";
     partCommit["autorename"] = false;
-    partCommit["mute"] = false;    
+    partCommit["mute"] = false;
     postArg["cursor"] = parmCursor;
     postArg["commit"] = partCommit;
-    
+
     //Json::FastWriter fastWriter;
     //std::string output = fastWriter.write(postArg);
     std::string output;
@@ -411,17 +409,17 @@ bool Dropbox::commitChunkedUpload(string filesystemPath, string dropboxPath, str
     long httpCode = util.getHttp_code(chunk);
     string res = util.getData(chunk);
     util.endDownload(&chunk);
-    
+
     //util.post(DROPBOXURLCOMMITCHUNKED, "", &cabeceras);
     Traza::print("retorno commit", httpCode, W_DEBUG);
-    
+
     if (httpCode == 200){
         return true;
     } else {
         Traza::print("Dropbox::commitChunkedUpload. Error in commit: " + res, W_ERROR);
         return false;
     }
-    
+
 }
 
 /**
@@ -442,15 +440,15 @@ bool Dropbox::deleteFiles(string fileid, string accessToken){
 //        Json::FastWriter fastWriter;
 //        std::string output = fastWriter.write(postArg);
         std::string output;
-        JsonParser::parseJsonToString(&output, postArg);       
+        JsonParser::parseJsonToString(&output, postArg);
         Traza::print("Ruta a eliminar: " + fileid, W_DEBUG);
-        
+
         MemoryStruct *chunk = util.initDownload();
         util.httpPostStrlen(url, output.c_str(), &cabeceras, chunk);
         string resp = util.getData(chunk);
         util.endDownload(&chunk);
         Traza::print(resp, W_DEBUG);
-        
+
         Json::Value root;   // will contains the root value after parsing.
         string errorJson;
         bool parsingSuccessful = JsonParser::parseJson(&root, resp, &errorJson);
@@ -482,7 +480,7 @@ int Dropbox::getFile(string filesystemPath, string cloudIdPath, string accessTok
     Json::Value postArg;
     //Json::FastWriter fastWriter;
     cabeceras.clear();
-    
+
     cabeceras.insert( make_pair("Authorization", AuthOauth2));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
     postArg["path"] = cloudIdPath;
@@ -491,20 +489,20 @@ int Dropbox::getFile(string filesystemPath, string cloudIdPath, string accessTok
     JsonParser::parseJsonToString(&output, postArg);
 
     cabeceras.insert( make_pair("Dropbox-API-Arg", output));
-    
+
     Traza::print(string("Descargando ") + cloudIdPath + " en " + filesystemPath, W_DEBUG);
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpPostDownload(DROPBOXURLGET, filesystemPath.c_str(), &cabeceras, chunk);
     long httpCode = util.getHttp_code(chunk);
     util.endDownload(&chunk);
-    
+
     if (httpCode != 200){
         Traza::print(string("Error descargando ") + cloudIdPath + " en " + filesystemPath, W_ERROR);
         return -1;
     }
-        
-    
+
+
     return 0;
 }
 
@@ -556,12 +554,12 @@ string Dropbox::getJSONListContinueDropbox(string cursor, string accessToken){
         cabeceras.insert( make_pair("Content-Type", "application/json"));
         Json::Value postArg;
         postArg["cursor"] = cursor;
-        
+
         std::string output;
         JsonParser::parseJsonToString(&output, postArg);
 //        Json::FastWriter fastWriter;
 //        std::string output = fastWriter.write(postArg);
-        
+
         MemoryStruct *chunk = util.initDownload();
         util.httpPostStrlen(DROPBOXURLLISTNEXT, output.c_str(), &cabeceras, chunk);
         responseMetadata = util.getData(chunk);
@@ -575,13 +573,13 @@ string Dropbox::getJSONListContinueDropbox(string cursor, string accessToken){
 *
 */
 bool Dropbox::listFiles(string filesystemPath, string accessToken, CloudFiles *files){
-    
+
     bool hasMore = false;
     string cursor = ""; //Campo para obtener mas registros si es necesario
     int controlBucle = 0;
-    
+
     string responseMetadata = getJSONListDropbox(filesystemPath, accessToken);
-    
+
     do{
         Json::Value root;   // will contains the root value after parsing.
         string errorJson;
@@ -610,7 +608,7 @@ bool Dropbox::listFiles(string filesystemPath, string accessToken, CloudFiles *f
             cursor = root.get("cursor","").asString();
             const Json::Value contents = root["entries"];
 
-            for ( int index = 0; index < contents.size(); index++ ){  // Iterates over the sequence elements.
+            for (unsigned int index = 0; index < contents.size(); index++ ){  // Iterates over the sequence elements.
                 CloudFiles *childFile = new CloudFiles();
     //            childFile->revision = contents[index].get("rev","0").asString();
                 childFile->strHash = contents[index].get("id","").asString();
@@ -621,12 +619,12 @@ bool Dropbox::listFiles(string filesystemPath, string accessToken, CloudFiles *f
                 files->fileList.push_back(childFile);
             }
             controlBucle++;
-        } 
-        
-        if (hasMore) 
+        }
+
+        if (hasMore)
             responseMetadata = getJSONListDropbox(filesystemPath, accessToken);
-        
+
     } while (hasMore && controlBucle < 10);
-    
+
     return true;
 }

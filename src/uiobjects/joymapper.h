@@ -1,7 +1,7 @@
 #ifndef JOYMAPPER_H
 #define JOYMAPPER_H
 
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #include "ListaSimple.h"
 
 class JoyMapper

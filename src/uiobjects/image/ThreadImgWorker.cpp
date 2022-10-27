@@ -141,7 +141,7 @@ uint32_t ThreadImgWorker::startLoading(){
             Traza::print("imagen a cargar",imgToLoad,  W_PARANOIC);
             if (!arrThread[i]->isRunning() || ( arrImgLoader[i] != NULL && arrImgLoader[i]->getEstado() == 0)){
             //if (arrImgLoader[i] == NULL || (arrImgLoader[i] != NULL && arrImgLoader[i]->getEstado() >= 0) ){
-                if (imgToLoad <= imgToEnd && imgToLoad < listImages->getSize() && !s_interrupted){
+                if (imgToLoad <= imgToEnd && imgToLoad < (int)listImages->getSize() && !s_interrupted){
 
                     if (arrImgLoader[i] != NULL){
                         delete arrImgLoader[i];
@@ -173,7 +173,7 @@ uint32_t ThreadImgWorker::startLoading(){
                         if (arrImgLoader[j] != NULL)
                         if (arrImgLoader[j]->getEstado() == 1){
                             salir = false;
-                            if (imgToLoad > imgToEnd || imgToLoad >= listImages->getSize() || s_interrupted){
+                            if (imgToLoad > imgToEnd || imgToLoad >= (int)listImages->getSize() || s_interrupted){
                                 pruebaImageStuck = listImages->getValue(arrImgLoader[j]->getImagetoload());;
                                 Traza::print("arrThread: " + pruebaImageStuck + " still running", W_PARANOIC);
                                 std::this_thread::sleep_for(std::chrono::milliseconds(10));

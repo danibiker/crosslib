@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   httputil2.cpp
  * Author: Dani
- * 
+ *
  * Created on 2 de febrero de 2022, 13:59
  */
 
@@ -38,29 +38,29 @@ void Httputil2::initProgress(Progress2 *p){
 
 
 void Httputil2::cleanData(MemoryStruct *p){
-    
+
     if (p == NULL)
         return;
-    
-    if (p->memory != NULL && p->size > 0) 
+
+    if (p->memory != NULL && p->size > 0)
         free(p->memory);
 
     p->memory = NULL;
     p->size = 0;
 
-    if (p->readBufferHeader != NULL) 
+    if (p->readBufferHeader != NULL)
         free(p->readBufferHeader);
     p->readBufferHeader = NULL;
 
-    //if (p->cabecerasResp != NULL) 
-        p->cabecerasResp.clear(); 
+    //if (p->cabecerasResp != NULL)
+        p->cabecerasResp.clear();
 
     p->curlDownloadLimit = 0;
     if (p->filepath != NULL)
         free(p->filepath);
     p->filepath = NULL;
 
-    
+
     initProgress(&p->prog);
 }
 
@@ -98,7 +98,7 @@ void Httputil2::parserCabeceras(MemoryStruct *p){
     p->cabecerasResp.clear();
     size_t pos;
     vector<string> v = Constant::split(p->readBufferHeader, "\n");
-    for (int i=0; i < v.size(); i++){
+    for (unsigned int i=0; i < v.size(); i++){
         pos = v.at(i).find(":");
         if (pos != string::npos){
 //            cout << i << ":" << v.at(i) << endl;
@@ -114,20 +114,20 @@ size_t Httputil2::handleHeader(void *contents, size_t size, size_t nmemb, void *
     size_t realsize = size * nmemb;
     if (realsize <= 0)
         return 0;
-    
+
     if (mem->readBufferHeader != NULL){
         size_t tam = strlen(mem->readBufferHeader);
         char* tmp;
         if ((tmp = (char*)realloc(mem->readBufferHeader, tam + realsize + 1)) != NULL) {
             mem->readBufferHeader = tmp;
             strcat_s(mem->readBufferHeader, tam + realsize + 1, (char*)contents);
-        } else 
+        } else
             cerr << "error al redimensionar memoria en handleHeader" << endl;
     } else {
         mem->readBufferHeader = (char* )calloc(realsize + 1, 1);
         if (mem->readBufferHeader != NULL)
             strcpy_s(mem->readBufferHeader, realsize + 1, (char *)contents);
-        else 
+        else
             cerr << "error al reservar memoria en handleHeader" << endl;
     }
     //printf("Header: %s",mem->readBufferHeader);
@@ -136,7 +136,7 @@ size_t Httputil2::handleHeader(void *contents, size_t size, size_t nmemb, void *
 
 
 /**
- * Add the chunk of data to the memory buffer with a defined size of MAX_FILE_BUFFER 
+ * Add the chunk of data to the memory buffer with a defined size of MAX_FILE_BUFFER
  * @param contents
  * @param realsize
  * @param mem
@@ -146,7 +146,7 @@ int Httputil2::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
         cerr << "addDataToMem data is null" << endl;
         return 0;
     }
-    
+
     if (mem->size == 0 && mem->memory == NULL){
         mem->memory = (char *)calloc(mem->size + realsize + 1, 1);
         if (mem->memory == NULL){
@@ -176,16 +176,16 @@ int Httputil2::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
  * @param size
  * @param nmemb
  * @param userp
- * @return 
+ * @return
  */
 size_t Httputil2::writeMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp){
     size_t realsize = size * nmemb;
     MemoryStruct *mem = (MemoryStruct *)userp;
     size_t totalDown = 0;
-    
+
     //We start counting the total size of the buffered memory
     totalDown = mem->size + realsize;
-    
+
     //We add the total file size until now
     if (mem->filepath != NULL) {
         FILE* f = NULL;
@@ -195,16 +195,16 @@ size_t Httputil2::writeMemoryCallback(void *contents, size_t size, size_t nmemb,
         if (err == 0 && f != NULL && fseek(f, 0, SEEK_END) == 0 && (tam = ftell(f)) > 0){
             totalDown += tam;
         }
-        if (f) 
+        if (f)
             fclose(f);
     }
-    
+
     if (mem->curlDownloadLimit > 0 && totalDown > mem->curlDownloadLimit){
         cout << "curlDownloadLimit. Size of download exceeded " << totalDown << endl;
         mem->curlDownloadLimit = 0;
-        return 0; 
+        return 0;
     }
-    
+
     //Adding the data to the buffer
     if (mem->filepath == NULL){
         if (!addDataToMem(contents, realsize, mem)){
@@ -228,7 +228,7 @@ size_t Httputil2::writeMemoryCallback(void *contents, size_t size, size_t nmemb,
 
 /**
  * Check if we must write the contents of the buffered memory to a file
- * 
+ *
  * @param mem
  */
 void Httputil2::checkWriteMemToFile(void *contents, size_t sizeToWrite, char *filepath){
@@ -256,7 +256,7 @@ void Httputil2::checkWriteMemToFile(void *contents, size_t sizeToWrite, char *fi
  * @param dlnow
  * @param ultotal
  * @param ulnow
- * @return 
+ * @return
  */
 int Httputil2::xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
@@ -265,13 +265,13 @@ int Httputil2::xferinfo(void *p,
       //struct myprogress *myp = (struct myprogress *)p;
       Progress2 *myp = (Progress2 *)p;
       //auto myp = static_cast<Progress2 *>(p);
-  
+
       if (myp == NULL)
           return 0;
-  
+
       if (myp->curl == NULL)
           return 0;
-  
+
       CURL *curl = myp->curl;
       double curtime = 0;
       curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &curtime);
@@ -284,15 +284,15 @@ int Httputil2::xferinfo(void *p,
         myp->lastruntime = curtime ;
         //Traza::print("TOTAL TIME: " + Constant::TipoToStr(curtime), W_DEBUG);
       }
-  
+
       if ((curtime - myp->lastruntimeBytesDown) >= 1.0){
           myp->lastruntimeBytesDown = curtime;
           myp->speedDown = (dltotal > MIN_PROGRESS_CHUNK_OF_BYTES ? dlnow - myp->lastBytesDownloaded : 0.0);
           myp->lastBytesDownloaded = dlnow;
       }
-  
+
       //We expect to download at least 512 bytes. this is to avoid errors in the progress count
-      if (dltotal > MIN_PROGRESS_CHUNK_OF_BYTES){ 
+      if (dltotal > MIN_PROGRESS_CHUNK_OF_BYTES){
             myp->bytesDown = dltotal;
             myp->progress = (dltotal > 0.0 ? (dlnow / (double)dltotal) * 100.0 : 0.0);
     //        Traza::print(" Progress " + Constant::TipoToStr(myp->getProgress()) + "%", W_DEBUG);
@@ -302,30 +302,30 @@ int Httputil2::xferinfo(void *p,
           myp->bytesDown = 0;
           myp->progress = 0.0;
       }
-  
+
       //Traza::print("dltotal: " + Constant::TipoToStr(dltotal) + ", Progress " + Constant::TipoToStr(myp->getProgress()) + ", last: " + Constant::TipoToStr(myp->getLastProgress()), W_DEBUG);
       if (myp->progress != myp->lastProgress || myp->timeNoProgress == 0.0){
           myp->timeNoProgress  = curtime;
           myp->lastProgress  = myp->progress;
-      } 
-  
+      }
+
       if (curtime - myp->timeNoProgress > myp->timeout && myp->timeout > 0){
           printf("Aborting download: %f seconds with no activity. Curtime: %f\n", myp->timeout, curtime);
           return 1;
       }
-  
+
       if( (myp->maxBytesDownload > 0 && dlnow > myp->maxBytesDownload)){
           //printf("Aborting download: %llu Max. bytes of download", myp->maxBytesDownload);
           cout << "Aborting download: " << myp->maxBytesDownload << " Max. bytes of download" << endl;
           return 1;
       }
-    
+
       if(aborted){
           printf("Aborting download: ending all threads signal received");
           return 1;
       }
-  
-  
+
+
       return 0;
 }
 
@@ -335,7 +335,7 @@ int Httputil2::xferinfo(void *p,
  * @param size
  * @param nmemb
  * @param stream
- * @return 
+ * @return
  */
 size_t Httputil2::read_callback(void *ptr, size_t size, size_t nmemb, FILE *stream){
     size_t retcode = 0;
@@ -345,7 +345,7 @@ size_t Httputil2::read_callback(void *ptr, size_t size, size_t nmemb, FILE *stre
             retcode = fread(buffer, size, nmemb, stream);
             memcpy(ptr, buffer, nmemb * size);
             free(buffer);
-        } else 
+        } else
             cerr << "error al crear memoria en read_callback" << endl;
     }
     return retcode;
@@ -373,10 +373,10 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
     int downState = 0;
     FILE * hd_src = NULL;
     aborted = 0;
-    
+
     if (chunk == NULL)
         return 0;
-    
+
 
     // SDL_LockMutex(conn_mutex);
     //Traza::print("HttpUtil::sendHttp " + string(httpType == 0 ? "POST" : httpType == 1 ? "GET" : "PUT") + ", " +  url, W_INFO);
@@ -392,14 +392,14 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
-    
+
     curl = curl_easy_init();
     mutex.Unlock();
     // SDL_UnlockMutex(conn_mutex);
     char *auth = NULL;
 
     /* specify proxy*/
-    
+
     if (chunk->connProps.proxyIP && chunk->connProps.proxyUser && chunk->connProps.proxyPass){
         printf("Setting proxy settings\n");
         size_t len = strlen(chunk->connProps.proxyUser) + strlen(chunk->connProps.proxyPass) + 2;
@@ -458,13 +458,12 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
         curl_easy_setopt(curl, CURLOPT_USERAGENT, USERAGENT.c_str());
         /* ask libcurl to allocate a larger receive buffer */
         curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, CURL_MAX_WRITE_SIZE);
-        
+
         char *buffer = NULL;
-        size_t retcode = 0;
         errno_t err;
-        
+
         //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
-        
+
         switch (httpType){
             case HTTP_POST:
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
@@ -476,9 +475,9 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
 //                    curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 //                    curl_easy_setopt(curl, CURLOPT_IGNORE_CONTENT_LENGTH, 1L);
 //                }
-                    
+
                 break;
-            case HTTP_POST2: 
+            case HTTP_POST2:
                 //To upload files. Needed by dropbox
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
 
@@ -486,18 +485,18 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
                 if (err == 0 && hd_src != NULL && tam > 0) {
                     fseek(hd_src, offset, SEEK_SET);
                     if ((buffer = (char*) calloc(tam, 1)) != NULL) {
-                        retcode = fread(buffer, 1, tam, hd_src);
+                        fread(buffer, 1, tam, hd_src);
                         /* Now specify the POST data */
                         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buffer);
                         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
-                    } else 
+                    } else
                         cerr << "error al crear memoria en HTTP_POST2" << endl;
                 } else {
                     cerr << "HTTP_POST2: file: " << data << "not found or could not be opened" << endl;
                     decodeError(err);
                 }
-                
-                
+
+
                 break;
             case HTTP_PUT:
                 curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
@@ -530,7 +529,7 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
                 } else if (httpType == HTTP_GET){
                     curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
                 }
-                
+
                 if (data != NULL){
                     size_t len = strlen(data) + 1;
                     if (len > 1){
@@ -544,7 +543,7 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
                 }
             break;
         }
-      
+
         if (headers != NULL){
             struct curl_slist *curlheaders=NULL;
             map<string, string>::const_iterator itr;
@@ -555,12 +554,12 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
             }
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curlheaders);
         }
-        
+
         chunk->prog.lastruntime = 0;
         chunk->prog.lastBytesDownloaded = 0;
         chunk->prog.timeout = chunk->connProps.timeout;
         chunk->prog.curl = curl;
-        
+
 
         #if LIBCURL_VERSION_NUM >= 0x072000
         /* xferinfo was introduced in 7.32.0, no earlier libcurl versions will
@@ -597,7 +596,7 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
         }
 
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, handleHeader);
-        
+
         /* Perform the request, res will get the return code */
         res = curl_easy_perform(curl);
         //Important to call this at the end to write the memory to the file if specified
@@ -607,11 +606,11 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
         curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &chunk->connProps.http_code);
         /* Check for errors */
         if(res != CURLE_OK){
-            printf("curl_easy_perform() failed: %s. Url: %s\n", curl_easy_strerror(res), url);
+            printf("curl_easy_perform() failed: %s. Url: %s\n", curl_easy_strerror(res), url.c_str());
         } else {
             downState = 1;
             parserCabeceras(chunk);
-            writeChunkToDisk(chunk);            
+            writeChunkToDisk(chunk);
         }
 //        curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
 
@@ -645,15 +644,15 @@ void Httputil2::writeChunkToDisk(MemoryStruct *chunk){
 int Httputil2::sendHttpWithRetries(std::string url, const char* data, size_t tam, size_t offset, map<string, string> * headers, long httpType, MemoryStruct *chunk){
     int success = 0;
     int nTry = 0;
-    
+
     if (chunk == NULL)
         return 0;
-    
+
     do{
         success = sendHttp(url, data, tam, offset, headers, httpType, chunk);
         nTry++;
         if (!success){
-            printf("Reintentando envio de %s, %d",url, nTry);
+            printf("Reintentando envio de %s, %d", url.c_str(), nTry);
         }
     } while (nTry < chunk->connProps.connectionRetries && !success);
     return success;
@@ -739,7 +738,7 @@ int Httputil2::httpDel(std::string url, map<string, string> * headers, MemoryStr
 /**
  * Writes all the memory buffer to disk
  * @param path
- * @return 
+ * @return
  */
 int Httputil2::writeMemToFile(char* path, MemoryStruct *chunk){
     Fileio fileio;
@@ -758,11 +757,11 @@ char * Httputil2::getRawData(MemoryStruct *chunk){
  * */
 char * Httputil2::getData(MemoryStruct *chunk){
     size_t tamData = 0;
-    
+
     if (chunk->size > 0 && chunk->memory != NULL){
         CGZIP2A a((unsigned char *)chunk->memory, chunk->size);
         tamData = strlen(a.psz);
-        
+
         if (tamData > 0){
             if(chunk->memory){
                 free(chunk->memory);
@@ -777,7 +776,7 @@ char * Httputil2::getData(MemoryStruct *chunk){
         } else {
             cerr << "No se ha podido descomprimir los datos" <<endl;
         }
-    }   
+    }
     chunk->size = tamData;
     return chunk->memory;
 }

@@ -2,8 +2,8 @@
 #define __DATABASE_H__
 
 #include <sqlite3.h>
-#include "Excepcion.h"
-#include "Dirutil.h"
+#include "uiobjects/Excepcion.h"
+#include "uiobjects/Dirutil.h"
 
 #define TIXML_USE_STL
 #include "tinyxml.h"

@@ -30,6 +30,7 @@ static const char* MESES[] = {"Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "J
 static const char* METACHARS[] = {" ", "*", "?", "[", "]", "'","\"" ,"$", ";", "&", "(", ")", "|", "^", "<", ">"};
 static const char* SPECIALCHARS[] = {/*",","-",*/".","/","_","�","!","\"","#","$","%","&","�","(",")","*","+",":",";","<","=",">","�","?","@","[","\\","]","^","`","{","|","}","~","'"};
 static const char* ALLSPECIALCHARS[] = {",","-",".","/","_","�","!","\"","#","$","%","&","�","(",")","*","+",":",";","<","=",">","�","?","@","[","\\","]","^","`","{","|","}","~","'","\n"};
+static const char* SIZES_STR[] = {"B","KB","MB","GB","TB"};
 
 /**
 *
@@ -335,7 +336,7 @@ int Constant::contiene (const char *s1, const char s2)
 /**
 *
 */
-string Constant::pad(string var, int paddedLength, char caracter){
+string Constant::pad(string var, unsigned int paddedLength, char caracter){
 //            stringstream ss;
 //            ss << setw(sizepad) << var;
     if (paddedLength > 0 && paddedLength > var.length())
@@ -732,9 +733,9 @@ string Constant::txtDisplay(string str){
 }
 
 /**
- * 
+ *
  * @param str
- * @return 
+ * @return
  */
 string Constant::url_decode(string str){
     string ret;
@@ -906,18 +907,18 @@ inline std::string Constant::codePointToUTF8(unsigned int cp) {
 /**
  * Removes all character not alphanumeric
  * @param input
- * @return 
+ * @return
  */
 string Constant::toAlphanumeric(string input){
     string out = "";
-    for (int i=0; i < input.size(); i++) {
+    for (unsigned int i=0; i < input.size(); i++) {
         if ( ((int)input[i] >= 48 && (int)input[i] < 57) ||
              ((int)input[i] >= 65 && (int)input[i] < 90) ||
              ((int)input[i] >= 97 && (int)input[i] < 122)){
             out += input[i];
         }
     }
-    return out;    
+    return out;
 }
 
 /**
@@ -1050,10 +1051,10 @@ int Constant::getHostname(string hostname, t_hostname *structHostname){
 //    #endif
     structHostname->hostname.assign(Name);
     structHostname->altHostname.push_back(Name);
-    
+
         return 0;
-#endif    
-    
+#endif
+
 }
 
 std::string Constant::TrimLeft(const std::string& s)
@@ -1069,14 +1070,14 @@ std::string Constant::TrimRight(const std::string& s)
 }
 
 std::string Constant::Trim(const std::string& s)
-{   
+{
     return TrimRight(TrimLeft(s));
 }
 
 std::string Constant::cutToLength(const std::string& s, int cutLen){
     string ret = s;
     if (!s.empty()){
-        if (s.length() > cutLen - 3 - 1){
+        if (s.length() > (size_t)(cutLen - 3 - 1)){
             ret = s.substr(0, cutLen - 3) + "...";
         }
     }
@@ -1084,15 +1085,15 @@ std::string Constant::cutToLength(const std::string& s, int cutLen){
 }
 
 /**
- * 
+ *
  * @param s
  * @param cutLen
- * @return 
+ * @return
  */
 std::string Constant::cutLeftToLength(const std::string& s, int cutLen){
     string ret = s;
     if (!s.empty()){
-        if (s.length() > cutLen - 1){
+        if (s.length() > (size_t)(cutLen - 1)){
             ret = s.substr(s.length() - cutLen, cutLen);
         }
     }
@@ -1100,10 +1101,10 @@ std::string Constant::cutLeftToLength(const std::string& s, int cutLen){
 }
 
 /**
- * 
+ *
  * @param bytes
  * @param precision
- * @return 
+ * @return
  */
 string Constant::printBytesSize(double bytes, int precision){
     string res;
@@ -1111,7 +1112,7 @@ string Constant::printBytesSize(double bytes, int precision){
     const int tam = sizeof(SIZES_STR) / sizeof(SIZES_STR[0]);
     int i=0;
     std::stringstream stream;
-    
+
     do{
         if (bytes < (kb * pow(kb,i))){
             stream << std::fixed << std::setprecision(i >= 2 ? precision : 0) << (bytes / pow(kb,i));

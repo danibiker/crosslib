@@ -28,7 +28,7 @@ int Freedb::searchCd(FreedbQuery *query, vector<CdTrackInfo *> *cdTrackList){
 
     if (query->offsets.size() > 0){
         postData = "cmd=cddb+query+"+query->discId+"+"+Constant::TipoToStr(query->offsets.size());
-        for (int i=0; i < query->offsets.size(); i++){
+        for (unsigned int i=0; i < query->offsets.size(); i++){
             postData.append("+"+Constant::TipoToStr(query->offsets.at(i)));
         }
         postData.append("+"+Constant::TipoToStr(query->totalSeconds));

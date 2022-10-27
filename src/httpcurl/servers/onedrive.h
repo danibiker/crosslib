@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   onedrive.h
  * Author: Timonet
  *
@@ -15,18 +15,18 @@
 #define ONEDRIVE_H
 
 #include <iostream>
-#include "util/ConstantHttp.h"
+#include "httpcurl/util/ConstantHttp.h"
 #include <vector>
 #include <map>
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
-#include <Constant.h>
+#include "uiobjects/Constant.h"
 #include "json/json.h"
 #include <vector>
-#include "Dirutil.h"
-#include "thread.h"
-#include "ioauth2.h"
+#include "uiobjects/Dirutil.h"
+#include "uiobjects/thread.h"
+#include "httpcurl/servers/ioauth2.h"
 #include "../util/JsonParser.h"
 
 using namespace std;
@@ -41,7 +41,7 @@ public:
     Onedrive(IOauth2 *var) : IOauth2(var){};
     Onedrive(const Onedrive& orig);
     virtual ~Onedrive();
-    
+
     /**Metodos comunes de la interfaz entre google y dropbox*/
     uint32_t authenticate();
     void launchAuthorize(string clientid);
@@ -53,14 +53,14 @@ public:
     bool listFiles(string filesystemPath, string accessToken, CloudFiles *files);
     int getFile(string filesystemPath, string cloudIdPath, string accessToken);
     string fileExist(string filename, string parentid, string accessToken);
-    
+
     string getJSONListSharepoint(string fileid, string accessToken);
-    
-    
+
+
     string mkdir(string dirname, string parentid, string accessToken);
-    
+
     int getShared(string accessToken);
-    
+
 private:
     uint32_t checkOauthErrors(string data, Json::Value *root);
     string getJSONList(string fileid, string accessToken, string nextPageToken);

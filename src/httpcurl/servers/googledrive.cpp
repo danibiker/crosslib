@@ -25,12 +25,12 @@ uint32_t GoogleDrive::authenticate(){
             cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
             cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
             cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
-            
+
             MemoryStruct *chunk = util.initDownload();
             util.httpGet(url, &cabeceras, chunk);
             string res = util.getData(chunk);
             util.endDownload(&chunk);
-            
+
             //Comprobamos que podemos obtener info del usuario para saber si el accesstoken es valido
             Json::Value root;   // will contains the root value after parsing.
             if (!res.empty()){
@@ -117,7 +117,7 @@ string GoogleDrive::storeAccessToken(string codeOrRefreshToken, bool refresh){
 //    Traza::print("GoogleDrive::storeAccessToken. Negociando access token...", W_DEBUG);
 //    filecipher cifrador;
 //    launchAccessToken(clientid, secret, codeOrRefreshToken, refresh);
-//    
+//
 //    if (!this->getAccessToken().empty()){
 //        string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
 //        string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
@@ -184,7 +184,7 @@ string GoogleDrive::launchAccessToken(string clientid, string secret, string cod
     }
 
     Traza::print(postData, W_DEBUG);
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpPost(url, postData.c_str(),postData.length(), &cabeceras, chunk);
     string str = util.getData(chunk);
@@ -219,18 +219,18 @@ bool GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, stri
     string url = GOOGLEURLPUT + "?uploadType=resumable";
     Dirutil dir;
     bool ret = false;
-    
+
     postData = "{\"name\": \"" + Constant::toUTF8(dir.getFileName(filesystemPath)) + "\""
            + "," + "\"mimeType\": \"application/octet-stream\""
            + string(cloudIdPath.empty() ? "" : ",\"parents\": [\"" + cloudIdPath + "\"]")
            + "}";
 
     size_t tam = 0;
-    unsigned long iteraciones = 0;
+//    unsigned long iteraciones = 0;
     ifstream file (filesystemPath.c_str(), ios::in|ios::binary|ios::ate);
     if (file.is_open()){
         tam = file.tellg();
-        iteraciones = tam / GOOGLECHUNK;
+//        iteraciones = tam / GOOGLECHUNK;
     }
     file.close();
 
@@ -260,7 +260,7 @@ bool GoogleDrive::chunckedUpload(string filesystemPath, string cloudIdPath, stri
             return chunckedUpload(filesystemPath, cloudIdPath, this->getAccessToken());
         }
     }
-    
+
     //Control error de token caducado de OAUTH2
     string location;
     std::map<string,string>::iterator it;
@@ -304,7 +304,7 @@ bool GoogleDrive::resumableChunckedUpload(string filesystemPath, string url, siz
     cabeceras.insert( make_pair("Accept", "*/*"));
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
-    
+
     //Realizamos el put
     MemoryStruct *chunk = util.initDownload();
     util.setSendContentLength(chunk, 0);
@@ -432,7 +432,7 @@ bool GoogleDrive::listFiles(string fileid, string accessToken, CloudFiles *files
     string nextPageToken;
     string resp;
     int controlBucle = 0;
-    
+
     do{
         resp = getJSONList(fileid, accessToken, nextPageToken);
         nextPageToken = "";
@@ -452,7 +452,7 @@ bool GoogleDrive::listFiles(string fileid, string accessToken, CloudFiles *files
         } else {
             //En el caso del refresh, no se devuelve el mismo token
             const Json::Value arrFiles = root["files"];
-            for ( int index = 0; index < arrFiles.size(); index++ ){
+            for (unsigned int index = 0; index < arrFiles.size(); index++ ){
                 CloudFiles *childFile = new CloudFiles();
     //            childFile->revision = contents[index].get("rev","0").asString();
     //            childFile->bytes = contents[index].get("bytes",0).asDouble();
@@ -492,7 +492,7 @@ string GoogleDrive::fileExist(string filename, string parentid, string accessTok
     } else {
         //En el caso del refresh, no se devuelve el mismo token
         const Json::Value arrFiles = root["files"];
-        for ( int index = 0; index < arrFiles.size() && encontrado == false; index++){
+        for (unsigned int index = 0; index < arrFiles.size() && encontrado == false; index++){
             if (arrFiles[index].get("name","").asString().compare(filename) == 0){
                 retorno = arrFiles[index].get("id","").asString();
                 encontrado = true;
@@ -516,12 +516,12 @@ int GoogleDrive::getFile(string filesystemPath, string cloudIdPath, string acces
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.downloadToDiskHeaders(url, filesystemPath, &cabeceras, chunk);
     long httpCode = util.getHttp_code(chunk);
     util.endDownload(&chunk);
-    
+
     Traza::print("GoogleDrive::getFile. Code", httpCode, W_DEBUG);
     if (httpCode == 401){
         this->storeAccessToken("", true);
@@ -549,7 +549,7 @@ bool GoogleDrive::deleteFiles(string fileid, string accessToken){
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
-    
+
     MemoryStruct *chunk = util.initDownload();
     util.httpDel(url, &cabeceras, chunk);
     long httpCode = util.getHttp_code(chunk);

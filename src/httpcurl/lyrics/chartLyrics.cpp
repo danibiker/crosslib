@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   ChartLyrics.cpp
  * Author: Dani
- * 
+ *
  * Created on 4 de febrero de 2022, 17:47
  */
 
@@ -34,15 +34,16 @@ std::string ChartLyrics::getTagName(const char* data) {
 
     int len = strlen(data);
     int i=0;
-    int ini = 0;
+    //int ini = 0;
     int fin = 0;
     string tagName = "";
     char tmp[2] = {' ','\0'};
 
     while(i < len && fin == 0){
-        if (data[i] == '<')
-            ini = i;
-        else if (data[i] == '>')
+//        if (data[i] == '<')
+//            ini = i;
+//        else
+        if (data[i] == '>')
             fin = i;
         else {
             tmp[0] = data[i];
@@ -90,19 +91,19 @@ uint32_t ChartLyrics::trackSearch(string track, string artist, vector <unique_pt
     cabeceras.insert( make_pair("Accept-Encoding", "deflate"));
     cabeceras.insert( make_pair("Accept-Language", "es-ES,es;q=0.8,en;q=0.6,fr;q=0.4,zh-CN;q=0.2,zh;q=0.2,gl;q=0.2"));
     cabeceras.insert( make_pair("Content-Type", "application/x-www-form-urlencoded"));
-    
+
     Httputil2 util2;
     MemoryStruct *chunk = util2.initDownload();
     Traza::print("ChartLyrics::trackSearch. url: " + url, W_DEBUG);
     util2.httpGet(url, &cabeceras, chunk);
     string respuesta = util2.getRawData(chunk);
     util2.endDownload(&chunk);
-    
+
     Traza::print("ChartLyrics::trackSearch. Respuesta: " + respuesta, W_DEBUG);
-    
+
     map<string, unique_ptr<vector<string>> > output;
     XmlParser::parseString(respuesta, output);
-    
+
     auto trackElem = make_unique<TrackInfo>();
     trackElem->urlInfo = XmlParser::getFirst("LyricUrl", output);
     trackElem->album_coverart_100x100 = XmlParser::getFirst("LyricCovertArtUrl", output);
@@ -110,21 +111,21 @@ uint32_t ChartLyrics::trackSearch(string track, string artist, vector <unique_pt
     trackElem->trackId = XmlParser::getFirst("LyricId", output);
     trackElem->track_name = XmlParser::getFirst("LyricSong", output);
     trackElem->lyrics_body = XmlParser::getFirst("Lyric", output);
-    
+
     if (!trackElem->lyrics_body.empty()){
         retorno = SINERROR;
         Traza::print("ChartLyrics::LyricUrl: " + trackElem->lyrics_body, W_DEBUG);
         info->push_back(std::move(trackElem));
     }
-    
+
 //    auto trackElem = make_unique<TrackInfo>();
 //    GumboOutput* output = gumbo_parse(respuesta.c_str());
 //    if (output != NULL){
 //        getNodeInfo(output->root, &trackElem);
 //        retorno = SINERROR;
 //    }
-    
-    
+
+
 //    TiXmlDocument doc;
 //    const char* parseResult = doc.Parse(respuesta.c_str(), 0 , TIXML_ENCODING_UTF8);
 //    if(parseResult == NULL && doc.Error()){
@@ -161,7 +162,7 @@ uint32_t ChartLyrics::trackSearch(string track, string artist, vector <unique_pt
 //    }
 //    Traza::print("ChartLyrics::trackSearch. lyrics_body: " + trackElem->lyrics_body, W_DEBUG);
 //    info->push_back(std::move(trackElem));
-    
+
     return retorno;
 }
 

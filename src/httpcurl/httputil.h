@@ -10,9 +10,9 @@
 #include <string>
 #include <fstream>
 #include <map>
-#include "filecipher.h"
-#include "Traza.h"
-#include "unzip/GZipHelper.h"
+#include "rijndael/filecipher.h"
+#include "uiobjects/Traza.h"
+#include "uiobjects/unzip/GZipHelper.h"
 #include <curl/curl.h>
 //#include <gmutex.h>
 #include <mutex>          // std::mutex
@@ -33,47 +33,47 @@ class HttpUtil
         unsigned short proxyPort;
         string proxyUser;
         string proxyPass;
-        
+
         struct MemoryStruct {
           char *memory;
           size_t size;
           char *filepath;
         };
-        
+
         int connectionRetries;
-        
+
         void parserCabeceras();
         map<string, string> cabecerasResp;
         std::string readBufferHeader;
 
         struct MemoryStruct chunk;
         int timeout;
-        
+
         void cleanChunkData();
         Progress *prog;
-        
-        
+
+
         bool writeToFile(const char *, char *, ifstream::pos_type, bool);
         bool sendHttp(string url, const char* data, size_t, size_t, map <string, string> *headers, long httpType);
         bool sendHttpWithRetries(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers, long httpType);
-        
+
         static int older_progress(void *p,
                           double dltotal, double dlnow,
                           double ultotal, double ulnow);
-        
+
         static int xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
                     curl_off_t ultotal, curl_off_t ulnow);
-        
-        
+
+
         static size_t handleHeader(void *contents, size_t size, size_t nmemb, void *f);
         static size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *f);
         static size_t read_callback(void *ptr, size_t size, size_t nmemb, FILE *stream);
         void checkWriteMemToFile(void *contents, size_t sizeToWrite, char *filepath);
         int addDataToMem(void *contents, size_t realsize, MemoryStruct *mem);
         void writeChunkToDisk(MemoryStruct *mem, void *f);
-        
-        
+
+
         //This aborts all the running threads
         static bool aborted;
         long http_code;
@@ -82,13 +82,13 @@ class HttpUtil
         std::mutex mtx;           // mutex for critical section
 
         struct curl_slist *cookies;
-        
+
         static void decodeError(int r){
             char buff[100];
             strerror_s(buff, 100, r);
             printf("str_trim_left.error: %d %s\n", r, buff);
         }
-        
+
     public:
         HttpUtil();
         virtual ~HttpUtil();
@@ -133,7 +133,7 @@ class HttpUtil
                 } else {
                     cerr << "No se ha podido descomprimir los datos" <<endl;
                 }
-            }   
+            }
             chunk.size = tamData;
             return chunk.memory;
         }
@@ -155,12 +155,12 @@ class HttpUtil
         int getConnectionRetries() const;
         void setCookies(curl_slist* cookies);
         curl_slist* getCookies();
-        
+
         MemoryStruct *getChunk(){return &this->chunk;}
         string *getReadBufferHeader(){return &this->readBufferHeader;}
-        
-        
-        
+
+
+
 };
 
 #endif // HTTPUTIL_H

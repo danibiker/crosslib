@@ -140,8 +140,6 @@ void AudioPlayer::musicLengthCallback(int chan, void * _stream, int _len, void *
     short* p = (short*) _stream;
     int length = len/2;
 
-    float temp;
-
     // filter a buffer of input samples, in-place
     if (equalizerOn){
         for (int i = 0; i < length/2; i++) {

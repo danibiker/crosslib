@@ -1,13 +1,13 @@
 #ifndef FILECIPHER_H
 #define FILECIPHER_H
 
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
-#include "rijndael.h"
-#include "sha256.h"
+#include "rijndael/rijndael.h"
+#include "rijndael/sha256.h"
 #include <sstream>
 #include <iostream>
 #include <cstdlib>

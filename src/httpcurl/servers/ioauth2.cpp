@@ -78,11 +78,11 @@ string IOauth2::storeToken(string configParmAccessToken, string configParmRefres
     filecipher cifrador;
     Traza::print("Negociando access token...", W_DEBUG);
     launchAccessToken(this->getClientid(), this->getSecret(), (refresh) ? this->getRefreshToken() : codeOrRefreshToken, refresh);
-    
+
     if (!this->accessToken.empty()){
         string accessTokenCipherB64 = cifrador.encodeEasy(this->getAccessToken(), passwordAT);
         string refreshTokenCipherB64 = cifrador.encodeEasy(this->getRefreshToken(), passwordAT);
-        
+
         ListaIni<Data> *config = new ListaIni<Data>();
         try{
             Dirutil dir;
@@ -148,21 +148,21 @@ void IOauth2::addToken(string parmName, string parmValue, ListaIni<Data> *config
 }
 
 /**
- * 
+ *
  * @param accessToken
  * @param refreshToken
  * @param configAccessTokenName
  * @param configRefreshTokenName
- * @return 
+ * @return
  */
 uint32_t IOauth2::decodeTokens(string &accessToken, string &refreshToken, string configAccessTokenName, string configRefreshTokenName){
-    
+
     uint32_t ret = ERRORACCESSTOKEN;
     filecipher cifrador;
     string accessTokenCipher;
     string refreshTokenCipher;
     Dirutil dir;
-    
+
     if (dir.existe(rutaIni)){
         //Obtenemos el access token almacenado en el fichero de configuracion
         ListaIni<Data> *config = new ListaIni<Data>();
@@ -194,7 +194,7 @@ uint32_t IOauth2::decodeTokens(string &accessToken, string &refreshToken, string
 }
 
 /**
- * 
+ *
  * @param url
  */
 void IOauth2::openExplorer(string url){
@@ -208,11 +208,11 @@ void IOauth2::openExplorer(string url){
             emulInfo.rutaexe = infoBuf;
             emulInfo.fileexe = "explorer.exe";
             emulInfo.parmsexe = url;
-            bool resultado = lanzador.lanzarProgramaUNIXFork(&emulInfo);
+            lanzador.lanzarProgramaUNIXFork(&emulInfo);
 #endif
 
 #ifdef UNIX
-            
+
 //            string cmd = CMD_LAUNCH_BROWSER + " \"" + url + "\"";
 //            system(cmd.c_str());
             Launcher lanzador;
@@ -220,7 +220,7 @@ void IOauth2::openExplorer(string url){
             emulInfo.rutaexe = "/usr/bin";
             emulInfo.fileexe = CMD_LAUNCH_BROWSER;
             emulInfo.parmsexe = url;
-            bool resultado = lanzador.lanzarProgramaUNIXFork(&emulInfo);
-#endif            
+            lanzador.lanzarProgramaUNIXFork(&emulInfo);
+#endif
         }
 }

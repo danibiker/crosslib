@@ -12,7 +12,7 @@
  */
 
 #include "ImageLoader.h"
-#include "common/Icogestor.h"
+
 
 GMutex ImageLoader::mutex;
 
@@ -29,7 +29,7 @@ uint32_t ImageLoader::loadImage(){
     estado = 1;
     Traza::print("Image Loaded", W_PARANOIC);
     if (listImages != NULL){
-        if (getImagetoload() < listImages->getSize() && getImagetoload() >= 0){
+        if (getImagetoload() < (int)listImages->getSize() && getImagetoload() >= 0){
             loadFromFileToCache(getImagetoload());
         }
         Traza::print("Image Loaded", W_PARANOIC);
@@ -60,7 +60,7 @@ uint32_t ImageLoader::loadVisible(){
         const unsigned int finLista = listImages->getPosFinLista();
         const unsigned int iniLista = listImages->getPosIniLista();
 //        Traza::print("ThreadImgLoader. size: ",(listImages)->getSize(), W_PARANOIC);
-        for (int i=iniLista; i <= finLista; i++ ){
+        for (unsigned int i=iniLista; i <= finLista; i++ ){
             loadFromFileToCache(i);
         }
 //        Traza::print("Images Loaded", W_PARANOIC);
@@ -75,7 +75,6 @@ uint32_t ImageLoader::loadVisible(){
  * @return
  */
 bool ImageLoader::loadFromFileToCache(int pos){
-    int ret = 0;
     Dirutil dir;
 
     if (listImages == NULL)
@@ -87,7 +86,7 @@ bool ImageLoader::loadFromFileToCache(int pos){
         return false;
     }
 
-    ListGroupCol* col = listImages->getRow(pos)->GetListGroupCol().at(0);
+//    ListGroupCol* col = listImages->getRow(pos)->GetListGroupCol().at(0);
     UIPicture* pict = listImages->getRow(pos)->GetUipicture();
     string ruta = listImages->getValue(pos);
     bool loaded = false;
@@ -210,7 +209,7 @@ void ImageLoader::previsualizeContentInDir(string ruta, UIPicture *pict){
         dirutil.listarDirSinOrdenMaxFiles(ruta.c_str(), NULL, filelist, ".jpg,.jpeg,.gif,.bmp", 100, 1);
         unsigned int numFiles = filelist->size();
         if (filelist != NULL && numFiles > 0){
-            int i=0;
+            unsigned int i=0;
             //Recorremos la lista de ficheros y lo incluimos en el objeto de lista para mostrar los datos
             while (i < numFiles && !found){
                 if (pict->isValidImage(filelist->at(i).filename)){
@@ -249,7 +248,7 @@ void ImageLoader::previsualizeContentInDir(string ruta, UIPicture *pict){
                                        pict->getW(), pict->getH()};
             SDL_Rect *imgLocation = new SDL_Rect();
 
-            bool surfaceOk = pictPrev->getImgGestor()->drawImgMem(-1, pictPrev->getW(), pictPrev->getH(),
+            pictPrev->getImgGestor()->drawImgMem(-1, pictPrev->getW(), pictPrev->getH(),
                     regionPantalla, pict->surfaceCache, imgLocation);
 
             if (imgToPrev.compare(thumbFilename) != 0){

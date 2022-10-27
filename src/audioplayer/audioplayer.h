@@ -1,7 +1,7 @@
 #ifndef AUDIOPLAYER_H
 #define AUDIOPLAYER_H
 
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
@@ -12,10 +12,10 @@
 #include <SDL/SDL_mixer.h>
 #include "SDL/SDL_ttf.h"
 #include "math.h"
-#include "Traza.h"
-#include "gmutex.h"
-#include "Dirutil.h"
-#include "Menuobject.h"
+#include "uiobjects/Traza.h"
+#include "uiobjects/gmutex.h"
+#include "uiobjects/Dirutil.h"
+#include "uiobjects/Menuobject.h"
 #include "biquad.h"
 #include "fft/Fft.h"
 #include <chrono>

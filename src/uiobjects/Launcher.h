@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <vector>
 #include "unzip\unziptool.h"
-#include "Dirutil.h"
+#include "uiobjects/Dirutil.h"
 #include "filelaunch.h"
 
 #include <algorithm>
@@ -92,14 +92,14 @@ class Launcher
 
 // trim from start
 static inline std::string &ltrim(std::string &s) {
-        s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-        return s;
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not_fn(::isspace) ));
+    return s;
 }
 
 // trim from end
 static inline std::string &rtrim(std::string &s) {
-        s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
-        return s;
+    s.erase(std::find_if(s.rbegin(), s.rend(), std::not_fn(::isspace)).base(), s.end());
+    return s;
 }
 
 // trim from both ends

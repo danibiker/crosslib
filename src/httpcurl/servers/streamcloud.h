@@ -1,10 +1,10 @@
 #ifndef STREAMCLOUD_H
 #define STREAMCLOUD_H
 
-#include "httputil.h"
-#include "htmlparser.h"
-#include "util/ConstantHttp.h"
-#include "soutils/SOUtils.h"
+#include "httpcurl/httputil.h"
+#include "httpcurl/htmlparser.h"
+#include "httpcurl/util/ConstantHttp.h"
+#include "uiobjects/soutils/SOUtils.h"
 
 class Streamcloud
 {

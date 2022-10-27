@@ -227,8 +227,6 @@ static const int mapHeight = 256;
              "abcdefghijklmnopqrstuvwxyz"
              "0123456789+/";
 
-    static const char* SIZES_STR[] = {"B","KB","MB","GB","TB"};
-
     typedef enum{W_FATAL = 0,W_ERROR,W_WARN,W_INFO,W_DEBUG,W_PARANOIC} enumTraza;
 
     static const string USERAGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0";
@@ -554,7 +552,7 @@ class Constant{
         static std::vector<std::string> &splitChar(const std::string &s, char delim, std::vector<std::string> &elems);
         static int contiene (const char *s1, const char *s2);
         static int contiene (const char *s1, const char s2);
-        static string pad(string var, int paddedLength, char caracter);
+        static string pad(string var, unsigned int paddedLength, char caracter);
         static std::string padRight(std::string str, size_t s, char caracter);
         static string replaceAll(std::string str, std::string tofind, std::string toreplace);
         static string replace(std::string str, std::string tofind, std::string toreplace);

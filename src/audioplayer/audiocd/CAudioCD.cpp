@@ -72,7 +72,7 @@ BOOL CAudioCD::Open( char Drive )
     char buffer [50];
     memset(buffer, 0, 50);
     //sprintf (buffer, "%08x", cddb_discid());
-    sprintf (buffer, "%08x", getDiscID());
+    sprintf (buffer, "%08lu", getDiscID());
     cddbDiscid = std::string(buffer);
 #endif
 	// Return if track-count > 0
@@ -139,12 +139,12 @@ BOOL CAudioCD::ReadTrack( ULONG TrackNr, CBuf<char>* pBuf )
 
 	if ( TrackNr >= m_aTracks.size() )
 		return FALSE;
-	
+
 #ifdef WIN
         CDTRACK& Track = m_aTracks.at(TrackNr);
 
 	pBuf->Alloc( Track.Length*RAW_SECTOR_SIZE );
-        
+
 	RAW_READ_INFO Info;
 	Info.TrackMode = CDDA;
 	Info.SectorCount = SECTORS_AT_READ;
@@ -183,7 +183,7 @@ int CAudioCD::ExtractTrack( ULONG TrackNr,const char *Path )
 
 	if ( TrackNr >= m_aTracks.size() )
 		return 2;
-#ifdef WIN        
+#ifdef WIN
 	CDTRACK& Track = m_aTracks.at(TrackNr);
 
 	HANDLE hFile = CreateFile( Path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
@@ -230,7 +230,7 @@ BOOL CAudioCD::LockCD()
 {
 	if ( m_hCD == NULL )
 		return FALSE;
-#ifdef WIN	
+#ifdef WIN
         ULONG Dummy;
 	PREVENT_MEDIA_REMOVAL pmr = { TRUE };
 	return 0 != DeviceIoControl( m_hCD, IOCTL_STORAGE_MEDIA_REMOVAL, &pmr, sizeof(pmr), NULL, 0, &Dummy, NULL );
@@ -244,13 +244,13 @@ BOOL CAudioCD::UnlockCD()
 {
 	if ( m_hCD == NULL )
 		return FALSE;
-#ifdef WIN        
+#ifdef WIN
 	ULONG Dummy;
 	PREVENT_MEDIA_REMOVAL pmr = { FALSE };
 	return 0 != DeviceIoControl( m_hCD, IOCTL_STORAGE_MEDIA_REMOVAL, &pmr, sizeof(pmr), NULL, 0, &Dummy, NULL );
-#else         
+#else
         return 0;
-#endif        
+#endif
 }
 
 
@@ -264,7 +264,7 @@ BOOL CAudioCD::InjectCD()
 #ifdef WIN
 	ULONG Dummy;
 	return 0 != DeviceIoControl( m_hCD, IOCTL_STORAGE_LOAD_MEDIA, NULL, 0, NULL, 0, &Dummy, NULL );
-#else 
+#else
         return 0;
 #endif
 }
@@ -307,9 +307,9 @@ BOOL CAudioCD::EjectCD()
 	if ( m_hCD == NULL )
 		return FALSE;
 	ULONG Dummy;
-#ifdef WIN        
+#ifdef WIN
 	return 0 != DeviceIoControl( m_hCD, IOCTL_STORAGE_EJECT_MEDIA, NULL, 0, NULL, 0, &Dummy, NULL );
-#else        
+#else
         return 0;
 #endif
 }

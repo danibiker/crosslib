@@ -14,8 +14,8 @@
 #ifndef LISTGROUPELEMENT_H
 #define LISTGROUPELEMENT_H
 
-#include "beans/listgroupcol.h"
-#include "uipicture.h"
+#include "uiobjects/beans/listgroupcol.h"
+#include "uiobjects/uipicture.h"
 
 class ListGroupElement {
 public:

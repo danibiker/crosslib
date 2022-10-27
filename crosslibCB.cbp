@@ -32,37 +32,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-Wno-narrowing" />
 			<Add option="-DWIN" />
 			<Add option="-D_WIN32" />
 			<Add option="-DSKIP_HOSTNAME_VERIFICATION" />
 			<Add option="-DSKIP_PEER_VERIFICATION" />
 			<Add directory="src" />
-			<Add directory="src/audioplayer" />
-			<Add directory="src/httpcurl" />
-			<Add directory="src/rijndael" />
-			<Add directory="src/uiobjects" />
 			<Add directory="../../../msys2/mingw64/include/SDL" />
 		</Compiler>
-		<Linker>
-			<Add option="-lmingw32" />
-			<Add option="-lSDLmain" />
-			<Add option="-lSDL" />
-			<Add option="-lSDL_image" />
-			<Add option="-lSDL_ttf" />
-			<Add option="-lSDL_gfx" />
-			<Add option="-lcurl" />
-			<Add option="-lws2_32" />
-			<Add option="-lz" />
-			<Add option="-lxml2" />
-			<Add option="-ljpeg" />
-			<Add option="-lavutil" />
-			<Add option="-lavformat" />
-			<Add option="-lavcodec" />
-			<Add option="-lswscale" />
-			<Add option="-lswresample" />
-			<Add option="-lgif" />
-			<Add option="-lexpat" />
-		</Linker>
 		<Unit filename="src/audioplayer/audiocd/AudioCD_Helpers.cpp" />
 		<Unit filename="src/audioplayer/audiocd/AudioCD_Helpers.h" />
 		<Unit filename="src/audioplayer/audiocd/CAudioCD.cpp" />
@@ -83,10 +60,7 @@
 		<Unit filename="src/httpcurl/httputil.h" />
 		<Unit filename="src/httpcurl/httputil2.cpp" />
 		<Unit filename="src/httpcurl/httputil2.h" />
-		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_save.h" />
 		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_saveend.h" />
-		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_savejpg.h" />
-		<Unit filename="src/httpcurl/image/SDL_imagesave/IMG_savepng.h" />
 		<Unit filename="src/httpcurl/image/uiimgdownloader.cpp" />
 		<Unit filename="src/httpcurl/image/uiimgdownloader.h" />
 		<Unit filename="src/httpcurl/image/uiimgencoder.cpp" />
@@ -190,8 +164,6 @@
 		<Unit filename="src/uiobjects/soutils/SOUtils.cpp" />
 		<Unit filename="src/uiobjects/soutils/SOUtils.h" />
 		<Unit filename="src/uiobjects/thread.h" />
-		<Unit filename="src/uiobjects/tinyxml/tinystr.h" />
-		<Unit filename="src/uiobjects/tinyxml/tinyxml.h" />
 		<Unit filename="src/uiobjects/uiart.cpp" />
 		<Unit filename="src/uiobjects/uiart.h" />
 		<Unit filename="src/uiobjects/uibutton.cpp" />

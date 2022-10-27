@@ -1,9 +1,9 @@
 #ifndef ICOGESTOR_H
 #define ICOGESTOR_H
 
-#include "Dirutil.h"
-#include "Fileio.h"
-#include "Constant.h"
+#include "uiobjects/Dirutil.h"
+#include "uiobjects/Fileio.h"
+#include "uiobjects/Constant.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_rotozoom.h"

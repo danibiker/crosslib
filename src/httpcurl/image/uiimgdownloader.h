@@ -1,11 +1,11 @@
 #ifndef UIIMGDOWNLOADER_H
 #define UIIMGDOWNLOADER_H
 
-#include "httputil.h"
-#include "Dirutil.h"
+#include "httpcurl/httputil.h"
+#include "uiobjects/Dirutil.h"
 #include "SDL/SDL.h"
-#include "ImagenGestor.h"
-#include "uiimgencoder.h"
+#include "uiobjects/ImagenGestor.h"
+#include "httpcurl/image/uiimgencoder.h"
 
 
 class UIImgDownloader

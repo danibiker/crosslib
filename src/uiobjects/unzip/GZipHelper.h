@@ -157,7 +157,7 @@
    extern int  zmemcmp  OF((const Bytef* s1, const Bytef* s2, uInt len));
    extern void zmemzero OF((Bytef* dest, uInt len));
 #endif
-   
+
 #if MAX_MEM_LEVEL >= 8
 #  define DEF_MEM_LEVEL 8
 #else
@@ -328,7 +328,7 @@ class CGZIP2AT
   public:
    char *psz;
    int  Length;
-   CGZIP2AT(LPGZIP pgzip,int len):m_gzip(pgzip),m_gziplen(len),psz(0),Length(0),m_pos(0)
+   CGZIP2AT(LPGZIP pgzip,int len): psz(0), Length(0),m_pos(0), m_gzip(pgzip), m_gziplen(len)
   {
     Init();
   }

@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   XmlParser.cpp
  * Author: Dani
- * 
+ *
  * Created on 5 de febrero de 2022, 0:21
  */
 
@@ -23,10 +23,10 @@ XmlParser::~XmlParser() {
 }
 
 /**
- * 
+ *
  * @param data
  * @param output
- * @return 
+ * @return
  */
 bool XmlParser::parseString(string data, map<string, unique_ptr<vector<string>> > &output){
     GumboOutput* gumboOutput = gumbo_parse(data.c_str());
@@ -38,10 +38,10 @@ bool XmlParser::parseString(string data, map<string, unique_ptr<vector<string>> 
 }
 
 /**
- * 
+ *
  * @param data
  * @param output
- * @return 
+ * @return
  */
 vector<string> * XmlParser::getValues(string data, map<string, unique_ptr<vector<string>> > &output){
     auto elem = output.find(data);
@@ -52,10 +52,10 @@ vector<string> * XmlParser::getValues(string data, map<string, unique_ptr<vector
 }
 
 /**
- * 
+ *
  * @param data
  * @param output
- * @return 
+ * @return
  */
 string XmlParser::getFirst(string data, map<string, unique_ptr<vector<string>> > &output){
     string ret;
@@ -67,10 +67,10 @@ string XmlParser::getFirst(string data, map<string, unique_ptr<vector<string>> >
 }
 
 /**
- * 
+ *
  * @param node
  * @param output
- * @return 
+ * @return
  */
 string XmlParser::getNodeInfo(GumboNode* node, map<string, unique_ptr<vector<string>> > &output) {
     if (node->type == GUMBO_NODE_TEXT) {
@@ -83,7 +83,7 @@ string XmlParser::getNodeInfo(GumboNode* node, map<string, unique_ptr<vector<str
         GumboVector* children = &node->v.element.children;
         for (unsigned int i = 0; i < children->length; ++i) {
             const std::string text = getNodeInfo((GumboNode*) children->data[i], output);
-            
+
             auto search = output.find(nombreTag);
             if (search != output.end()) {
                  search->second->push_back(text);
@@ -98,23 +98,24 @@ string XmlParser::getNodeInfo(GumboNode* node, map<string, unique_ptr<vector<str
 }
 
 /**
- * 
+ *
  * @param data
- * @return 
+ * @return
  */
 string XmlParser::getTagName(const char* data) {
 
     int len = strlen(data);
     int i=0;
-    int ini = 0;
+//    int ini = 0;
     int fin = 0;
     string tagName = "";
     char tmp[2] = {' ','\0'};
 
     while(i < len && fin == 0){
-        if (data[i] == '<')
-            ini = i;
-        else if (data[i] == '>')
+//        if (data[i] == '<')
+//            ini = i;
+//        else
+        if (data[i] == '>')
             fin = i;
         else {
             tmp[0] = data[i];

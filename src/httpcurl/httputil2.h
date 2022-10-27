@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   httputil2.h
  * Author: Dani
  *
@@ -22,9 +22,9 @@
 #include <map>
 
 #include "../uiobjects/Fileio.h"
-#include "util/ConstantHttp.h"
+#include "httpcurl/util/ConstantHttp.h"
 #include "../uiobjects/unzip/GZipHelper.h"
-#include <gmutex.h>
+#include "uiobjects/gmutex.h"
 //#include <mutex>          // std::mutex
 
 typedef struct ConnectionProps{
@@ -70,7 +70,7 @@ public:
     Httputil2();
     Httputil2(const Httputil2& orig);
     virtual ~Httputil2();
-    
+
     static uint8_t aborted;
     size_t getDataLength(MemoryStruct *chunk){return chunk->size;}
     double getTimeout(MemoryStruct *chunk){return chunk->prog.timeout;}
@@ -86,7 +86,7 @@ public:
     uint8_t getSendContentLength(MemoryStruct *chunk){return chunk->connProps.sendContentLength;}
     void setConnectionRetries(MemoryStruct *chunk, int connectionRetries){chunk->connProps.connectionRetries = connectionRetries;}
     int getConnectionRetries(MemoryStruct *chunk) {return chunk->connProps.connectionRetries;}
-    
+
     void initProgress(Progress2 *p);
     void cleanData(MemoryStruct *p);
     MemoryStruct * initDownload();
@@ -118,18 +118,18 @@ public:
     char * getData(MemoryStruct *chunk);
     void writeChunkToDisk(MemoryStruct *chunk);
 
-    
+
 private:
-    
+
     static void decodeError(int r){
         char buff[100];
         strerror_s(buff, 100, r);
         printf("str_trim_left.error: %d %s\n", r, buff);
     }
-    
+
     //std::mutex mutex;
     GMutex mutex;
-    
+
 };
 
 #endif /* HTTPUTIL2_H */

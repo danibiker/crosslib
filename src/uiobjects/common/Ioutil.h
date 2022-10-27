@@ -11,22 +11,24 @@
     #include <SDL/SDL_image.h>
     #include <SDL/SDL_rotozoom.h>
     #include <SDL/SDL_mixer.h>
-    #include "Fileio.h"
-    #include "Constant.h"
-    #include "ImagenGestor.h"
-    #include "Traza.h"
-    #include "Menuobject.h"
-    #include "Icogestor.h"
-    #include "joymapper.h"
-    #include "thread.h"
-    #include "uiinput.h"
-    #include "uiprogressbar.h"
-    #include "uicombobox.h"
-    #include "cursor.h"
-    #include "listaIni.h"
-    #include "Colorutil.h"
-    #include "UITreeListBox.h"
+    #include "uiobjects/Fileio.h"
+    #include "uiobjects/Constant.h"
+    #include "uiobjects/ImagenGestor.h"
+    #include "uiobjects/Traza.h"
+    #include "uiobjects/Menuobject.h"
+    #include "uiobjects/common/Icogestor.h"
+    #include "uiobjects/joymapper.h"
+    #include "uiobjects/thread.h"
+    #include "uiobjects/uiinput.h"
+    #include "uiobjects/uiprogressbar.h"
+    #include "uiobjects/uicombobox.h"
+    #include "uiobjects/cursor.h"
+    #include "uiobjects/listaIni.h"
+    #include "uiobjects/Colorutil.h"
+    #include "uiobjects/UITreeListBox.h"
+    #include "uiobjects/uiimglist.h"
     #include "../image/ThreadImgLoader.h"
+
 
     struct tInput{
         int cursorX;
@@ -56,7 +58,7 @@
         cNaranja,
         cRojo // lt red
     };
-    
+
     typedef enum PROCESS_DPI_AWARENESS {
     PROCESS_DPI_UNAWARE = 0,
     PROCESS_SYSTEM_DPI_AWARE = 1,
@@ -243,6 +245,6 @@
             Colorutil color3Spectrum;
             t_color degColorSpectrum;
             string windowTitle;
-            
+
     };
 #endif //Ioutil_H

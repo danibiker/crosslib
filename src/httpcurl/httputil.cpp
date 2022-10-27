@@ -1,8 +1,8 @@
 #include "httputil.h"
 #include "util/ConstantHttp.h"
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 
-bool HttpUtil::aborted; 
+bool HttpUtil::aborted;
 
 /**
  * Constructor
@@ -12,7 +12,7 @@ HttpUtil::HttpUtil(){
 }
 
 /**
- * 
+ *
  */
 void HttpUtil::init(){
     aborted = false;
@@ -27,7 +27,7 @@ void HttpUtil::init(){
     this->setProxyPass(Constant::getPROXYPASS());
     this->setTimeout(SECONDS_TO_ABORT_STUCK_DOWNLOAD); //Timeout of 5 seconds
     this->setMaxBytesDownload(0);
-    this->setConnectionRetries(1);            
+    this->setConnectionRetries(1);
     sendContentLength = true;
 }
 
@@ -137,7 +137,7 @@ bool HttpUtil::del(string url, map <string, string> *headers){
 bool HttpUtil::sendHttpWithRetries(string url, const char* data, size_t tam, size_t offset, map <string, string> *headers, long httpType){
     bool success = false;
     int nTry = 0;
-    
+
     do{
         success = sendHttp(url, data, tam, offset, headers, httpType);
         nTry++;
@@ -168,7 +168,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     bool downState = false;
     FILE * hd_src = NULL;
     aborted = false;
-    
+
     mtx.lock();
     cleanChunkData();
     chunk.memory = (char *) calloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1, 1);
@@ -177,14 +177,14 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         return 0;
     }
     readBufferHeader.clear();
-    
-    
+
+
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
     curl = curl_easy_init();
     mtx.unlock();
-    
+
     /* specify proxy*/
     if (!proxyIP.empty()){
         Traza::print("Setting proxy settings", W_ERROR);
@@ -224,7 +224,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
              */
             curl_easy_setopt(curl, CURLOPT_SSLVERSION, 3L); // Force SSLv3 to fix Unknown SSL Protocol error
         #endif
-        
+
         /*Especificamos la url a la que conectarse*/
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         /*Sigue las redirecciones de los sitios*/
@@ -234,30 +234,29 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         curl_easy_setopt(curl, CURLOPT_USERAGENT, USERAGENT.c_str());
         /* ask libcurl to allocate a larger receive buffer */
         curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, CURL_MAX_WRITE_SIZE);
-        
+
         char *buffer = NULL;
-        size_t retcode = 0;
         errno_t err;
 //        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
-        
+
         switch (httpType){
             case HTTP_POST:
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
                 break;
-            case HTTP_POST2: 
+            case HTTP_POST2:
                 //To upload files. Needed by dropbox
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
                 err = fopen_s(&hd_src, data, "rb");
                 if (err == 0 && hd_src != NULL && tam > 0) {
                     fseek(hd_src, offset, SEEK_SET);
                     if ((buffer = (char*) calloc(tam, 1)) != NULL) {
-                        retcode = fread(buffer, 1, tam, hd_src);
+                        fread(buffer, 1, tam, hd_src);
                         /* Now specify the POST data */
                         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, buffer);
                         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, tam);
-                    } else 
+                    } else
                         cerr << "error al crear memoria en HTTP_POST2" << endl;
                 } else {
                     cerr << "HTTP_POST2: file: " << data << "not found or could not be opened" << endl;
@@ -292,7 +291,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                 } else if (httpType == HTTP_GET){
                     curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
                 }
-                
+
                 if (data != NULL){
                     size_t len = strlen(data) + 1;
                     if (len > 1){
@@ -319,13 +318,13 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
             }
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curlheaders);
         }
-        
+
         if (prog != NULL){
             prog->init();
             prog->setTimeout(getTimeout());
             prog->curl = curl;
         }
-        
+
 
         #if LIBCURL_VERSION_NUM >= 0x072000
         /* xferinfo was introduced in 7.32.0, no earlier libcurl versions will
@@ -355,11 +354,11 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         /* we get the headers response*/
         curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, handleHeader);
         /*pasamos la informacion de las cabeceras*/
-        curl_easy_setopt(curl, CURLOPT_HEADERDATA, this);        
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, this);
         //curl_easy_setopt(curl, CURLOPT_WRITEHEADER, (void *)&header);
 
-        
-        
+
+
 //        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, ""); /* start cookie engine */
 //        char nline[5000] = {""};
 //        curl_easy_setopt(curl, CURLOPT_COOKIELIST, cookies); /* start cookie engine */
@@ -368,7 +367,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
 //        "Set-Cookie: OLD_PREF=3d141414bf4209321; "
 //        "expires=Sun, 17-Jan-2038 19:14:07 GMT; path=/; domain=.example.com");
 //        curl_easy_setopt(curl, CURLOPT_COOKIELIST, nline);
-        
+
         /* Perform the request, res will get the return code */
         res = curl_easy_perform(curl);
 
@@ -412,7 +411,7 @@ void HttpUtil::parserCabeceras(){
     cabecerasResp.clear();
     size_t pos;
     vector<string> v = Constant::split(readBufferHeader, "\n");
-    for (int i=0; i < v.size(); i++){
+    for (size_t i=0; i < v.size(); i++){
         pos = v.at(i).find(":");
         if (pos != string::npos){
 //            cout << i << ":" << v.at(i) << endl;
@@ -423,15 +422,15 @@ void HttpUtil::parserCabeceras(){
 }
 
 /**
- * 
+ *
  * @param contents
  * @param size
  * @param nmemb
  * @param userp
- * @return 
+ * @return
  */
 size_t HttpUtil::handleHeader(void *contents, size_t size, size_t nmemb, void *f){
-    
+
     // Call non-static member function.
     size_t realsize = size * nmemb;
     static_cast<HttpUtil*>(f)->getReadBufferHeader()->append((char *)contents, realsize);
@@ -444,7 +443,7 @@ size_t HttpUtil::handleHeader(void *contents, size_t size, size_t nmemb, void *f
  * @param size
  * @param nmemb
  * @param stream
- * @return 
+ * @return
  */
 size_t HttpUtil::read_callback(void *ptr, size_t size, size_t nmemb, FILE *stream){
     size_t retcode = 0;
@@ -463,32 +462,32 @@ size_t HttpUtil::read_callback(void *ptr, size_t size, size_t nmemb, FILE *strea
  * @param size
  * @param nmemb
  * @param userp
- * @return 
+ * @return
  */
 size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *f){
     size_t realsize = size * nmemb;
-    
+
     MemoryStruct *mem = static_cast<HttpUtil*>(f)->getChunk();
     size_t totalDown = 0;
-    
+
     //We start counting the total size of the buffered memory
     totalDown = mem->size + realsize;
-    
+
     //We add the total file size until now
     if (mem->filepath != NULL) {
         ifstream file (mem->filepath, ios::in|ios::binary|ios::ate);
         if (file.is_open()){
             totalDown += (size_t)file.tellg();
-        } 
+        }
         file.close();
     }
-    
+
     if (Constant::getCURL_DOWNLOAD_LIMIT() > 0 && totalDown > Constant::getCURL_DOWNLOAD_LIMIT()){
         Traza::print("CURL_DOWNLOAD_LIMIT. Size of download exceeded", totalDown, W_DEBUG);
         Constant::setCURL_DOWNLOAD_LIMIT(0); //We don't want to forget to set to 0 again
-        return 0; 
+        return 0;
     }
-    
+
     //Adding the data to the buffer
     if (mem->filepath == NULL){
         if (!static_cast<HttpUtil*>(f)->addDataToMem(contents, realsize, mem)){
@@ -511,18 +510,18 @@ size_t HttpUtil::WriteMemoryCallback(void *contents, size_t size, size_t nmemb, 
 }
 
 /**
- * Add the chunk of data to the memory buffer with a defined size of MAX_FILE_BUFFER 
+ * Add the chunk of data to the memory buffer with a defined size of MAX_FILE_BUFFER
  * @param contents
  * @param realsize
  * @param mem
  */
 int HttpUtil::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
-    
+
     if (contents == NULL){
         cerr << "addDataToMem data is null" << endl;
         return 0;
     }
-    
+
     if (mem->size == 0 && mem->memory == NULL){
         mem->memory = (char *)calloc(mem->size + realsize + 1, 1);
         if (mem->memory == NULL){
@@ -548,7 +547,7 @@ int HttpUtil::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
 
 /**
  * Check if we must write the contents of the buffered memory to a file
- * 
+ *
  * @param mem
  */
 void HttpUtil::checkWriteMemToFile(void *contents, size_t sizeToWrite, char *filepath){
@@ -570,7 +569,7 @@ void HttpUtil::checkWriteMemToFile(void *contents, size_t sizeToWrite, char *fil
 /**
  * Writes all the memory buffer to disk
  * @param path
- * @return 
+ * @return
  */
 bool HttpUtil::writeToFile(string path){
     return writeToFile(path.c_str(), chunk.memory, chunk.size, false);
@@ -635,7 +634,7 @@ int HttpUtil::older_progress(void *p,
  * @param dlnow
  * @param ultotal
  * @param ulnow
- * @return 
+ * @return
  */
 int HttpUtil::xferinfo(void *p,
                     curl_off_t dltotal, curl_off_t dlnow,
@@ -644,14 +643,14 @@ int HttpUtil::xferinfo(void *p,
   //struct myprogress *myp = (struct myprogress *)p;
   //Progress *myp = (Progress *)p;
   //auto myp = static_cast<Progress *>(p);
-  Progress *myp = static_cast<HttpUtil*>(p)->getProgress();  
-  
+  Progress *myp = static_cast<HttpUtil*>(p)->getProgress();
+
   if (myp == NULL)
       return 0;
-  
+
   if (myp->curl == NULL)
       return 0;
-  
+
   CURL *curl = myp->curl;
   double curtime = 0;
 
@@ -663,15 +662,15 @@ int HttpUtil::xferinfo(void *p,
     myp->setLastruntime(curtime) ;
     //Traza::print("TOTAL TIME: " + Constant::TipoToStr(curtime), W_DEBUG);
   }
-  
+
   if ((curtime - myp->getLastruntimeBytesDown()) >= 1.0){
       myp->setLastruntimeBytesDown(curtime);
       myp->setDlSpeed(dltotal > MIN_PROGRESS_CHUNK_OF_BYTES ? dlnow - myp->getLastBytesDownloaded() : 0.0);
       myp->setLastBytesDownloaded(dlnow);
   }
-  
+
   //We expect to download at least 512 bytes. this is to avoid errors in the progress count
-  if (dltotal > MIN_PROGRESS_CHUNK_OF_BYTES){ 
+  if (dltotal > MIN_PROGRESS_CHUNK_OF_BYTES){
         myp->setDlSizeBytes(dltotal);
         myp->setProgress(dltotal > 0.0 ? (dlnow / (float)dltotal * 100) : 0.0);
 //        Traza::print(" Progress " + Constant::TipoToStr(myp->getProgress()) + "%", W_DEBUG);
@@ -681,29 +680,29 @@ int HttpUtil::xferinfo(void *p,
       myp->setDlSizeBytes(0.0);
       myp->setProgress(0.0);
   }
-  
+
   //Traza::print("dltotal: " + Constant::TipoToStr(dltotal) + ", Progress " + Constant::TipoToStr(myp->getProgress()) + ", last: " + Constant::TipoToStr(myp->getLastProgress()), W_DEBUG);
   if (myp->getProgress() != myp->getLastProgress() || myp->getTimeNoProgress() == 0.0){
       myp->setTimeNoProgress(curtime);
       myp->setLastProgress(myp->getProgress());
-  } 
-  
+  }
+
   if (curtime - myp->getTimeNoProgress() > myp->getTimeout() && myp->getTimeout() > 0){
       Traza::print("Aborting download: " + Constant::TipoToStr(myp->getTimeout()) + " seconds with no activity. Curtime: " + Constant::TipoToStr(curtime), W_DEBUG);
       return 1;
   }
-  
+
   if( (myp->getMaxBytesDownload() > 0 && dlnow > myp->getMaxBytesDownload())){
       Traza::print("Aborting download: " + Constant::TipoToStr(myp->getMaxBytesDownload()) + " Max. bytes of download", W_DEBUG);
       return 1;
   }
-    
+
   if(aborted){
       Traza::print("Aborting download: ending all threads signal received", W_DEBUG);
       return 1;
   }
-  
-  
+
+
   return 0;
 }
 

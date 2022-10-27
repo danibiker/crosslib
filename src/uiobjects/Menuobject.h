@@ -3,10 +3,10 @@
 
 #include <sstream>
 #include <string.h>
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #include "Excepcion.h"
 #include "ListaSimple.h"
-#include "ImagenGestor.h"
+#include "uiobjects/ImagenGestor.h"
 #include "joymapper.h"
 
 #include "object.h"
@@ -18,7 +18,7 @@
 #include "uicheck.h"
 #include "uipanel.h"
 #include "uipanelborder.h"
-#include "uipicture.h"
+#include "uiobjects/uipicture.h"
 #include "uiinput.h"
 #include "uipopupmenu.h"
 #include "uicombobox.h"
@@ -27,7 +27,7 @@
 #include "uispectrum.h"
 #include "uislider.h"
 #include "UITreeListBox.h"
-#include "uiimglist.h"
+#include "uiobjects/uiimglist.h"
 
 
 

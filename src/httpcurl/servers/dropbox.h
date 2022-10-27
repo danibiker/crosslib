@@ -2,19 +2,19 @@
 #define DROPBOX_H
 
 #include <iostream>
-#include "util/ConstantHttp.h"
+#include "httpcurl/util/ConstantHttp.h"
 #include <vector>
 #include <map>
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
-#include <Constant.h>
+#include "uiobjects/Constant.h"
 #include "json/json.h"
 #include <vector>
-#include "Dirutil.h"
-#include "thread.h"
-#include "ioauth2.h"
-#include "listaIni.h"
+#include "uiobjects/Dirutil.h"
+#include "uiobjects/thread.h"
+#include "httpcurl/servers/ioauth2.h"
+#include "uiobjects/listaIni.h"
 
 
 using namespace std;

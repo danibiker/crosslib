@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "Traza.h"
+#include "uiobjects/Traza.h"
 #include "ListaSimple.h"
 #include <stdio.h>
 #include <vector>

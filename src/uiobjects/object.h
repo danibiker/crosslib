@@ -9,7 +9,7 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include "joymapper.h"
-#include "ImagenGestor.h"
+#include "uiobjects/ImagenGestor.h"
 
 class Object{
     public:

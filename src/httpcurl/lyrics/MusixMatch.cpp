@@ -32,7 +32,7 @@ uint32_t MusixMatch::trackLyrics(TrackInfo *trackinfo){
 
     Json::Value root;   // will contains the root value after parsing.
     string respuesta = util.getData();
-    
+
     string err;
     bool parsingSuccessful = JsonParser::parseJson(&root, respuesta, &err);
 
@@ -42,17 +42,17 @@ uint32_t MusixMatch::trackLyrics(TrackInfo *trackinfo){
     } else {
         Json::Value header = root["message"]["header"];
         string status_code = header.get("status_code","").asString();
-        
+
         if (Constant::strToTipo<int>(status_code) == 200){
             //cout << "status_code: " << status_code << endl;
             Json::Value lyrics = root["message"]["body"]["lyrics"];
 
-            for ( int index = 0; index < lyrics.size(); index++ ){  // Iterates over the sequence elements.
+            for (unsigned int index = 0; index < lyrics.size(); index++ ){  // Iterates over the sequence elements.
                trackinfo->lyrics_body = lyrics.get("lyrics_body","").asString();
             }
             retorno = SINERROR;
         }
-        
+
     }
     return retorno;
 }
@@ -81,7 +81,7 @@ uint32_t MusixMatch::trackSearch(string track, string artist, vector <unique_ptr
 
     Json::Value root;   // will contains the root value after parsing.
     string respuesta = util.getData();
-    
+
     string err;
     bool parsingSuccessful = JsonParser::parseJson(&root, respuesta, &err);
 
@@ -96,7 +96,7 @@ uint32_t MusixMatch::trackSearch(string track, string artist, vector <unique_ptr
         //cout << "status_code: " << status_code << endl;
         Json::Value tracklist = root["message"]["body"]["track_list"];
         //cout << "tracklist: " << tracklist.size() << endl;
-        for ( int index = 0; index < tracklist.size(); index++ ){  // Iterates over the sequence elements.
+        for (unsigned int index = 0; index < tracklist.size(); index++ ){  // Iterates over the sequence elements.
            Json::Value track = tracklist[index]["track"];
            //TrackInfo *trackElem = new TrackInfo();
             auto trackElem = make_unique<TrackInfo>();

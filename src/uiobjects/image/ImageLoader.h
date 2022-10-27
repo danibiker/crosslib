@@ -14,11 +14,11 @@
 #ifndef IMAGELOADER_H
 #define IMAGELOADER_H
 
-#include <Dirutil.h>
+#include <uiobjects/Dirutil.h>
 #include "../uiimglist.h"
-#include "common/Icogestor.h"
-#include "Constant.h"
-#include <gmutex.h>
+#include "uiobjects/common/Icogestor.h"
+#include "uiobjects/Constant.h"
+#include <uiobjects/gmutex.h>
 
 class ImageLoader {
 public:

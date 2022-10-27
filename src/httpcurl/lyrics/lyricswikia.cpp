@@ -39,7 +39,7 @@ uint32_t LyricsWikia::trackLyrics(TrackInfo *trackinfo){
         //Afinamos los datos a buscar
         parser.buscarElem2(util.getData(), &tag, "class", "noprint song-badge", &tag2, "href");
 
-        for (int i=0; i < parser.getListAttrFound()->size(); i++){
+        for (unsigned int i=0; i < parser.getListAttrFound()->size(); i++){
 //            cout << "****" << parser.getListAttrFound()->at(i) << "****" << endl;
             if (parser.getListAttrFound()->at(i).find("wikipedia") != string::npos)
                 trackinfo->urlInfo = parser.getListAttrFound()->at(i);
@@ -77,7 +77,7 @@ uint32_t LyricsWikia::trackSearch(string track, string artist, vector <unique_pt
         //Traza::print("LyricsWikia::trackSearch: response: " + respuesta, W_DEBUG);
         string err;
         bool parsingSuccessful = JsonParser::parseJson(&root, respuesta, &err);
-        
+
         if ( !parsingSuccessful ){
              // report to the user the failure and their locations in the document.
             Traza::print("LyricsWikia::trackSearch: Failed to parse configuration. " + err, W_ERROR);

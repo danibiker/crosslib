@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   ThreadImgWorker.h
  * Author: Ryuk
  *
@@ -14,9 +14,9 @@
 #ifndef THREADIMGWORKER_H
 #define THREADIMGWORKER_H
 
-#include "uiimglist.h"
-#include "image/ImageLoader.h"
-#include "thread.h"
+#include "uiobjects/uiimglist.h"
+#include "uiobjects/image/ImageLoader.h"
+#include "uiobjects/thread.h"
 #include <SDL/SDL.h>
 #include <thread>
 #include <chrono>
@@ -35,7 +35,7 @@ public:
     int getNumThreads() const;
     bool isRunning();
     bool stopLoading();
-    
+
 private:
     UIImgList *listImages;
     SDL_Surface *screen;

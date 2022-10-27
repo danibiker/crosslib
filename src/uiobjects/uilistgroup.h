@@ -2,8 +2,8 @@
 #define UILISTGROUP_H
 
 #include "uilistcommon.h"
-#include "beans/listgroupcol.h"
-#include "beans/listGroupElement.h"
+#include "uiobjects/beans/listgroupcol.h"
+#include "uiobjects/beans/listGroupElement.h"
 #include <algorithm>
 
 class UIListGroup : public UIListCommon

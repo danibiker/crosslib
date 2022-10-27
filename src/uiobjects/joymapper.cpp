@@ -1,16 +1,12 @@
 #include "joymapper.h"
 
 int *JoyMapper::joyButtonMapper;
-//listaSimple<string> *JoyMapper::fileConfigJoystick;
 string JoyMapper::rutaIni;
 
-JoyMapper::JoyMapper()
-{
-//    fileConfigJoystick = NULL;
+JoyMapper::JoyMapper(){
 }
 
-JoyMapper::~JoyMapper()
-{
+JoyMapper::~JoyMapper(){
     clearJoyMapper();
 }
 

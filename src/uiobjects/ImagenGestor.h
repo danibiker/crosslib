@@ -1,11 +1,11 @@
 #ifndef IMAGENGESTOR_H_INCLUDED
 #define IMAGENGESTOR_H_INCLUDED
 
-#include "Fileio.h"
+#include "uiobjects/Fileio.h"
 #include "SHA1.h"
 #include "ListaSimple.h"
 #include "Excepcion.h"
-#include "Dirutil.h"
+#include "uiobjects/Dirutil.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_rotozoom.h>

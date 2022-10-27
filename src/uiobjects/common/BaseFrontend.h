@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   BaseFrontend.h
  * Author: Ryuk
  *
@@ -17,25 +17,25 @@
 #include <string>
 #include <vector>
 
-#include "common/Ioutil.h"
-#include "Menuobject.h"
-#include "Colorutil.h"
-#include "ImagenGestor.h"
-#include "common/Icogestor.h"
-#include "Launcher.h"
-#include "thread.h"
-#include "uipicture.h"
-#include "uiinput.h"
-#include "uipicture.h"
-#include "uiart.h"
-#include "uibutton.h"
-#include "uiprogressbar.h"
-#include "uipopupmenu.h"
-#include "uilistgroup.h"
-#include "beans/listgroupcol.h"
-#include "uilistcommon.h"
-#include "UITreeListBox.h"
-#include "BaseDefines.h"
+#include "uiobjects/common/Ioutil.h"
+#include "uiobjects/Menuobject.h"
+#include "uiobjects/Colorutil.h"
+#include "uiobjects/ImagenGestor.h"
+#include "uiobjects/common/Icogestor.h"
+#include "uiobjects/Launcher.h"
+#include "uiobjects/thread.h"
+#include "uiobjects/uipicture.h"
+#include "uiobjects/uiinput.h"
+#include "uiobjects/uipicture.h"
+#include "uiobjects/uiart.h"
+#include "uiobjects/uibutton.h"
+#include "uiobjects/uiprogressbar.h"
+#include "uiobjects/uipopupmenu.h"
+#include "uiobjects/uilistgroup.h"
+#include "uiobjects/beans/listgroupcol.h"
+#include "uiobjects/uilistcommon.h"
+#include "uiobjects/UITreeListBox.h"
+#include "uiobjects/common/BaseDefines.h"
 
 const unsigned int ALPHABACKGROUND = 235;
 
@@ -46,27 +46,27 @@ public:
     bool drawMenu(tEvento );
 
 protected:
-    
+
     virtual void initUIObjs();
     virtual void setDinamicSizeObjects();
     virtual void cargaMenu(string, string, tEvento *);
     virtual bool procesarMenuActual(tmenu_gestor_objects *objMenu, tEvento *evento);
-    
+
     struct tscreenobj{
         bool drawComponents;
         bool execFunctions;
     };
-    
+
     typedef int (BaseFrontend::*typept2Func)(tEvento *); //Se declara el puntero a funcion
-    
+
     struct tprops{
         string parms;
         typept2Func pt2Func;
     };
-    
+
     tmenu_gestor_objects *createMenu(string menuName);
     tmenu_gestor_objects *getMenu(string menuName);
-    
+
     void setSelMenu(string var);
     string getSelMenu();
     int getNumMenus(){
@@ -83,7 +83,7 @@ protected:
     int accionesMenu(tEvento *);
     bool procesarBoton(Object *, tmenu_gestor_objects *);
     void cargaMenuFromLista(UIListCommon *, tEvento *);
-    
+
     void resizeMenu();
     void comprobarUnicode(string);
     int accionesGotoPantalla(tEvento *);
@@ -109,8 +109,8 @@ protected:
     int marcarBotonSeleccionado(tEvento *);
     void ComprobarPopupsCerrados(tmenu_gestor_objects *objMenu,tEvento *evento);
     int accionesCargaPantalla(tEvento *evento);
-    
-    
+
+
 private:
     string selMenu;
     map<string, tprops*> propertiesPt2Func;

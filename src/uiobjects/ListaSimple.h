@@ -7,9 +7,9 @@
 #include <string.h>
 #include <stdio.h>
 #include "Excepcion.h"
-#include "Fileio.h"
+#include "uiobjects/Fileio.h"
 #include <typeinfo>
-#include "Constant.h"
+#include "uiobjects/Constant.h"
 #include "fileprops.h"
 
 using namespace std;

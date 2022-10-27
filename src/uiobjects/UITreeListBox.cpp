@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   UITreeListBox.cpp
  * Author: dmarcobo
- * 
+ *
  * Created on 9 de noviembre de 2017, 12:37
  */
 
@@ -16,25 +16,25 @@
 #include "ListaSimple.h"
 
 /**
- * 
+ *
  */
 UITreeListBox::UITreeListBox() {
    inicializarObjeto(GUITREELISTBOX);
 }
 
 /**
- * 
+ *
  */
 UITreeListBox::~UITreeListBox() {
 }
 
 /**
- * 
+ *
  * @param evento
  */
 void UITreeListBox::action(tEvento *evento){
     static unsigned long lastClick = 0;
-    
+
     //Si hay un popup lanzado por este elemento, debe dejar de procesar los eventos
     if (popup == false){
         if (evento->isMouse && evento->mouse == MOUSE_BUTTON_LEFT && evento->mouse_state == SDL_PRESSED){
@@ -64,7 +64,7 @@ void UITreeListBox::action(tEvento *evento){
 }
 
 /**
- * 
+ *
  * @param lista
  * @param id
  * @param unfold
@@ -76,12 +76,12 @@ void UITreeListBox::unfold(listaSimple<TreeNode> *lista, string id, bool unfold)
     string cut = "";
     bool salir = false;
     int subnivelPos = 0;
-    
+
     while (i >= 0 && !salir){
         tmpId = lista->get(i).id;
         cut = tmpId.substr(0,id.length());
         subnivelPos = tmpId.find_last_of(".");
-        
+
         if (cut.compare(id) == 0 && tmpId.compare(id) != 0){
             //tieneHojas = true;
             if (lista->get(i).show || (!lista->get(i).show && tmpId.substr(0,subnivelPos).compare(id) == 0)){
@@ -94,15 +94,15 @@ void UITreeListBox::unfold(listaSimple<TreeNode> *lista, string id, bool unfold)
         }
         i--;
     }
-    
+
     calcularScrPos();
 }
 
 /**
  */
 void UITreeListBox::mostrar(){
-    int pos = 0;   
-    for (int i=0; i < lista.getSize(); i++){
+    size_t pos = 0;
+    for (unsigned int i=0; i < lista.getSize(); i++){
        pos = lista.get(i).id.find_last_of(".");
        if (pos == string::npos){
            //parent = lista.get(i).id;
@@ -110,21 +110,21 @@ void UITreeListBox::mostrar(){
        } else if (lista.get(i).show){
            cout << lista.get(i).id <<endl;
        }
-   }   
+   }
 }
 
 /**
- * 
+ *
  * @param row
- * @return 
+ * @return
  */
 TreeNode UITreeListBox::get(int row){
-    int i = 0;
+    unsigned int i = 0;
     int posLista = -1;
     string tmpId = "";
     size_t cut = 0;
-    int posFound = 0;
-    
+    size_t posFound = 0;
+
     if (lista.getSize() > 0)
     while (i < lista.getSize() && posLista < row){
         tmpId = lista.get(i).id;
@@ -135,17 +135,17 @@ TreeNode UITreeListBox::get(int row){
         }
         i++;
     }
-    
+
     if (posFound < lista.getSize()){
         TreeNode res = lista.get(posFound);
         res.realPos = posFound;
         return res;
-    } else 
+    } else
         throw(Excepcion(ENULL, "UITreeListBox: Columna vacia"));
 }
 
 /**
- * 
+ *
  * @param realrow
  * @param estado
  */
@@ -154,26 +154,26 @@ void UITreeListBox::refreshNode(TreeNode tmpNode){
 }
 
 /**
- * 
+ *
  * @param row
- * @return 
+ * @return
  */
 string UITreeListBox::getValue(int row){
     return get(row).value;
 }
 
 /**
- * 
+ *
  * @param row
- * @return 
+ * @return
  */
 string UITreeListBox::getDestino(int row){
     return get(row).dest;
 }
 
 /**
- * 
- * @return 
+ *
+ * @return
  */
 unsigned int UITreeListBox::getSize(){
     unsigned int i = 0;
@@ -193,14 +193,14 @@ unsigned int UITreeListBox::getSize(){
 }
 
 /**
- * 
+ *
  */
 void UITreeListBox::sort(){
     this->lista.sort();
 }
 
 /**
- * 
+ *
  * @param vid
  * @param vtext
  * @param vvalue

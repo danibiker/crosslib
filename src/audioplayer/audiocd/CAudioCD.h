@@ -29,7 +29,7 @@
 #include "CBuf.h"
 #include <math.h>
 #include <stdio.h>
-//#include "Traza.h"
+//#include "uiobjects/Traza.h"
 
 // Structure to hold the basic information for a cd-track
 struct CDTRACK

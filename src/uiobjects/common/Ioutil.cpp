@@ -1,7 +1,5 @@
 #include "Ioutil.h"
-#include "font/Arimo_Regular.ttf.h"
-#include "uiimglist.h"
-
+#include "uiobjects/font/Arimo_Regular.ttf.h"
 
 #ifdef WIN
     const int SCREEN_MODE = SDL_SWSURFACE|SDL_RESIZABLE; // SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN|SDL_SWSURFACE|SDL_RESIZABLE
@@ -104,10 +102,10 @@ void Ioutil::initSDL(bool calcFS){
     Uint16 audio_format = AUDIO_S16SYS;
     int audio_channels = 2;
     int audio_buffers = 4096;
-    int volume = SDL_MIX_MAXVOLUME;
-    int bufLen = 100*1024; //Son 100KB
-    char *buffer;
-    size_t FileLenght = 0;
+//    int volume = SDL_MIX_MAXVOLUME;
+//    int bufLen = 100*1024; //Son 100KB
+//    char *buffer;
+//    size_t FileLenght = 0;
     //Audio Stuff
     //Iniciamos la rutina para buscar Joysticks
     Traza::print("Buscando joysticks", W_DEBUG);
@@ -1384,8 +1382,8 @@ void Ioutil::drawUISpectrum(Object *obj){
 
             if (objspectrum->isEnabled()){
                 SDL_LockSurface(screen);
-                Uint32 colorFondo = SDL_MapRGB(screen->format, obj->getColor().r, obj->getColor().g, obj->getColor().b);
-                Uint32 colorSpectrum = SDL_MapRGB(screen->format, cBlanco.r, cBlanco.g, cBlanco.b);
+//                Uint32 colorFondo = SDL_MapRGB(screen->format, obj->getColor().r, obj->getColor().g, obj->getColor().b);
+//                Uint32 colorSpectrum = SDL_MapRGB(screen->format, cBlanco.r, cBlanco.g, cBlanco.b);
                 /* clear the screen */
                 /* SDL_FillRect(s,NULL,black); */
                 /* draw the wav from the saved stream buffer */
@@ -1730,7 +1728,7 @@ void Ioutil::drawUIComboBox(Object *obj){
         int x = obj->getX();
         int y = obj->getY();
         int w = obj->getW();
-        int h = obj->getH();
+//        int h = obj->getH();
 
             //Dibujando el label del input
             drawText(obj->getLabel().c_str(),x,y-FONTSIZE-4,cAzulOscuro);
@@ -1820,7 +1818,7 @@ void Ioutil::drawUIListGroupBox(Object *obj){
                 //Llamamos a la funcion que dibuja la seleccion de letras
                 drawUILetraPopup(obj);
         } else if (!listObj->getImgDrawed()){
-            int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
+//            int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
             listObj->setBgLetraPopup(false);
             Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
             Traza::print("Alto de la lista: ", h, W_PARANOIC);
@@ -2004,7 +2002,7 @@ void Ioutil::drawThumbnailText(UIImgList *listObj, int i, SDL_Rect *imgRect){
     if (listObj->getRow(i)->GetListGroupCol().size() < 1)
         return;
 
-    UIPicture* pict = listObj->getRow(i)->GetUipicture();
+//    UIPicture* pict = listObj->getRow(i)->GetUipicture();
     string text = listObj->getRow(i)->GetListGroupCol().at(0)->getTexto();
     int posX = 0, posY = 0, posW = 0;
     int textW = fontStrLen(text);
@@ -2074,11 +2072,10 @@ void Ioutil::drawListGroupContent(Object *obj, int x, int y, int w, int h){
             for (unsigned int contCol=0; contCol < listObj->getSizeCol(); contCol++ ){
                 int headerPixelSize = 0;
                 TTF_SizeText(this->font,listObj->getHeaderCol(contCol)->getTexto().c_str(),&headerPixelSize,NULL );
-                if (listObj->isColsAdjustedToHeader() || listObj->sizeHeader() <= contCol) {
+                if (listObj->isColsAdjustedToHeader() || listObj->sizeHeader() <= (int)contCol) {
                     listObj->addHeaderWith(headerPixelSize);
                 }
 
-                int temp = 0;
                 //Solo pintamos texto que quepa en la columna
                 textArea.w = listObj->getHeaderWith(contCol);
                 //comprobamos que el texto no salga de los limites de la tabla
@@ -2089,7 +2086,6 @@ void Ioutil::drawListGroupContent(Object *obj, int x, int y, int w, int h){
                         textArea.w = obj->getX() + obj->getW() - (x + sepCabecera); //Cuando el texto esta fuera parcialmente
                 } else if (sepCabecera <= 0 && contCol > 0){
                       Traza::print("Salimos del limite izquierdo", W_PARANOIC);
-                      temp = sepCabecera;
                 }
 
                 //Pintamos el texto
@@ -2185,11 +2181,11 @@ void Ioutil::drawListGroupContent(Object *obj, int x, int y, int w, int h){
             int selectedPosY = 0;
             bool colAnchorPressed = false;
 
-            for (int i=0; i < listObj->getSizeCol() ; i++){
+            for (unsigned int i=0; i < listObj->getSizeCol() ; i++){
                 acumWidth += listObj->getHeaderWith(i) + (i > 0 ? INPUTCONTENT : 0);
                 selectedPosX = x + acumWidth;
                 selectedPosY = y - INPUTCONTENT;
-                colAnchorPressed = listObj->isColAnchorPressed() && listObj->getPosColAnchorPressed() == i;
+                colAnchorPressed = listObj->isColAnchorPressed() && listObj->getPosColAnchorPressed() == (int)i;
 
                 if (selectedPosX < listObj->getX() + listObj->getW() && selectedPosX > listObj->getX()){
                     pintarLinea(selectedPosX , selectedPosY, selectedPosX, selectedPosY + h - 2, colAnchorPressed ? cNegro : cGris);
@@ -2244,7 +2240,7 @@ void Ioutil::drawUIListBox(Object *obj){
                 //Llamamos a la funcion que dibuja la seleccion de letras
                 drawUILetraPopup(obj);
         } else if (!listObj->getImgDrawed()){
-            int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
+//            int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
             listObj->setBgLetraPopup(false);
             Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
             Traza::print("Alto de la lista: ", h, W_PARANOIC);
@@ -2292,9 +2288,9 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
     + Constant::TipoToStr(obj->getPosIniLista()) + " - getPosFinLista: "
     + Constant::TipoToStr(obj->getPosFinLista());
 
-    static int lastPos = 0;
+    static unsigned int lastPos = 0;
     int sfcW = 0;
-    int sfcH = 0;
+//    int sfcH = 0;
     const int nElems = obj->getNIconsHoriz();
     const int elemWidth = w / nElems;
     const int elemHeight = h / nElems;
@@ -2330,7 +2326,7 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
     }
 
     sfcW = obj->smoothSfc->w;
-    sfcH = obj->smoothSfc->h;
+//    sfcH = obj->smoothSfc->h;
 
     fondoSrf = SDL_CreateRGBSurface(SDL_SWSURFACE, fondoRect.w, fondoRect.h,
                         screen->format->BitsPerPixel,rmask,
@@ -2355,9 +2351,9 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
 
                 int itmp=0;
                 int relPostmp=0;
-                while (itmp < total && inicio + itmp <= fin && inicio + itmp < obj->getSize()){
+                while (itmp < total && inicio + itmp <= fin && inicio + itmp < (int)obj->getSize()){
                     relPostmp = inicio + itmp;
-                    if (relPostmp < obj->getPosIniLista() && obj->getPosActualLista() > obj->getNIconsHoriz() -1){
+                    if (relPostmp < (int)obj->getPosIniLista() && (int)obj->getPosActualLista() > obj->getNIconsHoriz() -1){
                         itemRect.x += elemWidth;
                     }
                     itmp++;
@@ -2407,10 +2403,10 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
     string text;
     Dirutil dir;
 
-    while (i < total && inicio + i <= fin && inicio + i < obj->getSize()){
+    while (i < total && inicio + i <= fin && inicio + i < (int)obj->getSize()){
         relPos = inicio + i;
 
-        if (relPos < obj->getPosIniLista()){
+        if (relPos < (int)obj->getPosIniLista()){
             smoothRect.x += elemWidth;
         }
 
@@ -2420,7 +2416,7 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
         //Traza::print("rutaLogo: " + rutaLogo, W_PARANOIC);
         SDL_Rect textArea = { 0, 0, elemWidth, elemHeight };
 
-        if (relPos != obj->getPosActualLista()){
+        if (relPos != (int)obj->getPosActualLista()){
             textArea.w = elemWidth - elemWidth / 3;
             textArea.h = elemHeight - elemHeight / 3;
         } else {
@@ -2439,7 +2435,7 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
         } else {
             int fontStyle = TTF_GetFontStyle(font);
 
-            if (!(fontStyle & TTF_STYLE_BOLD) && relPos == obj->getPosActualLista()) {
+            if (!(fontStyle & TTF_STYLE_BOLD) && relPos == (int)obj->getPosActualLista()) {
                 loadFont(FONTSIZE + 8);
                 TTF_SetFontStyle(font, fontStyle | TTF_STYLE_BOLD);
             }
@@ -2447,7 +2443,7 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
             dstrect.x = i * elemWidth + (elemWidth - fontStrLen(text)) / 2;
             drawTextInAreaSrf(text.c_str(), dstrect.x, (elemHeight - fontHeight) / 2, colorText, NULL, obj->smoothSfc, true);
 
-            if (relPos == obj->getPosActualLista()) {
+            if (relPos == (int)obj->getPosActualLista()) {
                 loadFont(FONTSIZE);
                 TTF_SetFontStyle(font, fontStyle);
             }
@@ -2473,7 +2469,7 @@ void Ioutil::drawListIcoHor(Object *obj, int x, int y, int w, int h){
         int icono = -1;
         //t_color colorText = listObj->isEnabled() && listObj->isFocus() ? cNegro : cGris;
         t_color colorText = listObj->isEnabled() ? listObj->getTextColor() : cGris;
-        int cont = 0;
+//        int cont = 0;
 
 
         const int nElems = listObj->getNIconsHoriz();
@@ -2519,7 +2515,7 @@ void Ioutil::drawListIcoHor(Object *obj, int x, int y, int w, int h){
                              y + centeredY + (elemHeight - fontHeight) / 2, colorText, &textArea);
             } else {
 
-                if (relPos != listObj->getPosActualLista()){
+                if (relPos != (int)listObj->getPosActualLista()){
                     textArea.w = elemWidth - elemWidth / 3;
                     textArea.h = elemHeight - elemHeight / 3;
                 } else {
@@ -2540,7 +2536,7 @@ void Ioutil::drawListIcoHor(Object *obj, int x, int y, int w, int h){
                 }
             }
 
-            if (relPos != listObj->getPosActualLista()){
+            if (relPos != (int)listObj->getPosActualLista()){
                 drawRectAlpha(x + i * elemWidth,
                               y + centeredY,
                               elemWidth, elemHeight, cGrisClaro, 128);
@@ -2655,7 +2651,7 @@ void Ioutil::drawUIInputWide(Object *obj){
             int nSel = abs(objInput->getSelectionFin() - objInput->getSelectionIni());
 
             int iniSel = objInput->getSelectionIni();
-            if (objInput->getSelectionIni() != objInput->getPosChar()){
+            if (objInput->getSelectionIni() != (int)objInput->getPosChar()){
                 iniSel = objInput->getSelectionIni() > 0 ? objInput->getSelectionIni() - 1 : 0;
             }
 
@@ -2663,9 +2659,9 @@ void Ioutil::drawUIInputWide(Object *obj){
             Traza::print("textoSeleccionado: " + textoSeleccionado, W_DEBUG);
             int txtLen = fontStrLen(textoSeleccionado);
             int maxW = txtLen < objInput->getW() - 2*INPUTCONTENT ? txtLen : objInput->getW() - 2*INPUTCONTENT;
-            SDL_Rect selTextLocation = {0, 0,w,h};
+//            SDL_Rect selTextLocation = {0, 0,w,h};
 
-            if (objInput->getSelectionIni() == objInput->getPosChar()){
+            if (objInput->getSelectionIni() == (int)objInput->getPosChar()){
                 //Seleccionando texto a la izquierda del cursor
                 if (maxW + myInput.cursorX > obj->getX() + obj->getW()){
                     maxW = obj->getX() + obj->getW() - myInput.cursorX - INPUTCONTENT;
@@ -3157,7 +3153,7 @@ void Ioutil::putpixelSafe(SDL_Surface *surface, const int x, const int y, const 
 void Ioutil::putpixel(SDL_Surface *surface, const int x, const int y, const Uint32 pixel)
 {
      //Draw_Pixel(surface, x,y, pixel);
-    int bpp = surface->format->BytesPerPixel;
+//    int bpp = surface->format->BytesPerPixel;
     /* Here p is the address to the pixel we want to set */
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * surface->format->BytesPerPixel;
 
@@ -4033,10 +4029,10 @@ void Ioutil::drawTextInsideArea( int posArrayTexto, int x, int y, Object *obj, S
         const short int maxLineaPx = textLocation->w - ( x );
         short int offsetY = 0;
         bool retorno = false;
-        int objPosY = obj->getY();
+//        int objPosY = obj->getY();
 
 
-        for (int i = 0; i < vtexto.size(); i++){
+        for (unsigned int i = 0; i < vtexto.size(); i++){
             tmpStr = vtexto.at(i);
             retorno = tmpStr.compare("\n") == 0;
             tamPalabra = fontStrLen(tmpStr + " ");
@@ -4096,7 +4092,7 @@ void Ioutil::drawUITreeListBox(Object *obj){
         UITreeListBox *listObj = (UITreeListBox *)obj;
 
 
-        int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
+//        int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
         Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
         Traza::print("Alto de la lista: ", h, W_PARANOIC);
 

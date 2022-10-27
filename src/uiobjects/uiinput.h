@@ -2,7 +2,7 @@
 #define UIINPUT_H
 
 #include "object.h"
-#include "soutils/SOUtils.h"
+#include "uiobjects/soutils/SOUtils.h"
 
 
 class UIInput : public Object
