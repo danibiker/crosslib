@@ -332,7 +332,7 @@ Object * tmenu_gestor_objects::add(string tname, int ttype, int tx, int ty, int 
         return arrayNewObj[size-1];
     }
 
-    return arrayNewObj[size];
+    return size > 0 ? arrayNewObj[size-1] : NULL;
 }
 
 /**

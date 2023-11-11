@@ -220,8 +220,8 @@ int Dropbox::putFile(string filesystemPath, string dropboxPath, string accessTok
     string url = DROPBOXURLPUT + dropboxPath;
     string AuthOauth2 = "Bearer " + accessToken;
     //postData = "Ejemplo automatizado de generacion del token";
-    size_t tam;
-    char * memblock;
+    size_t tam = 0;
+    char * memblock = NULL;
     ifstream file (filesystemPath.c_str(), ios::in|ios::binary|ios::ate);
     std::string test;
     if (file.is_open()){
@@ -252,7 +252,7 @@ int Dropbox::putFile(string filesystemPath, string dropboxPath, string accessTok
     cabeceras.insert( make_pair("Content-Type", "text/plain"));
     cabeceras.insert( make_pair("overwrite", "true"));
 
-    if (tam > 0){
+    if (tam > 0 && memblock != NULL){
         MemoryStruct *chunk = util.initDownload();
         util.httpPost(url, memblock, tam, &cabeceras, chunk);
         util.endDownload(&chunk);

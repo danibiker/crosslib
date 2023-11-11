@@ -1,16 +1,16 @@
 # depslib dependency file v1.0
-1505156944 source:c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\audiocd_helpers.cpp
+1505153344 source:c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\audiocd_helpers.cpp
 	"AudioCD_Helpers.h"
 
-1643709058 c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\audiocd_helpers.h
+1643705458 c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\audiocd_helpers.h
 	<winsock2.h>
 	<windows.h>
 
-1666853812 source:c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\caudiocd.cpp
+1666850212 source:c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\caudiocd.cpp
 	"CAudioCD.h"
 	"AudioCD_Helpers.h"
 
-1666850935 c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\caudiocd.h
+1666847335 c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\caudiocd.h
 	<winsock2.h>
 	<windows.h>
 	<string>
@@ -21,34 +21,34 @@
 	<math.h>
 	<stdio.h>
 
-1643709018 c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\cbuf.h
+1643705418 c:\develop\github\externallibs\crosslib\src\audioplayer\audiocd\cbuf.h
 	<winsock2.h>
 	<windows.h>
 	<string.h>
 	<malloc.h>
 
-1643709703 source:c:\develop\github\externallibs\crosslib\src\audioplayer\biquad.cpp
+1643706103 source:c:\develop\github\externallibs\crosslib\src\audioplayer\biquad.cpp
 	"biquad.h"
 
-1643709758 c:\develop\github\externallibs\crosslib\src\audioplayer\biquad.h
+1643706158 c:\develop\github\externallibs\crosslib\src\audioplayer\biquad.h
 	<math.h>
 
-1505158754 source:c:\develop\github\externallibs\crosslib\src\audioplayer\fft\fft.cpp
+1505155154 source:c:\develop\github\externallibs\crosslib\src\audioplayer\fft\fft.cpp
 	"Fft.h"
 
-1505158714 c:\develop\github\externallibs\crosslib\src\audioplayer\fft\fft.h
+1505155114 c:\develop\github\externallibs\crosslib\src\audioplayer\fft\fft.h
 	"Complex.h"
 	"assert.h"
 	<stdio.h>
 	<string.h>
 
-1487272042 c:\develop\github\externallibs\crosslib\src\audioplayer\fft\complex.h
+1487268442 c:\develop\github\externallibs\crosslib\src\audioplayer\fft\complex.h
 	<math.h>
 
-1487269920 source:c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgencoder.cpp
+1487266320 source:c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgencoder.cpp
 	"uiimgencoder.h"
 
-1666794482 c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgencoder.h
+1666790882 c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgencoder.h
 	<SDL/SDL.h>
 	<stdlib.h>
 	<stdio.h>
@@ -58,13 +58,13 @@
 	"SDL_imagesave/IMG_saveend.h"
 	<iostream>
 
-1666787146 c:\develop\github\externallibs\crosslib\src\httpcurl\image\sdl_imagesave\img_saveend.h
+1666783546 c:\develop\github\externallibs\crosslib\src\httpcurl\image\sdl_imagesave\img_saveend.h
 	<SDL/SDL_byteorder.h>
 
-1666852405 source:c:\develop\github\externallibs\crosslib\src\audioplayer\audioplayer.cpp
+1666848805 source:c:\develop\github\externallibs\crosslib\src\audioplayer\audioplayer.cpp
 	"audioplayer.h"
 
-1666851166 c:\develop\github\externallibs\crosslib\src\audioplayer\audioplayer.h
+1666847566 c:\develop\github\externallibs\crosslib\src\audioplayer\audioplayer.h
 	"uiobjects/Constant.h"
 	<iostream>
 	<fstream>
@@ -85,7 +85,7 @@
 	<chrono>
 	<thread>
 
-1666855439 c:\develop\github\externallibs\crosslib\src\uiobjects\constant.h
+1666851839 c:\develop\github\externallibs\crosslib\src\uiobjects\constant.h
 	<winsock2.h>
 	<windows.h>
 	<unistd.h>
@@ -104,7 +104,7 @@
 	<stdint.h>
 	<math.h>
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\traza.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\traza.h
 	"uiobjects/Constant.h"
 	<stdio.h>
 	<time.h>
@@ -113,10 +113,10 @@
 	<iostream>
 	<fstream>
 
-1643708969 c:\develop\github\externallibs\crosslib\src\uiobjects\gmutex.h
+1643705369 c:\develop\github\externallibs\crosslib\src\uiobjects\gmutex.h
 	<pthread.h>
 
-1666850935 c:\develop\github\externallibs\crosslib\src\uiobjects\dirutil.h
+1666847335 c:\develop\github\externallibs\crosslib\src\uiobjects\dirutil.h
 	"fileprops.h"
 	<dirent.h>
 	<sys/stat.h>
@@ -127,11 +127,11 @@
 	<stdio.h>
 	<vector>
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\fileprops.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\fileprops.h
 	<string>
 	"uiobjects/Constant.h"
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\listasimple.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\listasimple.h
 	<string.h>
 	<stdio.h>
 	"Excepcion.h"
@@ -140,13 +140,13 @@
 	"uiobjects/Constant.h"
 	"fileprops.h"
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\excepcion.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\excepcion.h
 	<iostream>
 	<cmath>
 	"uiobjects/Traza.h"
 	"uiobjects/Constant.h"
 
-1666850935 c:\develop\github\externallibs\crosslib\src\uiobjects\fileio.h
+1666847335 c:\develop\github\externallibs\crosslib\src\uiobjects\fileio.h
 	<iostream>
 	<fstream>
 	<string>
@@ -156,7 +156,7 @@
 	"Excepcion.h"
 	"uiobjects/Traza.h"
 
-1666852081 c:\develop\github\externallibs\crosslib\src\uiobjects\menuobject.h
+1666848481 c:\develop\github\externallibs\crosslib\src\uiobjects\menuobject.h
 	<sstream>
 	<string.h>
 	"uiobjects/Constant.h"
@@ -184,7 +184,7 @@
 	"UITreeListBox.h"
 	"uiobjects/uiimglist.h"
 
-1666851934 c:\develop\github\externallibs\crosslib\src\uiobjects\imagengestor.h
+1666848334 c:\develop\github\externallibs\crosslib\src\uiobjects\imagengestor.h
 	"uiobjects/Fileio.h"
 	"SHA1.h"
 	"ListaSimple.h"
@@ -196,19 +196,19 @@
 	"common.h"
 	"../httpcurl/image/uiimgencoder.h"
 
-1487269924 c:\develop\github\externallibs\crosslib\src\uiobjects\sha1.h
+1487266324 c:\develop\github\externallibs\crosslib\src\uiobjects\sha1.h
 	<memory.h>
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
 
-1586128778 c:\develop\github\externallibs\crosslib\src\uiobjects\common.h
+1586125178 c:\develop\github\externallibs\crosslib\src\uiobjects\common.h
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\joymapper.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\joymapper.h
 	"uiobjects/Constant.h"
 	"ListaSimple.h"
 
-1666851235 c:\develop\github\externallibs\crosslib\src\uiobjects\object.h
+1666847635 c:\develop\github\externallibs\crosslib\src\uiobjects\object.h
 	"common.h"
 	<stdlib.h>
 	<stdio.h>
@@ -217,96 +217,100 @@
 	"joymapper.h"
 	"uiobjects/ImagenGestor.h"
 
-1585085618 c:\develop\github\externallibs\crosslib\src\uiobjects\uilabel.h
+1585082018 c:\develop\github\externallibs\crosslib\src\uiobjects\uilabel.h
 	"object.h"
 
-1585085617 c:\develop\github\externallibs\crosslib\src\uiobjects\uibutton.h
+1585082017 c:\develop\github\externallibs\crosslib\src\uiobjects\uibutton.h
 	"object.h"
 
-1585680325 c:\develop\github\externallibs\crosslib\src\uiobjects\uilist.h
+1585676725 c:\develop\github\externallibs\crosslib\src\uiobjects\uilist.h
 	"uilistcommon.h"
 
-1602950105 c:\develop\github\externallibs\crosslib\src\uiobjects\uilistcommon.h
+1602946505 c:\develop\github\externallibs\crosslib\src\uiobjects\uilistcommon.h
 	"object.h"
 
-1585085619 c:\develop\github\externallibs\crosslib\src\uiobjects\uiprogressbar.h
+1585082019 c:\develop\github\externallibs\crosslib\src\uiobjects\uiprogressbar.h
 	"object.h"
 
-1585085617 c:\develop\github\externallibs\crosslib\src\uiobjects\uiart.h
+1585082017 c:\develop\github\externallibs\crosslib\src\uiobjects\uiart.h
 	"object.h"
 
-1585085618 c:\develop\github\externallibs\crosslib\src\uiobjects\uicheck.h
+1585082018 c:\develop\github\externallibs\crosslib\src\uiobjects\uicheck.h
 	"object.h"
 
-1585085619 c:\develop\github\externallibs\crosslib\src\uiobjects\uipanel.h
+1585082019 c:\develop\github\externallibs\crosslib\src\uiobjects\uipanel.h
 	"object.h"
 
-1585085685 c:\develop\github\externallibs\crosslib\src\uiobjects\uipanelborder.h
+1585082085 c:\develop\github\externallibs\crosslib\src\uiobjects\uipanelborder.h
 	"uipanel.h"
 
-1666854173 c:\develop\github\externallibs\crosslib\src\uiobjects\uipicture.h
+1666850573 c:\develop\github\externallibs\crosslib\src\uiobjects\uipicture.h
 	"object.h"
 
-1666851913 c:\develop\github\externallibs\crosslib\src\uiobjects\uiinput.h
+1666848313 c:\develop\github\externallibs\crosslib\src\uiobjects\uiinput.h
 	"object.h"
 	"uiobjects/soutils/SOUtils.h"
 
-1584989235 c:\develop\github\externallibs\crosslib\src\uiobjects\soutils\soutils.h
+1699705473 c:\develop\github\externallibs\crosslib\src\uiobjects\soutils\soutils.h
 	"../Constant.h"
 	"../Dirutil.h"
 	"../listaIni.h"
+	<conio.h>
+	<stdio.h>
+	<ctype.h>
+	<time.h>
 
-1505166388 c:\develop\github\externallibs\crosslib\src\uiobjects\listaini.h
+1505162788 c:\develop\github\externallibs\crosslib\src\uiobjects\listaini.h
 	"ListaSimple.h"
 
-1585680397 c:\develop\github\externallibs\crosslib\src\uiobjects\uipopupmenu.h
+1585676797 c:\develop\github\externallibs\crosslib\src\uiobjects\uipopupmenu.h
 	"uilist.h"
 	<SDL/SDL_ttf.h>
 
-1585085713 c:\develop\github\externallibs\crosslib\src\uiobjects\uicombobox.h
+1585082113 c:\develop\github\externallibs\crosslib\src\uiobjects\uicombobox.h
 	"uilist.h"
 
-1666851347 c:\develop\github\externallibs\crosslib\src\uiobjects\uilistgroup.h
+1666847747 c:\develop\github\externallibs\crosslib\src\uiobjects\uilistgroup.h
 	"uilistcommon.h"
 	"uiobjects/beans/listgroupcol.h"
 	"uiobjects/beans/listGroupElement.h"
 	<algorithm>
 
-1586518800 c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupcol.h
+1586515200 c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupcol.h
 	<iostream>
 	<string>
 	<iostream>
 	<vector>
 	"../Constant.h"
 
-1666851381 c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupelement.h
+1666847781 c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupelement.h
 	"uiobjects/beans/listgroupcol.h"
 	"uiobjects/uipicture.h"
 
-1585085557 c:\develop\github\externallibs\crosslib\src\uiobjects\uitextelementsarea.h
+1585081957 c:\develop\github\externallibs\crosslib\src\uiobjects\uitextelementsarea.h
 	"object.h"
 
-1585085619 c:\develop\github\externallibs\crosslib\src\uiobjects\uispectrum.h
+1585082019 c:\develop\github\externallibs\crosslib\src\uiobjects\uispectrum.h
 	"object.h"
 
-1487269926 c:\develop\github\externallibs\crosslib\src\uiobjects\uislider.h
+1487266326 c:\develop\github\externallibs\crosslib\src\uiobjects\uislider.h
 	"uiprogressbar.h"
 
-1643770327 c:\develop\github\externallibs\crosslib\src\uiobjects\uitreelistbox.h
+1643766727 c:\develop\github\externallibs\crosslib\src\uiobjects\uitreelistbox.h
 	"uilistcommon.h"
 
-1603068480 c:\develop\github\externallibs\crosslib\src\uiobjects\uiimglist.h
+1603064880 c:\develop\github\externallibs\crosslib\src\uiobjects\uiimglist.h
 	"uilistgroup.h"
 
-1666854147 source:c:\develop\github\externallibs\crosslib\src\httpcurl\cddb\freedb.cpp
+1666850547 source:c:\develop\github\externallibs\crosslib\src\httpcurl\cddb\freedb.cpp
 	"freedb.h"
 
-1666850671 c:\develop\github\externallibs\crosslib\src\httpcurl\cddb\freedb.h
+1666847071 c:\develop\github\externallibs\crosslib\src\httpcurl\cddb\freedb.h
 	"httpcurl/util/ConstantHttp.h"
 	"../httputil.h"
 	"../htmlparser.h"
 
-1666853633 c:\develop\github\externallibs\crosslib\src\httpcurl\util\constanthttp.h
+1666850033 c:\develop\github\externallibs\crosslib\src\httpcurl\util\constanthttp.h
 	<sstream>
 	<string.h>
 	<vector>
@@ -319,7 +323,7 @@
 	<cctype>
 	<iomanip>
 
-1666850952 c:\develop\github\externallibs\crosslib\src\httpcurl\httputil.h
+1699713015 c:\develop\github\externallibs\crosslib\src\httpcurl\httputil.h
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
@@ -329,6 +333,7 @@
 	<string>
 	<fstream>
 	<map>
+	<regex>
 	"rijndael/filecipher.h"
 	"uiobjects/Traza.h"
 	"uiobjects/unzip/GZipHelper.h"
@@ -336,7 +341,7 @@
 	<mutex>
 	"util/Progress.h"
 
-1666850766 c:\develop\github\externallibs\crosslib\src\rijndael\filecipher.h
+1666847166 c:\develop\github\externallibs\crosslib\src\rijndael\filecipher.h
 	"uiobjects/Constant.h"
 	<iostream>
 	<fstream>
@@ -348,25 +353,25 @@
 	<iostream>
 	<cstdlib>
 
-1487269922 c:\develop\github\externallibs\crosslib\src\rijndael\rijndael.h
+1487266322 c:\develop\github\externallibs\crosslib\src\rijndael\rijndael.h
 	<iostream>
 
-1487269922 c:\develop\github\externallibs\crosslib\src\rijndael\sha256.h
+1487266322 c:\develop\github\externallibs\crosslib\src\rijndael\sha256.h
 	<string>
 
-1666852745 c:\develop\github\externallibs\crosslib\src\uiobjects\unzip\gziphelper.h
+1666849145 c:\develop\github\externallibs\crosslib\src\uiobjects\unzip\gziphelper.h
 	"GZipHelper.h"
 	<zlib.h>
 	<alloc.h>
 	<malloc.h>
 	<unix.h>
 
-1666803809 c:\develop\github\externallibs\crosslib\src\httpcurl\util\progress.h
+1666800209 c:\develop\github\externallibs\crosslib\src\httpcurl\util\progress.h
 	<curl/curl.h>
 	<fstream>
 	<uiobjects/gmutex.h>
 
-1666850678 c:\develop\github\externallibs\crosslib\src\httpcurl\htmlparser.h
+1666847078 c:\develop\github\externallibs\crosslib\src\httpcurl\htmlparser.h
 	"uiobjects/Constant.h"
 	<gumbo.h>
 	<iostream>
@@ -380,18 +385,18 @@
 	<tidy.h>
 	<buffio.h>
 
-1666853927 source:c:\develop\github\externallibs\crosslib\src\httpcurl\htmlparser.cpp
+1666850327 source:c:\develop\github\externallibs\crosslib\src\httpcurl\htmlparser.cpp
 	"htmlparser.h"
 
-1666854019 source:c:\develop\github\externallibs\crosslib\src\httpcurl\httputil.cpp
+1679087114 source:c:\develop\github\externallibs\crosslib\src\httpcurl\httputil.cpp
 	"httputil.h"
 	"util/ConstantHttp.h"
 	"uiobjects/Constant.h"
 
-1666854136 source:c:\develop\github\externallibs\crosslib\src\httpcurl\httputil2.cpp
+1666850536 source:c:\develop\github\externallibs\crosslib\src\httpcurl\httputil2.cpp
 	"httputil2.h"
 
-1666851099 c:\develop\github\externallibs\crosslib\src\httpcurl\httputil2.h
+1666847499 c:\develop\github\externallibs\crosslib\src\httpcurl\httputil2.h
 	<curl/curl.h>
 	<inttypes.h>
 	<stdio.h>
@@ -403,20 +408,20 @@
 	"../uiobjects/unzip/GZipHelper.h"
 	"uiobjects/gmutex.h"
 
-1487269920 source:c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgdownloader.cpp
+1487266320 source:c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgdownloader.cpp
 	"uiimgdownloader.h"
 
-1666851309 c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgdownloader.h
+1666847709 c:\develop\github\externallibs\crosslib\src\httpcurl\image\uiimgdownloader.h
 	"httpcurl/httputil.h"
 	"uiobjects/Dirutil.h"
 	"SDL/SDL.h"
 	"uiobjects/ImagenGestor.h"
 	"httpcurl/image/uiimgencoder.h"
 
-1666854283 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\chartlyrics.cpp
+1666850683 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\chartlyrics.cpp
 	"chartLyrics.h"
 
-1666851771 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\chartlyrics.h
+1666848171 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\chartlyrics.h
 	"httpcurl/httputil.h"
 	"httpcurl/httputil2.h"
 	"httpcurl/util/ConstantHttp.h"
@@ -425,7 +430,7 @@
 	"httpcurl/util/XmlParser.h"
 	<tinyxml.h>
 
-1666851398 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricsbase.h
+1666847798 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricsbase.h
 	"httpcurl/util/ConstantHttp.h"
 	"uiobjects/Constant.h"
 	"httpcurl/httputil.h"
@@ -433,7 +438,7 @@
 	<vector>
 	<memory>
 
-1644024685 c:\develop\github\externallibs\crosslib\src\httpcurl\util\xmlparser.h
+1644021085 c:\develop\github\externallibs\crosslib\src\httpcurl\util\xmlparser.h
 	<string>
 	<map>
 	<vector>
@@ -456,50 +461,50 @@
 	<assert.h>
 	<string.h>
 
-1643994091 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\darklyrics.cpp
+1643990491 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\darklyrics.cpp
 	"darklyrics.h"
 
-1666850732 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\darklyrics.h
+1666847132 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\darklyrics.h
 	"httpcurl/htmlparser.h"
 	"lyricsbase.h"
 
-1643992158 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricsbase.cpp
+1643988558 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricsbase.cpp
 	"lyricsbase.h"
 
-1666854320 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricswikia.cpp
+1666850720 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricswikia.cpp
 	"lyricswikia.h"
 
-1643992450 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricswikia.h
+1643988850 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\lyricswikia.h
 	"json/json.h"
 	"lyricsbase.h"
 	"../util/JsonParser.h"
 
-1643971633 c:\develop\github\externallibs\crosslib\src\httpcurl\util\jsonparser.h
+1643968033 c:\develop\github\externallibs\crosslib\src\httpcurl\util\jsonparser.h
 	<json/json.h>
 	<iostream>
 
-1666854360 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\musixmatch.cpp
+1666850760 source:c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\musixmatch.cpp
 	"MusixMatch.h"
 
-1666851099 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\musixmatch.h
+1666847499 c:\develop\github\externallibs\crosslib\src\httpcurl\lyrics\musixmatch.h
 	"httpcurl/httputil.h"
 	"json/json.h"
 	"httpcurl/util/ConstantHttp.h"
 	"../util/JsonParser.h"
 	"lyricsbase.h"
 
-1572120745 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\allmyvideos.cpp
+1572117145 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\allmyvideos.cpp
 	"allmyvideos.h"
 
-1666851754 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\allmyvideos.h
+1666848154 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\allmyvideos.h
 	"httpcurl/httputil.h"
 	"httpcurl/htmlparser.h"
 	"httpcurl/util/ConstantHttp.h"
 
-1666854675 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\dropbox.cpp
+1666887746 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\dropbox.cpp
 	"dropbox.h"
 
-1666851838 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\dropbox.h
+1666848238 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\dropbox.h
 	<iostream>
 	"httpcurl/util/ConstantHttp.h"
 	<vector>
@@ -515,12 +520,12 @@
 	"httpcurl/servers/ioauth2.h"
 	"uiobjects/listaIni.h"
 
-1666859879 c:\develop\github\externallibs\crosslib\src\uiobjects\thread.h
+1666888964 c:\develop\github\externallibs\crosslib\src\uiobjects\thread.h
 	<pthread.h>
 	"uiobjects/Constant.h"
 	<mutex>
 
-1666851886 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\ioauth2.h
+1666848286 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\ioauth2.h
 	"uiobjects/Constant.h"
 	"httpcurl/httputil2.h"
 	"uiobjects/Dirutil.h"
@@ -532,7 +537,7 @@
 	"../util/JsonParser.h"
 	"rijndael/filecipher.h"
 
-1666854571 c:\develop\github\externallibs\crosslib\src\uiobjects\launcher.h
+1666850971 c:\develop\github\externallibs\crosslib\src\uiobjects\launcher.h
 	<string.h>
 	<unistd.h>
 	<sys/types.h>
@@ -550,7 +555,7 @@
 	<locale>
 	<fcntl.h>
 
-1626702641 c:\develop\github\externallibs\crosslib\src\uiobjects\unzip\unziptool.h
+1626699041 c:\develop\github\externallibs\crosslib\src\uiobjects\unzip\unziptool.h
 	<unistd.h>
 	<zlib.h>
 	<minizip\unzip.h>
@@ -562,22 +567,22 @@
 	<vector>
 	"../fileprops.h"
 
-1487269924 c:\develop\github\externallibs\crosslib\src\uiobjects\filelaunch.h
+1487266324 c:\develop\github\externallibs\crosslib\src\uiobjects\filelaunch.h
 	<string>
 
-1666854728 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\googledrive.cpp
+1666851128 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\googledrive.cpp
 	"googledrive.h"
 
-1644066594 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\googledrive.h
+1644062994 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\googledrive.h
 	"ioauth2.h"
 
-1666854693 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\ioauth2.cpp
+1666851093 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\ioauth2.cpp
 	"ioauth2.h"
 
-1666854788 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\onedrive.cpp
+1666851188 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\onedrive.cpp
 	"onedrive.h"
 
-1666851867 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\onedrive.h
+1666848267 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\onedrive.h
 	<iostream>
 	"httpcurl/util/ConstantHttp.h"
 	<vector>
@@ -593,50 +598,50 @@
 	"httpcurl/servers/ioauth2.h"
 	"../util/JsonParser.h"
 
-1666795246 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\streamcloud.cpp
+1666791646 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\streamcloud.cpp
 	"streamcloud.h"
 
-1666851912 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\streamcloud.h
+1666848312 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\streamcloud.h
 	"httpcurl/httputil.h"
 	"httpcurl/htmlparser.h"
 	"httpcurl/util/ConstantHttp.h"
 	"uiobjects/soutils/SOUtils.h"
 
-1487269922 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\vk.cpp
+1487266322 source:c:\develop\github\externallibs\crosslib\src\httpcurl\servers\vk.cpp
 	"vk.h"
 
-1666851412 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\vk.h
+1666847812 c:\develop\github\externallibs\crosslib\src\httpcurl\servers\vk.h
 	"httpcurl/httputil.h"
 	"httpcurl/htmlparser.h"
 	"httpcurl/util/ConstantHttp.h"
 
-1666853539 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\constanthttp.cpp
+1666849939 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\constanthttp.cpp
 	"ConstantHttp.h"
 
-1644003757 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\jsonparser.cpp
+1644000157 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\jsonparser.cpp
 	"JsonParser.h"
 
-1587812153 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\progress.cpp
+1587808553 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\progress.cpp
 	"Progress.h"
 
-1666854335 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\xmlparser.cpp
+1666850735 source:c:\develop\github\externallibs\crosslib\src\httpcurl\util\xmlparser.cpp
 	"XmlParser.h"
 
-1666854928 source:c:\develop\github\externallibs\crosslib\src\rijndael\filecipher.cpp
+1666887934 source:c:\develop\github\externallibs\crosslib\src\rijndael\filecipher.cpp
 	"filecipher.h"
 
-1487269922 source:c:\develop\github\externallibs\crosslib\src\rijndael\rijndael.cpp
+1487266322 source:c:\develop\github\externallibs\crosslib\src\rijndael\rijndael.cpp
 	"rijndael.h"
 
-1487269922 source:c:\develop\github\externallibs\crosslib\src\rijndael\sha256.cpp
+1487266322 source:c:\develop\github\externallibs\crosslib\src\rijndael\sha256.cpp
 	<cstring>
 	<fstream>
 	"sha256.h"
 
-1487269924 source:c:\develop\github\externallibs\crosslib\src\uiobjects\bbdd\database.cpp
+1487266324 source:c:\develop\github\externallibs\crosslib\src\uiobjects\bbdd\database.cpp
 	"Database.h"
 
-1666851429 c:\develop\github\externallibs\crosslib\src\uiobjects\bbdd\database.h
+1666847829 c:\develop\github\externallibs\crosslib\src\uiobjects\bbdd\database.h
 	<sqlite3.h>
 	"uiobjects/Excepcion.h"
 	"uiobjects/Dirutil.h"
@@ -645,24 +650,24 @@
 	<vector>
 	<iostream>
 
-1586518800 source:c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupcol.cpp
+1586515200 source:c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupcol.cpp
 	"listgroupcol.h"
 
-1586004354 source:c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupelement.cpp
+1586000754 source:c:\develop\github\externallibs\crosslib\src\uiobjects\beans\listgroupelement.cpp
 	"listGroupElement.h"
 
-1487269924 source:c:\develop\github\externallibs\crosslib\src\uiobjects\colorutil.cpp
+1487266324 source:c:\develop\github\externallibs\crosslib\src\uiobjects\colorutil.cpp
 	"Colorutil.h"
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\colorutil.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\colorutil.h
 	<stdio.h>
 	<iostream>
 	"uiobjects/Constant.h"
 
-1666855240 source:c:\develop\github\externallibs\crosslib\src\uiobjects\common\basefrontend.cpp
+1666851640 source:c:\develop\github\externallibs\crosslib\src\uiobjects\common\basefrontend.cpp
 	"BaseFrontend.h"
 
-1666852008 c:\develop\github\externallibs\crosslib\src\uiobjects\common\basefrontend.h
+1666848408 c:\develop\github\externallibs\crosslib\src\uiobjects\common\basefrontend.h
 	<string>
 	<vector>
 	"uiobjects/common/Ioutil.h"
@@ -685,7 +690,7 @@
 	"uiobjects/UITreeListBox.h"
 	"uiobjects/common/BaseDefines.h"
 
-1666852115 c:\develop\github\externallibs\crosslib\src\uiobjects\common\ioutil.h
+1666848515 c:\develop\github\externallibs\crosslib\src\uiobjects\common\ioutil.h
 	<iostream>
 	<map>
 	<cmath>
@@ -713,7 +718,7 @@
 	"uiobjects/uiimglist.h"
 	"../image/ThreadImgLoader.h"
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\common\icogestor.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\common\icogestor.h
 	"uiobjects/Dirutil.h"
 	"uiobjects/Fileio.h"
 	"uiobjects/Constant.h"
@@ -721,16 +726,16 @@
 	"SDL/SDL_image.h"
 	"SDL/SDL_rotozoom.h"
 
-1666855506 c:\develop\github\externallibs\crosslib\src\uiobjects\cursor.h
+1666851906 c:\develop\github\externallibs\crosslib\src\uiobjects\cursor.h
 	"uiobjects/Constant.h"
 	"SDL/SDL.h"
 
-1666851698 c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgloader.h
+1666848098 c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgloader.h
 	"uiobjects/uiimglist.h"
 	"uiobjects/image/ThreadImgWorker.h"
 	"uiobjects/thread.h"
 
-1666851788 c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgworker.h
+1666848188 c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgworker.h
 	"uiobjects/uiimglist.h"
 	"uiobjects/image/ImageLoader.h"
 	"uiobjects/thread.h"
@@ -738,80 +743,80 @@
 	<thread>
 	<chrono>
 
-1666852063 c:\develop\github\externallibs\crosslib\src\uiobjects\image\imageloader.h
+1666848463 c:\develop\github\externallibs\crosslib\src\uiobjects\image\imageloader.h
 	<uiobjects/Dirutil.h>
 	"../uiimglist.h"
 	"uiobjects/common/Icogestor.h"
 	"uiobjects/Constant.h"
 	<uiobjects/gmutex.h>
 
-1585590236 c:\develop\github\externallibs\crosslib\src\uiobjects\common\basedefines.h
+1585586636 c:\develop\github\externallibs\crosslib\src\uiobjects\common\basedefines.h
 
-1603305028 source:c:\develop\github\externallibs\crosslib\src\uiobjects\common\icogestor.cpp
+1603301428 source:c:\develop\github\externallibs\crosslib\src\uiobjects\common\icogestor.cpp
 	"Icogestor.h"
 
-1666855599 source:c:\develop\github\externallibs\crosslib\src\uiobjects\constant.cpp
+1666890108 source:c:\develop\github\externallibs\crosslib\src\uiobjects\constant.cpp
 	"Constant.h"
 	<X11/Xlib.h>
 
-1666855514 source:c:\develop\github\externallibs\crosslib\src\uiobjects\cursor.cpp
+1666851914 source:c:\develop\github\externallibs\crosslib\src\uiobjects\cursor.cpp
 	"cursor.h"
 
-1666855879 source:c:\develop\github\externallibs\crosslib\src\uiobjects\dirutil.cpp
+1666852279 source:c:\develop\github\externallibs\crosslib\src\uiobjects\dirutil.cpp
 	<winsock2.h>
 	<windows.h>
 	"Dirutil.h"
 
-1487269924 source:c:\develop\github\externallibs\crosslib\src\uiobjects\excepcion.cpp
+1487266324 source:c:\develop\github\externallibs\crosslib\src\uiobjects\excepcion.cpp
 	"Excepcion.h"
 
-1643811646 source:c:\develop\github\externallibs\crosslib\src\uiobjects\fileio.cpp
+1643808046 source:c:\develop\github\externallibs\crosslib\src\uiobjects\fileio.cpp
 	"Fileio.h"
 
-1487269924 source:c:\develop\github\externallibs\crosslib\src\uiobjects\filelaunch.cpp
+1487266324 source:c:\develop\github\externallibs\crosslib\src\uiobjects\filelaunch.cpp
 	"filelaunch.h"
 
-1666856818 source:c:\develop\github\externallibs\crosslib\src\uiobjects\image\imageloader.cpp
+1666908235 source:c:\develop\github\externallibs\crosslib\src\uiobjects\image\imageloader.cpp
 	"ImageLoader.h"
 
-1603551880 source:c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgloader.cpp
+1603548280 source:c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgloader.cpp
 	"ThreadImgLoader.h"
 
-1666856867 source:c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgworker.cpp
+1666853267 source:c:\develop\github\externallibs\crosslib\src\uiobjects\image\threadimgworker.cpp
 	<mutex>
 	"ThreadImgWorker.h"
 
-1603574732 source:c:\develop\github\externallibs\crosslib\src\uiobjects\imagengestor.cpp
+1666887149 source:c:\develop\github\externallibs\crosslib\src\uiobjects\imagengestor.cpp
 	"ImagenGestor.h"
 
-1666852922 source:c:\develop\github\externallibs\crosslib\src\uiobjects\joymapper.cpp
+1666849322 source:c:\develop\github\externallibs\crosslib\src\uiobjects\joymapper.cpp
 	"joymapper.h"
 
-1643751421 source:c:\develop\github\externallibs\crosslib\src\uiobjects\launcher.cpp
+1643747821 source:c:\develop\github\externallibs\crosslib\src\uiobjects\launcher.cpp
 	<winsock2.h>
 	<windows.h>
 	"Launcher.h"
 
-1487269924 source:c:\develop\github\externallibs\crosslib\src\uiobjects\listasimple.cpp
+1487266324 source:c:\develop\github\externallibs\crosslib\src\uiobjects\listasimple.cpp
 
-1586116711 source:c:\develop\github\externallibs\crosslib\src\uiobjects\menuobject.cpp
+1666887483 source:c:\develop\github\externallibs\crosslib\src\uiobjects\menuobject.cpp
 	"Menuobject.h"
 
-1586106729 source:c:\develop\github\externallibs\crosslib\src\uiobjects\object.cpp
+1586103129 source:c:\develop\github\externallibs\crosslib\src\uiobjects\object.cpp
 	"object.h"
 
-1487269924 source:c:\develop\github\externallibs\crosslib\src\uiobjects\registry.cpp
+1487266324 source:c:\develop\github\externallibs\crosslib\src\uiobjects\registry.cpp
 	"registry.h"
 
-1666851955 c:\develop\github\externallibs\crosslib\src\uiobjects\registry.h
+1666848355 c:\develop\github\externallibs\crosslib\src\uiobjects\registry.h
 	"uiobjects/Constant.h"
 	<winsock2.h>
 	<windows.h>
 
-1487269924 source:c:\develop\github\externallibs\crosslib\src\uiobjects\sha1.cpp
+1487266324 source:c:\develop\github\externallibs\crosslib\src\uiobjects\sha1.cpp
 	"SHA1.h"
 
-1666857015 source:c:\develop\github\externallibs\crosslib\src\uiobjects\soutils\soutils.cpp
+1699705379 source:c:\develop\github\externallibs\crosslib\src\uiobjects\soutils\soutils.cpp
 	"SOUtils.h"
 
 1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\tinyxml\tinystr.cpp
@@ -832,73 +837,73 @@
 	"tinyxml.h"
 	<windows.h>
 
-1510686016 source:c:\develop\github\externallibs\crosslib\src\uiobjects\traza.cpp
+1510682416 source:c:\develop\github\externallibs\crosslib\src\uiobjects\traza.cpp
 	"Traza.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiart.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiart.cpp
 	"uiart.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uibutton.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uibutton.cpp
 	"uibutton.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uicheck.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uicheck.cpp
 	"uicheck.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uicombobox.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uicombobox.cpp
 	"uicombobox.h"
 
-1666857211 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiimglist.cpp
+1666853611 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiimglist.cpp
 	"uiimgList.h"
 
-1584989350 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiinput.cpp
+1584985750 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiinput.cpp
 	"uiinput.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilabel.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilabel.cpp
 	"uilabel.h"
 
-1585929166 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilist.cpp
+1585925566 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilist.cpp
 	"uilist.h"
 
-1586279181 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilistcommon.cpp
+1586275581 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilistcommon.cpp
 	"uilistcommon.h"
 
-1586519470 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilistgroup.cpp
+1586515870 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uilistgroup.cpp
 	"uilistgroup.h"
 	<stdlib.h>
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipanel.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipanel.cpp
 	"uipanel.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipanelborder.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipanelborder.cpp
 	"uipanelborder.h"
 
-1666854181 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipicture.cpp
+1666850581 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipicture.cpp
 	"uipicture.h"
 
-1585929171 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipopupmenu.cpp
+1585925571 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uipopupmenu.cpp
 	"uipopupmenu.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiprogressbar.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uiprogressbar.cpp
 	"uiprogressbar.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uislider.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uislider.cpp
 	"uislider.h"
 
-1487269926 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uispectrum.cpp
+1487266326 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uispectrum.cpp
 	"uispectrum.h"
 
-1510699028 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uitextelementsarea.cpp
+1510695428 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uitextelementsarea.cpp
 	"uitextelementsarea.h"
 
-1666857329 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uitreelistbox.cpp
+1666853729 source:c:\develop\github\externallibs\crosslib\src\uiobjects\uitreelistbox.cpp
 	"UITreeListBox.h"
 	"Constant.h"
 	"ListaSimple.h"
 
-1626702831 source:c:\develop\github\externallibs\crosslib\src\uiobjects\unzip\unziptool.cpp
+1626699231 source:c:\develop\github\externallibs\crosslib\src\uiobjects\unzip\unziptool.cpp
 	"unziptool.h"
 
-1666856661 source:c:\develop\github\externallibs\crosslib\src\uiobjects\common\ioutil.cpp
+1666890602 source:c:\develop\github\externallibs\crosslib\src\uiobjects\common\ioutil.cpp
 	"Ioutil.h"
 	"uiobjects/font/Arimo_Regular.ttf.h"
 

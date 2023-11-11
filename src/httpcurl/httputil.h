@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 #include <map>
+#include <regex>
 #include "rijndael/filecipher.h"
 #include "uiobjects/Traza.h"
 #include "uiobjects/unzip/GZipHelper.h"
@@ -92,6 +93,7 @@ class HttpUtil
     public:
         HttpUtil();
         virtual ~HttpUtil();
+        static bool isValidURL(string url);
         bool download(string);
         bool download(string, string);
         bool download(string, string, map <string, string> *headers);

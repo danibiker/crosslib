@@ -14,7 +14,7 @@
 #include "ImageLoader.h"
 
 
-GMutex ImageLoader::mutex;
+//GMutex ImageLoader::mutex;
 
 ImageLoader::ImageLoader() {
     listImages = NULL;
@@ -25,7 +25,7 @@ ImageLoader::~ImageLoader() {
 }
 
 uint32_t ImageLoader::loadImage(){
-    mutex.Lock();
+//    mutex.Lock();
     estado = 1;
     Traza::print("Image Loaded", W_PARANOIC);
     if (listImages != NULL){
@@ -35,7 +35,7 @@ uint32_t ImageLoader::loadImage(){
         Traza::print("Image Loaded", W_PARANOIC);
     }
     estado = 0;
-    mutex.Unlock();
+//    mutex.Unlock();
     return 0;
 }
 

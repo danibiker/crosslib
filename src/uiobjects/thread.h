@@ -22,7 +22,7 @@ class Thread
 protected:
         pthread_t hThread;
         pthread_attr_t attr;
-        void *threadReturn;
+        uint32_t *threadReturn;
 
 
 private:
@@ -99,9 +99,9 @@ public:
     }
 // -----------------------------------------------------------------------------
     // Blocks the calling thread until this thread has stopped.
-    inline int join(){
+    inline uint32_t join(){
         int rc;
-        rc = pthread_join(hThread, &threadReturn);
+        rc = pthread_join(hThread, (void**)&threadReturn);
 
         if (rc != 0){
 //            std::cout << "Error:unable to join," << rc << std::endl;
@@ -110,7 +110,10 @@ public:
         setStatus(THREAD_FINISHED);
 //        std::cout << "join: completed thread";
 //        std::cout << "  exiting with threadReturn :" << threadReturn << std::endl;
-        return *((int*)(&threadReturn));
+
+        uint32_t ret;
+        memcpy(&ret, threadReturn, 4);
+        return ret;
     }
 
 // -----------------------------------------------------------------------------
@@ -131,7 +134,9 @@ public:
     }
 
     inline uint32_t getExitCode(){
-        return *((int*)(&threadReturn));
+        uint32_t ret;
+        memcpy(&ret, threadReturn, 4);
+        return ret;
     }
 
     uint32_t inline getStatus(){

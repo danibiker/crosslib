@@ -111,10 +111,10 @@ void filecipher::descifrar(const char *rutaOrig, const char *rutaDest){
 	unsigned char textoCifrado[blockSize];
 	Rijndael *cifrador = NULL;
 
+	memset(textoCifrado, '\0', blockSize);
+
 	if (comprobarDatos()){
-
         cifrador = new Rijndael();
-
         if (iv != NULL) {
             memcpy(tempIV, iv, blockSize);
         }
@@ -233,6 +233,8 @@ int filecipher::descifrarData(const char *origen, int tam, char *destino){
     int leido = 0;
     unsigned char lenRelleno = 0;
     int relleno = 0;
+
+    memset(textoCifrado, '\0', blockSize);
 
     if (comprobarDatos()){
 

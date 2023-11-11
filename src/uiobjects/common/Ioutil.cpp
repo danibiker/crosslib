@@ -1481,17 +1481,17 @@ void Ioutil::drawUISpectrumFft(Object *obj){
                         barHeight = hBarCeil * ceils - sepBarras;
                     }
                     //Pintamos las barras que indican las componentes en frecuencia
-                    SDL_Rect r={x_ + i * barWidth, y_ + H - barHeight - margenBarras, x_ + barWidth, barHeight};
+                    SDL_Rect r={(Sint16)(x_ + i * barWidth), (Sint16)(y_ + H - barHeight - margenBarras), (Uint16)(x_ + barWidth), (Uint16)barHeight};
                     SDL_FillRect(screen, &r, SDL_MapRGB(screen->format,barColor.r,barColor.g,barColor.b));
                     //Pintamos las barras verticales de separacion entre bandas
-                    SDL_Rect sepRect={x_ + i * barWidth, y_ + INPUTBORDER, sepBarras, H};
+                    SDL_Rect sepRect={(Sint16)(x_ + i * barWidth), (Sint16)(y_ + INPUTBORDER), (Uint16)sepBarras, (Uint16)H};
                     SDL_FillRect(screen, &sepRect, SDL_MapRGB(screen->format, obj->getColor().r,obj->getColor().g,obj->getColor().b));
                 }
 
-                SDL_Rect sepRect={x_ + INPUTBORDER,
-                                  y_ + H - margenBarras,
-                                  x_ + W,
-                                  sepBarras};
+                SDL_Rect sepRect={(Sint16)(x_ + INPUTBORDER),
+                                  (Sint16)(y_ + H - margenBarras),
+                                  (Uint16)(x_ + W),
+                                  (Uint16)sepBarras};
 
                 for (int i=0; i < numCeils; i++){
                     sepRect.y -= hBarCeil;
@@ -1550,8 +1550,8 @@ void Ioutil::cachearObjeto(Object *obj){
             borde += INPUTBORDER;
         }
 
-        SDL_Rect imgLocation = { (short int)obj->getX() - borde, (short int)obj->getY() - borde,
-            (short unsigned int)(obj->getW() + borde*2), (short unsigned int)(obj->getH() + borde*2) };
+        SDL_Rect imgLocation = { (Sint16)(obj->getX() - borde), (Sint16)(obj->getY() - borde),
+            (Uint16)(obj->getW() + borde*2), (Uint16)(obj->getH() + borde*2) };
 
         if (obj->getObjectType() == GUICOMBOBOX){
             if (obj->isChecked()){
@@ -1762,7 +1762,7 @@ void Ioutil::drawUIComboBox(Object *obj){
 
                 //Pintamos el texto del elemento seleccionado que aparecera en el combo
                 int selectedPos = listObj->getPosActualLista();
-                SDL_Rect textArea = { 0, 0, w - 30 - INPUTCONTENT, Constant::getMENUSPACE() };
+                SDL_Rect textArea = { 0, 0, (Uint16)(w - 30 - INPUTCONTENT), (Uint16)(Constant::getMENUSPACE())};
                 drawTextInArea(listObj->getListNames()->get(selectedPos).c_str() , x + ((icono >= 0) ? ICOSPACE : 0), y, colorText, &textArea);
                 Traza::print("pintamos el objeto seleccionado como: " + listObj->getListNames()->get(selectedPos), W_DEBUG);
                 //pintarLinea(x, y + Constant::getINPUTH(), x + w - 2*INPUTCONTENT,  y + Constant::getINPUTH(), colorText);
@@ -1801,24 +1801,24 @@ void Ioutil::drawUIListGroupBox(Object *obj){
         int h = obj->getH();
         UIListGroup *listObj = (UIListGroup *)obj;
 
-        if (listObj->isShowLetraPopup()){
-                //Forzamos para que se repinte lo ultimo que habia por pantalla
-                if (!listObj->getImgDrawed()){
-                    listObj->setImgDrawed(true);
-                }
-                cachearObjeto(obj);
-                //Pintamos el fondo traslucido para darle un efecto de ventana emergente
-                //y lo volvemos a cachear una sola vez
-                if (listObj->getBgLetraPopup() == false){
-                    listObj->setBgLetraPopup(true);
-                    listObj->setImgDrawed(false);
-                    drawUIPopupFondo(obj, 20);
-                    cachearObjeto(obj);
-                }
-                //Llamamos a la funcion que dibuja la seleccion de letras
-                drawUILetraPopup(obj);
-        } else if (!listObj->getImgDrawed()){
-//            int centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
+//        if (listObj->isShowLetraPopup()){
+//                //Forzamos para que se repinte lo ultimo que habia por pantalla
+//                if (!listObj->getImgDrawed()){
+//                    listObj->setImgDrawed(true);
+//                }
+//                cachearObjeto(obj);
+//                //Pintamos el fondo traslucido para darle un efecto de ventana emergente
+//                //y lo volvemos a cachear una sola vez
+//                if (listObj->getBgLetraPopup() == false){
+//                    listObj->setBgLetraPopup(true);
+//                    listObj->setImgDrawed(false);
+//                    drawUIPopupFondo(obj, 20);
+//                    cachearObjeto(obj);
+//                }
+//                //Llamamos a la funcion que dibuja la seleccion de letras
+//                drawUILetraPopup(obj);
+//        } else
+        if (!listObj->getImgDrawed()){
             listObj->setBgLetraPopup(false);
             Traza::print("Repintando lista: " + listObj->getLabel(), W_PARANOIC);
             Traza::print("Alto de la lista: ", h, W_PARANOIC);
@@ -1831,19 +1831,21 @@ void Ioutil::drawUIListGroupBox(Object *obj){
                 Traza::print("listObj->getPosFinLista(): ", listObj->getPosFinLista(), W_PARANOIC);
                 //Dibujamos el resto de la lista
                 drawListGroupContent(obj, x, y, w, h);
+                cachearObjeto(listObj);
             } else if (listObj->getObjectType() == GUILISTIMG && listObj->getSize() > 0){
                 if (((UIImgList *)obj)->getMode() == IMGGROUPMODE){
                     drawListGroupContent(obj, x, y, w, h);
+                    cachearObjeto(listObj);
                 } else if (((UIImgList *)obj)->getMode() == IMGTHUMBMODE) {
                     drawUIThumbnailImgBox(obj);
                 }
             }
-            cachearObjeto(listObj);
+
         } else {
             //Traza::print("Alto de la lista: ", h, W_DEBUG);
-            cachearObjeto(listObj);
+//            cachearObjeto(listObj);
         }
-        drawAllThumbnailBackgrounds(listObj);
+//        drawAllThumbnailBackgrounds(listObj);
     }
 }
 
@@ -1997,8 +1999,8 @@ void Ioutil::drawThumbnailText(UIImgList *listObj, int i, SDL_Rect *imgRect){
         return;
     if (listObj->getRow(i) == NULL)
         return;
-    if (listObj->getRow(i)->GetUipicture() == NULL)
-        return;
+//    if (listObj->getRow(i)->GetUipicture() == NULL)
+//        return;
     if (listObj->getRow(i)->GetListGroupCol().size() < 1)
         return;
 
@@ -2021,7 +2023,7 @@ void Ioutil::drawThumbnailText(UIImgList *listObj, int i, SDL_Rect *imgRect){
     posY = imgRect->y + imgRect->h - Constant::getMENUSPACE();
     posW = imgRect->w;
 
-    SDL_Rect textArea = { 0, 0, posW, Constant::getMENUSPACE() };
+    SDL_Rect textArea = { 0, 0, (Uint16)posW, (Uint16)Constant::getMENUSPACE() };
 
     drawTextInArea(text.c_str(),
             posX,
@@ -2066,7 +2068,7 @@ void Ioutil::drawListGroupContent(Object *obj, int x, int y, int w, int h){
                 listObj->clearHeaderWith();
 
             int sepCabecera = 0;
-            SDL_Rect textArea = { 0, 0, 0, Constant::getMENUSPACE() };
+            SDL_Rect textArea = { 0, 0, 0, (Uint16)Constant::getMENUSPACE() };
 
             //Dibujamos las cabeceras
             for (unsigned int contCol=0; contCol < listObj->getSizeCol(); contCol++ ){
@@ -2301,10 +2303,10 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
     ImagenGestor imgGestor;
     SDL_Surface *mySurface;
     SDL_Surface *fondoSrf;
-    SDL_Rect dstrect = {0,0, elemWidth, elemHeight};
-    SDL_Rect scrRect = {x, y + centeredY,w, elemHeight};
-    SDL_Rect fondoRect = {x, y + centeredY,w, elemHeight};
-    SDL_Rect smoothRect = {0,0, w, elemHeight};
+    SDL_Rect dstrect = {0,0, (Uint16)elemWidth, (Uint16)elemHeight};
+    SDL_Rect scrRect = {(Sint16)x, (Sint16)(y + centeredY), (Uint16)w, (Uint16)elemHeight};
+    SDL_Rect fondoRect = {(Sint16)x, (Sint16)(y + centeredY), (Uint16)w, (Uint16)elemHeight};
+    SDL_Rect smoothRect = {0,0, (Uint16)w, (Uint16)elemHeight};
 
     if (obj->smoothSfc != NULL){
         if (obj->smoothSfc->w != totalWsfc || obj->smoothSfc->h != elemHeight){
@@ -2347,7 +2349,7 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
         if (obj->getPosActualLista() > obj->getLastPosActualLista()){
             msg += " Derecha";
             if (obj->getPosActualLista() > 1){
-                SDL_Rect itemRect = {0, 0, sfcW, elemHeight};
+                SDL_Rect itemRect = {0, 0, (Uint16)sfcW, (Uint16)elemHeight};
 
                 int itmp=0;
                 int relPostmp=0;
@@ -2375,7 +2377,7 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
         } else if (obj->getPosActualLista() < obj->getLastPosActualLista()){
             msg += " Izquierda";
             if (obj->getLastPosActualLista() > 1){
-                SDL_Rect itemRect = {elemWidth, 0, sfcW, elemHeight};
+                SDL_Rect itemRect = {(Sint16)elemWidth, 0, (Uint16)sfcW, (Uint16)elemHeight};
 
                 int sumaDespl = 0;
                 const int desp = elemWidth / 10;
@@ -2414,7 +2416,7 @@ void Ioutil::drawListIcoHorSmooth(UIList *obj, int x, int y, int w, int h){
             + "logos" + Constant::getFileSep() + obj->getListImage()->get(relPos) + ".png";
 
         //Traza::print("rutaLogo: " + rutaLogo, W_PARANOIC);
-        SDL_Rect textArea = { 0, 0, elemWidth, elemHeight };
+        SDL_Rect textArea = { 0, 0, (Uint16)elemWidth, (Uint16)elemHeight };
 
         if (relPos != (int)obj->getPosActualLista()){
             textArea.w = elemWidth - elemWidth / 3;
@@ -2475,9 +2477,9 @@ void Ioutil::drawListIcoHor(Object *obj, int x, int y, int w, int h){
         const int nElems = listObj->getNIconsHoriz();
         const int elemWidth = w / nElems;
         const int elemHeight = h/3;
-        SDL_Rect textArea = { 0, 0, elemWidth, elemHeight };
+        SDL_Rect textArea = { 0, 0, (Uint16)elemWidth, (Uint16)elemHeight };
         int centeredY = h / 2 - elemHeight / 2;
-        SDL_Rect dstrect = {0,0, elemWidth, elemHeight};
+        SDL_Rect dstrect = {0,0, (Uint16)elemWidth, (Uint16)elemHeight};
         //SDL_Surface *mySurface = SDL_CreateRGBSurface(SURFACE_MODE, textArea.w, textArea.h, screen->format->BitsPerPixel,0, 0, 0, 0);
         SDL_Surface *mySurface;
 
@@ -2565,7 +2567,7 @@ void Ioutil::drawListContent(Object *obj, int x, int y, int w, int h){
             centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
         }
 
-        SDL_Rect textArea = { 0, 0, w - INPUTCONTENT, Constant::getMENUSPACE() };
+        SDL_Rect textArea = { 0, 0, (Uint16)(w - INPUTCONTENT), (Uint16)Constant::getMENUSPACE() };
 
         for (unsigned int i=listObj->getPosIniLista(); i <= listObj->getPosFinLista(); i++ ){
             Traza::print("pintando: " + listObj->getListNames()->get(i), W_PARANOIC);
@@ -2862,8 +2864,8 @@ void Ioutil::drawUISlider(Object *obj, tEvento *evento){
         //Se pinta el icono del desplazador de la barra
         drawIco(btnSliderEQ, x + w/2 - FAMFAMICONW / 2, y+INPUTBORDER + hsel - FAMFAMICONH / 2, 17,17);
 
-        SDL_Rect labelLocation = { x + w/2 - fontStrLen(obj->getLabel()) / 2 + 2,
-                                   y + h + 10,
+        SDL_Rect labelLocation = { (Sint16)(x + w/2 - fontStrLen(obj->getLabel()) / 2 + 2),
+                                   (Sint16)(y + h + 10),
                                    0, 0};
 
         if (!obj->isOtherDrawed()){
@@ -3437,8 +3439,8 @@ void Ioutil::pintarIconoProcesando(bool refreshBackground){
     const int iconH = 50;
     int x = screen->w/2 - iconW / 2;
     int y = screen->h/2 - iconH / 2;
-    SDL_Rect iconRect = {(short int)x, (short int)y, iconW, iconH};
-    SDL_Rect iconRectFondo = {(short int)x - iconW / 2, (short int)y - iconH / 2, iconW * 2, iconH * 2};
+    SDL_Rect iconRect = {(Sint16)x, (Sint16)y, (Uint16)iconW, (Uint16)iconH};
+    SDL_Rect iconRectFondo = {(Sint16)(x - iconW / 2), (Sint16)(y - iconH / 2), (Uint16)(iconW * 2), (Uint16)(iconH * 2)};
     static SDL_Surface *mySurface = NULL;
 
     if (refreshBackground){
@@ -3936,7 +3938,7 @@ void Ioutil::drawUITextElementsArea(Object *obj){
         if (!obj->getImgDrawed()){
 
             UITextElementsArea *objTextElement = (UITextElementsArea *)obj;
-            SDL_Rect areaLocation = { (short int)x, (short int)y + objTextElement->getOffsetDesplazamiento(), (short int)w, (short int)h };
+            SDL_Rect areaLocation = { (Sint16)x, (Sint16)(y + objTextElement->getOffsetDesplazamiento()), (Uint16)w, (Uint16)h };
 
             //drawRectLine(x, y, w, h, 1, cVerde);
             if (obj->isVerContenedor()){
@@ -4043,8 +4045,8 @@ void Ioutil::drawTextInsideArea( int posArrayTexto, int x, int y, Object *obj, S
             }
 
             if (!retorno){
-                SDL_Rect screenLocation = { (short int)textLocation->x + x + acumLinePx,
-                                            (short int)textLocation->y + y + offsetY, 0, 0 };
+                SDL_Rect screenLocation = { (Sint16)(textLocation->x + x + acumLinePx),
+                                            (Sint16)(textLocation->y + y + offsetY), 0, 0 };
 
                 if (screenLocation.y < obj->getY() + obj->getH() - Constant::getMENUSPACE()
                     && screenLocation.y >= obj->getY() ){
@@ -4129,7 +4131,7 @@ void Ioutil::drawTreeListContent(Object *obj, int x, int y, int w, int h){
         int centeredY = 0;
 
         centeredY = (Constant::getMENUSPACE() - fontHeight) / 2;
-        SDL_Rect textArea = { 0, 0, w - INPUTCONTENT, Constant::getMENUSPACE() };
+        SDL_Rect textArea = { 0, 0, (Uint16)(w - INPUTCONTENT), (Uint16)Constant::getMENUSPACE() };
 
         if (!listObj->getImgDrawed()){
             int lastNode = -1;

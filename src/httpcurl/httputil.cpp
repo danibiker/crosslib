@@ -169,6 +169,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     FILE * hd_src = NULL;
     aborted = false;
 
+
     mtx.lock();
     cleanChunkData();
     chunk.memory = (char *) calloc(data != NULL && httpType == HTTP_GET ? MAX_FILE_BUFFER : 1, 1);
@@ -183,6 +184,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
     curl_global_init(CURL_GLOBAL_ALL);
     /* get a curl handle */
     curl = curl_easy_init();
+    //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
     mtx.unlock();
 
     /* specify proxy*/
@@ -237,7 +239,7 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
 
         char *buffer = NULL;
         errno_t err;
-//        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+
 
         switch (httpType){
             case HTTP_POST:
@@ -720,4 +722,29 @@ void HttpUtil::setCookies(curl_slist* cookies) {
 
 curl_slist* HttpUtil::getCookies() {
     return cookies;
+}
+
+bool HttpUtil::isValidURL(string url)
+{
+
+  // Regex to check valid URL
+  const regex pattern("((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+
+  // If the URL
+  // is empty return false
+  if (url.empty())
+  {
+     return false;
+  }
+
+  // Return true if the URL
+  // matched the ReGex
+  if(regex_match(url, pattern))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }

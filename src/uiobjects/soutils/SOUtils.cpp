@@ -181,3 +181,15 @@ void SOUtils::waitms(unsigned long ms){
         sleep(ms);
     #endif
 }
+
+int SOUtils::getChTimeout(int timeout){
+    clock_t tstart = clock();
+    int v1 = 0;                   // default key press
+    while((clock() - tstart) / CLOCKS_PER_SEC < timeout) {
+        if(kbhit()) {
+            v1 = getch();
+            break;
+        }
+    }
+    return v1;
+}

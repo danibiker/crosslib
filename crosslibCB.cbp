@@ -13,13 +13,15 @@
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-pedantic" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/crosslibCB" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/crosslib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="2" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
@@ -32,7 +34,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-Wno-narrowing" />
 			<Add option="-DWIN" />
 			<Add option="-D_WIN32" />
 			<Add option="-DSKIP_HOSTNAME_VERIFICATION" />
@@ -139,7 +140,10 @@
 		<Unit filename="src/uiobjects/common/BaseFrontend.h" />
 		<Unit filename="src/uiobjects/common/Icogestor.cpp" />
 		<Unit filename="src/uiobjects/common/Icogestor.h" />
-		<Unit filename="src/uiobjects/common/Ioutil.cpp" />
+		<Unit filename="src/uiobjects/common/Ioutil.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="src/uiobjects/common/Ioutil.h" />
 		<Unit filename="src/uiobjects/cursor.cpp" />
 		<Unit filename="src/uiobjects/cursor.h" />
