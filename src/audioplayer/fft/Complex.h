@@ -1,40 +1,41 @@
-#if !defined COMPLEX_H
-#define COMPLEX_H
+#ifndef ComplexD_H
+#define ComplexD_H
+
+#include <cmath>
+
 //------------------------------------
-//  complex.h
-//  Complex number
+//  ComplexD.h
+//  ComplexD number
 //  (c) Reliable Software, 1996
 //------------------------------------
 
-#include <math.h>
-
-class Complex
+class ComplexD
 {
 public:
-    Complex () {}
-    Complex (double re): _re(re), _im(0.0) {}
-    Complex (double re, double im): _re(re), _im(im) {}
+    ComplexD () {}
+    ComplexD (double re): _re(re), _im(0.0) {}
+    ComplexD (double re, double im): _re(re), _im(im) {}
     double Re () const { return _re; }
     double Im () const { return _im; }
-    void operator += (const Complex& c)
+    void operator += (const ComplexD& c)
     {
         _re += c._re;
         _im += c._im;
     }
-    void operator -= (const Complex& c)
+    void operator -= (const ComplexD& c)
     {
         _re -= c._re;
         _im -= c._im;
     }
-    void operator *= (const Complex& c)
+    void operator *= (const ComplexD& c)
     {
         double reT = c._re * _re - c._im * _im;
         _im = c._re * _im + c._im * _re;
         _re = reT;
     }
-    Complex operator- () 
+    ComplexD operator- ()
     {
-            return Complex (-_re, -_im);
+            return ComplexD (-_re, -_im);
     }
     double Mod () const { return sqrt (_re * _re + _im * _im); }
 private:

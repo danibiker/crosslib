@@ -120,13 +120,15 @@ size_t Httputil2::handleHeader(void *contents, size_t size, size_t nmemb, void *
         char* tmp;
         if ((tmp = (char*)realloc(mem->readBufferHeader, tam + realsize + 1)) != NULL) {
             mem->readBufferHeader = tmp;
-            strcat_s(mem->readBufferHeader, tam + realsize + 1, (char*)contents);
+            //strcat_s(mem->readBufferHeader, tam + realsize + 1, (char*)contents);
+            strncat(mem->readBufferHeader,  (char*)contents, tam + realsize + 1);
         } else
             cerr << "error al redimensionar memoria en handleHeader" << endl;
     } else {
         mem->readBufferHeader = (char* )calloc(realsize + 1, 1);
         if (mem->readBufferHeader != NULL)
-            strcpy_s(mem->readBufferHeader, realsize + 1, (char *)contents);
+            //strcpy_s(mem->readBufferHeader, realsize + 1, (char *)contents);
+            strncpy(mem->readBufferHeader, (char *)contents, realsize + 1);
         else
             cerr << "error al reservar memoria en handleHeader" << endl;
     }
@@ -189,8 +191,13 @@ size_t Httputil2::writeMemoryCallback(void *contents, size_t size, size_t nmemb,
     //We add the total file size until now
     if (mem->filepath != NULL) {
         FILE* f = NULL;
+        #ifdef WIN
         errno_t err;
         err = fopen_s(&f, mem->filepath, "rb");
+        #else
+        f = fopen(mem->filepath, "rb");
+        int err = (f == NULL) ? 1 : 0;
+        #endif
         size_t tam = 0;
         if (err == 0 && f != NULL && fseek(f, 0, SEEK_END) == 0 && (tam = ftell(f)) > 0){
             totalDown += tam;
@@ -234,9 +241,14 @@ size_t Httputil2::writeMemoryCallback(void *contents, size_t size, size_t nmemb,
 void Httputil2::checkWriteMemToFile(void *contents, size_t sizeToWrite, char *filepath){
     if (contents != NULL && sizeToWrite != 0 && filepath != NULL){
         //Escribimos el fichero descargado en un fichero del disco duro
-        errno_t err;
         FILE* file = NULL;
+        #ifdef WIN
+        errno_t err;
         err = fopen_s(&file, filepath, "ab");
+        #else
+        file = fopen(filepath, "ab");
+        int err = (file == NULL) ? 1 : 0;
+        #endif
         if (err == 0 && file != NULL){
             fwrite((char *)contents, 1, sizeToWrite, file);
             fclose(file);
@@ -405,9 +417,16 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
         size_t len = strlen(chunk->connProps.proxyUser) + strlen(chunk->connProps.proxyPass) + 2;
         auth = (char *) calloc(len, 1);
         if (auth != NULL){
+            #ifdef WIN
             strcpy_s(auth, len, chunk->connProps.proxyUser);
             strcat_s(auth, len, ":");
             strcat_s(auth, len, chunk->connProps.proxyPass);
+            #else
+            strncpy(auth, chunk->connProps.proxyUser, len);
+            strncat(auth, ":", len);
+            strncat(auth, chunk->connProps.proxyPass, len);
+            #endif
+
             curl_easy_setopt(curl, CURLOPT_PROXY, chunk->connProps.proxyIP);
             curl_easy_setopt(curl, CURLOPT_PROXYPORT, chunk->connProps.proxyPort);
             curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, auth);
@@ -460,7 +479,11 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
         curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, CURL_MAX_WRITE_SIZE);
 
         char *buffer = NULL;
+        #ifdef WIN
         errno_t err;
+        #else
+        int err = 0;
+        #endif
 
         //curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
 
@@ -480,8 +503,13 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
             case HTTP_POST2:
                 //To upload files. Needed by dropbox
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
-
+                #ifdef WIN
                 err = fopen_s(&hd_src, data, "rb");
+                #else
+                hd_src = fopen(data, "rb");
+                err = (hd_src == NULL) ? 1 : 0;
+                #endif
+
                 if (err == 0 && hd_src != NULL && tam > 0) {
                     fseek(hd_src, offset, SEEK_SET);
                     if ((buffer = (char*) calloc(tam, 1)) != NULL) {
@@ -501,7 +529,13 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
             case HTTP_PUT:
                 curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
                 curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+                #ifdef WIN
                 err = fopen_s(&hd_src, data, "rb");
+                #else
+                hd_src = fopen(data, "rb");
+                err = (hd_src == NULL) ? 1 : 0;
+                #endif
+
                 if (err == 0 && hd_src != NULL) {
                     fseek(hd_src, offset, SEEK_SET);
                     curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
@@ -535,7 +569,11 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
                     if (len > 1){
                         chunk->filepath = (char *) calloc(len, 1);
                         if (chunk->filepath != NULL){
+                            #ifdef WIN
                             strcpy_s(chunk->filepath, len, data);
+                            #else
+                            strncpy(chunk->filepath, data, len);
+                            #endif
                         } else {
                             cerr << "No se pudo crear memoria para inicializar chunk->filepath" << endl;
                         }

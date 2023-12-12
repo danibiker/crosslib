@@ -20,6 +20,7 @@
 #include <SDL/SDL.h>
 #include <thread>
 #include <chrono>
+#include <csignal>
 
 class ThreadImgWorker {
 public:

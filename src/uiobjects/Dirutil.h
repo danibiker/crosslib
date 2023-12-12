@@ -11,6 +11,7 @@
 #include "ListaSimple.h"
 #include <stdio.h>
 #include <vector>
+//#include <filesystem> // C++17
 
 #ifndef lint
 /* Prevent over-aggressive optimizers from eliminating ID string */

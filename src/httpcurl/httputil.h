@@ -18,12 +18,8 @@
 //#include <gmutex.h>
 #include <mutex>          // std::mutex
 #include "util/Progress.h"
+#include "util/ConstantHttp.h"
 
-
-#define MINIMAL_PROGRESS_FUNCTIONALITY_INTERVAL     3.0
-#define MAX_FILE_BUFFER 5*1024*1024
-#define MIN_PROGRESS_CHUNK_OF_BYTES 512
-#define SECONDS_TO_ABORT_STUCK_DOWNLOAD 60
 
 class HttpUtil
 {
@@ -86,7 +82,12 @@ class HttpUtil
 
         static void decodeError(int r){
             char buff[100];
+            #ifdef WIN
             strerror_s(buff, 100, r);
+            #else
+            strerror_r(r, buff, 100);
+            #endif
+
             printf("str_trim_left.error: %d %s\n", r, buff);
         }
 

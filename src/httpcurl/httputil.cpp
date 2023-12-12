@@ -238,7 +238,11 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, CURL_MAX_WRITE_SIZE);
 
         char *buffer = NULL;
+        #ifdef WIN
         errno_t err;
+        #else
+        int err = 0;
+        #endif
 
 
         switch (httpType){
@@ -250,7 +254,13 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
             case HTTP_POST2:
                 //To upload files. Needed by dropbox
                 curl_easy_setopt(curl, CURLOPT_POST, 1);
+                #ifdef WIN
                 err = fopen_s(&hd_src, data, "rb");
+                #else
+                hd_src = fopen(data, "rb");
+                err = (hd_src == NULL) ? 1 : 0;
+                #endif
+
                 if (err == 0 && hd_src != NULL && tam > 0) {
                     fseek(hd_src, offset, SEEK_SET);
                     if ((buffer = (char*) calloc(tam, 1)) != NULL) {
@@ -267,8 +277,14 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                 break;
             case HTTP_PUT:
                 curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-                curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+                //curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+                #ifdef WIN
                 err = fopen_s(&hd_src, data, "rb");
+                #else
+                hd_src = fopen(data, "rb");
+                err = (hd_src == NULL) ? 1 : 0;
+                #endif
+
                 if (err == 0 && hd_src != NULL) {
                     fseek(hd_src, offset, SEEK_SET);
                     curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
@@ -299,7 +315,11 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
                     if (len > 1){
                         chunk.filepath = (char *) calloc(len, 1);
                         if (chunk.filepath != NULL){
+                            #ifdef WIN
                             strcpy_s(chunk.filepath, len, data);
+                            #else
+                            strncpy(chunk.filepath, data, len);
+                            #endif
                         } else {
                             cerr << "No se pudo crear memoria para inicializar chunk->filepath" << endl;
                         }
@@ -555,9 +575,16 @@ int HttpUtil::addDataToMem(void *contents, size_t realsize, MemoryStruct *mem){
 void HttpUtil::checkWriteMemToFile(void *contents, size_t sizeToWrite, char *filepath){
     if (contents != NULL && sizeToWrite != 0 && filepath != NULL){
         //Escribimos el fichero descargado en un fichero del disco duro
-        errno_t err;
+
         FILE* file = NULL;
+        #ifdef WIN
+        errno_t err;
         err = fopen_s(&file, filepath, "ab");
+        #else
+        file = fopen(filepath, "ab");
+        int err = (file == NULL) ? 1 : 0;
+        #endif
+
         if (err == 0 && file != NULL){
             fwrite((char *)contents, 1, sizeToWrite, file);
             fclose(file);

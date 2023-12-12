@@ -3,10 +3,10 @@
 
 #include <unistd.h>
 #include <zlib.h>
-#include <minizip\unzip.h>
+#include <minizip/unzip.h>
 //#include "..\..\ziputils\unzip\crypt.h"
-#include "..\Fileio.h"
-#include "..\Dirutil.h"
+#include "../Fileio.h"
+#include "../Dirutil.h"
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -33,7 +33,7 @@ class UnzipTool
         unzippedFileInfo descomprimirZip(const char *rutaZip, const char *rutaDest);
         unzippedFileInfo descomprimirZip(const char *rutaZip, const char *rutaDest, bool uncompress);
         unzippedFileInfo listZipContent(const char *rutaZip);
-        
+
     protected:
     private:
         unzippedFileInfo extraerFichero(unzFile *myZip, const char *ruta, bool uncompress);

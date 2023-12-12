@@ -36,19 +36,19 @@ Fft::Fft (int Points, long sampleRate)
     }
 
     _aBitRev = new int [_Points];
-    _X = new Complex[_Points];
-    _W = new Complex* [_logPoints+1];
+    _X = new ComplexD[_Points];
+    _W = new ComplexD* [_logPoints+1];
     // Precompute complex exponentials
     int _2_l = 2;
     for (int l = 1; l <= _logPoints; l++)
     {
-        _W[l] = new Complex [_Points];
+        _W[l] = new ComplexD [_Points];
 
         for ( int i = 0; i < _Points; i++ )
         {
             double re =  cos (2. * PI * i / _2_l);
             double im = -sin (2. * PI * i / _2_l);
-            _W[l][i] = Complex (re, im);
+            _W[l][i] = ComplexD (re, im);
         }
         _2_l *= 2;
     }
@@ -137,10 +137,10 @@ void Fft::Transform ()
         int increm = step * 2;
         for (int j = 0; j < step; j++){
             // U = exp ( - 2 PI j / 2 ^ level )
-            Complex U = _W [level][j];
+            ComplexD U = _W [level][j];
             for (int i = j; i < _Points; i += increm){
                 // butterfly
-                Complex T = U;
+                ComplexD T = U;
                 T *= _X [i+step];
                 _X [i+step] = _X[i];
                 _X [i+step] -= T;

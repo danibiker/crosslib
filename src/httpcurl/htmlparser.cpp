@@ -15,7 +15,9 @@ HtmlParser::~HtmlParser() {
 string HtmlParser::CleanHTML(const char* html) {
     // Initialize a Tidy document
     TidyDoc tidyDoc = tidyCreate();
-    TidyBuffer tidyOutputBuffer = {0};
+    //TidyBuffer tidyOutputBuffer = {0};
+    TidyBuffer tidyOutputBuffer;
+    tidyBufInit(&tidyOutputBuffer);
 
     // Configure Tidy
     // The flags tell Tidy to output XML and disable showing warnings

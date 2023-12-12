@@ -818,7 +818,7 @@ bool Dirutil::existe(string ruta){
 }
 
 bool Dirutil::setFileProperties(FileProps *propFile, string ruta){
-    boolean ret = true;
+    bool ret = true;
 
     struct stat info;
     stat(ruta.c_str(), &info);
@@ -864,14 +864,29 @@ char* Dirutil::formatdate(char* str, time_t val){
  */
 bool Dirutil::isDir(string ruta){
     struct stat info;
+    /*
     stat(ruta.c_str(), &info);
-
     if(S_ISDIR(info.st_mode)){
         return true;
     } else{
         return false;
+    }*/
+    
+    if( stat(ruta.c_str(),&info) == 0 ){
+        if( info.st_mode & S_IFDIR ){
+            // it's a directory
+            return true;
+        } else if( info.st_mode & S_IFREG ){
+            // it's a file
+            return false;
+        } else {
+            // something else
+            return false;
+        }
+    } else {
+        // error
+        return false;
     }
-
 }
 
 /**

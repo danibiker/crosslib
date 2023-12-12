@@ -1,7 +1,7 @@
 #ifndef LYRICSWIKIA_H
 #define LYRICSWIKIA_H
 
-#include "json/json.h"
+#include <json/json.h>
 #include "lyricsbase.h"
 #include "../util/JsonParser.h"
 

@@ -76,9 +76,11 @@
             void toggleFullScreen();
             int setFullscreenMode(int mode);
             void dpi();
+
+            #ifdef WIN
             BOOL(WINAPI *SetProcessDPIAware)(void); // Vista and later
             HRESULT(WINAPI *SetProcessDpiAwareness)(PROCESS_DPI_AWARENESS dpiAwareness); // Windows 8.1 and later
-
+            #endif
 
             void drawText(const char* , int , int , t_color ); //Escribe texto en la pantalla
             void drawTextInt(int , int , int ,  t_color ); // Escribe un entero en la pantalla

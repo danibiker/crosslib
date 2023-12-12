@@ -12,6 +12,7 @@
  */
 
 #include "SOUtils.h"
+#include "conio_linux.h"
 
 SOUtils::SOUtils() {
 }
@@ -154,15 +155,17 @@ std::string SOUtils::GetClipboardText(){
     XGetWindowProperty(display, window, propid, 0, LONG_MAX/4, False, AnyPropertyType,
       &fmtid, &resbits, &ressize, &restail, (unsigned char**)&result);
 
-    if (fmtid == incrid)
-      printf("Buffer is too large and INCR reading is not implemented yet.\n");
-    else
-      printf("%.*s", (int)ressize, result);
+    //if (fmtid != incrid)
+    //printf("%.*s", (int)ressize, result);
+    //else
+    //  printf("Buffer is too large and INCR reading is not implemented yet.\n");
+
     text.assign(result);
     XFree(result);
   }
-  else // request failed, e.g. owner can't convert to the target format
-    printf("Request failed.\n");
+  // request failed, e.g. owner can't convert to the target format
+  //else
+  //printf("\n");
 
   XDestroyWindow(display, window);
   XCloseDisplay(display);
@@ -182,14 +185,26 @@ void SOUtils::waitms(unsigned long ms){
     #endif
 }
 
-int SOUtils::getChTimeout(int timeout){
-    clock_t tstart = clock();
-    int v1 = 0;                   // default key press
-    while((clock() - tstart) / CLOCKS_PER_SEC < timeout) {
-        if(kbhit()) {
+int SOUtils::getChTimeout(double timeout){
+    //clock_t tstart = clock();
+    const auto tstart = std::chrono::steady_clock::now();
+
+    int v1 = 0; // default key press
+    while((std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - tstart)).count() < timeout) {
+//        #ifdef UNIX
+//        enable_raw_mode();
+//        #endif // UNIX
+        if(kbhit2()) {
             v1 = getch();
+            if (v1 >= 0) {
+                Traza::print("getch", v1, W_DEBUG);
+            }
             break;
         }
+//        #ifdef UNIX
+//        disable_raw_mode();
+//        #endif // UNIX
+        //tcflush(0, TCIFLUSH); // Clear stdin to prevent characters appearing on prompt
     }
     return v1;
 }

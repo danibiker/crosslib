@@ -1,6 +1,7 @@
 #ifndef HTMLPARSER_H
 #define HTMLPARSER_H
 
+using namespace std;
 
 #include "uiobjects/Constant.h"
 #include <gumbo.h>
@@ -23,13 +24,19 @@
     #include <winsock2.h>
     #include <windows.h>
     //#undef byte
+    #include <tidy.h>
+    #include <buffio.h>
+#elif UNIX
+    //  override byte to prevent clashes with <cstddef>
+    #define byte win_byte_override
+    #undef Bool
+    #include <tidy/tidy.h>
+    #include <tidy/tidybuffio.h>
+    #undef byte
+
 #endif
 
-#include <tidy.h>
-#include <buffio.h>
 
-
-using namespace std;
 
 struct attrValue{
     map<string, string> attrList;

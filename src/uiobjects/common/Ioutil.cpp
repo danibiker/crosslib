@@ -359,6 +359,7 @@ void Ioutil::toggleFullScreen(){
  * set the correct fullscreen size
  */
 void Ioutil::dpi(){
+    #ifdef WIN
     void* userDLL;
     void* shcoreDLL;
 
@@ -383,6 +384,7 @@ void Ioutil::dpi(){
         BOOL success = SetProcessDPIAware();
         Traza::print("called SetProcessDpiAwareness",(int)success, W_DEBUG);
     }
+    #endif
 }
 
 /**
@@ -584,11 +586,11 @@ tEvento Ioutil::WaitForKey(){
 
     clearEvento(&evento);
     SDL_Event event;
-#ifdef UNIX
-    while( SDL_PollEvent( &event ) ){
-#else
+//#ifdef UNIX
+//    while( SDL_PollEvent( &event ) ){
+//#else
     if( SDL_PollEvent( &event ) ){
-#endif
+//#endif
     //if (SDL_WaitEvent (&event)){
         switch( event.type ){
             case SDL_VIDEORESIZE:

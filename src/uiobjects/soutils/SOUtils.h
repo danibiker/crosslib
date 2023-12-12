@@ -18,10 +18,19 @@
 #include "../Dirutil.h"
 #include "../listaIni.h"
 
-#include <conio.h>
+#ifdef WIN
+    #include <conio.h>
+#elif UNIX
+    #include<X11/Xlib.h>
+#endif
 #include <stdio.h>
 #include <ctype.h>
 #include <time.h>
+
+// steady_clock
+#include <ctime>
+#include <ratio>
+#include <chrono>
 
 class SOUtils {
 public:
@@ -32,7 +41,7 @@ public:
     static bool loadConfig();
     static void waitms(unsigned long ms);
     static string GetClipboardText();
-    static int getChTimeout(int timeout);
+    static int getChTimeout(double timeout);
 private:
 
 };

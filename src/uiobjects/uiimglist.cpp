@@ -11,7 +11,7 @@
  * Created on 4 de abril de 2020, 11:46
  */
 
-#include "uiimgList.h"
+#include "uiimglist.h"
 
 UIImgList::UIImgList() {
     inicializarObjeto(GUILISTIMG);

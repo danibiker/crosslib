@@ -123,7 +123,11 @@ private:
 
     static void decodeError(int r){
         char buff[100];
+        #ifdef WIN
         strerror_s(buff, 100, r);
+        #else
+        strerror_r(r, buff, 100);
+        #endif
         printf("str_trim_left.error: %d %s\n", r, buff);
     }
 
