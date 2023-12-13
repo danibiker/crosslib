@@ -15,6 +15,7 @@
     #include <windows.h>
     #include <string>
     #include <winioctl.h>
+    const int NULLHANDLE=NULL;
 #else 
     #include <string>
     typedef unsigned long DWORD;
@@ -22,6 +23,7 @@
     typedef unsigned long HANDLE;
     #define FALSE false;
     #define TRUE true;
+    const int NULLHANDLE=0;
 #endif
     
 
@@ -38,9 +40,6 @@ struct CDTRACK
 	ULONG Length;
 	ULONG Offset;
 };
-
-
-
 
 // This class helps you to read out audio-tracks from cd.
 // It holds only basic functions, e.g. no progress-information

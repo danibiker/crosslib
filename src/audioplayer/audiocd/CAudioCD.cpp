@@ -13,7 +13,7 @@
 // Constructor / Destructor
 CAudioCD::CAudioCD( char Drive )
 {
-	m_hCD = NULL;
+	m_hCD = NULLHANDLE;
 	if ( Drive != '\0' )
 		Open( Drive );
     cddbDiscid = "";
@@ -82,7 +82,7 @@ BOOL CAudioCD::Open( char Drive )
 
 BOOL CAudioCD::IsOpened()
 {
-	return m_hCD != NULL;
+	return m_hCD != NULLHANDLE;
 }
 
 
@@ -93,7 +93,7 @@ void CAudioCD::Close()
 #ifdef WIN
 	CloseHandle( m_hCD );
 #endif
-	m_hCD = NULL;
+	m_hCD = NULLHANDLE;
 }
 
 
@@ -102,7 +102,7 @@ void CAudioCD::Close()
 // Read / Get track-data
 ULONG CAudioCD::GetTrackCount()
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return 0xFFFFFFFF;
 	return m_aTracks.size();
 }
@@ -110,7 +110,7 @@ ULONG CAudioCD::GetTrackCount()
 
 ULONG CAudioCD::GetTrackTime( ULONG Track )
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return 0xFFFFFFFF;
 	if ( Track >= m_aTracks.size() )
 		return 0xFFFFFFFF;
@@ -122,7 +122,7 @@ ULONG CAudioCD::GetTrackTime( ULONG Track )
 
 ULONG CAudioCD::GetTrackSize( ULONG Track )
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return 0xFFFFFFFF;
 	if ( Track >= m_aTracks.size() )
 		return 0xFFFFFFFF;
@@ -134,7 +134,7 @@ ULONG CAudioCD::GetTrackSize( ULONG Track )
 
 BOOL CAudioCD::ReadTrack( ULONG TrackNr, CBuf<char>* pBuf )
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return FALSE;
 
 	if ( TrackNr >= m_aTracks.size() )
@@ -176,7 +176,7 @@ BOOL CAudioCD::ReadTrack( ULONG TrackNr, CBuf<char>* pBuf )
 
 int CAudioCD::ExtractTrack( ULONG TrackNr,const char *Path )
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return 1;
 
 	ULONG Dummy;
@@ -228,7 +228,7 @@ int CAudioCD::ExtractTrack( ULONG TrackNr,const char *Path )
 // Lock / Unlock CD-Rom Drive
 BOOL CAudioCD::LockCD()
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return FALSE;
 #ifdef WIN
         ULONG Dummy;
@@ -242,7 +242,7 @@ BOOL CAudioCD::LockCD()
 
 BOOL CAudioCD::UnlockCD()
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return FALSE;
 #ifdef WIN
 	ULONG Dummy;
@@ -259,7 +259,7 @@ BOOL CAudioCD::UnlockCD()
 // General operations
 BOOL CAudioCD::InjectCD()
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return FALSE;
 #ifdef WIN
 	ULONG Dummy;
@@ -304,7 +304,7 @@ BOOL CAudioCD::IsCDReady( char Drive )
 
 BOOL CAudioCD::EjectCD()
 {
-	if ( m_hCD == NULL )
+	if ( m_hCD == NULLHANDLE )
 		return FALSE;
 	ULONG Dummy;
 #ifdef WIN

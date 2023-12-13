@@ -527,8 +527,12 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
 
                 break;
             case HTTP_PUT:
-                curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-                curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+                #if LIBCURL_VERSION_NUM >= 0x071210
+                    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+                #else 
+                    curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+                #endif
+
                 #ifdef WIN
                 err = fopen_s(&hd_src, data, "rb");
                 #else
@@ -652,8 +656,9 @@ int Httputil2::sendHttp(std::string url, const char* data, size_t tam, size_t of
         }
 //        curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
 
-        double speed_upload, total_time;
-        curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD, &speed_upload);
+        //double speed_upload;
+        double total_time;
+        //curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD, &speed_upload);
         curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &total_time);
         //fprintf(stderr, "Speed: %.3f bytes/sec during %.3f seconds\n", speed_upload, total_time);
         //Traza::print("speed_upload", speed_upload, W_INFO);

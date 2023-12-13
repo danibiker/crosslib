@@ -412,8 +412,9 @@ bool HttpUtil::sendHttp(string url, const char* data, size_t tam, size_t offset,
         }
 //        curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
 
-        double speed_upload, total_time;
-        curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD, &speed_upload);
+        //double speed_upload; 
+        double total_time;
+        //curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD, &speed_upload);
         curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &total_time);
         //fprintf(stderr, "Speed: %.3f bytes/sec during %.3f seconds\n", speed_upload, total_time);
         //Traza::print("speed_upload", speed_upload, W_INFO);

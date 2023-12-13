@@ -187,8 +187,8 @@ void Ioutil::initSDL(bool calcFS){
             this->h = 480;
             bpp = 16;
         }
-
-        SDL_putenv("SDL_VIDEO_CENTERED=center"); //Center the game Window
+        
+        SDL_putenv((char *)"SDL_VIDEO_CENTERED=center"); //Center the game Window
         //Finalmente establecemos el modo del video
         screen = SDL_SetVideoMode(this->w, this->h, bpp, this->fullsflags);
         if(!screen){
@@ -198,7 +198,7 @@ void Ioutil::initSDL(bool calcFS){
         //SDL_("SDL_VIDEO_CENTERED=0"); //Center the game Window
         Constant::setWINDOW_HEIGHT(this->h);
         Constant::setWINDOW_WIDTH(this->w);
-        SDL_putenv( "SDL_VIDEO_CENTERED="); //Reset the centering when the screen resizes
+        SDL_putenv((char *)"SDL_VIDEO_CENTERED="); //Reset the centering when the screen resizes
     }
 
     Traza::print("Mostrando cursor", W_DEBUG);
